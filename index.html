@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+<head><meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+<style>
+/* Norte · paleta Névoa · direção B (bússola). Fundo azul-acinzentado claro, tinta marinho, agulha coral. */
+:root {
+  --bg: #EAF0F4;
+  --surface: #FFFFFF;
+  --soft: #DAE3EA;
+  --ink: #1F2A44;
+  --ink-2: #3B4256;
+  --muted: #4E5A6B;
+  --line: #C9D4DD;
+  --accent: #1F2A44;
+  --accent-ink: #F4F7F9;
+  --accent-soft: #DAE3EA;
+  --coral: #E8684A;
+  --coral-text: #C24A2C;
+  --coral-soft: #F7CFC3;
+  --coral-deep: #8F2E1A;
+  --needle-s: #75899E;
+  --thumb-idle: #5F7184;
+  --on-coral: #FFFFFF;
+  --dot-idle: #C3CFDA;
+  --disabled-bg: #C9D4DD; --disabled-ink: #3B4256;
+  --warm: var(--coral);
+  --ok: #2E6F55; --warn: #8F2E1A; --high: #B2412C;
+  --ok-soft: #DCEDE4; --warn-soft: #F7CFC3; --high-soft: #F9E4DE;
+  --font-display: 'Bricolage Grotesque', 'Avenir Next', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --r: 22px;
+  --shadow: 0 1px 2px rgba(31, 42, 68, .06), 0 14px 30px -18px rgba(31, 42, 68, .35);
+  --t-sky: #E3EEF5; --t-sky-2: #B9D3E3;
+  --t-sand: #F1ECE6; --t-sand-2: #DCCFBE;
+  --t-mint: #E2F0EA; --t-mint-2: #B5DCCB;
+  --t-lilac: #EFEDF6; --t-lilac-2: #D3CEEA;
+  --t-peach: #FBE8E2; --t-peach-2: #F3C2B3;
+  --t-butter: #F3EFE2; --t-butter-2: #E2D7B3;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111A2B; --surface: #1A2539; --soft: #24314A; --ink: #E8EEF3; --ink-2: #C9D3DE; --muted: #A7B4C2; --line: #33405A;
+    --accent: #E8EEF3; --accent-ink: #111A2B; --accent-soft: #24314A;
+    --coral: #F07F63; --coral-text: #F59A82; --coral-soft: #4A2A24; --coral-deep: #F8D3C8; --needle-s: #8597AB; --thumb-idle: #8597AB; --on-coral: #111A2B; --dot-idle: #3A4863; --disabled-bg: #33405A; --disabled-ink: #A7B4C2;
+    --ok: #7BCBA6; --warn: #F8D3C8; --high: #F59A82; --ok-soft: #173229; --warn-soft: #4A2A24; --high-soft: #45221B;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 30px -18px rgba(0, 0, 0, .6);
+    --t-sky: #18273A; --t-sky-2: #2E4A63; --t-sand: #241F1A; --t-sand-2: #4E4234; --t-mint: #15281F; --t-mint-2: #2D5544;
+    --t-lilac: #1F1D30; --t-lilac-2: #46416B; --t-peach: #2D1C18; --t-peach-2: #5F3B31; --t-butter: #24221A; --t-butter-2: #545032;
+    color-scheme: dark;
+  }
+}
+
+.tint-sky { --tint: var(--t-sky); --tint-2: var(--t-sky-2); }
+.tint-sand { --tint: var(--t-sand); --tint-2: var(--t-sand-2); }
+.tint-mint { --tint: var(--t-mint); --tint-2: var(--t-mint-2); }
+.tint-lilac { --tint: var(--t-lilac); --tint-2: var(--t-lilac-2); }
+.tint-peach { --tint: var(--t-peach); --tint-2: var(--t-peach-2); }
+.tint-butter { --tint: var(--t-butter); --tint-2: var(--t-butter-2); }
+:root, .stage, .soft-card, .dot, .tile, .ill-wrap { --ill-a: var(--ink); --ill-b: var(--coral); --ill-c: var(--surface); --ill-d: var(--tint-2, var(--soft)); }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+a { color: var(--ink); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 9vw, 2.75rem); line-height: 1.02; letter-spacing: -0.035em; }
+h2 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1rem; font-weight: 700; }
+p { margin: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px max(16px, env(safe-area-inset-left)); background: var(--bg); position: sticky; top: 0; z-index: 5; }
+.brand { display: flex; align-items: center; gap: 8px; color: var(--ink); }
+.mark { width: 24px; height: 24px; }
+.brand-name { font-family: var(--font-display); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.top-right { display: flex; align-items: center; gap: 8px; }
+.points { font-size: .85rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; background: var(--soft); padding: 6px 12px; border-radius: 99px; }
+.star { color: var(--coral-text); }
+@media (max-width: 420px) { .points-l { display: none; } }
+.lang select { font: inherit; font-size: .88rem; font-weight: 700; min-height: 44px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--soft); color: var(--ink); max-width: 44vw; }
+.proto { text-align: center; font-size: .78rem; padding: 6px 16px; background: var(--soft); color: var(--ink-2); }
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 22px 16px 40px; display: grid; gap: 20px; }
+.wrap.narrow { max-width: 600px; }
+.lead { font-size: 1.04rem; color: var(--ink-2); max-width: 60ch; }
+.h-page { font-size: clamp(1.9rem, 7vw, 2.4rem); }
+.small { font-size: .85rem; color: var(--muted); max-width: 65ch; }
+.small.center { text-align: center; margin: 0 auto; max-width: 34ch; }
+.eyebrow { color: var(--muted); font-weight: 700; font-size: .85rem; }
+
+/* Welcome: compass */
+.compass-hero { display: grid; justify-items: center; gap: 14px; min-height: calc(100svh - 120px); align-content: start; }
+.hero-head { justify-self: stretch; display: grid; gap: 10px; }
+.hero-note { color: var(--muted); font-size: .95rem; }
+.compass-title { font-size: clamp(2.4rem, 11vw, 2.8rem); }
+.compass-block { display: grid; justify-items: center; gap: 6px; margin-top: 8px; }
+.north-mark { display: grid; justify-items: center; color: var(--ink); }
+.north-mark svg { width: 16px; height: 10px; fill: currentColor; }
+.compass-block.found .north-mark { color: var(--coral-text); }
+.compass { position: relative; width: min(300px, 78vw); aspect-ratio: 1; }
+.dial { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; background: var(--surface); box-shadow: 0 24px 50px -24px rgba(31, 42, 68, .45); touch-action: none; cursor: grab; }
+.dial:active { cursor: grabbing; }
+.dial-face, .needle svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ring { fill: none; stroke: var(--ink); stroke-width: 3; }
+.ring-thin { fill: none; stroke: var(--ink); stroke-width: 1; }
+.ring-inner { fill: none; stroke: var(--ink); stroke-opacity: .5; stroke-width: 1; }
+.tick-minor { fill: none; stroke: var(--ink); stroke-opacity: .45; stroke-width: 5; stroke-dasharray: 1 11.17; stroke-dashoffset: .5; }
+.tick-major { fill: none; stroke: var(--ink); stroke-width: 10; stroke-dasharray: 2 69.73; stroke-dashoffset: 1; }
+.tm-mini { stroke-width: 4; stroke-dasharray: .8 7.01; stroke-dashoffset: .4; }
+.tj-mini { stroke-width: 7; stroke-dasharray: 1.6 44.48; stroke-dashoffset: .8; }
+.rose-d { fill: var(--ink); fill-opacity: .18; }
+.rose-l { fill: var(--ink); fill-opacity: .06; }
+.pt { font-family: var(--font-serif); font-size: 26px; font-weight: 700; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+.pt-n { fill: var(--coral-text); }
+.nd-n1 { fill: var(--coral-text); } .nd-n2 { fill: var(--coral); }
+.nd-s1 { fill: var(--soft); stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; } .nd-s2 { fill: var(--surface); stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; }
+.compass-block.found .ring { stroke: var(--coral); }
+.needle { position: absolute; inset: 0; transition: transform .7s cubic-bezier(.3, 1.4, .5, 1); }
+.needle.drag { transition: none; }
+.needle.live { transition: transform .15s linear; }
+.needle-wob { position: absolute; inset: 0; }
+.compass-block.wob .needle-wob { animation: wobble 3.4s ease-in-out infinite; }
+@keyframes wobble { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+.compass-go { position: absolute; left: 30%; top: 30%; width: 40%; height: 40%; border-radius: 50%; border: 0; background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 4px var(--surface), 0 0 0 5px rgba(31, 42, 68, .25); font-family: var(--font-display); font-size: clamp(1.1rem, 5.4vw, 1.3rem); font-weight: 700; letter-spacing: -0.02em; cursor: pointer; transition: transform .12s; }
+.compass-go:active { transform: scale(.97); }
+.compass-block.found .compass-go { animation: pulse 1.8s ease-out infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(232, 104, 74, .5); } 100% { box-shadow: 0 0 0 26px rgba(232, 104, 74, 0); } }
+.compass-hint { min-height: 46px; max-width: 300px; text-align: center; color: var(--ink-2); }
+.facts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.facts span { font-size: .85rem; font-weight: 700; padding: 8px 14px; border-radius: 99px; background: var(--soft); }
+.hero-more { display: grid; gap: 10px; padding-top: 8px; }
+.h-more { font-size: 1.5rem; line-height: 1.15; }
+
+.soft-card { background: var(--surface); border-radius: var(--r); padding: 20px; display: grid; gap: 12px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+.ticks-list, .ticks, .crosses { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+ul.ticks li, .crosses li { padding-left: 24px; position: relative; }
+ul.ticks li::before { content: ''; position: absolute; left: 3px; top: .5em; width: 10px; height: 5px; border-left: 2.5px solid var(--ok); border-bottom: 2.5px solid var(--ok); transform: rotate(-45deg); }
+.crosses li::before { content: ''; position: absolute; left: 4px; top: .75em; width: 11px; height: 2.5px; border-radius: 2px; background: var(--muted); }
+.levels { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.levels li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; }
+.levels p { color: var(--muted); font-size: .95rem; }
+.lvl-n { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Buttons */
+.btn { font: inherit; font-weight: 700; padding: 12px 20px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; min-height: 48px; transition: transform .12s, filter .12s, border-color .12s; }
+.btn:hover { border-color: var(--ink); }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-family: var(--font-display); letter-spacing: -0.01em; }
+.btn.primary:hover { filter: brightness(1.15); }
+.btn.primary:disabled { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); cursor: not-allowed; filter: none; }
+.btn.big { min-height: 56px; padding: 14px 28px; font-size: 1.15rem; }
+.btn.outline { background: transparent; border-color: var(--ink); min-height: 44px; font-size: .9rem; }
+.btn.link { border-color: transparent; background: transparent; color: var(--ink); text-decoration: underline; padding-left: 6px; padding-right: 6px; min-height: 44px; white-space: nowrap; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.nav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* Setup */
+.field { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.field legend { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; padding: 0; }
+.hint { font-size: .85rem; color: var(--muted); }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choice { position: relative; display: flex; }
+.choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.choice span { min-height: 48px; display: flex; align-items: center; padding: 0 18px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; }
+.choice input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--accent-ink); }
+.choice input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+.consent { border-radius: var(--r); background: var(--surface); padding: 18px; display: grid; gap: 10px; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: 700; cursor: pointer; }
+.check input { width: 24px; height: 24px; margin-top: 1px; accent-color: var(--ink); flex: none; }
+
+/* Quiz stage */
+.stage { background: var(--bg); min-height: calc(100vh - 100px); }
+.stage-inner { max-width: 600px; margin: 0 auto; padding: 10px 16px 36px; display: grid; gap: 16px; }
+.quiz-top { display: grid; gap: 10px; }
+.quiz-meta { display: flex; justify-content: space-between; font-size: .85rem; color: var(--ink-2); font-weight: 700; font-variant-numeric: tabular-nums; }
+.bar { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.dots { display: flex; gap: 4px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot-idle); }
+.dot.done { background: var(--ink); }
+.dot.now { width: 12px; height: 12px; background: var(--coral); box-shadow: 0 0 0 4px rgba(232, 104, 74, .25); }
+
+.qcard { background: var(--surface); border-radius: 28px; box-shadow: var(--shadow); padding: 24px 20px 16px; display: grid; gap: 16px; }
+.qcard.enter { animation: rise .35s cubic-bezier(.2, .8, .2, 1); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.chapter, .breath { background: transparent; box-shadow: none; text-align: center; justify-items: center; padding-top: 22px; }
+.ill-wrap { position: relative; width: 196px; height: 196px; border-radius: 50%; background: var(--surface); box-shadow: 0 24px 50px -26px rgba(31, 42, 68, .5); display: grid; place-items: center; margin-bottom: 6px; }
+.mini-dial, .ind { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ill-core { position: relative; width: 112px; height: 112px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; }
+.ill-wrap .ill { width: 100px; height: 100px; }
+
+.rim { position: absolute; inset: 0; animation: drift 6s ease-in-out infinite; pointer-events: none; }
+@keyframes drift { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.qcard.enter .ill-wrap { animation: pop .5s cubic-bezier(.2, 1.4, .4, 1); }
+@keyframes pop { from { transform: scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
+.ch-title { font-size: clamp(2.4rem, 11vw, 3rem); }
+.ch-sub { color: var(--ink-2); font-size: 1.06rem; max-width: 34ch; }
+.chapter .eyebrow { display: inline-block; background: var(--soft); color: var(--ink); padding: 6px 12px; border-radius: 99px; }
+.chapter .note { text-align: left; }
+.qnav { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; margin-top: 4px; }
+.q-area { display: flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 700; color: var(--ink-2); flex-wrap: wrap; }
+.mini-ill { width: 30px; height: 30px; background: var(--tint, var(--soft)); border-radius: 50%; padding: 3px; flex: none; }
+.context { font-size: .95rem; background: var(--bg); padding: 12px 14px; border-radius: 16px; display: grid; gap: 6px; }
+.examples summary { font-size: .9rem; min-height: 44px; display: flex; align-items: center; }
+.examples ul { margin: 6px 0 0; padding-left: 20px; font-size: .9rem; color: var(--muted); }
+.qnav-main { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
+.chapter .qnav { flex-direction: column-reverse; align-items: stretch; gap: 6px; }
+.chapter .qnav-main { margin-left: 0; flex-direction: column-reverse; align-items: stretch; }
+.chapter .qnav-main .btn { width: 100%; }
+.chapter .qnav-main .btn:not(.primary) { background: transparent; border-color: transparent; text-decoration: underline; }
+.chapter .qnav > .btn.link { align-self: center; }
+.qcard:not(.chapter):not(.breath) .qnav .btn.primary { flex: 1; min-height: 56px; font-size: 1.15rem; }
+.note.sensitive { background: var(--t-lilac); text-align: left; }
+.stem { font-size: .92rem; color: var(--muted); }
+.q-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.35rem, 5.6vw, 1.6rem); line-height: 1.22; letter-spacing: -0.02em; }
+.q-text:focus { outline: none; }
+
+/* Big choice buttons */
+.choices.big { display: grid; gap: 10px; }
+.choice-btn { font: inherit; font-weight: 700; text-align: left; padding: 14px 18px; border-radius: 18px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; min-height: 56px; transition: transform .12s, background-color .15s, border-color .15s; }
+.choice-btn:hover { border-color: var(--ink); }
+.choice-btn:active { transform: scale(.98); }
+.choice-btn.on { background: var(--ink); border-color: var(--ink); color: var(--accent-ink); }
+
+/* Slider */
+.slider-wrap { display: grid; gap: 12px; padding: 4px 0 2px; }
+.slider-value { justify-self: center; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: -0.03em; min-height: 44px; text-align: center; }
+.untouched .slider-value { font-family: var(--font-body); font-weight: 400; font-size: 1rem; letter-spacing: 0; color: var(--muted); }
+.slider-track { position: relative; padding: 18px 0 8px; }
+.slider { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 99px; background: linear-gradient(to right, var(--coral) var(--pct), var(--needle-s) var(--pct)); outline: none; margin: 0; cursor: pointer; position: relative; z-index: 2; }
+.untouched .slider { background: var(--needle-s); }
+.slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 40px; height: 40px; border-radius: 50%; background: var(--coral); border: 5px solid var(--surface); box-shadow: 0 8px 18px -6px rgba(31, 42, 68, .55); cursor: grab; }
+.slider::-moz-range-thumb { width: 30px; height: 30px; border-radius: 50%; background: var(--coral); border: 5px solid var(--surface); box-shadow: 0 8px 18px -6px rgba(31, 42, 68, .55); cursor: grab; }
+.untouched .slider::-webkit-slider-thumb { background: var(--thumb-idle); }
+.untouched .slider::-moz-range-thumb { background: var(--thumb-idle); }
+.slider:focus-visible { outline: 3px solid var(--ink); outline-offset: 10px; }
+.slider { width: calc(100% - 100% / var(--n) + 40px); margin-left: calc(50% / var(--n) - 20px); }
+.stop-labels { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 4px; }
+.stop { font: inherit; font-size: .75rem; line-height: 1.2; text-align: center; color: var(--ink); background: transparent; border: 2px solid transparent; border-radius: 14px; padding: 8px 2px; min-height: 52px; cursor: pointer; hyphens: manual; overflow-wrap: break-word; }
+.stop:hover { background: var(--bg); }
+.stop.on { font-weight: 700; background: var(--surface); border-color: var(--ink); }
+textarea { font: inherit; width: 100%; padding: 12px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); resize: vertical; }
+
+/* Breathing pause */
+.breath-circle { width: 190px; height: 190px; border-radius: 50%; background: var(--surface); box-shadow: 0 0 0 3px var(--ink), 0 0 0 16px var(--soft); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; margin: 16px 0; animation: breathe 10s ease-in-out infinite; }
+.breath-circle.still { animation: none; }
+@keyframes breathe { 0%, 100% { transform: scale(.78); } 40% { transform: scale(1); } }
+
+/* Notes and chips */
+.note { font-size: .92rem; background: var(--surface); padding: 12px 14px; border-radius: 16px; }
+.note.prov { background: transparent; border: 1.5px dashed var(--muted); }
+.note.warn { background: var(--high-soft); }
+.error { color: var(--high); font-weight: 700; }
+.chip { display: inline-block; font-family: var(--font-body); font-size: .75rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; border: 1.5px solid var(--line); vertical-align: middle; white-space: nowrap; letter-spacing: 0; }
+.chip-prov { background: transparent; border: 1.5px dashed var(--muted); color: var(--ink-2); }
+.chip-low { color: var(--ink-2); }
+.chip-medium { border-color: var(--ink); color: var(--ink); }
+.chip-high { background: var(--ink); border-color: var(--ink); color: var(--accent-ink); }
+.chip-test { border-style: dashed; }
+h1 .chip { font-size: .78rem; }
+
+/* Results */
+.done-banner { display: flex; gap: 14px; align-items: center; }
+.done-check { width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+.done-check svg { width: 28px; height: 28px; }
+.done-banner.enter .done-check { animation: pop .5s cubic-bezier(.2, 1.4, .4, 1); }
+.summary { border-radius: var(--r); padding: 18px; display: grid; gap: 8px; background: var(--surface); }
+.summary.band-2 { box-shadow: inset 0 0 0 2px var(--coral-text); }
+.next-step { font-family: var(--font-display); font-size: 1.05rem; }
+.rec { font-size: 1.06rem; font-weight: 700; max-width: 60ch; }
+.alert { border: 2px solid var(--high); background: var(--high-soft); border-radius: var(--r); padding: 18px; display: grid; gap: 10px; }
+.map { display: grid; gap: 12px; }
+.map-h { font-size: 1.9rem; letter-spacing: -0.035em; }
+.bubbles { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding: 6px 0; }
+.bubble { width: 116px; height: 116px; padding: 8px; border-radius: 50%; border: 2px solid var(--coral-text); background: var(--coral-soft); color: var(--ink); font: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-align: center; cursor: pointer; box-shadow: 0 12px 24px -14px rgba(31, 42, 68, .45); animation: bob var(--d, 6s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
+.bubble:focus-visible { animation-play-state: paused; }
+.bubble.band-2 { width: 128px; height: 128px; background: var(--coral-text); border-color: var(--coral-deep); color: var(--on-coral); }
+.b-name { font-family: var(--font-display); font-size: .85rem; overflow-wrap: anywhere; font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+.b-band { font-size: .75rem; font-weight: 700; }
+@keyframes bob { 0%, 100% { transform: translateY(-4px); } 50% { transform: translateY(4px); } }
+.calm-card { background: var(--surface); border-radius: 20px; padding: 12px 14px; display: grid; gap: 8px; }
+.calm-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.calm-chip { font: inherit; font-size: .82rem; font-weight: 700; min-height: 44px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--soft); color: var(--ink); cursor: pointer; }
+.group-h { font-size: 1.05rem; color: var(--ink-2); margin-bottom: -8px; }
+.areas { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.area { background: var(--surface); border-radius: 20px; padding: 16px; display: grid; gap: 6px; box-shadow: var(--shadow); scroll-margin-top: 80px; }
+.area:focus { outline: 3px solid var(--ink); outline-offset: 2px; }
+.area-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.area-top h3 { flex: 1; min-width: 140px; font-family: var(--font-display); font-size: 1.05rem; }
+.area .mini-ill { background: var(--soft); }
+.pill { font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
+.pill-0 { background: var(--soft); color: var(--ink); }
+.pill-1 { background: var(--coral-soft); color: var(--coral-deep); }
+.pill-2 { background: var(--coral-text); color: var(--on-coral); }
+.score { font-variant-numeric: tabular-nums; font-size: .95rem; }
+.score.extra { color: var(--muted); font-size: .85rem; }
+.conf { font-size: .85rem; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+details summary { cursor: pointer; color: var(--ink); text-decoration: underline; font-weight: 700; font-size: .9rem; padding: 4px 0; min-height: 44px; display: flex; align-items: center; }
+.basis-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 8px 0 4px; font-size: .85rem; padding: 12px; background: var(--bg); border-radius: 14px; }
+.basis-dl dt { color: var(--muted); }
+.basis-dl dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .basis-dl { grid-template-columns: 1fr; } .basis-dl dd { margin-bottom: 6px; } }
+
+.help { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.help li { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 10px 14px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; min-height: 48px; }
+.help-num { font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.help-other { font-size: .85rem; color: var(--muted); }
+
+.overlay { position: fixed; inset: 0; background: rgba(17, 26, 43, .6); display: grid; place-items: center; padding: 16px; z-index: 20; }
+.dialog { background: var(--surface); color: var(--ink); max-width: 520px; width: 100%; border-radius: 24px; padding: 24px; display: grid; gap: 14px; border-top: 6px solid var(--high); max-height: calc(100% - 32px); overflow: auto; }
+.dialog h2 { font-size: 1.7rem; line-height: 1.1; letter-spacing: -0.03em; }
+.dialog:focus { outline: none; }
+.dialog.sheet { border-top: 0; text-align: center; justify-items: center; }
+.sheet-ico .mark { width: 56px; height: 56px; color: var(--ink); }
+.sheet-actions { display: grid; gap: 4px; width: 100%; }
+.sheet-actions .btn { width: 100%; }
+@media (max-width: 600px) { #sensor-sheet { place-items: end center; } #sensor-sheet .dialog { border-radius: 26px 26px 18px 18px; } }
+
+.report { white-space: pre-wrap; font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: .85rem; line-height: 1.5; background: var(--surface); border-radius: 18px; padding: 16px; margin: 0; overflow-x: auto; box-shadow: var(--shadow); }
+.foot { text-align: center; font-size: .78rem; color: var(--muted); padding: 10px 16px 28px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Experiments (prototype): colour per area, compass progress, interactions ---------- */
+.ac { --area: hsl(var(--h) 62% 36%); --area-soft: hsl(var(--h) 70% 93%); --area-deep: hsl(var(--h) 55% 28%); --on-area: #FFFFFF; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ac { --area: hsl(var(--h) 60% 62%); --area-soft: hsl(var(--h) 30% 18%); --area-deep: hsl(var(--h) 60% 74%); --on-area: #111A2B; }
+}
+.stage.ac { background: var(--area-soft); transition: background-color .5s; }
+.stage.ac, .stage.ac .ill-wrap, .stage.ac .mini-ill { --ill-b: var(--area); --ill-d: var(--area-soft); }
+.stage.ac .mini-dial .ring { stroke: var(--area); }
+.stage.ac .chapter .eyebrow { background: var(--surface); }
+.stage.ac .choice-btn.on { background: var(--area-deep); border-color: var(--area-deep); color: var(--on-area); }
+.stage.ac .slider { background: linear-gradient(to right, var(--area) var(--pct), var(--needle-s) var(--pct)); }
+.stage.ac .untouched .slider { background: var(--needle-s); }
+.stage.ac .context { background: var(--area-soft); }
+
+/* compass progress ring */
+.ring-top { display: flex; align-items: center; gap: 12px; }
+.prog-ring { width: 64px; height: 64px; flex: none; }
+.ring-meta { display: grid; line-height: 1.25; }
+.ring-meta span { font-size: .82rem; font-weight: 700; color: var(--ink-2); }
+.ring-meta strong { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -0.01em; }
+.seg { fill: none; stroke: var(--dot-idle); }
+.seg-done { stroke: var(--ink); }
+.seg-done.ac, .seg-flag.ac { stroke: var(--area); }
+.seg-now { stroke: var(--coral); }
+.seg-flag { stroke: var(--coral-text); }
+.seg-off { stroke: var(--line); stroke-dasharray: 3 4; }
+.seg.just { animation: segpop .9s cubic-bezier(.2, 1.4, .4, 1); transform-origin: 36px 36px; }
+@keyframes segpop { 0% { opacity: .2; } 40% { opacity: 1; } 100% { opacity: 1; } }
+
+/* your compass (results) */
+.your-compass { display: grid; justify-items: center; gap: 8px; }
+.yc-ring { position: relative; width: min(260px, 72vw); aspect-ratio: 1; }
+.yc-ring svg { width: 100%; height: 100%; overflow: visible; }
+.yc-inner { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.yc-center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+.yc-center strong { font-family: var(--font-display); font-size: 2.6rem; line-height: 1; }
+.yc-center span { font-size: .85rem; font-weight: 700; color: var(--ink-2); max-width: 12ch; }
+
+/* coloured bubbles and chips */
+.bubble.ac { background: var(--area-soft); border-color: var(--area); border-width: 3px; }
+.bubble.ac.band-2 { background: var(--area-deep); border-color: var(--ink); color: var(--on-area); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--area); }
+.calm-chip { display: inline-flex; align-items: center; gap: 7px; }
+.cdot { width: 10px; height: 10px; border-radius: 50%; background: var(--area); flex: none; }
+
+/* slider thumb as compass needle */
+.exp-interact .slider::-webkit-slider-thumb { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 1.5 L13 10 L7 10 Z' fill='%23fff'/%3E%3Cpath d='M10 18.5 L13 10 L7 10 Z' fill='%23fff' fill-opacity='.5'/%3E%3C/svg%3E"); background-size: 18px; background-position: center; background-repeat: no-repeat; }
+.exp-interact .slider::-moz-range-thumb { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 1.5 L13 10 L7 10 Z' fill='%23fff'/%3E%3Cpath d='M10 18.5 L13 10 L7 10 Z' fill='%23fff' fill-opacity='.5'/%3E%3C/svg%3E"); background-size: 16px; background-position: center; background-repeat: no-repeat; }
+
+/* swipe to answer (yes/no) */
+.swipe { position: relative; display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 18px; border-radius: 999px; background: var(--bg); border: 2px dashed var(--line); font-weight: 700; color: var(--ink-2); user-select: none; transition: background-color .2s, border-color .2s; }
+.stage.ac .swipe { background: var(--area-soft); }
+.swipe.to-yes { border-color: var(--ink); border-style: solid; }
+.swipe.to-no { border-color: var(--ink); border-style: solid; }
+.sw-knob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; background: var(--coral); display: grid; place-items: center; box-shadow: 0 0 0 4px var(--surface), 0 8px 18px -6px rgba(31, 42, 68, .55); cursor: grab; touch-action: none; transition: transform .25s cubic-bezier(.3, 1.4, .5, 1); }
+.sw-knob.drag { transition: none; cursor: grabbing; }
+.sw-knob svg { width: 24px; height: 24px; fill: #FFFFFF; }
+.sw-hint { margin-top: -6px; }
+
+/* topic-done toast */
+.toast { position: fixed; left: 50%; top: 14px; z-index: 25; transform: translateX(-50%); width: min(92vw, 420px); display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-radius: 18px; background: var(--surface); color: var(--ink); box-shadow: 0 16px 36px -14px rgba(31, 42, 68, .55); animation: toastin .35s cubic-bezier(.2, 1.2, .4, 1); transition: opacity .35s, transform .35s; font-size: .95rem; }
+.toast.out { opacity: 0; transform: translate(-50%, -8px); }
+.toast .t-check { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--ink); color: var(--accent-ink); }
+.toast.ac .t-check { background: var(--area-deep); color: var(--on-area); }
+.toast.calm .t-check { background: var(--soft); color: var(--ink); }
+.toast .t-check svg { width: 20px; height: 20px; }
+@keyframes toastin { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* tests panel */
+.exp-fab { margin-top: 10px; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px dashed var(--ink-2); background: var(--surface); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 700; box-shadow: var(--shadow); cursor: pointer; }
+.exp-dialog { text-align: left; justify-items: stretch; }
+.exp-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: 16px; background: var(--bg); cursor: pointer; }
+.exp-row input { width: 24px; height: 24px; margin-top: 2px; accent-color: var(--ink); flex: none; }
+.exp-row > span { display: grid; gap: 2px; }
+
+/* warm-up tiles (not scored) */
+.warm-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.warm-grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.warm-opt { font: inherit; font-size: .8rem; font-weight: 700; line-height: 1.2; color: var(--ink); background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 8px 6px 10px; display: grid; justify-items: center; gap: 6px; cursor: pointer; transition: transform .12s, border-color .15s; min-height: 44px; }
+.warm-opt:active { transform: scale(.97); }
+.warm-opt.on { border-color: var(--ink); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--coral); }
+/* fixed light-scheme colours so the scenes read the same in dark mode */
+.warm-ill { width: 100%; max-width: 84px; aspect-ratio: 1; --ill-a: #1F2A44; --ill-b: #E8684A; --ill-c: #FFFFFF; --ill-d: #DAE3EA; }
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ============================================================
+// Nort — data layer
+// To add a language: add an entry to LOCALES, a block to UI,
+// and the same key inside every {pt:…, en:…} text object.
+// Anything missing falls back to English and is flagged.
+// ============================================================
+
+const LOCALES = {
+  pt: { name: 'Português (Brasil)', htmlLang: 'pt-BR', dir: 'ltr' },
+  en: { name: 'English', htmlLang: 'en', dir: 'ltr' }
+};
+const FALLBACK_LOCALE = 'en';
+
+// ---------- Response option sets ----------
+const OPT = {
+  phq: { values: [0, 1, 2, 3], labels: {
+    en: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day'],
+    pt: ['Nenhuma vez', 'Vários dias', 'Mais da metade dos dias', 'Quase todos os dias'] } },
+  phqSafety: { values: [0, 1, 2, 3, 'skip'], labels: {
+    en: ['Not at all', 'Several days', 'More than half the days', 'Nearly every day', 'Prefer not to say'],
+    pt: ['Nenhuma vez', 'Vários dias', 'Mais da metade dos dias', 'Quase todos os dias', 'Prefiro não responder'] } },
+  who5: { values: [5, 4, 3, 2, 1, 0], labels: {
+    en: ['All of the time', 'Most of the time', 'More than half of the time', 'Less than half of the time', 'Some of the time', 'At no time'],
+    pt: ['O tempo todo', 'A maior parte do tempo', 'Mais da metade do tempo', 'Menos da metade do tempo', 'De vez em quando', 'Em nenhum momento'] } },
+  k10: { values: [1, 2, 3, 4, 5], labels: {
+    en: ['None of the time', 'A little of the time', 'Some of the time', 'Most of the time', 'All of the time'],
+    pt: ['Nenhuma vez', 'Poucas vezes', 'Algumas vezes', 'A maior parte do tempo', 'O tempo todo'] } },
+  asrs: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Never', 'Rarely', 'Sometimes', 'Often', 'Very often'],
+    pt: ['Nunca', 'Raramente', 'Às vezes', 'Frequente\u00ADmente', 'Muito frequente\u00ADmente'] } },
+  auditFreq1: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Never', 'Monthly or less', '2 to 4 times a month', '2 to 3 times a week', '4 or more times a week'],
+    pt: ['Nunca', 'Uma vez por mês ou menos', '2 a 4 vezes por mês', '2 a 3 vezes por semana', '4 ou mais vezes por semana'] } },
+  auditQty: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['1 or 2', '3 or 4', '5 or 6', '7 to 9', '10 or more'],
+    pt: ['1 ou 2', '3 ou 4', '5 ou 6', '7 a 9', '10 ou mais'] } },
+  auditFreq: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Never', 'Less than monthly', 'Monthly', 'Weekly', 'Daily or almost daily'],
+    pt: ['Nunca', 'Menos de uma vez por mês', 'Uma vez por mês', 'Uma vez por semana', 'Todos ou quase todos os dias'] } },
+  auditInjury: { values: [0, 2, 4], labels: {
+    en: ['No', 'Yes, but not in the last year', 'Yes, during the last year'],
+    pt: ['Não', 'Sim, mas não no último ano', 'Sim, no último ano'] } },
+  ynSkip: { values: [1, 0, 'skip'], labels: {
+    en: ['Yes', 'No', 'Prefer not to say'], pt: ['Sim', 'Não', 'Prefiro não responder'] } },
+  yn: { values: [1, 0], labels: { en: ['Yes', 'No'], pt: ['Sim', 'Não'] } },
+  freq5: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Never', 'Rarely', 'Sometimes', 'Often', 'Almost always'],
+    pt: ['Nunca', 'Raramente', 'Às vezes', 'Frequente\u00ADmente', 'Quase sempre'] } },
+  duration: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Less than 2 weeks', '2 weeks to 1 month', '1 to 6 months', '6 months to 1 year', 'More than 1 year'],
+    pt: ['Menos de 2 semanas', '2 semanas a 1 mês', '1 a 6 meses', '6 meses a 1 ano', 'Mais de 1 ano'] } },
+  impact: { values: [0, 1, 2, 3, 4], labels: {
+    en: ['Not at all', 'A little', 'Moderately', 'A lot', 'Extremely'],
+    pt: ['Nada', 'Um pouco', 'Moderadamente', 'Muito', 'Extremamente'] } },
+  iqcode: { values: [1, 2, 3, 4, 5], labels: { en: ['Much improved', 'A bit improved', 'Not much change', 'A bit worse', 'Much worse'], pt: ['Melhorou muito', 'Melhorou um pouco', 'Não mudou muito', 'Piorou um pouco', 'Piorou muito'] } },
+  ynDontKnow: { values: [1, 0, 'dk'], labels: {
+    en: ['Yes', 'No', "Don't know / prefer not to say"], pt: ['Sim', 'Não', 'Não sei / prefiro não dizer'] } }
+};
+
+// ---------- Scale metadata ("what this is based on") ----------
+// license: free | nc | permission | paid | verify
+// text: official | provisional (protected scale, pending permission) | toImport (free scale, official text still to import)
+const SCALES = {
+  who5: { name: 'WHO-5', full: 'World Health Organization-Five Well-Being Index', authors: 'WHO (2024); Topp et al. (2015)', items: 5, license: 'nc', text: 'official', trans: { pt: 'provisional' },
+    cite: 'World Health Organization. The WHO-5. Geneva: WHO; 2024. CC BY-NC-SA 3.0 IGO.' },
+  phq2: { name: 'PHQ-2', full: 'Patient Health Questionnaire-2', authors: 'Kroenke, Spitzer & Williams (2003)', items: 2, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Developed by Drs. Robert L. Spitzer, Janet B.W. Williams, Kurt Kroenke and colleagues, with an educational grant from Pfizer Inc. No permission required to reproduce, translate, display or distribute.' },
+  phq9: { name: 'PHQ-9', full: 'Patient Health Questionnaire-9', authors: 'Kroenke, Spitzer & Williams (2001)', items: 9, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Kroenke K, Spitzer RL, Williams JB. J Gen Intern Med. 2001;16:606–613. No permission required to reproduce, translate, display or distribute.' },
+  gad2: { name: 'GAD-2', full: 'Generalized Anxiety Disorder-2', authors: 'Kroenke et al. (2007)', items: 2, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Developed by Drs. Robert L. Spitzer, Janet B.W. Williams, Kurt Kroenke and colleagues, with an educational grant from Pfizer Inc. No permission required to reproduce, translate, display or distribute.' },
+  gad7: { name: 'GAD-7', full: 'Generalized Anxiety Disorder-7', authors: 'Spitzer, Kroenke, Williams & Löwe (2006)', items: 7, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Spitzer RL, Kroenke K, Williams JBW, Löwe B. Arch Intern Med. 2006;166:1092–1097.' },
+  k10: { name: 'K10', full: 'Kessler Psychological Distress Scale', authors: 'Kessler et al. (2002, 2003)', items: 10, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Kessler RC et al. Arch Gen Psychiatry. 2003;60(2):184–189. © World Health Organization 2003.' },
+  pcptsd5: { name: 'PC-PTSD-5', full: 'Primary Care PTSD Screen for DSM-5', authors: 'Prins et al. (2016), National Center for PTSD', items: 5, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Prins A et al. J Gen Intern Med. 2016;31:1206–1211. Public domain.' },
+  itq: { name: 'ITQ', full: 'International Trauma Questionnaire', authors: 'Cloitre et al. (2018)', items: 18, license: 'free', text: 'toImport', trans: { pt: 'provisional' },
+    cite: 'Cloitre M et al. Acta Psychiatr Scand. 2018;138:536–546. Freely available without any change.' },
+  asrs6: { name: 'ASRS v1.1 (6)', full: 'Adult ADHD Self-Report Scale v1.1 Screener', authors: 'Kessler et al. (2005), WHO', items: 6, license: 'free', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Kessler RC et al. Psychological Medicine. 2005;35(2):245–256. Copyright © New York University and President and Fellows of Harvard College. All rights reserved.' },
+  asrs18: { name: 'ASRS v1.1 (18)', full: 'Adult ADHD Self-Report Scale v1.1 Symptom Checklist', authors: 'Kessler et al. (2005)', items: 18, license: 'permission', text: 'provisional', trans: {},
+    cite: 'Permission required for the 18-question checklist (Harvard / NYU).' },
+  auditc: { name: 'AUDIT-C', full: 'AUDIT Consumption questions', authors: 'WHO; Bush et al. (1998)', items: 3, license: 'nc', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Saunders JB et al. Addiction. 1993;88:791–804. WHO-approved instrument.' },
+  audit: { name: 'AUDIT', full: 'Alcohol Use Disorders Identification Test', authors: 'Saunders et al. (1993), WHO', items: 10, license: 'nc', text: 'official', trans: { pt: 'provisional' },
+    cite: 'Saunders JB et al. Addiction. 1993;88:791–804. WHO-approved instrument; no fee may be charged to the person answering.' },
+  bipolar: { name: 'HCL-32 / MDQ / BSDS', full: 'Hypomania Checklist / Mood Disorder Questionnaire / Bipolar Spectrum Diagnostic Scale', authors: 'Angst et al. (2005); Hirschfeld et al. (2000); Ghaemi et al. (2005)', items: '32 / 15 / 20', license: 'permission', text: 'provisional', trans: {}, cite: 'Permission pending from the copyright holders.' },
+  panic: { name: 'PDSS-SR', full: 'Panic Disorder Severity Scale – Self Report', authors: 'Houck et al. (2002); Shear et al. (1997)', items: 7, license: 'permission', text: 'provisional', trans: {}, cite: 'Copyright M. Katherine Shear. Permission pending.' },
+  social: { name: 'Mini-SPIN', full: 'Mini-Social Phobia Inventory', authors: 'Connor et al. (2001)', items: 3, license: 'permission', text: 'provisional', trans: {}, cite: 'Copyright Jonathan Davidson. Written permission required.' },
+  ocd: { name: 'DOCS', full: 'Dimensional Obsessive-Compulsive Scale', authors: 'Abramowitz et al. (2010)', items: 20, license: 'paid', text: 'provisional', trans: {}, cite: 'Copyright Jonathan Abramowitz. Permission and fee required for paid apps.' },
+  eating: { name: 'SCOFF', full: 'SCOFF questionnaire', authors: 'Morgan, Reid & Lacey (1999)', items: 5, license: 'permission', text: 'provisional', trans: {}, cite: 'Copyright St George’s Hospital Medical School. Permission pending.' },
+  sleep: { name: 'SCI', full: 'Sleep Condition Indicator', authors: 'Espie et al. (2014)', items: 8, license: 'nc', text: 'provisional', trans: {}, cite: 'Espie CA et al. BMJ Open 2014. CC BY-NC.' },
+  substances: { name: 'ASSIST', full: 'Alcohol, Smoking and Substance Involvement Screening Test', authors: 'WHO ASSIST Working Group (2002)', items: 8, license: 'permission', text: 'provisional', trans: {}, cite: 'Copyright WHO. Permission needed for commercial use.' },
+  gambling: { name: 'PGSI', full: 'Problem Gambling Severity Index', authors: 'Ferris & Wynne (2001)', items: 9, license: 'verify', text: 'provisional', trans: {}, cite: 'Licence to be confirmed.' },
+  autism: { name: 'AQ-10', full: 'Autism Spectrum Quotient – 10 items', authors: 'Allison, Auyeung & Baron-Cohen (2012)', items: 10, license: 'nc', text: 'provisional', trans: {}, cite: 'Autism Research Centre, University of Cambridge. Not for commercial use without permission.' },
+  borderline: { name: 'MSI-BPD', full: 'McLean Screening Instrument for Borderline Personality Disorder', authors: 'Zanarini et al. (2003)', items: 10, license: 'verify', text: 'provisional', trans: {}, cite: 'Licence to be confirmed.' },
+  psychosis: { name: 'PQ-B', full: 'Prodromal Questionnaire – Brief', authors: 'Loewy et al. (2011)', items: 21, license: 'verify', text: 'provisional', trans: {}, cite: 'Free if users are not charged per use; to be confirmed.' },
+  iqcode16: { name: 'IQCODE (16)', full: 'Informant Questionnaire on Cognitive Decline in the Elderly – short form', authors: 'Jorm (1994), Australian National University', items: 16, license: 'free', text: 'official', trans: { pt: 'provisional' }, cite: 'There is no copyright on the Short IQCODE (A. F. Jorm). Answered by a relative or close friend.' },
+  postpartum: { name: 'EPDS', full: 'Edinburgh Postnatal Depression Scale', authors: 'Cox, Holden & Sagovsky (1987)', items: 10, license: 'permission', text: 'provisional', trans: {}, cite: '© 1987 The Royal College of Psychiatrists. Written permission required for online use.' }
+};
+
+// ---------- Areas ----------
+const AREAS = [
+  { id: 'wellbeing', name: { pt: 'Bem-estar geral', en: 'General wellbeing' } },
+  { id: 'depression', name: { pt: 'Humor e depressão', en: 'Mood and depression' } },
+  { id: 'anxiety', name: { pt: 'Ansiedade', en: 'Anxiety' } },
+  { id: 'distress', name: { pt: 'Sofrimento geral', en: 'General distress' } },
+  { id: 'trauma', name: { pt: 'Trauma', en: 'Trauma' } },
+  { id: 'adhd', name: { pt: 'Atenção e hiperatividade', en: 'Attention and hyperactivity' } },
+  { id: 'alcohol', name: { pt: 'Álcool', en: 'Alcohol' } },
+  { id: 'bipolar', name: { pt: 'Oscilações de humor', en: 'Mood swings' } },
+  { id: 'panic', name: { pt: 'Crises de pânico', en: 'Panic attacks' } },
+  { id: 'social', name: { pt: 'Ansiedade social', en: 'Social anxiety' } },
+  { id: 'ocd', name: { pt: 'Pensamentos e rituais repetitivos', en: 'Repetitive thoughts and rituals' } },
+  { id: 'eating', name: { pt: 'Alimentação', en: 'Eating' } },
+  { id: 'sleep', name: { pt: 'Sono', en: 'Sleep' } },
+  { id: 'substances', name: { pt: 'Outras substâncias', en: 'Other substances' } },
+  { id: 'gambling', name: { pt: 'Jogos e apostas', en: 'Gambling and betting' } },
+  { id: 'autism', name: { pt: 'Traços do espectro autista', en: 'Autistic traits' } },
+  { id: 'borderline', name: { pt: 'Emoções e relações intensas', en: 'Intense emotions and relationships' } },
+  { id: 'psychosis', name: { pt: 'Experiências incomuns', en: 'Unusual experiences' } },
+  { id: 'postpartum', name: { pt: 'Depois do bebê', en: 'After having a baby' } },
+  { id: 'memory', name: { pt: 'Memória e raciocínio', en: 'Memory and thinking' } }
+];
+
+// ---------- Official item texts ----------
+const PHQ_STEM = { en: 'Over the last 2 weeks, how often have you been bothered by any of the following problems?',
+  pt: 'Nas últimas 2 semanas, com que frequência você foi incomodado/a por qualquer um dos problemas abaixo?' };
+const PHQ_ITEMS = [
+  { en: 'Little interest or pleasure in doing things', pt: 'Pouco interesse ou pouco prazer em fazer as coisas' },
+  { en: 'Feeling down, depressed, or hopeless', pt: 'Se sentir “para baixo”, deprimido/a ou sem perspectiva' },
+  { en: 'Trouble falling or staying asleep, or sleeping too much', pt: 'Dificuldade para pegar no sono ou permanecer dormindo, ou dormir mais do que de costume' },
+  { en: 'Feeling tired or having little energy', pt: 'Se sentir cansado/a ou com pouca energia' },
+  { en: 'Poor appetite or overeating', pt: 'Falta de apetite ou comendo demais' },
+  { en: 'Feeling bad about yourself — or that you are a failure or have let yourself or your family down', pt: 'Se sentir mal consigo mesmo/a — ou achar que você é um fracasso ou que decepcionou sua família ou você mesmo/a' },
+  { en: 'Trouble concentrating on things, such as reading the newspaper or watching television', pt: 'Dificuldade para se concentrar nas coisas, como ler o jornal ou ver televisão' },
+  { en: 'Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual', pt: 'Lentidão para se movimentar ou falar, a ponto de outras pessoas perceberem? Ou o oposto — estar tão agitado/a ou inquieto/a que você fica andando de um lado para o outro muito mais do que de costume' },
+  { en: 'Thoughts that you would be better off dead or of hurting yourself in some way', pt: 'Pensar em se ferir de alguma maneira ou que seria melhor estar morto/a' }
+];
+const GAD_ITEMS = [
+  { en: 'Feeling nervous, anxious, or on edge', pt: 'Sentir-se nervoso/a, ansioso/a ou muito tenso/a' },
+  { en: 'Not being able to stop or control worrying', pt: 'Não ser capaz de impedir ou de controlar as preocupações' },
+  { en: 'Worrying too much about different things', pt: 'Preocupar-se muito com diversas coisas' },
+  { en: 'Trouble relaxing', pt: 'Dificuldade para relaxar' },
+  { en: 'Being so restless that it is hard to sit still', pt: 'Ficar tão agitado/a que se torna difícil permanecer sentado/a' },
+  { en: 'Becoming easily annoyed or irritable', pt: 'Ficar facilmente aborrecido/a ou irritado/a' },
+  { en: 'Feeling afraid, as if something awful might happen', pt: 'Sentir medo como se algo horrível fosse acontecer' }
+];
+const WHO5_ITEMS = [
+  { en: 'I have felt cheerful and in good spirits', pt: 'Eu me senti alegre e de bom humor' },
+  { en: 'I have felt calm and relaxed', pt: 'Eu me senti calmo/a e tranquilo/a' },
+  { en: 'I have felt active and vigorous', pt: 'Eu me senti ativo/a e com energia' },
+  { en: 'I woke up feeling fresh and rested', pt: 'Acordei me sentindo descansado/a e revigorado/a' },
+  { en: 'My daily life has been filled with things that interest me', pt: 'Meu dia a dia foi cheio de coisas que me interessam' }
+];
+const K10_ITEMS = [
+  { en: 'tired out for no good reason?', pt: 'cansado/a sem um bom motivo?' },
+  { en: 'nervous?', pt: 'nervoso/a?' },
+  { en: 'so nervous that nothing could calm you down?', pt: 'tão nervoso/a que nada conseguia te acalmar?' },
+  { en: 'hopeless?', pt: 'sem esperança?' },
+  { en: 'restless or fidgety?', pt: 'inquieto/a ou agitado/a?' },
+  { en: 'so restless you could not sit still?', pt: 'tão inquieto/a que não conseguia ficar parado/a?' },
+  { en: 'depressed?', pt: 'deprimido/a?' },
+  { en: 'that everything was an effort?', pt: 'que tudo era um esforço?' },
+  { en: 'so sad that nothing could cheer you up?', pt: 'tão triste que nada conseguia te animar?' },
+  { en: 'worthless?', pt: 'sem valor?' }
+];
+const PTSD_ITEMS = [
+  { en: 'had nightmares about the event(s) or thought about the event(s) when you did not want to?', pt: 'teve pesadelos com o(s) evento(s) ou pensou nele(s) quando não queria?' },
+  { en: 'tried hard not to think about the event(s) or went out of your way to avoid situations that reminded you of the event(s)?', pt: 'se esforçou para não pensar no(s) evento(s) ou evitou situações que te lembravam dele(s)?' },
+  { en: 'been constantly on guard, watchful, or easily startled?', pt: 'ficou constantemente em alerta, vigilante ou se assustava com facilidade?' },
+  { en: 'felt numb or detached from people, activities, or your surroundings?', pt: 'se sentiu anestesiado/a ou distante das pessoas, das atividades ou do ambiente ao redor?' },
+  { en: 'felt guilty or unable to stop blaming yourself or others for the event(s) or any problems the event(s) may have caused?', pt: 'se sentiu culpado/a ou incapaz de parar de culpar a si mesmo/a ou a outras pessoas pelo(s) evento(s) ou pelos problemas que ele(s) possa(m) ter causado?' }
+];
+const ASRS_ITEMS = [
+  { en: 'How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?', pt: 'Com que frequência você tem dificuldade para concluir os detalhes finais de um projeto, depois que as partes mais difíceis já foram feitas?' },
+  { en: 'How often do you have difficulty getting things in order when you have to do a task that requires organization?', pt: 'Com que frequência você tem dificuldade para pôr as coisas em ordem quando precisa fazer uma tarefa que exige organização?' },
+  { en: 'How often do you have problems remembering appointments or obligations?', pt: 'Com que frequência você tem problemas para se lembrar de compromissos ou obrigações?' },
+  { en: 'When you have a task that requires a lot of thought, how often do you avoid or delay getting started?', pt: 'Quando você tem uma tarefa que exige muita reflexão, com que frequência evita ou adia começar?' },
+  { en: 'How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?', pt: 'Com que frequência você fica mexendo ou se remexendo com as mãos ou os pés quando precisa ficar sentado/a por muito tempo?' },
+  { en: 'How often do you feel overly active and compelled to do things, like you were driven by a motor?', pt: 'Com que frequência você se sente ativo/a demais e compelido/a a fazer coisas, como se fosse movido/a por um motor?' }
+];
+const AUDIT_ITEMS = [
+  { en: 'How often do you have a drink containing alcohol?', pt: 'Com que frequência você toma bebidas que contêm álcool?', opt: 'auditFreq1' },
+  { en: 'How many drinks containing alcohol do you have on a typical day when you are drinking?', pt: 'Quantas doses de álcool você toma num dia típico em que bebe?', opt: 'auditQty' },
+  { en: 'How often do you have six or more drinks on one occasion?', pt: 'Com que frequência você toma seis ou mais doses numa mesma ocasião?', opt: 'auditFreq' },
+  { en: 'How often during the last year have you found that you were not able to stop drinking once you had started?', pt: 'No último ano, com que frequência você percebeu que não conseguia parar de beber depois de começar?', opt: 'auditFreq' },
+  { en: 'How often during the last year have you failed to do what was normally expected of you because of drinking?', pt: 'No último ano, com que frequência você deixou de fazer o que se esperava de você por causa da bebida?', opt: 'auditFreq' },
+  { en: 'How often during the last year have you needed a first drink in the morning to get yourself going after a heavy drinking session?', pt: 'No último ano, com que frequência você precisou beber pela manhã para conseguir funcionar depois de ter bebido muito?', opt: 'auditFreq' },
+  { en: 'How often during the last year have you had a feeling of guilt or remorse after drinking?', pt: 'No último ano, com que frequência você sentiu culpa ou remorso depois de beber?', opt: 'auditFreq' },
+  { en: 'How often during the last year have you been unable to remember what happened the night before because you had been drinking?', pt: 'No último ano, com que frequência você não conseguiu se lembrar do que aconteceu na noite anterior porque tinha bebido?', opt: 'auditFreq' },
+  { en: 'Have you or someone else been injured as a result of your drinking?', pt: 'Você ou outra pessoa já se machucou por causa da sua bebida?', opt: 'auditInjury' },
+  { en: 'Has a relative or friend or a doctor or another health worker been concerned about your drinking or suggested you cut down?', pt: 'Algum parente, amigo, médico ou outro profissional de saúde já se preocupou com a sua bebida ou sugeriu que você diminuísse?', opt: 'auditInjury' }
+];
+
+// ---------- Provisional questions (original wording, NOT the official scales) ----------
+// screen: 2 items for level 1; full: 4 more items for level 2.
+const PROVISIONAL = {
+  bipolar: {
+    screen: [
+      { pt: 'Você já teve períodos de vários dias seguidos com energia muito acima do seu normal?', en: 'Have you had stretches of several days with far more energy than is normal for you?' },
+      { pt: 'Já teve fases em que seu humor ou sua confiança ficaram tão altos que outras pessoas comentaram?', en: 'Have you had phases when your mood or confidence ran so high that other people commented on it?' }],
+    full: [
+      { pt: 'Nessas fases, seus pensamentos pareciam correr rápido demais?', en: 'During those phases, did your thoughts seem to race?' },
+      { pt: 'Nessas fases, você fez coisas impulsivas que depois te trouxeram problemas (gastos, decisões arriscadas)?', en: 'During those phases, did you do impulsive things that later caused problems (spending, risky decisions)?' },
+      { pt: 'Nessas fases, você falou muito mais ou começou muito mais projetos do que de costume?', en: 'During those phases, did you talk much more or start many more projects than usual?' },
+      { pt: 'Essas fases se alternam com períodos de tristeza ou desânimo?', en: 'Do those phases alternate with periods of sadness or low mood?' }] },
+  panic: {
+    screen: [
+      { pt: 'Você teve crises súbitas de medo intenso, com coração acelerado ou falta de ar?', en: 'Have you had sudden attacks of intense fear, with a racing heart or shortness of breath?' },
+      { pt: 'Você fica preocupado/a com a possibilidade de ter uma nova crise?', en: 'Do you worry about having another attack?' }],
+    full: [
+      { pt: 'Nessas crises, sentiu tontura, suor ou tremores?', en: 'During these attacks, have you felt dizzy, sweaty or shaky?' },
+      { pt: 'Nessas crises, teve medo de perder o controle ou de morrer?', en: 'During these attacks, have you feared losing control or dying?' },
+      { pt: 'Você evita lugares ou situações por medo de ter uma crise?', en: 'Do you avoid places or situations for fear of having an attack?' },
+      { pt: 'As crises atrapalham seu trabalho, estudo ou vida social?', en: 'Do the attacks get in the way of work, study or social life?' }] },
+  social: {
+    screen: [
+      { pt: 'Situações sociais ou de exposição (falar em público, conhecer gente nova) te deixam muito ansioso/a?', en: 'Do social or performance situations (speaking in public, meeting new people) make you very anxious?' },
+      { pt: 'Você deixa de fazer coisas por medo do que os outros vão pensar de você?', en: 'Do you skip things because you fear what others will think of you?' }],
+    full: [
+      { pt: 'Nessas situações, seu corpo reage (rosto quente, tremor, suor)?', en: 'In those situations, does your body react (flushed face, trembling, sweating)?' },
+      { pt: 'Você fica dias pensando antes de um evento social?', en: 'Do you spend days thinking about a social event beforehand?' },
+      { pt: 'Depois de uma conversa, você fica repassando o que disse?', en: 'After a conversation, do you keep replaying what you said?' },
+      { pt: 'Isso já te fez perder oportunidades no trabalho ou nos estudos?', en: 'Has this made you miss opportunities at work or in study?' }] },
+  ocd: {
+    screen: [
+      { pt: 'Pensamentos ou imagens indesejados entram na sua mente e são difíceis de afastar?', en: 'Do unwanted thoughts or images come into your mind and feel hard to push away?' },
+      { pt: 'Você sente que precisa repetir ações (checar, limpar, contar, organizar) para se acalmar?', en: 'Do you feel you need to repeat actions (checking, cleaning, counting, arranging) to calm down?' }],
+    full: [
+      { pt: 'Esses pensamentos ou rituais tomam muito tempo do seu dia?', en: 'Do these thoughts or rituals take up a lot of your day?' },
+      { pt: 'Você evita coisas ou lugares por causa deles?', en: 'Do you avoid things or places because of them?' },
+      { pt: 'Tentar parar te deixa muito ansioso/a?', en: 'Does trying to stop make you very anxious?' },
+      { pt: 'Eles atrapalham seu trabalho ou suas relações?', en: 'Do they get in the way of your work or relationships?' }] },
+  eating: {
+    screen: [
+      { pt: 'A comida, o peso ou o formato do corpo ocupam muito dos seus pensamentos?', en: 'Do food, weight or body shape take up a lot of your thoughts?' },
+      { pt: 'Você sente que perde o controle sobre o quanto come?', en: 'Do you feel you lose control over how much you eat?' }],
+    full: [
+      { pt: 'Você se sente culpado/a ou com medo depois de comer?', en: 'Do you feel guilty or afraid after eating?' },
+      { pt: 'Você pula refeições ou restringe muito o que come por causa do peso?', en: 'Do you skip meals or heavily restrict what you eat because of your weight?' },
+      { pt: 'Você já fez algo para compensar o que comeu?', en: 'Have you done things to make up for what you ate?' },
+      { pt: 'Sua relação com a comida atrapalha sua vida social?', en: 'Does your relationship with food get in the way of your social life?' }] },
+  sleep: {
+    screen: [
+      { pt: 'Nas últimas semanas, com que frequência você teve dificuldade para pegar no sono ou continuar dormindo, ou acordou cedo demais?', en: 'Over the last few weeks, how often have you had trouble falling or staying asleep, or woken up too early?' },
+      { pt: 'O sono ruim afeta seu humor, sua energia ou sua concentração durante o dia?', en: 'Does poor sleep affect your mood, energy or concentration during the day?' }],
+    full: [
+      { pt: 'Você fica preocupado/a com o seu sono?', en: 'Do you worry about your sleep?' },
+      { pt: 'Você acorda se sentindo cansado/a mesmo depois de uma noite inteira?', en: 'Do you wake up tired even after a full night?' },
+      { pt: 'Você precisa de cochilos para aguentar o dia?', en: 'Do you need naps to get through the day?' },
+      { pt: 'O sono ruim já durou várias semanas seguidas?', en: 'Has poor sleep lasted several weeks in a row?' }] },
+  substances: {
+    screen: [
+      { pt: 'Nos últimos 3 meses, com que frequência você usou outras substâncias (como cannabis, estimulantes ou calmantes sem receita)?', en: 'In the last 3 months, how often have you used other substances (such as cannabis, stimulants or non-prescribed sedatives)?' },
+      { pt: 'Você sentiu um desejo forte ou urgência de usar?', en: 'Have you felt a strong urge or craving to use?' }],
+    full: [
+      { pt: 'Você usou mais do que pretendia?', en: 'Have you used more than you intended?' },
+      { pt: 'O uso te fez deixar de cumprir algo que era esperado de você?', en: 'Has using made you fail to do something expected of you?' },
+      { pt: 'Alguém já se preocupou com o seu uso?', en: 'Has anyone been concerned about your use?' },
+      { pt: 'Você tentou diminuir e não conseguiu?', en: 'Have you tried to cut down and not managed to?' }] },
+  gambling: {
+    screen: [
+      { pt: 'Com que frequência você aposta em jogos, cassinos online ou apostas esportivas?', en: 'How often do you bet on games, online casinos or sports?' },
+      { pt: 'As apostas já te deixaram estressado/a ou preocupado/a com dinheiro?', en: 'Has betting left you stressed or worried about money?' }],
+    full: [
+      { pt: 'Você esconde das pessoas o quanto aposta?', en: 'Do you hide from people how much you bet?' },
+      { pt: 'Você precisa apostar valores maiores para sentir a mesma emoção?', en: 'Do you need to bet larger amounts to feel the same excitement?' },
+      { pt: 'Você tem dificuldade para parar quando decide parar?', en: 'Do you find it hard to stop when you decide to?' },
+      { pt: 'As apostas já causaram brigas ou problemas em casa?', en: 'Has betting caused arguments or problems at home?' }] },
+  autism: {
+    screen: [
+      { pt: 'Você acha difícil entender o que as pessoas querem dizer nas entrelinhas?', en: 'Do you find it hard to read between the lines of what people say?' },
+      { pt: 'Mudanças inesperadas na rotina te deixam muito desconfortável?', en: 'Do unexpected changes to your routine make you very uncomfortable?' }],
+    full: [
+      { pt: 'Sons, luzes, cheiros ou texturas te incomodam mais do que parecem incomodar os outros?', en: 'Do sounds, lights, smells or textures bother you more than they seem to bother others?' },
+      { pt: 'Você tem interesses muito intensos e específicos?', en: 'Do you have very intense, specific interests?' },
+      { pt: 'Socializar te deixa exausto/a, mesmo quando é com quem você gosta?', en: 'Does socialising leave you exhausted, even with people you like?' },
+      { pt: 'Você prefere fazer as coisas sempre do mesmo jeito?', en: 'Do you prefer to do things the same way every time?' }] },
+  borderline: {
+    screen: [
+      { pt: 'Suas emoções mudam de forma intensa e rápida, de um momento para o outro?', en: 'Do your emotions shift intensely and quickly from one moment to the next?' },
+      { pt: 'Seus relacionamentos costumam ser muito intensos e instáveis?', en: 'Are your relationships often very intense and unstable?' }],
+    full: [
+      { pt: 'Você tem muito medo de ser abandonado/a?', en: 'Are you very afraid of being abandoned?' },
+      { pt: 'Você age por impulso de formas que depois te prejudicam?', en: 'Do you act on impulse in ways that later harm you?' },
+      { pt: 'Você sente um vazio que não passa?', en: 'Do you feel an emptiness that does not go away?' },
+      { pt: 'Você sente raiva muito forte e difícil de controlar?', en: 'Do you feel very strong anger that is hard to control?' }] },
+  psychosis: {
+    screen: [
+      { pt: 'Você já sentiu que coisas comuns ao seu redor estavam estranhas ou diferentes de um jeito difícil de explicar?', en: 'Have ordinary things around you ever felt strange or different in a way that is hard to explain?' },
+      { pt: 'Você já ouviu ou viu coisas que outras pessoas pareciam não perceber?', en: 'Have you heard or seen things that other people did not seem to notice?' }],
+    full: [
+      { pt: 'Você já sentiu que outras pessoas podiam ler ou ouvir seus pensamentos?', en: 'Have you felt that other people could read or hear your thoughts?' },
+      { pt: 'Você já sentiu que estava sendo vigiado/a ou perseguido/a sem motivo claro?', en: 'Have you felt watched or targeted without a clear reason?' },
+      { pt: 'Seus pensamentos já ficaram confusos ou difíceis de organizar?', en: 'Have your thoughts become confused or hard to organise?' },
+      { pt: 'Essas experiências te deixaram assustado/a ou angustiado/a?', en: 'Have these experiences left you frightened or distressed?' }] },
+  postpartum: {
+    screen: [
+      { pt: 'Desde que o bebê nasceu, você tem se sentido triste ou sem prazer nas coisas?', en: 'Since the baby was born, have you felt sad or lost pleasure in things?' },
+      { pt: 'Tem sentido uma preocupação ou ansiedade difícil de controlar?', en: 'Have you felt worry or anxiety that is hard to control?' }],
+    full: [
+      { pt: 'Você se sente sobrecarregado/a a maior parte do tempo?', en: 'Do you feel overwhelmed most of the time?' },
+      { pt: 'Você tem chorado mais do que de costume?', en: 'Have you been crying more than usual?' },
+      { pt: 'Tem dificuldade para dormir mesmo quando o bebê dorme?', en: 'Do you find it hard to sleep even when the baby sleeps?' },
+      { pt: 'Você se culpa quando as coisas dão errado?', en: 'Do you blame yourself when things go wrong?' }] },
+  trauma: {
+    full: [
+      { pt: 'Lembranças do evento te causam reações físicas fortes?', en: 'Do memories of the event cause strong physical reactions?' },
+      { pt: 'Você sente que não tem valor ou que fracassou como pessoa?', en: 'Do you feel worthless or that you have failed as a person?' },
+      { pt: 'Você tem dificuldade para se sentir próximo/a das pessoas?', en: 'Do you find it hard to feel close to people?' },
+      { pt: 'Quando algo te chateia, demora muito para você se acalmar?', en: 'When something upsets you, does it take a long time to calm down?' }] },
+  adhd: {
+    full: [
+      { pt: 'Você perde a atenção facilmente em conversas ou leituras?', en: 'Do you easily lose focus in conversations or while reading?' },
+      { pt: 'Você perde ou esquece objetos com frequência?', en: 'Do you often lose or forget things?' },
+      { pt: 'Você interrompe os outros ou responde antes de a pergunta terminar?', en: 'Do you interrupt others or answer before the question is finished?' },
+      { pt: 'Você tem dificuldade de esperar a sua vez?', en: 'Do you find it hard to wait your turn?' }] }
+};
+const PROVISIONAL_SCALE = { bipolar: 'bipolar', panic: 'panic', social: 'social', ocd: 'ocd', eating: 'eating', sleep: 'sleep', substances: 'substances', gambling: 'gambling', autism: 'autism', borderline: 'borderline', psychosis: 'psychosis', postpartum: 'postpartum', trauma: 'itq', adhd: 'asrs18' };
+
+// ---------- Crisis lines ----------
+const HELP = {
+  AU: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '000' }, { name: { pt: 'Lifeline (24 h)', en: 'Lifeline (24/7)' }, num: '13 11 14' }],
+  BR: [{ name: { pt: 'SAMU', en: 'SAMU (ambulance)' }, num: '192' }, { name: { pt: 'CVV (24 h)', en: 'CVV (24/7)' }, num: '188' }],
+  OTHER: []
+};
+
+// ---------- Short IQCODE (Jorm 1994) — no copyright; PT translation provisional ----------
+const IQCODE_STEM = { en: 'Compared with 10 years ago how is this person at:', pt: 'Comparando com 10 anos atrás, como esta pessoa está em:' };
+const IQCODE_ITEMS = [
+  { en: 'Remembering things about family and friends e.g. occupations, birthdays, addresses', pt: 'Lembrar de coisas sobre a família e os amigos, como profissões, aniversários e endereços' },
+  { en: 'Remembering things that have happened recently', pt: 'Lembrar de coisas que aconteceram recentemente' },
+  { en: 'Recalling conversations a few days later', pt: 'Lembrar de conversas alguns dias depois' },
+  { en: 'Remembering his/her address and telephone number', pt: 'Lembrar o próprio endereço e número de telefone' },
+  { en: 'Remembering what day and month it is', pt: 'Lembrar em que dia e mês estamos' },
+  { en: 'Remembering where things are usually kept', pt: 'Lembrar onde as coisas costumam ficar guardadas' },
+  { en: 'Remembering where to find things which have been put in a different place from usual', pt: 'Lembrar onde encontrar coisas que foram guardadas num lugar diferente do costume' },
+  { en: 'Knowing how to work familiar machines around the house', pt: 'Saber usar os aparelhos de casa que já conhece' },
+  { en: 'Learning to use a new gadget or machine around the house', pt: 'Aprender a usar um aparelho novo em casa' },
+  { en: 'Learning new things in general', pt: 'Aprender coisas novas em geral' },
+  { en: 'Following a story in a book or on TV', pt: 'Acompanhar uma história num livro ou na TV' },
+  { en: 'Making decisions on everyday matters', pt: 'Tomar decisões sobre assuntos do dia a dia' },
+  { en: 'Handling money for shopping', pt: 'Lidar com dinheiro nas compras' },
+  { en: 'Handling financial matters e.g. the pension, dealing with the bank', pt: 'Lidar com questões financeiras, como aposentadoria ou banco' },
+  { en: 'Handling other everyday arithmetic problems e.g. knowing how much food to buy, knowing how long between visits from family or friends', pt: 'Resolver outras contas do dia a dia, como saber quanta comida comprar ou quanto tempo passou entre visitas de família ou amigos' },
+  { en: 'Using his/her intelligence to understand what\'s going on and to reason things through', pt: 'Usar a inteligência para entender o que está acontecendo e raciocinar sobre as coisas' }
+];
+
+// ---------- Warm-up questions (not scored, never part of the result) ----------
+const WARMUPS = [
+  { id: 'warm.land', q: { pt: 'Qual dessas paisagens parece mais com a sua semana?', en: 'Which of these landscapes feels most like your week?' },
+    opts: [['sunny', 'Campo ensolarado', 'Sunny field'], ['sea', 'Mar calmo', 'Calm sea'], ['fog', 'Floresta com neblina', 'Misty forest'], ['storm', 'Tempestade', 'Storm'], ['night', 'Noite estrelada', 'Starry night'], ['city', 'Cidade agitada', 'Busy city']] },
+  { id: 'warm.pace', q: { pt: 'Qual ritmo combina com você hoje?', en: 'Which pace fits you today?' },
+    opts: [['turtle', 'Devagarinho', 'Slow and steady'], ['walk', 'Caminhando', 'Walking'], ['bike', 'Pedalando', 'Cycling'], ['rocket', 'A mil por hora', 'Full speed']] },
+  { id: 'warm.charge', q: { pt: 'O que mais te recarrega?', en: 'What recharges you the most?' },
+    opts: [['nature', 'Natureza', 'Nature'], ['people', 'Gente querida', 'People I love'], ['pause', 'Uma pausa sozinho/a', 'Time alone'], ['music', 'Música', 'Music'], ['move', 'Me mexer', 'Moving my body'], ['create', 'Criar algo', 'Making something']] }
+];
+
+// ---------- Interface strings ----------
+const UI = {
+  pt: {
+    tagline: 'Um norte sobre a sua saúde mental.',
+    prototype: 'Protótipo de teste. Não use para decisões de saúde.',
+    welcomeTitle: 'Descubra quais áreas da sua saúde mental merecem atenção',
+    welcomeLead: 'Você responde perguntas de escalas usadas por profissionais. No fim, vê quais áreas pedem atenção, em que cada resultado se baseia e recebe um relatório para levar a um psicólogo ou psiquiatra.',
+    isTitle: 'O que o Nort faz',
+    isList: ['Mostra sinais em 20 áreas e o nível de confiança de cada resultado', 'Diz em que escala cada resultado se baseia', 'Sempre indica um profissional'],
+    isntTitle: 'O que o Nort não é',
+    isntList: ['Não é diagnóstico', 'Não substitui psicólogo ou psiquiatra', 'Não é serviço de emergência'],
+    howTitle: 'Como funciona',
+    levels: [
+      ['Rastreio rápido', 'Todas as áreas, poucas perguntas em cada uma. Cerca de 10 minutos.'],
+      ['Escalas completas', 'Só as áreas que deram sinal, com a escala inteira.'],
+      ['Aprofundado', 'Há quanto tempo, quanto atrapalha e histórico.']],
+    start: 'Começar',
+    language: 'Idioma',
+    moreLanguages: 'Mais idiomas em breve',
+    points: 'Pontos',
+    setupTitle: 'Antes de começar',
+    ageQ: 'Você tem 18 anos ou mais?',
+    countryQ: 'Onde você está agora?',
+    countryHint: 'Usamos isso só para mostrar os números de ajuda certos.',
+    countries: { AU: 'Austrália', BR: 'Brasil', OTHER: 'Outro país' },
+    babyQ: 'Você teve um bebê nos últimos 12 meses?',
+    consentTitle: 'Seus dados de saúde',
+    consentText: 'Suas respostas são dados de saúde. Neste protótipo, elas ficam só na memória desta página e somem quando você fecha. Nada é enviado.',
+    consentCheck: 'Concordo em usar minhas respostas sobre saúde para gerar meu resultado.',
+    yes: 'Sim', no: 'Não', preferNot: 'Prefiro não responder',
+    continue: 'Continuar', back: 'Voltar', next: 'Próxima',
+    needSetup: 'Responda as perguntas acima e marque o consentimento para continuar.',
+    needAll: 'Responda todas as perguntas desta página para continuar.',
+    under18Title: 'O Nort é para maiores de 18 anos',
+    under18Text: 'As escalas usadas aqui foram feitas para adultos. Se algo está te incomodando, converse com um adulto de confiança ou com um profissional de saúde.',
+    under18Help: 'Se você precisa de ajuda agora:',
+    kidsHelpline: 'Kids Helpline (Austrália, 24 h)',
+    level: 'Nível', pageOf: 'Página {i} de {n}',
+    provisionalChip: 'Perguntas provisórias',
+    provisionalNote: 'A escala oficial desta área entra quando a permissão do autor chegar. Estas perguntas e a pontuação servem só para testar o app.',
+    toImportNote: 'A escala oficial desta área é livre, mas o texto ainda será importado. Estas perguntas e a pontuação servem só para testar o app.',
+    sensitiveNote: 'As próximas perguntas são delicadas. Responder com sinceridade ajuda a mostrar a ajuda certa, mas você pode escolher “Prefiro não responder”.',
+    safetyTitle: 'Uma pergunta importante',
+    pastMonth: 'No último mês, você…',
+    drinkNote: 'Uma dose = uma lata de cerveja, uma taça de vinho ou uma dose de destilado.',
+    optional: 'Opcional',
+    finishLevel: 'Ver resultado do nível {n}',
+    crisisTitle: 'Você não precisa passar por isso sozinho/a',
+    crisisText: 'Você contou que teve pensamentos de morte ou de se machucar. Se você corre perigo agora, ligue para a emergência. Se quiser conversar com alguém agora, estes serviços atendem a qualquer hora:',
+    crisisOther: 'Ligue para o número de emergência do seu país. Para achar uma linha de apoio perto de você:',
+    crisisOtherCountries: 'Em outros países:',
+    crisisNote: 'O Nort não é um serviço de crise e não acompanha ninguém em tempo real.',
+    crisisContinue: 'Estou em segurança agora, continuar',
+    resultsTitleL: 'Resultado do nível {n}',
+    resultsFinal: 'Seu mapa completo',
+    bands: ['Sem sinais relevantes', 'Atenção', 'Atenção alta'],
+    confidence: 'Confiança',
+    conf: { low: 'baixa', medium: 'média', high: 'alta', test: 'teste' },
+    basisBtn: 'Em que isso se baseia',
+    recNone: 'Nenhuma área mostrou sinais relevantes. Se algo te incomoda, conversar com um psicólogo continua sendo uma boa ideia.',
+    recAttention: 'Algumas áreas merecem atenção. Vale marcar uma conversa com um psicólogo e levar seu relatório.',
+    recHigh: 'Uma ou mais áreas pedem atenção alta. Recomendamos procurar um psicólogo ou psiquiatra em breve e levar seu relatório.',
+    disclaimer: 'Triagem, não diagnóstico. Só um profissional pode confirmar ou descartar qualquer condição.',
+    inconsistent: 'Algumas respostas ficaram contraditórias, rápidas demais ou sempre na mesma opção. O resultado pode não refletir bem como você está. Se quiser, refaça com calma.',
+    safetyFlag: 'Você indicou pensamentos de morte ou de se machucar. Isso aparece no relatório para você conversar com o profissional.',
+    safetySkipped: 'Você preferiu não responder a pergunta sobre pensamentos de morte. Se em algum momento eles aparecerem, procure ajuda.',
+    helpNumbers: 'Números de ajuda',
+    goLevel2: 'Aprofundar as áreas com sinal (nível 2)',
+    goLevel3: 'Contar mais sobre essas áreas (nível 3)',
+    noFlags: 'Nenhuma área para aprofundar.',
+    seeReport: 'Ver relatório para a consulta',
+    backToResults: 'Voltar ao resultado',
+    restart: 'Recomeçar',
+    pointsHint: 'Você ganha pontos por completar níveis e por abrir a base de cada resultado. Nunca pelo resultado em si.',
+    notAssessed: 'Áreas não avaliadas',
+    sensitiveTopic: 'Este tema fala de experiências difíceis e pode trazer lembranças desconfortáveis. Você pode pular agora e voltar quando quiser.',
+    skipTopic: 'Pular este tema', skippedTopic: 'Você pulou este tema. Ele vai aparecer como não avaliado no resultado.', answerNow: 'Responder agora',
+    ptsdIntroShort: 'Às vezes acontecem coisas muito assustadoras, horríveis ou traumáticas.',
+    seeExamples: 'Ver exemplos (alguns podem ser difíceis de ler)',
+    ptsdExamples: ['um acidente grave ou incêndio', 'uma agressão física ou sexual, ou abuso', 'um terremoto ou enchente', 'uma guerra', 'ver alguém ser morto ou gravemente ferido', 'perder alguém querido por homicídio ou suicídio'],
+    reportSkipped: 'Temas que a pessoa preferiu pular',
+    groupAttention: 'Pedem atenção', groupCalm: 'Sem sinais relevantes',
+    chapterOf: 'Tema {i} de {n}', partOf: 'Parte {i} de {n}', questionsN: '{n} perguntas', questions1: '1 pergunta', letsGo: 'Vamos lá',
+    breathTitle: 'Pausa para respirar', breathText: 'Metade do caminho. Que tal respirar junto com o círculo antes de seguir?', breathIn: 'Inspire', breathOut: 'Expire', breathStatic: 'Inspire contando até 4, expire contando até 4. Repita duas vezes.',
+    sliderHint: 'Arraste a seta ou toque numa opção', levelDone: 'Nível {n} concluído', earned: '+{n} pontos',
+    mapTitle: 'Seu mapa', tapHint: 'Toque numa área para ver os detalhes.', minutes: 'cerca de 10 min', areasN: '20 áreas', levelsN: '3 níveis',
+    heroNote: 'Uma pergunta por vez, no seu ritmo.',
+    compassTitle: 'A bússola da saúde mental',
+    compassPoints: ['N', 'L', 'S', 'O'],
+    compassDrag: 'Arraste a seta até o N, ou só toque no centro.',
+    compassWait: 'Ligando a bússola…',
+    compassTurn: 'Vire o celular até a seta apontar para o N.',
+    compassOff: 'Sem sensor por aqui. Arraste a seta até o N, ou toque no centro.',
+    compassDenied: 'Sem permissão para a bússola. Arraste a seta até o N, ou toque no centro.',
+    compassFound: 'Achou. Esse é o seu norte. Toque no centro quando quiser.',
+    sensorAskTitle: 'Usar a bússola do celular?',
+    sensorAskText: 'Assim a seta gira quando você vira o celular. O Nort usa isso só nesta tela e não guarda nem envia nada.',
+    sensorAllow: 'Permitir', sensorNotNow: 'Agora não',
+    nextStep: 'Próximo passo', notAssessedShort: 'Não avaliadas agora',
+    roundTitle: 'Rodada {n}', roundDone: 'Rodada concluída.',
+    round1Sub: 'Como as últimas semanas têm sido', round2Sub: 'Coisas que podem ter incomodado', round3Sub: 'Situações do dia a dia', round4Sub: 'Seu jeito no dia a dia', round5Sub: 'Alguns hábitos',
+    generalIntro: 'Aqui as perguntas vêm misturadas, sem dizer o tema de cada uma. Elas falam de humor, ansiedade, sono, atenção, hábitos, memória e outras áreas da saúde mental. As partes mais delicadas avisam antes e podem ser puladas. No fim, você vê o resultado de cada área.',
+    warmTitle: 'Aquecimento', warmChip: 'não entra no resultado', skipWarm: 'Pular',
+    memoryIntro: 'Para quem vai responder: esta parte é para alguém da família ou amigo próximo que conhece esta pessoa há pelo menos 10 anos. Compare como ela está hoje com como era 10 anos atrás. Se ela sempre esqueceu onde deixava as coisas e continua igual, marque "Não mudou muito".',
+    memoryNote: 'Esta parte foi feita para pessoas a partir de 50 anos. Quem responde é um familiar ou amigo próximo: passe o celular para essa pessoa. Se você tem menos de 50 anos ou não tem ninguém por perto agora, é só pular.',
+    memoryDone: 'Concluir', handbackTitle: 'Obrigado!', handbackText: 'Agora devolva o celular para a pessoa. O resultado é dela.', handbackBtn: 'Ver meu resultado',
+    recMemory: 'Para memória e raciocínio, o caminho é um médico: clínico geral, geriatra ou neurologista.',
+    noLevel2: 'As áreas com sinal não têm nível 2 no app. Leve o relatório ao profissional indicado.',
+    warmFirst: 'Aqui as perguntas vêm em rodadas, sem dizer o tema. Esta primeira é só para aquecer.',
+    trShort: 'tradução provisória',
+    yourCompass: 'Sua bússola', withSignal: 'áreas com sinal', withSignal1: 'área com sinal', ringLegend: 'Cada pedaço é uma área. Os pedaços mais grossos mostram sinal.',
+    topicDone: 'Tema concluído: {area}.', topicDoneMore: 'Mais um pedaço da sua bússola.', topicDoneCalm: 'Obrigado por responder.',
+    swipeHint: 'Arraste a bolinha para um lado ou toque numa opção.',
+    expButton: 'Testes', expTitle: 'Ideias em teste', expText: 'Ligue e desligue para comparar. Isso existe só no protótipo.',
+    exp_general: 'Modo geral', expd_general: 'Perguntas misturadas em rodadas, sem dizer o tema, com aquecimentos ilustrados. Vale ao começar um questionário novo.',
+    exp_ring: 'Bússola que ganha cor', expd_ring: 'O progresso vira uma bússola que se completa a cada tema, e o resultado mostra a sua bússola inteira.',
+    exp_colors: 'Cor por área', expd_colors: 'Cada área tem a sua cor nas telas de tema, nas perguntas e no mapa.',
+    exp_interact: 'Interações', expd_interact: 'Ponteiro no slider, arrastar para responder sim ou não e um aviso ao terminar cada tema.',
+    expClose: 'Fechar',
+    notAssessedNote: 'Sofrimento geral só entra no nível 2, quando humor, ansiedade ou bem-estar dão sinal.',
+    f: { scale: 'Escala', authors: 'Autores', items: 'Perguntas', license: 'Licença', text: 'Texto', trans: 'Tradução', cite: 'Citação' },
+    lic: { free: 'Livre', nc: 'Só uso não comercial', permission: 'Pedir permissão', paid: 'Licença paga', verify: 'A verificar' },
+    txt: { official: 'Texto oficial', provisional: 'Perguntas provisórias (escala oficial aguardando permissão)', toImport: 'Perguntas provisórias (escala livre, texto oficial a importar)' },
+    tr: { original: 'Original', provisional: 'Tradução provisória, a conferir com a versão validada', missing: 'Sem tradução neste idioma; mostrando em inglês' },
+    reportTitle: 'Relatório para a consulta',
+    reportIntro: 'Leve este relatório ao psicólogo ou psiquiatra. Ele mostra respostas e pontuações, não um diagnóstico.',
+    reportDate: 'Data',
+    reportLevel: 'Nível alcançado',
+    reportContext: 'Contexto (nível 3)',
+    reportFlags: 'Observações',
+    reportNone: 'Nenhuma',
+    copy: 'Copiar relatório', copied: 'Relatório copiado', copyFail: 'Não deu para copiar aqui. Selecione o texto abaixo e copie.',
+    pdfNote: 'No app final, este relatório sai em PDF.',
+    l3Title: 'Mais sobre: {area}',
+    durationQ: 'Há quanto tempo você percebe isso?',
+    impactQ: 'Quanto isso atrapalha seu trabalho, estudos ou relações?',
+    l3GlobalTitle: 'Seu histórico',
+    profQ: 'Algum profissional já falou com você sobre alguma dessas áreas?',
+    treatQ: 'Você faz algum tratamento psicológico ou psiquiátrico hoje?',
+    familyQ: 'Alguém da sua família próxima tem histórico de problemas de saúde mental?',
+    worseQ: 'O que costuma piorar como você se sente?',
+    betterQ: 'O que costuma ajudar?',
+    ctrlTitle: 'Duas perguntas rápidas',
+    ctrl1: 'Nas últimas 2 semanas, você se sentiu para baixo ou sem esperança na maioria dos dias?',
+    ctrl2: 'Nas últimas 2 semanas, foi difícil parar de se preocupar na maioria dos dias?',
+    pageTitles: { who5: 'Como você tem se sentido', phq2: 'Humor', gad2: 'Ansiedade', ptsd: 'Experiências difíceis', asrs: 'Atenção e energia', auditc: 'Álcool', provA: 'Humor, medo e pensamentos', provB: 'Corpo, sono e hábitos', provC: 'Seu jeito de ser e de perceber o mundo', provPP: 'Depois do bebê' },
+    ptsdIntro: 'Às vezes acontecem coisas muito assustadoras, horríveis ou traumáticas. Por exemplo: um acidente grave ou incêndio; uma agressão física ou sexual ou abuso; um terremoto ou enchente; uma guerra; ver alguém ser morto ou gravemente ferido; perder alguém querido por homicídio ou suicídio.',
+    ptsdQ: 'Você já passou por esse tipo de evento?',
+    who5Stem: 'Para cada frase, escolha o que mais se aproxima de como você tem se sentido nas últimas 2 semanas.',
+    asrsStem: 'Responda pensando em como você se sentiu e se comportou nos últimos 6 meses.',
+    k10Stem: 'Nos últimos 30 dias, com que frequência você se sentiu…',
+    provStem: 'Pense nas últimas semanas.',
+    auditTitle: 'Álcool (continuação)',
+    footer: 'Nort · protótipo de 11/11/2026 · as respostas não são salvas',
+    aboutLang: 'Cada escala guarda o texto separado por idioma. Um idioma novo entra quando houver tradução validada de cada escala; até lá, o app mostra a versão em inglês e avisa.'
+  },
+  en: {
+    tagline: 'A sense of direction for your mental health.',
+    prototype: 'Test prototype. Do not use for health decisions.',
+    welcomeTitle: 'Find out which areas of your mental health need attention',
+    welcomeLead: 'You answer questions from scales that professionals use. At the end you see which areas need attention, what each result is based on, and you get a report to take to a psychologist or psychiatrist.',
+    isTitle: 'What Nort does',
+    isList: ['Shows signs across 20 areas and how confident each result is', 'Tells you which scale each result is based on', 'Always points you to a professional'],
+    isntTitle: 'What Nort is not',
+    isntList: ['It is not a diagnosis', 'It does not replace a psychologist or psychiatrist', 'It is not an emergency service'],
+    howTitle: 'How it works',
+    levels: [
+      ['Quick screen', 'Every area, a few questions each. About 10 minutes.'],
+      ['Full scales', 'Only the areas that showed signs, with the whole scale.'],
+      ['In depth', 'How long, how much it gets in the way, and history.']],
+    start: 'Start',
+    language: 'Language',
+    moreLanguages: 'More languages coming',
+    points: 'Points',
+    setupTitle: 'Before you start',
+    ageQ: 'Are you 18 or older?',
+    countryQ: 'Where are you right now?',
+    countryHint: 'We only use this to show the right help numbers.',
+    countries: { AU: 'Australia', BR: 'Brazil', OTHER: 'Another country' },
+    babyQ: 'Have you had a baby in the last 12 months?',
+    consentTitle: 'Your health data',
+    consentText: 'Your answers are health data. In this prototype they stay only in this page’s memory and disappear when you close it. Nothing is sent anywhere.',
+    consentCheck: 'I agree to my health answers being used to produce my result.',
+    yes: 'Yes', no: 'No', preferNot: 'Prefer not to say',
+    continue: 'Continue', back: 'Back', next: 'Next',
+    needSetup: 'Answer the questions above and tick the consent box to continue.',
+    needAll: 'Answer every question on this page to continue.',
+    under18Title: 'Nort is for adults 18 and over',
+    under18Text: 'The scales used here were made for adults. If something is bothering you, talk to an adult you trust or a health professional.',
+    under18Help: 'If you need help now:',
+    kidsHelpline: 'Kids Helpline (Australia, 24/7)',
+    level: 'Level', pageOf: 'Page {i} of {n}',
+    provisionalChip: 'Provisional questions',
+    provisionalNote: 'The official scale for this area goes in once the author grants permission. These questions and the score are only for testing the app.',
+    toImportNote: 'The official scale for this area is free, but its text still has to be imported. These questions and the score are only for testing the app.',
+    sensitiveNote: 'The next questions are sensitive. Answering honestly helps us show the right support, but you can choose “Prefer not to say”.',
+    safetyTitle: 'One important question',
+    pastMonth: 'In the past month, have you…',
+    drinkNote: 'One drink = a can of beer, a glass of wine or a shot of spirits.',
+    optional: 'Optional',
+    finishLevel: 'See level {n} result',
+    crisisTitle: 'You don’t have to go through this alone',
+    crisisText: 'You told us you have had thoughts of death or of hurting yourself. If you are in danger right now, call emergency services. If you want to talk to someone now, these services answer at any hour:',
+    crisisOther: 'Call your country’s emergency number. To find a support line near you:',
+    crisisOtherCountries: 'In other countries:',
+    crisisNote: 'Nort is not a crisis service and does not monitor anyone in real time.',
+    crisisContinue: 'I’m safe right now, continue',
+    resultsTitleL: 'Level {n} result',
+    resultsFinal: 'Your full map',
+    bands: ['No notable signs', 'Worth attention', 'High attention'],
+    confidence: 'Confidence',
+    conf: { low: 'low', medium: 'medium', high: 'high', test: 'test' },
+    basisBtn: 'What this is based on',
+    recNone: 'No area showed notable signs. If something is bothering you, talking to a psychologist is still a good idea.',
+    recAttention: 'Some areas are worth attention. Consider booking a conversation with a psychologist and bring your report.',
+    recHigh: 'One or more areas need high attention. We recommend seeing a psychologist or psychiatrist soon and bringing your report.',
+    disclaimer: 'Screening, not diagnosis. Only a professional can confirm or rule out any condition.',
+    inconsistent: 'Some answers were contradictory, very fast or always the same option. The result may not reflect how you are. If you like, take it again calmly.',
+    safetyFlag: 'You reported thoughts of death or of hurting yourself. This appears in the report so you can talk about it with the professional.',
+    safetySkipped: 'You preferred not to answer the question about thoughts of death. If those thoughts ever come up, please seek help.',
+    helpNumbers: 'Help numbers',
+    goLevel2: 'Go deeper on flagged areas (level 2)',
+    goLevel3: 'Tell us more about those areas (level 3)',
+    noFlags: 'No areas to go deeper on.',
+    seeReport: 'See report for your appointment',
+    backToResults: 'Back to result',
+    restart: 'Start over',
+    pointsHint: 'You earn points for finishing levels and for opening what each result is based on. Never for the result itself.',
+    notAssessed: 'Areas not assessed',
+    sensitiveTopic: 'This topic covers difficult experiences and may bring up uncomfortable memories. You can skip it now and come back whenever you like.',
+    skipTopic: 'Skip this topic', skippedTopic: 'You skipped this topic. It will show as not assessed in your result.', answerNow: 'Answer now',
+    ptsdIntroShort: 'Sometimes things happen to people that are unusually or especially frightening, horrible, or traumatic.',
+    seeExamples: 'See examples (some may be hard to read)',
+    ptsdExamples: ['a serious accident or fire', 'a physical or sexual assault or abuse', 'an earthquake or flood', 'a war', 'seeing someone be killed or seriously injured', 'having a loved one die through homicide or suicide'],
+    reportSkipped: 'Topics the person chose to skip',
+    groupAttention: 'Need attention', groupCalm: 'No notable signs',
+    chapterOf: 'Topic {i} of {n}', partOf: 'Part {i} of {n}', questionsN: '{n} questions', questions1: '1 question', letsGo: 'Let’s go',
+    breathTitle: 'A pause to breathe', breathText: 'Halfway there. How about breathing along with the circle before you carry on?', breathIn: 'Breathe in', breathOut: 'Breathe out', breathStatic: 'Breathe in for a count of 4, out for a count of 4. Repeat twice.',
+    sliderHint: 'Drag the arrow or tap an option', levelDone: 'Level {n} complete', earned: '+{n} points',
+    mapTitle: 'Your map', tapHint: 'Tap an area to see the details.', minutes: 'about 10 min', areasN: '20 areas', levelsN: '3 levels',
+    heroNote: 'One question at a time, at your own pace.',
+    compassTitle: 'The mental health compass',
+    compassPoints: ['N', 'E', 'S', 'W'],
+    compassDrag: 'Drag the arrow to N, or just tap the centre.',
+    compassWait: 'Turning on the compass…',
+    compassTurn: 'Turn your phone until the arrow points to N.',
+    compassOff: 'No sensor here. Drag the arrow to N, or tap the centre.',
+    compassDenied: 'No compass permission. Drag the arrow to N, or tap the centre.',
+    compassFound: 'Found it. That’s your north. Tap the centre when you’re ready.',
+    sensorAskTitle: 'Use your phone’s compass?',
+    sensorAskText: 'The arrow turns as you turn your phone. Nort only uses this on this screen and doesn’t store or send anything.',
+    sensorAllow: 'Allow', sensorNotNow: 'Not now',
+    nextStep: 'Next step', notAssessedShort: 'Not assessed yet',
+    roundTitle: 'Round {n}', roundDone: 'Round complete.',
+    round1Sub: 'How the last few weeks have been', round2Sub: 'Things that may have bothered you', round3Sub: 'Everyday situations', round4Sub: 'How you go about your day', round5Sub: 'Some habits',
+    generalIntro: 'Here the questions come mixed, without naming the topic of each one. They cover mood, anxiety, sleep, attention, habits, memory and other areas of mental health. The more sensitive parts warn you first and can be skipped. At the end, you see the result for each area.',
+    warmTitle: 'Warm-up', warmChip: 'not part of your result', skipWarm: 'Skip',
+    memoryIntro: 'For the person answering: this part is for a relative or close friend who has known this person for at least 10 years. Compare how they are now with how they were 10 years ago. If they always forgot where they left things and still do, choose "Not much change".',
+    memoryNote: 'This part is meant for people aged 50 and over. A relative or close friend answers it: hand them the phone. If you are under 50 or nobody is around right now, just skip it.',
+    memoryDone: 'Finish', handbackTitle: 'Thank you!', handbackText: 'Please hand the phone back now. The result is theirs.', handbackBtn: 'See my result',
+    recMemory: 'For memory and thinking, the right person is a doctor: a GP, geriatrician or neurologist.',
+    noLevel2: 'The areas with signs have no level 2 in the app. Take your report to the professional suggested.',
+    warmFirst: 'Here the questions come in rounds, without naming the topic. This first one is just a warm-up.',
+    trShort: 'provisional translation',
+    yourCompass: 'Your compass', withSignal: 'areas with signs', withSignal1: 'area with signs', ringLegend: 'Each piece is an area. Thicker pieces show signs.',
+    topicDone: 'Topic done: {area}.', topicDoneMore: 'One more piece of your compass.', topicDoneCalm: 'Thank you for answering.',
+    swipeHint: 'Drag the knob to one side, or tap an option.',
+    expButton: 'Tests', expTitle: 'Ideas being tested', expText: 'Switch them on and off to compare. This only exists in the prototype.',
+    exp_general: 'General mode', expd_general: 'Questions mixed into rounds, without naming the topic, with illustrated warm-ups. Applies when you start a new questionnaire.',
+    exp_ring: 'Compass that fills with colour', expd_ring: 'Progress becomes a compass that completes with each topic, and the result shows your whole compass.',
+    exp_colors: 'Colour per area', expd_colors: 'Each area has its own colour on topic screens, questions and the map.',
+    exp_interact: 'Interactions', expd_interact: 'Needle on the slider, drag to answer yes or no, and a short message when you finish each topic.',
+    expClose: 'Close',
+    notAssessedNote: 'General distress only appears in level 2, when mood, anxiety or wellbeing show signs.',
+    f: { scale: 'Scale', authors: 'Authors', items: 'Questions', license: 'Licence', text: 'Text', trans: 'Translation', cite: 'Citation' },
+    lic: { free: 'Free', nc: 'Non-commercial use only', permission: 'Permission needed', paid: 'Paid licence', verify: 'To be confirmed' },
+    txt: { official: 'Official text', provisional: 'Provisional questions (official scale awaiting permission)', toImport: 'Provisional questions (free scale, official text to be imported)' },
+    tr: { original: 'Original', provisional: 'Provisional translation, to be checked against the validated version', missing: 'Not translated into this language; showing English' },
+    reportTitle: 'Report for your appointment',
+    reportIntro: 'Take this report to your psychologist or psychiatrist. It shows answers and scores, not a diagnosis.',
+    reportDate: 'Date',
+    reportLevel: 'Level reached',
+    reportContext: 'Context (level 3)',
+    reportFlags: 'Notes',
+    reportNone: 'None',
+    copy: 'Copy report', copied: 'Report copied', copyFail: 'Copying is not available here. Select the text below and copy it.',
+    pdfNote: 'In the final app this report downloads as a PDF.',
+    l3Title: 'More about: {area}',
+    durationQ: 'How long have you noticed this?',
+    impactQ: 'How much does this get in the way of your work, study or relationships?',
+    l3GlobalTitle: 'Your history',
+    profQ: 'Has a professional ever talked with you about any of these areas?',
+    treatQ: 'Are you currently in psychological or psychiatric treatment?',
+    familyQ: 'Does anyone in your close family have a history of mental health problems?',
+    worseQ: 'What tends to make you feel worse?',
+    betterQ: 'What tends to help?',
+    ctrlTitle: 'Two quick questions',
+    ctrl1: 'In the last 2 weeks, have you felt down or hopeless on most days?',
+    ctrl2: 'In the last 2 weeks, has it been hard to stop worrying on most days?',
+    pageTitles: { who5: 'How you have been feeling', phq2: 'Mood', gad2: 'Anxiety', ptsd: 'Difficult experiences', asrs: 'Attention and energy', auditc: 'Alcohol', provA: 'Mood, fear and thoughts', provB: 'Body, sleep and habits', provC: 'How you are and how you see the world', provPP: 'After the baby' },
+    ptsdIntro: 'Sometimes things happen to people that are unusually or especially frightening, horrible, or traumatic. For example: a serious accident or fire; a physical or sexual assault or abuse; an earthquake or flood; a war; seeing someone be killed or seriously injured; having a loved one die through homicide or suicide.',
+    ptsdQ: 'Have you ever experienced this kind of event?',
+    who5Stem: 'For each statement, choose what is closest to how you have been feeling over the last two weeks.',
+    asrsStem: 'Answer based on how you have felt and conducted yourself over the past 6 months.',
+    k10Stem: 'During the last 30 days, about how often did you feel…',
+    provStem: 'Think about the last few weeks.',
+    auditTitle: 'Alcohol (continued)',
+    footer: 'Nort · prototype of 11 Nov 2026 · answers are not saved',
+    aboutLang: 'Each scale keeps its text separately per language. A new language goes live once every scale has a validated translation; until then the app shows English and says so.'
+  }
+};
+
+// ---------- Illustrations and chapter copy ----------
+// Simple shapes drawn from theme tokens: --ill-a (accent), --ill-b (warm), --ill-c (surface), --ill-d (soft accent)
+const A = 'var(--ill-a)', B = 'var(--ill-b)', C = 'var(--ill-c)', D = 'var(--ill-d)';
+function rays(cx, cy, r1, r2, n) {
+  let s = '';
+  for (let i = 0; i < n; i++) {
+    const t = (Math.PI * 2 * i) / n;
+    s += `<line x1="${(cx + Math.cos(t) * r1).toFixed(1)}" y1="${(cy + Math.sin(t) * r1).toFixed(1)}" x2="${(cx + Math.cos(t) * r2).toFixed(1)}" y2="${(cy + Math.sin(t) * r2).toFixed(1)}"/>`;
+  }
+  return `<g stroke="${B}" stroke-width="6" stroke-linecap="round">${s}</g>`;
+}
+const HEART = (x, y, s, fill) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 22 C-22 8 -19 -12 -6 -11 C-2 -10.5 0 -7 0 -5.5 C0 -7 2 -10.5 6 -11 C19 -12 22 8 0 22 Z" fill="${fill}"/>`;
+const WAVE = (y, amp) => `M14 ${y} q11 ${-amp} 23 0 t23 0 t23 0 t23 0`;
+
+const ICONS = {
+  wellbeing: () => `<circle cx="60" cy="60" r="22" fill="${B}"/>${rays(60, 60, 32, 42, 8)}`,
+  depression: () => `<circle cx="80" cy="44" r="17" fill="${B}"/><g fill="${C}" stroke="${A}" stroke-width="3"><path d="M30 86 a16 16 0 0 1 4 -31 a22 22 0 0 1 41 -6 a17 17 0 0 1 14 37 Z"/></g>`,
+  anxiety: () => `<g fill="none" stroke="${A}" stroke-width="6" stroke-linecap="round"><path d="${WAVE(42, 12)}"/><path d="${WAVE(62, 12)}" stroke="${B}"/><path d="${WAVE(82, 12)}"/></g>`,
+  distress: () => `<ellipse cx="60" cy="88" rx="38" ry="12" fill="${A}"/><ellipse cx="60" cy="66" rx="27" ry="11" fill="${D}" stroke="${A}" stroke-width="3"/><ellipse cx="60" cy="46" rx="17" ry="9" fill="${B}"/>`,
+  trauma: () => `<circle cx="60" cy="60" r="38" fill="${D}"/>${HEART(60, 54, 1.45, B)}`,
+  adhd: () => `<path d="M64 18 L40 64 H58 L50 102 L82 52 H63 Z" fill="${B}" stroke="${A}" stroke-width="3" stroke-linejoin="round"/><circle cx="28" cy="40" r="5" fill="${A}"/><circle cx="94" cy="84" r="6" fill="${A}"/><circle cx="96" cy="32" r="4" fill="${A}"/>`,
+  alcohol: () => `<path d="M38 26 H82 L72 64 a12 12 0 0 1 -24 0 Z" fill="${C}" stroke="${A}" stroke-width="4" stroke-linejoin="round"/><path d="M42 40 H78 L72 64 a12 12 0 0 1 -24 0 Z" fill="${B}"/><line x1="60" y1="76" x2="60" y2="96" stroke="${A}" stroke-width="4"/><line x1="44" y1="98" x2="76" y2="98" stroke="${A}" stroke-width="4" stroke-linecap="round"/>`,
+  bipolar: () => `<path d="M12 60 C 30 18, 46 18, 60 60 S 90 102, 108 60" fill="none" stroke="${A}" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="22" r="10" fill="${B}"/><path d="M86 86 a12 12 0 1 0 12 14 a9 9 0 1 1 -12 -14 Z" fill="${A}"/>`,
+  panic: () => `<path d="M10 64 H38 L46 44 L56 88 L68 30 L76 64 H110" fill="none" stroke="${A}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="68" cy="30" r="7" fill="${B}"/>`,
+  social: () => `<rect x="16" y="26" width="54" height="36" rx="14" fill="${D}" stroke="${A}" stroke-width="3"/><path d="M30 60 L26 74 L42 62" fill="${D}" stroke="${A}" stroke-width="3" stroke-linejoin="round"/><rect x="52" y="54" width="52" height="34" rx="14" fill="${B}"/><path d="M92 86 L98 98 L82 88" fill="${B}"/>`,
+  ocd: () => `<path d="M60 22 a38 38 0 1 1 -33 19" fill="none" stroke="${A}" stroke-width="6" stroke-linecap="round"/><path d="M18 34 L28 42 L36 30" fill="none" stroke="${A}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><g fill="${B}"><circle cx="48" cy="60" r="5"/><circle cx="60" cy="60" r="5"/><circle cx="72" cy="60" r="5"/></g>`,
+  eating: () => `<circle cx="60" cy="62" r="34" fill="${C}" stroke="${A}" stroke-width="4"/><circle cx="60" cy="62" r="20" fill="${D}"/><g stroke="${B}" stroke-width="5" stroke-linecap="round"><line x1="14" y1="34" x2="14" y2="92"/><line x1="106" y1="34" x2="106" y2="92"/></g>`,
+  sleep: () => `<path d="M68 22 a38 38 0 1 0 30 58 a30 30 0 1 1 -30 -58 Z" fill="${B}"/><g fill="${A}"><circle cx="30" cy="30" r="4"/><circle cx="96" cy="26" r="3"/><circle cx="22" cy="72" r="3"/></g>`,
+  substances: () => `<g transform="rotate(-35 60 60)"><rect x="24" y="44" width="72" height="32" rx="16" fill="${C}" stroke="${A}" stroke-width="4"/><path d="M60 44 H80 a16 16 0 0 1 0 32 H60 Z" fill="${B}"/></g>`,
+  gambling: () => `<rect x="26" y="26" width="68" height="68" rx="16" fill="${C}" stroke="${A}" stroke-width="4"/><g fill="${B}"><circle cx="45" cy="45" r="6"/><circle cx="60" cy="60" r="6"/><circle cx="75" cy="75" r="6"/><circle cx="75" cy="45" r="6"/><circle cx="45" cy="75" r="6"/></g>`,
+  autism: () => `<g fill="${A}"><circle cx="36" cy="36" r="6"/><circle cx="60" cy="36" r="6"/><circle cx="84" cy="36" r="6"/><circle cx="36" cy="60" r="6"/><circle cx="84" cy="60" r="6"/><circle cx="36" cy="84" r="6"/><circle cx="60" cy="84" r="6"/><circle cx="84" cy="84" r="6"/></g><circle cx="60" cy="60" r="11" fill="${B}"/>`,
+  borderline: () => `<g fill="none" stroke-width="7" stroke-linecap="round"><path d="M10 72 C 30 20, 46 20, 60 60 S 92 100, 110 44" stroke="${A}"/><path d="M10 52 C 28 96, 48 96, 62 58 S 92 18, 110 70" stroke="${B}"/></g>`,
+  psychosis: () => `<g stroke="${A}" stroke-width="2.5"><line x1="26" y1="80" x2="48" y2="40"/><line x1="48" y1="40" x2="74" y2="56"/><line x1="74" y1="56" x2="96" y2="26"/><line x1="74" y1="56" x2="88" y2="92"/></g><g fill="${B}"><circle cx="26" cy="80" r="6"/><circle cx="48" cy="40" r="7"/><circle cx="74" cy="56" r="8"/><circle cx="96" cy="26" r="5"/><circle cx="88" cy="92" r="5"/></g>`,
+  postpartum: () => `<path d="M22 66 a38 38 0 0 0 76 0 Z" fill="${D}" stroke="${A}" stroke-width="4"/>${HEART(60, 34, 0.9, B)}<line x1="30" y1="104" x2="90" y2="104" stroke="${A}" stroke-width="4" stroke-linecap="round"/>`,
+  memory: () => `<path d="M60 22 c-20 0 -34 14 -34 32 c0 10 5 18 12 23 v19 h30 v-12 h8 c6 0 10 -4 10 -10 v-8 l8 -3 l-8 -14 c0 -16 -12 -27 -26 -27 Z" fill="${D}" stroke="${A}" stroke-width="4" stroke-linejoin="round"/><circle cx="56" cy="50" r="7" fill="${B}"/><circle cx="74" cy="44" r="4" fill="${B}"/><circle cx="66" cy="62" r="4" fill="${B}"/><path d="M56 50 L74 44 M56 50 L66 62" stroke="${A}" stroke-width="2.5"/>`,
+  round: () => `<circle cx="60" cy="60" r="40" fill="none" stroke="${A}" stroke-width="4"/><path d="M60 24 L70 60 L60 55 L50 60 Z" fill="${B}"/><path d="M60 96 L50 60 L60 65 L70 60 Z" fill="${A}" opacity=".35"/>`,
+  warm: () => `<circle cx="60" cy="60" r="34" fill="${D}"/><path d="M42 70 q18 -26 36 0" fill="none" stroke="${B}" stroke-width="6" stroke-linecap="round"/><circle cx="60" cy="44" r="7" fill="${B}"/>`,
+  safety: () => `<circle cx="60" cy="60" r="40" fill="none" stroke="${A}" stroke-width="4"/>${HEART(60, 56, 1.3, B)}`,
+  controls: () => `<circle cx="60" cy="60" r="40" fill="none" stroke="${A}" stroke-width="4"/><path d="M60 24 L70 60 L60 55 L50 60 Z" fill="${B}"/><path d="M60 96 L50 60 L60 65 L70 60 Z" fill="${A}" opacity=".35"/>`,
+  history: () => `<rect x="30" y="20" width="60" height="80" rx="10" fill="${C}" stroke="${A}" stroke-width="4"/><g stroke="${B}" stroke-width="5" stroke-linecap="round"><line x1="42" y1="44" x2="78" y2="44"/><line x1="42" y1="60" x2="78" y2="60"/><line x1="42" y1="76" x2="64" y2="76"/></g>`
+};
+function icon(key, cls) {
+  const f = ICONS[key] || ICONS.controls;
+  return `<svg class="${cls || 'ill'}" viewBox="0 0 120 120" aria-hidden="true">${f()}</svg>`;
+}
+
+const TINTS = ['sky', 'sand', 'mint', 'lilac', 'peach', 'butter'];
+const AREA_TINT = { memory: 'lilac', round: 'sky', warm: 'butter', wellbeing: 'butter', depression: 'sky', anxiety: 'mint', distress: 'sand', trauma: 'peach', adhd: 'butter', alcohol: 'lilac', bipolar: 'sky', panic: 'peach', social: 'mint', ocd: 'lilac', eating: 'sand', sleep: 'sky', substances: 'mint', gambling: 'butter', autism: 'lilac', borderline: 'peach', psychosis: 'sky', postpartum: 'sand', safety: 'peach', controls: 'mint', history: 'sand' };
+
+const AREA_INTRO = {
+  wellbeing: { pt: 'Como você tem se sentido no geral', en: 'How you have been feeling overall' },
+  depression: { pt: 'Seu humor nas últimas semanas', en: 'Your mood over the last few weeks' },
+  anxiety: { pt: 'Preocupação, tensão e nervosismo', en: 'Worry, tension and nerves' },
+  distress: { pt: 'Como você tem lidado com o peso do dia a dia', en: 'How you have been coping with day-to-day pressure' },
+  trauma: { pt: 'Experiências difíceis que podem ter deixado marcas', en: 'Hard experiences that may have left a mark' },
+  adhd: { pt: 'Foco, organização e energia', en: 'Focus, organisation and energy' },
+  alcohol: { pt: 'Sua relação com a bebida', en: 'Your relationship with drinking' },
+  bipolar: { pt: 'Altos e baixos de energia e humor', en: 'Highs and lows in energy and mood' },
+  panic: { pt: 'Crises súbitas de medo', en: 'Sudden waves of fear' },
+  social: { pt: 'Como você se sente perto de outras pessoas', en: 'How you feel around other people' },
+  ocd: { pt: 'Pensamentos que voltam e manias', en: 'Thoughts that keep coming back, and rituals' },
+  eating: { pt: 'Sua relação com a comida e o corpo', en: 'Your relationship with food and your body' },
+  sleep: { pt: 'Como andam suas noites', en: 'How your nights have been' },
+  substances: { pt: 'Outras substâncias além do álcool', en: 'Substances other than alcohol' },
+  gambling: { pt: 'Apostas e jogos de azar', en: 'Betting and gambling' },
+  autism: { pt: 'Seu jeito de perceber e de se relacionar', en: 'How you perceive things and relate to others' },
+  borderline: { pt: 'A intensidade das emoções e das relações', en: 'How intense your emotions and relationships feel' },
+  psychosis: { pt: 'Percepções e experiências fora do comum', en: 'Perceptions and unusual experiences' },
+  postpartum: { pt: 'Como você está desde a chegada do bebê', en: 'How you are since the baby arrived' },
+  memory: { pt: 'Para um familiar responder sobre você', en: 'For a relative to answer about you' },
+  safety: { pt: 'Uma pergunta delicada, mas importante', en: 'A sensitive but important question' },
+  controls: { pt: 'Só para conferir', en: 'Just double-checking' },
+  history: { pt: 'Para o profissional entender o contexto', en: 'So the professional understands the context' }
+};
+// Option sets shown as a slider (ordered frequency or amount); the rest are big buttons
+const SLIDER_OPTS = ['phq', 'who5', 'k10', 'asrs', 'freq5', 'auditFreq1', 'auditQty', 'auditFreq', 'duration', 'impact'];
+
+// ---------- Warm-up illustrations (80×80) ----------
+const WARM_ART = {
+  sunny: () => `<rect width="80" height="80" rx="16" fill="${D}"/><circle cx="40" cy="30" r="12" fill="${B}"/><g stroke="${B}" stroke-width="3" stroke-linecap="round"><path d="M40 10v5M40 45v5M20 30h5M55 30h5M26 16l3 3M51 41l3 3M26 44l3-3M51 19l3-3"/></g><path d="M0 62 Q40 48 80 62 V80 H0Z" fill="${A}" opacity=".85"/>`,
+  sea: () => `<rect width="80" height="80" rx="16" fill="${D}"/><circle cx="58" cy="24" r="8" fill="${B}"/><path d="M0 48 H80 V80 H0Z" fill="${A}" opacity=".85"/><path d="M10 58 q7-5 14 0 t14 0 t14 0 t14 0" stroke="${C}" fill="none" stroke-width="3" stroke-linecap="round"/><path d="M18 69 q7-5 14 0 t14 0 t14 0" stroke="${C}" fill="none" stroke-width="3" stroke-linecap="round"/>`,
+  fog: () => `<rect width="80" height="80" rx="16" fill="${D}"/><g fill="${A}"><path d="M18 62 L28 30 L38 62Z"/><path d="M36 62 L48 22 L60 62Z"/><path d="M54 62 L63 36 L72 62Z"/></g><g stroke="${C}" stroke-width="4" stroke-linecap="round" opacity=".9"><path d="M8 46h30M44 52h28M14 58h40"/></g>`,
+  storm: () => `<rect width="80" height="80" rx="16" fill="${A}"/><path d="M22 42 a10 10 0 0 1 3-19 a14 14 0 0 1 26-3 a11 11 0 0 1 8 22Z" fill="${C}"/><path d="M42 44 L34 60 H42 L37 74 L52 54 H44 L49 44Z" fill="${B}"/>`,
+  night: () => `<rect width="80" height="80" rx="16" fill="${A}"/><path d="M50 18 a18 18 0 1 0 14 30 a14 14 0 1 1 -14 -30Z" fill="${C}"/><g fill="${B}"><circle cx="18" cy="22" r="2.5"/><circle cx="30" cy="48" r="2"/><circle cx="16" cy="62" r="2.5"/><circle cx="64" cy="64" r="2"/></g>`,
+  city: () => `<rect width="80" height="80" rx="16" fill="${D}"/><g fill="${A}"><rect x="10" y="34" width="16" height="36"/><rect x="30" y="20" width="18" height="50"/><rect x="52" y="40" width="18" height="30"/></g><g fill="${B}"><rect x="14" y="40" width="4" height="4"/><rect x="34" y="26" width="4" height="4"/><rect x="40" y="36" width="4" height="4"/><rect x="34" y="46" width="4" height="4"/><rect x="56" y="46" width="4" height="4"/><rect x="62" y="56" width="4" height="4"/></g>`,
+  turtle: () => `<rect width="80" height="80" rx="16" fill="${D}"/><path d="M18 52 a22 18 0 0 1 44 0Z" fill="${B}"/><path d="M28 38 l6 8 M40 34 v12 M52 38 l-6 8" stroke="${A}" stroke-width="2.5" opacity=".6"/><circle cx="66" cy="48" r="6" fill="${A}"/><g stroke="${A}" stroke-width="5" stroke-linecap="round"><path d="M24 54v6M54 54v6"/></g>`,
+  walk: () => `<rect width="80" height="80" rx="16" fill="${D}"/><g fill="${A}"><ellipse cx="30" cy="50" rx="8" ry="12" transform="rotate(-12 30 50)"/><ellipse cx="50" cy="32" rx="8" ry="12" transform="rotate(-12 50 32)"/></g><g fill="${B}"><circle cx="24" cy="34" r="3"/><circle cx="44" cy="16" r="3"/></g>`,
+  bike: () => `<rect width="80" height="80" rx="16" fill="${D}"/><g fill="none" stroke="${A}" stroke-width="4"><circle cx="22" cy="52" r="12"/><circle cx="58" cy="52" r="12"/><path d="M22 52 L34 34 H52 L58 52 M34 34 L42 52 H22" stroke-linejoin="round"/></g><path d="M30 28 h10" stroke="${B}" stroke-width="5" stroke-linecap="round"/>`,
+  rocket: () => `<rect width="80" height="80" rx="16" fill="${A}"/><path d="M40 12 c10 8 14 20 12 36 H28 c-2 -16 2 -28 12 -36Z" fill="${C}"/><circle cx="40" cy="32" r="5" fill="${B}"/><path d="M28 48 l-8 10 h10Z M52 48 l8 10 h-10Z" fill="${B}"/><path d="M34 50 q6 18 12 0" fill="${B}"/>`,
+  nature: () => `<rect width="80" height="80" rx="16" fill="${D}"/><path d="M20 62 C20 30 44 16 64 16 C64 40 50 62 20 62Z" fill="${B}"/><path d="M20 62 L52 30" stroke="${A}" stroke-width="3.5" stroke-linecap="round"/>`,
+  people: () => `<rect width="80" height="80" rx="16" fill="${D}"/><g fill="${A}"><circle cx="30" cy="32" r="9"/><path d="M14 64 a16 16 0 0 1 32 0Z"/></g><g fill="${B}"><circle cx="52" cy="36" r="8"/><path d="M38 64 a14 14 0 0 1 28 0Z"/></g>`,
+  pause: () => `<rect width="80" height="80" rx="16" fill="${D}"/><path d="M22 36 h30 v16 a15 15 0 0 1 -30 0Z" fill="${A}"/><path d="M52 40 h4 a6 6 0 0 1 0 12 h-4" fill="none" stroke="${A}" stroke-width="4"/><path d="M30 28 q-4-6 0-12 M38 28 q-4-6 0-12 M46 28 q-4-6 0-12" stroke="${B}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+  music: () => `<rect width="80" height="80" rx="16" fill="${D}"/><path d="M32 22 L58 16 V50" fill="none" stroke="${A}" stroke-width="5" stroke-linejoin="round"/><path d="M32 22 V56" stroke="${A}" stroke-width="5"/><ellipse cx="26" cy="58" rx="8" ry="6" fill="${B}"/><ellipse cx="52" cy="52" rx="8" ry="6" fill="${B}"/>`,
+  move: () => `<rect width="80" height="80" rx="16" fill="${D}"/><circle cx="50" cy="20" r="7" fill="${B}"/><path d="M46 30 L36 46 L48 56 L42 70 M36 46 L24 52 M46 30 L60 40" fill="none" stroke="${A}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 40h10M8 50h8" stroke="${B}" stroke-width="3" stroke-linecap="round"/>`,
+  create: () => `<rect width="80" height="80" rx="16" fill="${D}"/><path d="M20 60 L24 48 L52 20 L60 28 L32 56Z" fill="${B}"/><path d="M20 60 L24 48 L32 56Z" fill="${A}"/><path d="M14 68 q10 -6 20 0 t20 0" stroke="${A}" stroke-width="3" fill="none" stroke-linecap="round"/>`
+};
+function warmArt(key) { const f = WARM_ART[key]; return f ? `<svg class="warm-ill" viewBox="0 0 80 80" aria-hidden="true">${f()}</svg>` : ''; }
+
+// ---------- Logic (pure functions, no DOM) ----------
+
+function pick(obj, lang) {
+  if (obj == null) return '';
+  if (typeof obj === 'string') return obj;
+  if (obj[lang] != null) return obj[lang];
+  return obj[FALLBACK_LOCALE] != null ? obj[FALLBACK_LOCALE] : '';
+}
+function hasLang(obj, lang) { return obj && typeof obj === 'object' && obj[lang] != null; }
+function u(lang) { return UI[lang] || UI[FALLBACK_LOCALE]; }
+function fmt(s, vars) { return String(s).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] != null ? vars[k] : '')); }
+
+const PROV_AREAS = ['bipolar', 'panic', 'social', 'ocd', 'eating', 'sleep', 'substances', 'gambling', 'autism', 'borderline', 'psychosis', 'postpartum'];
+
+function item(id, text, opt, extra) { return Object.assign({ id, text, opt, type: 'radio' }, extra || {}); }
+function provItems(area, kind) {
+  const list = PROVISIONAL[area][kind];
+  const offset = kind === 'screen' ? 0 : 2;
+  return list.map((t, i) => item(`prov.${area}.${i + 1 + offset}`, t, 'freq5'));
+}
+
+// Level 1 pages, in order
+function level1Modules(state) {
+  const L = (k) => ({ ref: 'pageTitles.' + k });
+  const mods = [
+    { id: 'who5', title: L('who5'), scale: 'who5', area: 'wellbeing', sections: [{ stemKey: 'who5Stem', items: WHO5_ITEMS.map((t, i) => item(`who5.${i + 1}`, t, 'who5')) }] },
+    { id: 'phq2', title: L('phq2'), scale: 'phq2', area: 'depression', sections: [{ stem: PHQ_STEM, items: [item('phq.1', PHQ_ITEMS[0], 'phq'), item('phq.2', PHQ_ITEMS[1], 'phq')] }] },
+    { id: 'safety', titleKey: 'safetyTitle', scale: 'phq9', area: 'safety', sensitive: true, sections: [{ stem: PHQ_STEM, items: [item('phq.9', PHQ_ITEMS[8], 'phqSafety')] }] },
+    { id: 'gad2', title: L('gad2'), scale: 'gad2', area: 'anxiety', sections: [{ stem: PHQ_STEM, items: [item('gad.1', GAD_ITEMS[0], 'phq'), item('gad.2', GAD_ITEMS[1], 'phq')] }] },
+    { id: 'ptsd', title: L('ptsd'), scale: 'pcptsd5', area: 'trauma', sensitive: true, sections: [
+      { introKey: 'ptsdIntroShort', examplesKey: 'ptsdExamples', items: [item('ptsd.0', { ref: 'ptsdQ' }, 'ynSkip')] },
+      { stemKey: 'pastMonth', showIf: (a) => a['ptsd.0'] === 1, items: PTSD_ITEMS.map((t, i) => item(`ptsd.${i + 1}`, t, 'yn')) }] },
+    { id: 'asrs', title: L('asrs'), scale: 'asrs6', area: 'adhd', sections: [{ stemKey: 'asrsStem', items: ASRS_ITEMS.map((t, i) => item(`asrs.${i + 1}`, t, 'asrs')) }] },
+    { id: 'auditc', title: L('auditc'), scale: 'auditc', area: 'alcohol', sections: [{ stemKey: 'drinkNote', items: AUDIT_ITEMS.slice(0, 3).map((t, i) => item(`audit.${i + 1}`, t, t.opt, i > 0 ? { showIf: (a) => a['audit.1'] != null && a['audit.1'] !== 0 } : {})) }] },
+    { id: 'provA', title: L('provA'), provisional: true, sections: ['bipolar', 'panic', 'social', 'ocd'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
+    { id: 'provB', title: L('provB'), provisional: true, sensitive: true, sections: ['eating', 'sleep', 'substances', 'gambling'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
+    { id: 'provC', title: L('provC'), provisional: true, sections: ['autism', 'borderline', 'psychosis'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) }
+  ];
+  if (state.setup.baby === 1) mods.push({ id: 'provPP', title: L('provPP'), provisional: true, sections: [{ area: 'postpartum', stemKey: 'provStem', items: provItems('postpartum', 'screen') }] });
+  mods.push({ id: 'controls', titleKey: 'ctrlTitle', sections: [{ items: [item('ctrl.1', { ref: 'ctrl1' }, 'yn'), item('ctrl.2', { ref: 'ctrl2' }, 'yn')] }] });
+  // Last, so the relative who answers it doesn't then see questions about the user's own mood
+  mods.push(memoryModule());
+  return mods;
+}
+
+// Optional part a relative answers about the user (Short IQCODE)
+function memoryModule() {
+  return { id: 'memory', title: AREAS_BY_ID.memory.name, scale: 'iqcode16', area: 'memory', sections: [{ introKey: 'memoryIntro', stem: IQCODE_STEM, items: IQCODE_ITEMS.map((t, i) => item(`iq.${i + 1}`, t, 'iqcode')) }] };
+}
+
+// "General mode" level 1: same questions, mixed in rounds that share the answer format, without naming the topic.
+// Sensitive parts keep their own labelled, skippable chapters. Warm-ups are not scored.
+function warmModule(n) {
+  const w = WARMUPS[n];
+  return { id: 'warm' + n, titleKey: 'warmTitle', area: 'warm', sections: [{ area: 'warm', items: [Object.assign(item(w.id, w.q, null), { type: 'warm', optional: true, warm: w })] }] };
+}
+function interleave(lists) {
+  const out = []; const max = Math.max(...lists.map((x) => x.length));
+  for (let i = 0; i < max; i++) lists.forEach((x) => { if (x[i]) out.push(x[i]); });
+  return out;
+}
+function level1General(state) {
+  const base = level1Modules(state);
+  const byId = {}; base.forEach((m) => { byId[m.id] = m; });
+  const items = (m) => m.sections.reduce((acc, s) => acc.concat(s.items), []);
+  const prov = (ar) => provItems(ar, 'screen');
+  const round = (n, subKey, stemPart, list, extra) => Object.assign({ id: 'round' + n, titleKey: 'roundTitle', titleVars: { n: { pt: String(n), en: String(n) } }, subKey, area: 'round', sections: [Object.assign({ area: 'round', items: list }, stemPart)] }, extra || {});
+  const mods = [];
+  mods.push(warmModule(0));
+  mods.push(round(1, 'round1Sub', { stemKey: 'who5Stem' }, items(byId.who5), { first: true }));
+  mods.push(round(2, 'round2Sub', { stem: PHQ_STEM }, interleave([items(byId.phq2), items(byId.gad2)])));
+  mods.push(byId.safety);
+  mods.push(warmModule(1));
+  mods.push(round(3, 'round3Sub', { stemKey: 'provStem' }, interleave(['bipolar', 'sleep', 'panic', 'social', 'gambling', 'ocd', 'autism'].map(prov)), { provisional: true }));
+  mods.push(round(4, 'round4Sub', { stemKey: 'asrsStem' }, items(byId.asrs)));
+  mods.push(warmModule(2));
+  mods.push(Object.assign({}, byId.auditc, { id: 'round5', titleKey: 'roundTitle', titleVars: { n: { pt: '5', en: '5' } }, subKey: 'round5Sub', area: 'round', sections: byId.auditc.sections.map((s) => Object.assign({}, s, { area: 'round' })) }));
+  mods.push(byId.ptsd);
+  const sens = ['eating', 'substances', 'borderline', 'psychosis'];
+  mods.push({ id: 'provSens', provisional: true, sensitive: true, title: { ref: 'pageTitles.provB' }, sections: sens.map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) });
+  if (byId.provPP) mods.push(byId.provPP);
+  mods.push(byId.controls);
+  mods.push(byId.memory);
+  return mods;
+}
+
+// Level 2 pages: only areas that showed signs in level 1
+function level2Modules(state) {
+  const r = computeAreas(state, 1);
+  const flagged = (id) => r[id] && r[id].assessed && r[id].band >= 1;
+  const mods = [];
+  if (flagged('depression')) mods.push({ id: 'phq9', title: { ref: 'pageTitles.phq2' }, scale: 'phq9', area: 'depression', sections: [{ stem: PHQ_STEM, items: PHQ_ITEMS.slice(2, 8).map((t, i) => item(`phq.${i + 3}`, t, 'phq')) }] });
+  if (flagged('anxiety')) mods.push({ id: 'gad7', title: { ref: 'pageTitles.gad2' }, scale: 'gad7', area: 'anxiety', sections: [{ stem: PHQ_STEM, items: GAD_ITEMS.slice(2).map((t, i) => item(`gad.${i + 3}`, t, 'phq')) }] });
+  if (flagged('depression') || flagged('anxiety') || flagged('wellbeing')) mods.push({ id: 'k10', title: AREAS_BY_ID.distress.name, scale: 'k10', area: 'distress', sections: [{ stemKey: 'k10Stem', items: K10_ITEMS.map((t, i) => item(`k10.${i + 1}`, t, 'k10')) }] });
+  if (flagged('trauma')) mods.push({ id: 'trauma2', title: AREAS_BY_ID.trauma.name, scale: 'itq', area: 'trauma', provisional: true, toImport: true, sensitive: true, sections: [{ area: 'trauma', stemKey: 'provStem', items: provItems('trauma', 'full') }] });
+  if (flagged('adhd')) mods.push({ id: 'adhd2', title: AREAS_BY_ID.adhd.name, scale: 'asrs18', area: 'adhd', provisional: true, sections: [{ area: 'adhd', stemKey: 'provStem', items: provItems('adhd', 'full') }] });
+  if (flagged('alcohol')) mods.push({ id: 'audit', titleKey: 'auditTitle', scale: 'audit', area: 'alcohol', sections: [{ items: AUDIT_ITEMS.slice(3).map((t, i) => item(`audit.${i + 4}`, t, t.opt)) }] });
+  PROV_AREAS.forEach((ar) => { if (flagged(ar)) mods.push({ id: 'p2-' + ar, title: AREAS_BY_ID[ar].name, scale: PROVISIONAL_SCALE[ar], area: ar, provisional: true, sensitive: ar === 'eating' || ar === 'psychosis', sections: [{ area: ar, stemKey: 'provStem', items: provItems(ar, 'full') }] }); });
+  return mods;
+}
+
+// Level 3 pages: context for every area still flagged after level 2
+function level3Modules(state) {
+  const r = computeAreas(state, 2);
+  const mods = [];
+  AREAS.forEach((a) => {
+    if (r[a.id] && r[a.id].assessed && r[a.id].band >= 1) {
+      mods.push({ id: 'l3-' + a.id, titleKey: 'l3Title', titleVars: { area: a.name }, area: a.id, sections: [{ items: [item(`l3.${a.id}.dur`, { ref: 'durationQ' }, 'duration'), item(`l3.${a.id}.imp`, { ref: 'impactQ' }, 'impact')] }] });
+    }
+  });
+  mods.push({ id: 'l3-global', titleKey: 'l3GlobalTitle', sections: [{ items: [
+    item('l3.prof', { ref: 'profQ' }, 'ynDontKnow'), item('l3.treat', { ref: 'treatQ' }, 'ynDontKnow'), item('l3.family', { ref: 'familyQ' }, 'ynDontKnow'),
+    { id: 'l3.worse', text: { ref: 'worseQ' }, type: 'text', optional: true }, { id: 'l3.better', text: { ref: 'betterQ' }, type: 'text', optional: true }] }] });
+  return mods;
+}
+
+const AREAS_BY_ID = {};
+AREAS.forEach((a) => { AREAS_BY_ID[a.id] = a; });
+
+function modulesFor(level, state) {
+  if (level === 1) return state.general ? level1General(state) : level1Modules(state);
+  if (level === 2) return level2Modules(state);
+  return level3Modules(state);
+}
+
+// One card per screen: chapter intro cards, question cards and a breathing pause
+function chapterArea(m, sec) {
+  if (sec.area) return sec.area;
+  if (m.area) return m.area;
+  if (m.id === 'controls') return 'controls';
+  if (m.id === 'l3-global') return 'history';
+  return 'controls';
+}
+const SKIPPABLE = ['trauma', 'eating', 'substances', 'borderline', 'psychosis', 'postpartum', 'memory'];
+function buildCards(mods, answers, level, skipped) {
+  const cards = [];
+  let last = null;
+  const isSkipped = (area) => !!(skipped && skipped[`${level}:${area}`]);
+  mods.forEach((m) => {
+    m.sections.forEach((sec) => {
+      if (sec.showIf && !sec.showIf(answers)) return;
+      const area = chapterArea(m, sec);
+      const chKey = `${m.id}:${area}`;
+      if (chKey !== last) { cards.push({ key: 'ch:' + chKey, type: 'chapter', mod: m, area, count: 0, skipped: isSkipped(area) }); last = chKey; }
+      if (isSkipped(area)) return;
+      sec.items.forEach((it) => { if (!it.showIf || it.showIf(answers)) cards.push({ key: 'q:' + it.id, type: 'q', mod: m, sec, item: it, area }); });
+    });
+    if (level === 1 && m.id === 'ptsd') { cards.push({ key: 'breath', type: 'breath', area: 'controls' }); last = 'breath'; }
+  });
+  let ch = null;
+  cards.forEach((c) => { if (c.type === 'chapter') ch = c; else if (c.type === 'q' && ch) ch.count++; });
+  return cards;
+}
+
+// Items visible on a module given current answers
+function visibleItems(mod, answers) {
+  const out = [];
+  mod.sections.forEach((s) => { if (!s.showIf || s.showIf(answers)) s.items.forEach((it) => { if (!it.showIf || it.showIf(answers)) out.push(it); }); });
+  return out;
+}
+function moduleComplete(mod, answers) {
+  return visibleItems(mod, answers).every((it) => it.optional || answers[it.id] != null);
+}
+
+// ---------- Scoring ----------
+function num(v) { return typeof v === 'number' ? v : 0; }
+function sumIds(ans, ids) { return ids.reduce((s, id) => s + num(ans[id]), 0); }
+function allAnswered(ans, ids) { return ids.every((id) => ans[id] != null); }
+function range(prefix, from, to) { const a = []; for (let i = from; i <= to; i++) a.push(prefix + i); return a; }
+
+const LABELS = {
+  phq9: [[4, { pt: 'mínima', en: 'minimal' }], [9, { pt: 'leve', en: 'mild' }], [14, { pt: 'moderada', en: 'moderate' }], [19, { pt: 'moderadamente grave', en: 'moderately severe' }], [27, { pt: 'grave', en: 'severe' }]],
+  gad7: [[4, { pt: 'mínima', en: 'minimal' }], [9, { pt: 'leve', en: 'mild' }], [14, { pt: 'moderada', en: 'moderate' }], [21, { pt: 'grave', en: 'severe' }]],
+  k10: [[15, { pt: 'baixo', en: 'low' }], [21, { pt: 'moderado', en: 'moderate' }], [29, { pt: 'alto', en: 'high' }], [50, { pt: 'muito alto', en: 'very high' }]],
+  audit: [[7, { pt: 'baixo risco', en: 'low risk' }], [15, { pt: 'uso de risco', en: 'hazardous use' }], [19, { pt: 'uso nocivo', en: 'harmful use' }], [40, { pt: 'possível dependência', en: 'possible dependence' }]]
+};
+function label(table, score) { for (const [max, l] of table) if (score <= max) return l; return table[table.length - 1][1]; }
+function T(pt, en) { return { pt, en }; }
+
+// maxLevel: consider answers up to this level (1, 2 or 3)
+function computeAreas(state, maxLevel) {
+  const a = state.answers;
+  const lv = maxLevel || 3;
+  const l3done = (id) => lv >= 3 && a[`l3.${id}.dur`] != null && a[`l3.${id}.imp`] != null;
+  const out = {};
+  const confStep = (base, id) => (l3done(id) ? (base === 'low' ? 'medium' : 'high') : base);
+
+  // Wellbeing — WHO-5 (complete scale)
+  const who = range('who5.', 1, 5);
+  if (allAnswered(a, who)) {
+    const pct = sumIds(a, who) * 4;
+    const band = pct <= 28 ? 2 : pct <= 50 ? 1 : 0;
+    const lab = band === 2 ? T('bem-estar muito baixo', 'very low wellbeing') : band === 1 ? T('bem-estar baixo', 'low wellbeing') : T('bem-estar adequado', 'adequate wellbeing');
+    out.wellbeing = { assessed: true, band, confidence: confStep('medium', 'wellbeing'), scales: ['who5'], score: T(`WHO-5: ${pct}/100 · ${lab.pt}`, `WHO-5: ${pct}/100 · ${lab.en}`) };
+  }
+
+  // Depression — PHQ-2 then PHQ-9
+  const phq9ids = range('phq.', 1, 9);
+  if (lv >= 2 && allAnswered(a, range('phq.', 1, 8))) {
+    const s = sumIds(a, phq9ids);
+    const band = s >= 15 ? 2 : s >= 5 ? 1 : 0;
+    const lab = label(LABELS.phq9, s);
+    out.depression = { assessed: true, band, confidence: confStep('medium', 'depression'), scales: ['phq9'], score: T(`PHQ-9: ${s}/27 · ${lab.pt}`, `PHQ-9: ${s}/27 · ${lab.en}`) };
+  } else if (allAnswered(a, ['phq.1', 'phq.2'])) {
+    const s = sumIds(a, ['phq.1', 'phq.2']);
+    out.depression = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'depression'), scales: ['phq2'], score: T(`PHQ-2: ${s}/6 (positivo a partir de 3)`, `PHQ-2: ${s}/6 (positive from 3)`) };
+  }
+
+  // Anxiety — GAD-2 then GAD-7
+  const gad7 = range('gad.', 1, 7);
+  if (lv >= 2 && allAnswered(a, gad7)) {
+    const s = sumIds(a, gad7);
+    const band = s >= 15 ? 2 : s >= 5 ? 1 : 0;
+    const lab = label(LABELS.gad7, s);
+    out.anxiety = { assessed: true, band, confidence: confStep('medium', 'anxiety'), scales: ['gad7'], score: T(`GAD-7: ${s}/21 · ${lab.pt}`, `GAD-7: ${s}/21 · ${lab.en}`) };
+  } else if (allAnswered(a, ['gad.1', 'gad.2'])) {
+    const s = sumIds(a, ['gad.1', 'gad.2']);
+    out.anxiety = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'anxiety'), scales: ['gad2'], score: T(`GAD-2: ${s}/6 (positivo a partir de 3)`, `GAD-2: ${s}/6 (positive from 3)`) };
+  }
+
+  // General distress — K10 (level 2 only)
+  const k10 = range('k10.', 1, 10);
+  if (lv >= 2 && allAnswered(a, k10)) {
+    const s = sumIds(a, k10);
+    const band = s >= 22 ? 2 : s >= 16 ? 1 : 0;
+    const lab = label(LABELS.k10, s);
+    out.distress = { assessed: true, band, confidence: confStep('medium', 'distress'), scales: ['k10'], score: T(`K10: ${s}/50 · sofrimento ${lab.pt}`, `K10: ${s}/50 · ${lab.en} distress`) };
+  }
+
+  // Trauma — PC-PTSD-5 (+ provisional level 2)
+  if (a['ptsd.0'] === 0) out.trauma = { assessed: true, band: 0, confidence: 'low', scales: ['pcptsd5'], score: T('Nenhum evento traumático relatado', 'No traumatic event reported') };
+  else if (a['ptsd.0'] === 'skip') out.trauma = { assessed: false, skipped: true, scales: ['pcptsd5'] };
+  else if (a['ptsd.0'] === 1 && allAnswered(a, range('ptsd.', 1, 5))) {
+    const s = sumIds(a, range('ptsd.', 1, 5));
+    out.trauma = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'trauma'), scales: ['pcptsd5'], score: T(`PC-PTSD-5: ${s}/5 (positivo a partir de 3)`, `PC-PTSD-5: ${s}/5 (positive from 3)`) };
+    addProvisionalNote(out.trauma, a, 'trauma', lv);
+  }
+
+  // ADHD — ASRS v1.1 screener (shaded-box rule)
+  const asrs = range('asrs.', 1, 6);
+  if (allAnswered(a, asrs)) {
+    let n = 0;
+    asrs.forEach((id, i) => { if (a[id] >= (i < 3 ? 2 : 3)) n++; });
+    out.adhd = { assessed: true, band: n >= 4 ? 1 : 0, confidence: confStep('low', 'adhd'), scales: ['asrs6'], score: T(`ASRS: ${n} de 6 respostas na faixa sombreada (positivo a partir de 4)`, `ASRS: ${n} of 6 answers in the shaded range (positive from 4)`) };
+    addProvisionalNote(out.adhd, a, 'adhd', lv);
+  }
+
+  // Alcohol — AUDIT-C then AUDIT
+  if (a['audit.1'] != null) {
+    const c = a['audit.1'] === 0 ? 0 : (allAnswered(a, ['audit.2', 'audit.3']) ? sumIds(a, ['audit.1', 'audit.2', 'audit.3']) : null);
+    const full = range('audit.', 4, 10);
+    if (lv >= 2 && c != null && allAnswered(a, full)) {
+      const s = c + sumIds(a, full);
+      const band = s >= 16 ? 2 : s >= 8 ? 1 : 0;
+      const lab = label(LABELS.audit, s);
+      out.alcohol = { assessed: true, band, confidence: confStep('medium', 'alcohol'), scales: ['audit'], score: T(`AUDIT: ${s}/40 · ${lab.pt}`, `AUDIT: ${s}/40 · ${lab.en}`) };
+    } else if (c != null) {
+      out.alcohol = { assessed: true, band: c >= 3 ? 1 : 0, confidence: confStep('low', 'alcohol'), scales: ['auditc'], score: T(`AUDIT-C: ${c}/12 (positivo a partir de 3)`, `AUDIT-C: ${c}/12 (positive from 3)`) };
+    }
+  }
+
+  // Memory and thinking — Short IQCODE (answered by a relative); mean of 16 items, 1–5
+  const iq = range('iq.', 1, 16);
+  if (allAnswered(a, iq)) {
+    const m = sumIds(a, iq) / 16;
+    const band = m >= 3.6 ? 2 : m >= 3.3 ? 1 : 0;
+    const shown = m.toFixed(2);
+    out.memory = { assessed: true, band, confidence: confStep('medium', 'memory'), scales: ['iqcode16'], score: T(`IQCODE: média ${shown.replace('.', ',')} (de 1 a 5; atenção a partir de 3,3)`, `IQCODE: mean ${shown} (1 to 5; attention from 3.3)`), extra: band >= 1
+      ? T('Respondido por um familiar ou amigo. Mudanças de memória têm muitas causas, como sono, humor, remédios, tireoide ou audição. Quem avalia é um médico (clínico geral, geriatra ou neurologista).', 'Answered by a relative or friend. Memory changes have many causes, such as sleep, mood, medicines, thyroid or hearing. A doctor (GP, geriatrician or neurologist) is the one to assess it.')
+      : T('Respondido por um familiar ou amigo.', 'Answered by a relative or friend.') };
+  }
+
+  // Provisional areas (test scoring only)
+  PROV_AREAS.forEach((ar) => {
+    if (ar === 'postpartum' && state.setup.baby !== 1) return;
+    const scr = [`prov.${ar}.1`, `prov.${ar}.2`];
+    if (!allAnswered(a, scr)) return;
+    const full = range(`prov.${ar}.`, 3, 6);
+    let s, max, band;
+    if (lv >= 2 && allAnswered(a, full)) {
+      s = sumIds(a, scr.concat(full)); max = 24;
+      band = s / max >= 0.66 ? 2 : s / max >= 0.33 ? 1 : 0;
+    } else {
+      s = sumIds(a, scr); max = 8;
+      band = s >= 4 ? 1 : 0;
+    }
+    out[ar] = { assessed: true, band, confidence: 'test', provisional: true, scales: [PROVISIONAL_SCALE[ar]], score: T(`Perguntas provisórias: ${s}/${max} (pontuação de teste)`, `Provisional questions: ${s}/${max} (test score)`) };
+  });
+  return out;
+}
+
+function addProvisionalNote(res, a, area, lv) {
+  const ids = range(`prov.${area}.`, 3, 6);
+  if (lv >= 2 && allAnswered(a, ids)) {
+    const s = sumIds(a, ids);
+    res.scales.push(PROVISIONAL_SCALE[area]);
+    res.extra = T(`Nível 2 com perguntas provisórias: ${s}/16 (teste, não muda o resultado)`, `Level 2 with provisional questions: ${s}/16 (test only, does not change the result)`);
+  }
+}
+
+// ---------- Quality flags ----------
+function median(arr) { if (!arr.length) return null; const s = arr.slice().sort((x, y) => x - y); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+function computeFlags(state) {
+  const a = state.answers;
+  let inconsistent = false;
+  if (a['ctrl.1'] === 1 && a['phq.2'] === 0) inconsistent = true;
+  if (a['ctrl.1'] === 0 && a['phq.2'] === 3) inconsistent = true;
+  if (a['ctrl.2'] === 1 && a['gad.2'] === 0) inconsistent = true;
+  if (a['ctrl.2'] === 0 && a['gad.2'] === 3) inconsistent = true;
+  const med = median(state.gaps || []);
+  const fast = (state.gaps || []).length >= 10 && med != null && med < 1000;
+  // Straight-lining: same option position on 90%+ of official multi-option items
+  const pos = [];
+  Object.keys(a).forEach((id) => {
+    if (/^(who5|phq|gad|asrs|k10)\./.test(id) && typeof a[id] === 'number') {
+      const optKey = id.startsWith('who5') ? 'who5' : id.startsWith('asrs') ? 'asrs' : id.startsWith('k10') ? 'k10' : 'phq';
+      pos.push(OPT[optKey].values.indexOf(a[id]));
+    }
+  });
+  let straight = false;
+  if (pos.length >= 12) {
+    const counts = {}; pos.forEach((p) => { counts[p] = (counts[p] || 0) + 1; });
+    straight = Math.max(...Object.values(counts)) / pos.length >= 0.9;
+  }
+  const safety = a['phq.9'] == null ? null : a['phq.9'] === 'skip' ? 'skip' : a['phq.9'] > 0 ? 'yes' : 'no';
+  return { inconsistent, fast, straight, quality: inconsistent || fast || straight, safety };
+}
+
+function maxBand(res) { let m = 0; Object.values(res).forEach((r) => { if (r.assessed && r.band > m) m = r.band; }); return m; }
+
+if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags, level1Modules, level1General, level2Modules, level3Modules, visibleItems, moduleComplete, maxBand, buildCards };
+
+// ---------- App (UI) ----------
+(function () {
+  const root = document.getElementById('app');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function store(key, val) { try { if (val === undefined) return window.localStorage.getItem(key); window.localStorage.setItem(key, val); } catch (e) { return null; } return null; }
+  function initialLang() {
+    const saved = store('norte.lang');
+    if (saved && LOCALES[saved]) return saved;
+    const nav = (navigator.language || '').toLowerCase();
+    return nav.startsWith('pt') ? 'pt' : 'en';
+  }
+
+  const fresh = () => ({
+    view: 'welcome', setup: { age: null, country: null, baby: null, consent: false },
+    answers: {}, gaps: [], lastAt: null, level: 1, pages: [], cardKey: null, levelsDone: {},
+    error: null, skipped: {}, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
+  });
+  const state = Object.assign(fresh(), { lang: initialLang(), points: parseInt(store('norte.points') || '0', 10) || 0 });
+  let advanceTimer = null, breathTimer = null, toastTimer = null;
+  const EXP_KEYS = ['general', 'ring', 'colors', 'interact'];
+  const exp = (() => { const o = { general: true, ring: true, colors: true, interact: true }; try { const raw = store('nort.exp'); if (raw) { const p = JSON.parse(raw); EXP_KEYS.forEach((k) => { if (typeof p[k] === 'boolean') o[k] = p[k]; }); } } catch (e) { /* ignore */ } return o; })();
+  const AREA_ORDER = AREAS.map((a) => a.id);
+  // Golden-angle spacing squeezed into 25°–330° so no area reads as an alarm red.
+  function areaHue(area) { const i = AREA_ORDER.indexOf(area); return i < 0 ? null : Math.round(25 + ((40 + i * 137.5) % 360) * 305 / 360); }
+  function acOn(area) { return exp.colors && areaHue(area) !== null; }
+  function acVar(area) { return acOn(area) ? `--h:${areaHue(area)};` : ''; }
+  function arc(cx, cy, r, a0, a1) {
+    const p = (a) => { const q = (a - 90) * Math.PI / 180; return `${(cx + r * Math.cos(q)).toFixed(2)} ${(cy + r * Math.sin(q)).toFixed(2)}`; };
+    return `M${p(a0)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${p(a1)}`;
+  }
+  function ringSegments(items, size, r, sw, gap) {
+    const step = 360 / items.length;
+    return items.map((it, k) => `<path class="seg seg-${it.state}${it.just ? ' just' : ''}${acOn(it.area) ? ' ac' : ''}" style="${acVar(it.area)}" d="${arc(size / 2, size / 2, it.r || r, k * step + gap / 2, (k + 1) * step - gap / 2)}" stroke-width="${it.sw || sw}"/>`).join('');
+  }
+
+  // ---------- helpers ----------
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const S = () => u(state.lang);
+  function refLookup(path) { return path.split('.').reduce((o, k) => (o ? o[k] : undefined), S()); }
+  function tx(x) { if (x == null) return ''; if (x.ref) return refLookup(x.ref) || ''; return pick(x, state.lang); }
+  function addPoints(n) { state.points += n; store('norte.points', String(state.points)); }
+  function moduleTitle(m) {
+    if (m.titleKey) { const vars = {}; if (m.titleVars) Object.keys(m.titleVars).forEach((k) => { vars[k] = tx(m.titleVars[k]); }); return fmt(S()[m.titleKey], vars); }
+    return tx(m.title);
+  }
+  function optLabels(optKey) { const o = OPT[optKey]; return o.labels[state.lang] || o.labels[FALLBACK_LOCALE]; }
+  function areaName(area) { return AREAS_BY_ID[area] ? tx(AREAS_BY_ID[area].name) : ''; }
+  function chapterTitle(card) {
+    const m = card.mod;
+    if (m.id.startsWith('l3-') || card.area === 'safety' || card.area === 'controls' || card.area === 'history') return moduleTitle(m);
+    return areaName(card.area) || moduleTitle(m);
+  }
+  function tint(area) { return 'tint-' + (AREA_TINT[area] || 'sky'); }
+
+  // ---------- shared pieces ----------
+  const NORTH = '<svg class="mark" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 3.5 L14.5 10 L11.8 9.2 L11.8 15 L10.2 15 L10.2 9.2 L7.5 10 Z" style="fill: var(--coral)"/></svg>';
+
+  function header() {
+    const opts = Object.keys(LOCALES).map((k) => `<option value="${k}"${k === state.lang ? ' selected' : ''}>${esc(LOCALES[k].name)}</option>`).join('');
+    return `<header class="top">
+      <div class="brand">${NORTH}<span class="brand-name">nort</span></div>
+      <div class="top-right">
+        <span class="points" title="${esc(S().pointsHint)}"><span class="star" aria-hidden="true">✦</span> <span class="points-n">${state.points}</span> <span class="points-l">${esc(S().points)}</span></span>
+        <label class="lang"><span class="sr">${esc(S().language)}</span>
+          <select id="lang-select" aria-label="${esc(S().language)}">${opts}<option disabled>${esc(S().moreLanguages)}</option></select>
+        </label>
+      </div>
+    </header>
+    <p class="proto" role="note">${esc(S().prototype)}</p>`;
+  }
+
+  function helpBlock(country) {
+    const s = S();
+    const line = (h) => `<li><span class="help-name">${esc(tx(h.name))}</span> <a class="help-num" href="tel:${h.num.replace(/\s/g, '')}">${esc(h.num)}</a></li>`;
+    const main = (country === 'AU' || country === 'BR') ? `<ul class="help">${HELP[country].map(line).join('')}</ul>` : `<p>${esc(s.crisisOther)} <a href="https://findahelpline.com">findahelpline.com</a></p>`;
+    const others = ['AU', 'BR'].filter((c) => c !== country).map((c) => `${esc(s.countries[c])}: ${HELP[c].map((h) => `${esc(tx(h.name))} ${esc(h.num)}`).join(' · ')}`).join(' — ');
+    return `${main}<p class="help-other">${esc(s.crisisOtherCountries)} ${others}${country !== 'OTHER' ? ` — <a href="https://findahelpline.com">findahelpline.com</a>` : ''}</p>`;
+  }
+
+  // ---------- welcome ----------
+  // ---------- old-style compass drawing ----------
+  function rose(c, tipMain, tipMid, inner) {
+    const P = (r, deg) => { const a = deg * Math.PI / 180; return `${(c + r * Math.sin(a)).toFixed(1)} ${(c - r * Math.cos(a)).toFixed(1)}`; };
+    let dark = '', light = '';
+    for (let i = 0; i < 8; i++) {
+      const a = i * 45; const tip = i % 2 === 0 ? tipMain : tipMid;
+      dark += `M${c} ${c} L${P(tip, a)} L${P(inner, a + 22.5)} Z `;
+      light += `M${c} ${c} L${P(tip, a)} L${P(inner, a - 22.5)} Z `;
+    }
+    return `<path class="rose-d" d="${dark}"/><path class="rose-l" d="${light}"/>`;
+  }
+  const ROSE_BIG = rose(150, 100, 76, 26);
+  const DIAL_MINI = `<svg class="mini-dial" viewBox="0 0 200 200" aria-hidden="true"><circle class="ring" cx="100" cy="100" r="97"/><circle class="ring-thin" cx="100" cy="100" r="92"/><circle class="tick-minor tm-mini" cx="100" cy="100" r="89.5"/><circle class="tick-major tj-mini" cx="100" cy="100" r="88"/><circle class="ring-inner" cx="100" cy="100" r="80"/>${rose(100, 76, 66, 18)}</svg>`;
+  const NEEDLE_MINI = '<svg class="ind" viewBox="0 0 200 200"><path class="nd-s1" d="M100 170 L100 100 L92 136 Z"/><path class="nd-s2" d="M100 170 L108 136 L100 100 Z"/><path class="nd-n1" d="M100 22 L100 100 L91 62 Z"/><path class="nd-n2" d="M100 22 L109 62 L100 100 Z"/></svg>';
+
+  // ---------- compass (welcome) ----------
+  const compass = { deg: -140, found: false, dragging: false, sensor: 'idle', onOrient: null, timer: null, asked: false };
+  const norm = (a) => ((a % 360) + 540) % 360 - 180;
+  const toNorth = (a) => a - norm(a);
+  const hasSensor = typeof window.DeviceOrientationEvent !== 'undefined' && !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  // Inside the claude.ai viewer the page runs in a sandboxed frame that blocks motion sensors, so only offer the sensor on the app's own address.
+  const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+  const canSense = hasSensor && !inFrame;
+  function sensorSheetOpen() { return state.view === 'welcome' && canSense && !compass.asked && compass.sensor === 'idle' && !compass.found; }
+  function sensorSheet() {
+    const s = S();
+    return `<div class="overlay" id="sensor-sheet"><div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="sensor-h" aria-describedby="sensor-p" tabindex="-1" id="sensor-dialog">
+      <span class="sheet-ico" aria-hidden="true">${NORTH}</span>
+      <h2 id="sensor-h">${esc(s.sensorAskTitle)}</h2>
+      <p id="sensor-p">${esc(s.sensorAskText)}</p>
+      <div class="sheet-actions"><button class="btn primary big" data-act="sensor-yes">${esc(s.sensorAllow)}</button><button class="btn link" data-act="sensor-no">${esc(s.sensorNotNow)}</button></div>
+    </div></div>`;
+  }
+  function closeSensorSheet() { const sh = document.getElementById('sensor-sheet'); if (sh) sh.remove(); const go = root.querySelector('.compass-go'); if (go) go.focus({ preventScroll: true }); }
+  function compassHintKey() {
+    if (compass.found) return 'compassFound';
+    if (compass.sensor === 'asking' || compass.sensor === 'waiting') return 'compassWait';
+    if (compass.sensor === 'on') return 'compassTurn';
+    if (compass.sensor === 'off') return 'compassOff';
+    if (compass.sensor === 'denied') return 'compassDenied';
+    return 'compassDrag';
+  }
+  function compassUpdate() {
+    const block = document.getElementById('compass-block'); if (!block) return;
+    const needle = document.getElementById('needle');
+    needle.style.transform = `rotate(${Math.round(compass.deg * 10) / 10}deg)`;
+    needle.classList.toggle('drag', compass.dragging || reduceMotion);
+    needle.classList.toggle('live', compass.sensor === 'on');
+    block.classList.toggle('found', compass.found);
+    block.classList.toggle('wob', !compass.found && !compass.dragging && compass.sensor !== 'on' && !reduceMotion);
+    const hint = document.getElementById('compass-hint'); const txt = S()[compassHintKey()];
+    if (hint && hint.textContent !== txt) hint.textContent = txt;
+  }
+  function stopSensor() {
+    if (compass.onOrient) { window.removeEventListener('deviceorientationabsolute', compass.onOrient); window.removeEventListener('deviceorientation', compass.onOrient); }
+    compass.onOrient = null; clearTimeout(compass.timer); compass.timer = null;
+  }
+  function startSensor() {
+    if (compass.onOrient) return;
+    const useAbsolute = 'ondeviceorientationabsolute' in window;
+    compass.onOrient = (e) => {
+      let h = null;
+      if (typeof e.webkitCompassHeading === 'number') h = e.webkitCompassHeading;
+      else if (typeof e.alpha === 'number' && e.absolute !== false) h = 360 - e.alpha;
+      if (h === null) return;
+      compass.granted = true;
+      if (compass.dragging || compass.found) return;
+      const angle = (window.screen && window.screen.orientation && typeof window.screen.orientation.angle === 'number') ? window.screen.orientation.angle : 0;
+      const target = norm(h + angle);
+      const next = compass.deg + norm(target - compass.deg);
+      if (Math.abs(target) < 12) { stopSensor(); compass.deg = toNorth(next); compass.found = true; compass.sensor = 'idle'; compassUpdate(); return; }
+      if (compass.sensor === 'on' && Math.abs(next - compass.deg) < 0.8) return;
+      compass.deg = next; compass.sensor = 'on'; compassUpdate();
+    };
+    window.addEventListener(useAbsolute ? 'deviceorientationabsolute' : 'deviceorientation', compass.onOrient);
+    compass.sensor = 'waiting'; compassUpdate();
+    compass.timer = setTimeout(() => { if (compass.sensor === 'waiting') { stopSensor(); compass.sensor = 'off'; compassUpdate(); } }, 2500);
+  }
+  function enableSensor() {
+    if (compass.onOrient || compass.sensor !== 'idle') return;
+    const DOE = window.DeviceOrientationEvent;
+    compass.sensor = 'asking'; compassUpdate();
+    if (DOE && typeof DOE.requestPermission === 'function') {
+      DOE.requestPermission().then((r) => { if (compass.sensor !== 'asking' || state.view !== 'welcome') return; if (r === 'granted') startSensor(); else { compass.sensor = 'denied'; compassUpdate(); } })
+        .catch(() => { if (compass.sensor !== 'asking' || state.view !== 'welcome') return; compass.sensor = 'denied'; compassUpdate(); });
+    } else if (DOE) startSensor();
+    else { compass.sensor = 'off'; compassUpdate(); }
+  }
+  function dialAngle(e, dial) {
+    const r = dial.getBoundingClientRect();
+    return Math.atan2(e.clientX - (r.left + r.width / 2), -(e.clientY - (r.top + r.height / 2))) * 180 / Math.PI;
+  }
+  function initCompass() {
+    const dial = document.getElementById('dial'); if (!dial) return;
+    dial.addEventListener('pointerdown', (e) => { try { dial.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } compass.dragging = true; compass.found = false; compass.deg = dialAngle(e, dial); compassUpdate(); });
+    dial.addEventListener('pointermove', (e) => { if (!compass.dragging) return; compass.deg = dialAngle(e, dial); compassUpdate(); });
+    const up = () => { if (!compass.dragging) return; const d = norm(compass.deg); compass.dragging = false; compass.found = Math.abs(d) < 18; compass.deg = compass.found ? 0 : d; if (compass.found) { stopSensor(); compass.sensor = 'idle'; } else if (canSense && compass.granted && !compass.onOrient) { compass.sensor = 'idle'; startSensor(); } compassUpdate(); };
+    dial.addEventListener('pointerup', up); dial.addEventListener('pointercancel', up);
+    compassUpdate();
+    if (canSense && compass.granted && compass.sensor === 'idle' && !compass.found && !compass.onOrient) startSensor();
+  }
+
+  function viewWelcome() {
+    const s = S();
+    const lvl = s.levels.map((l, i) => `<li><span class="lvl-n">${i + 1}</span><div><strong>${esc(l[0])}</strong><p>${esc(l[1])}</p></div></li>`).join('');
+    return `<main class="wrap welcome">
+      <section class="compass-hero">
+        <div class="hero-head">
+          <h1 class="compass-title">${esc(s.compassTitle)}</h1>
+        </div>
+        <div class="compass-block" id="compass-block">
+          <div class="north-mark" aria-hidden="true"><svg viewBox="0 0 14 9"><path d="M0 0 L14 0 L7 9 Z"/></svg></div>
+          <div class="compass">
+            <div class="dial" id="dial" aria-hidden="true">
+              <svg class="dial-face" viewBox="0 0 300 300"><circle class="ring" cx="150" cy="150" r="148"/><circle class="ring-thin" cx="150" cy="150" r="143"/><circle class="tick-minor" cx="150" cy="150" r="139.5"/><circle class="tick-major" cx="150" cy="150" r="137"/><circle class="ring-inner" cx="150" cy="150" r="128"/>${ROSE_BIG}${s.compassPoints.map((p, i) => { const a = i * Math.PI / 2; return `<text class="pt${i === 0 ? ' pt-n' : ''}" x="${(150 + 114 * Math.sin(a)).toFixed(1)}" y="${(150 - 114 * Math.cos(a)).toFixed(1)}">${esc(p)}</text>`; }).join('')}</svg>
+              <div class="needle" id="needle"><div class="needle-wob"><svg viewBox="0 0 300 300"><path class="nd-s1" d="M150 226 L150 150 L141 190 Z"/><path class="nd-s2" d="M150 226 L159 190 L150 150 Z"/><path class="nd-n1" d="M150 52 L150 150 L138 102 Z"/><path class="nd-n2" d="M150 52 L162 102 L150 150 Z"/></svg></div></div>
+            </div>
+            <button class="compass-go" data-act="start">${esc(s.start)}</button>
+          </div>
+        </div>
+        <p class="compass-hint" id="compass-hint" aria-live="polite">${esc(s[compassHintKey()])}</p>
+        <div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
+        <p class="small center">${esc(s.disclaimer)}</p>
+      </section>
+      <section class="hero-more">
+        <p class="eyebrow">${esc(s.tagline)}</p>
+        <h2 class="h-more">${esc(s.welcomeTitle)}</h2>
+        <p class="lead">${esc(s.welcomeLead)}</p>
+      </section>
+      <section class="two">
+        <div class="soft-card tint-mint"><h2>${esc(s.isTitle)}</h2><ul class="ticks">${s.isList.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="soft-card tint-sand"><h2>${esc(s.isntTitle)}</h2><ul class="crosses">${s.isntList.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      </section>
+      <section class="soft-card tint-sky"><h2>${esc(s.howTitle)}</h2><ol class="levels">${lvl}</ol></section>
+      <p class="small">${esc(s.aboutLang)}</p>
+    </main>`;
+  }
+
+  // ---------- setup / under 18 ----------
+  function choice(name, values, labels, cur) {
+    return `<div class="choices">${values.map((v, i) => { const id = `${name}-${i}`; return `<label class="choice" for="${id}"><input type="radio" id="${id}" name="${name}" data-setup="${name}" data-val="${v}"${cur === v ? ' checked' : ''}><span>${esc(labels[i])}</span></label>`; }).join('')}</div>`;
+  }
+  function viewSetup() {
+    const s = S(); const st = state.setup;
+    return `<main class="wrap narrow">
+      <h1 class="h-page">${esc(s.setupTitle)}</h1>
+      <fieldset class="field"><legend>${esc(s.ageQ)}</legend>${choice('age', [1, 0], [s.yes, s.no], st.age)}</fieldset>
+      <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
+      <fieldset class="field"><legend>${esc(s.babyQ)}</legend>${choice('baby', [1, 0, 'skip'], [s.yes, s.no, s.preferNot], st.baby)}</fieldset>
+      <section class="consent">
+        <h2>${esc(s.consentTitle)}</h2>
+        <p>${esc(s.consentText)}</p>
+        <label class="check" for="consent"><input type="checkbox" id="consent" data-setup="consent"${st.consent ? ' checked' : ''}><span>${esc(s.consentCheck)}</span></label>
+      </section>
+      ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
+      <div class="nav"><button class="btn" data-act="home">${esc(s.back)}</button><button class="btn primary" data-act="setup-done">${esc(s.continue)}</button></div>
+    </main>`;
+  }
+  function viewUnder18() {
+    const s = S();
+    return `<main class="wrap narrow"><h1 class="h-page">${esc(s.under18Title)}</h1><p class="lead">${esc(s.under18Text)}</p>
+      <section class="soft-card tint-peach"><h2>${esc(s.under18Help)}</h2>
+      <ul class="help"><li><span class="help-name">${esc(s.kidsHelpline)}</span> <a class="help-num" href="tel:1800551800">1800 55 1800</a></li><li><span class="help-name">CVV (${esc(s.countries.BR)})</span> <a class="help-num" href="tel:188">188</a></li></ul>
+      <p class="help-other"><a href="https://findahelpline.com">findahelpline.com</a></p></section>
+      <div class="nav"><button class="btn" data-act="home">${esc(s.back)}</button></div></main>`;
+  }
+
+  // ---------- quiz cards ----------
+  // Warm-up modules have no intro card of their own.
+  function currentCards() { return buildCards(state.pages, state.answers, state.level, state.skipped).filter((c) => !(c.type === 'chapter' && c.area === 'warm')); }
+  function currentIndex(cards) { let i = cards.findIndex((c) => c.key === state.cardKey); if (i < 0) i = 0; state.cardKey = cards[i].key; return i; }
+
+  function sliderControl(it) {
+    const o = OPT[it.opt]; const labels = optLabels(it.opt); const n = o.values.length;
+    const cur = state.answers[it.id];
+    const answered = cur != null;
+    const idx = answered ? o.values.indexOf(cur) : Math.floor((n - 1) / 2);
+    const pct = n > 1 ? (idx / (n - 1)) * 100 : 0;
+    const stops = labels.map((l, i) => `<button type="button" class="stop${answered && i === idx ? ' on' : ''}" data-stop="${i}" data-item="${it.id}">${esc(l)}</button>`).join('');
+    return `<div class="slider-wrap${answered ? '' : ' untouched'}" data-slider-wrap="${it.id}" style="--n:${n}">
+      <output class="slider-value" id="sv-${it.id.replace(/\./g, '_')}" aria-live="polite">${esc(answered ? labels[idx] : S().sliderHint)}</output>
+      <div class="slider-track" style="--pct:${pct}%">
+        <input type="range" class="slider" min="0" max="${n - 1}" step="1" value="${idx}" data-slider="${it.id}" data-opt="${it.opt}" aria-label="${esc(tx(it.text))}" aria-valuetext="${esc(answered ? labels[idx] : S().sliderHint)}">
+      </div>
+      <div class="stop-labels">${stops}</div>
+    </div>`;
+  }
+  function choiceControl(it) {
+    const o = OPT[it.opt]; const labels = optLabels(it.opt); const cur = state.answers[it.id];
+    return `<div class="choices big" role="radiogroup" aria-label="${esc(tx(it.text))}">${o.values.map((v, i) => `<button type="button" role="radio" aria-checked="${cur === v}" class="choice-btn${cur === v ? ' on' : ''}" data-choose="${i}" data-item="${it.id}" data-opt="${it.opt}">${esc(labels[i])}</button>`).join('')}</div>`;
+  }
+  function warmControl(it) {
+    const cur = state.answers[it.id];
+    return `<div class="warm-grid${it.warm.opts.length === 4 ? ' four' : ''}" role="radiogroup" aria-label="${esc(tx(it.text))}">${it.warm.opts.map((o, i) => `<button type="button" role="radio" aria-checked="${cur === i}" class="warm-opt${cur === i ? ' on' : ''}" data-warm="${i}" data-item="${it.id}">${warmArt(o[0])}<span>${esc(state.lang === 'pt' ? o[1] : o[2])}</span></button>`).join('')}</div>`;
+  }
+  const SWIPE_OPTS = ['yn', 'ynSkip', 'ynDontKnow'];
+  function swipeOk(it, area) { return exp.interact && SWIPE_OPTS.includes(it.opt) && !SKIPPABLE.includes(area) && area !== 'safety'; }
+  function swipeControl(it) {
+    const o = OPT[it.opt]; const labels = optLabels(it.opt); const yes = o.values.indexOf(1), no = o.values.indexOf(0);
+    return `<div class="swipe" data-swipe="${it.id}" data-opt="${it.opt}" data-yes="${yes}" data-no="${no}" aria-hidden="true"><span class="sw-l">${esc(labels[no])}</span><span class="sw-knob"><svg viewBox="0 0 20 20"><path d="M10 2 L13.5 10 L10 18 L6.5 10 Z"/></svg></span><span class="sw-r">${esc(labels[yes])}</span></div><p class="small center sw-hint" aria-hidden="true">${esc(S().swipeHint)}</p>`;
+  }
+  function textControl(it) {
+    const id = it.id.replace(/\./g, '_');
+    return `<label class="sr" for="${id}">${esc(tx(it.text))}</label><textarea id="${id}" data-text="${it.id}" rows="3" placeholder="${esc(S().optional)}">${esc(state.answers[it.id] || '')}</textarea>`;
+  }
+
+  function viewQuiz() {
+    const s = S();
+    const cards = currentCards();
+    const i = currentIndex(cards);
+    const card = cards[i];
+    const chapters = cards.filter((c) => c.type === 'chapter');
+    const chIdx = cards.slice(0, i + 1).filter((c) => c.type === 'chapter').length;
+    const pct = Math.round((i / cards.length) * 100);
+    const isLast = i === cards.length - 1;
+    const dots = chapters.map((c, k) => `<span class="dot ${tint(c.area)}${k + 1 < chIdx ? ' done' : k + 1 === chIdx ? ' now' : ''}"></span>`).join('');
+    const bar = `<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>`;
+    const top = exp.ring
+      ? `<div class="quiz-top ring-top"><svg class="prog-ring" viewBox="0 0 72 72" aria-hidden="true">${ringSegments(chapters.map((c, k) => ({ area: c.area, state: k + 1 < chIdx ? 'done' : k + 1 === chIdx ? 'now' : 'todo', just: c.key === state.justDone })), 72, 29, 9, 5)}<path class="nd-n2" d="M36 17 L40 36 L36 33 L32 36 Z"/><path class="nd-s2" d="M36 55 L40 36 L36 39 L32 36 Z"/></svg><div class="ring-meta"><span>${esc(s.level)} ${state.level}</span><strong>${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: Math.max(chIdx, 1), n: chapters.length }))}</strong></div>${bar}</div>`
+      : `<div class="quiz-top"><div class="quiz-meta"><span>${esc(s.level)} ${state.level}</span><span>${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: Math.max(chIdx, 1), n: chapters.length }))}</span></div>
+      ${bar}
+      <div class="dots" aria-hidden="true">${dots}</div></div>`;
+    let body = '';
+    const backBtn = `<button class="btn link" data-act="back">← ${esc(s.back)}</button>`;
+    if (card.type === 'chapter') {
+      const m = card.mod;
+      const notes = [];
+      const skippable = SKIPPABLE.includes(card.area);
+      if (m.first) notes.push(`<p class="note">${esc(s.generalIntro)}</p>`);
+      if (card.skipped) notes.push(`<p class="note">${esc(s.skippedTopic)}</p>`);
+      else if (card.area === 'memory') notes.push(`<p class="note sensitive">${esc(s.memoryNote)}</p>`);
+      else if (skippable) notes.push(`<p class="note sensitive">${esc(s.sensitiveTopic)}</p>`);
+      else if (m.sensitive || card.area === 'safety') notes.push(`<p class="note">${esc(s.sensitiveNote)}</p>`);
+      if (m.provisional && !card.skipped) notes.push(`<p class="note prov">${esc(m.toImport ? s.toImportNote : s.provisionalNote)}</p>`);
+      const mainBtns = card.skipped
+        ? `<button class="btn" data-act="unskip" data-area="${card.area}">${esc(s.answerNow)}</button><button class="btn primary big" data-act="advance">${esc(s.continue)}</button>`
+        : `${skippable ? `<button class="btn" data-act="skip" data-area="${card.area}">${esc(s.skipTopic)}</button>` : ''}<button class="btn primary big" data-act="advance">${esc(s.letsGo)}</button>`;
+      body = `<section class="qcard chapter ${reduceMotion ? '' : 'enter'}">
+        <div class="ill-wrap">${DIAL_MINI}<span class="rim" aria-hidden="true">${NEEDLE_MINI}</span><span class="ill-core">${icon(card.area)}</span></div>
+        <p class="eyebrow">${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: chIdx, n: chapters.length }))} · ${esc(card.count === 1 ? s.questions1 : fmt(s.questionsN, { n: card.count }))}</p>
+        <h1 class="ch-title">${esc(chapterTitle(card))}${m.provisional ? ` <span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}</h1>
+        <p class="ch-sub">${esc(m.subKey ? s[m.subKey] : tx(AREA_INTRO[card.area]))}</p>
+        ${notes.join('')}
+        <div class="qnav">${backBtn}<div class="qnav-main">${mainBtns}</div></div>
+      </section>`;
+    } else if (card.type === 'breath') {
+      body = `<section class="qcard breath ${reduceMotion ? '' : 'enter'}">
+        <h1 class="ch-title">${esc(s.breathTitle)}</h1>
+        <p class="ch-sub">${esc(s.breathText)}</p>
+        <div class="breath-circle${reduceMotion ? ' still' : ''}" aria-hidden="true"><span id="breath-word">${esc(reduceMotion ? '' : s.breathIn)}</span></div>
+        ${reduceMotion ? `<p class="small">${esc(s.breathStatic)}</p>` : ''}
+        <div class="qnav">${backBtn}<button class="btn primary big" data-act="advance">${esc(s.continue)}</button></div>
+      </section>`;
+    } else {
+      const it = card.item; const sec = card.sec; const m = card.mod;
+      let ctx = '';
+      if (sec.introKey && sec.items[0] === it) {
+        ctx += `<div class="context"><p>${esc(s[sec.introKey])}</p>`;
+        if (sec.examplesKey) ctx += `<details class="examples"><summary>${esc(s.seeExamples)}</summary><ul>${s[sec.examplesKey].map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details>`;
+        ctx += `</div>`;
+      }
+      if (it.type === 'warm' && it.id === WARMUPS[0].id) ctx += `<p class="note">${esc(s.warmFirst)}</p>`;
+      if (sec.stem) ctx += `<p class="stem">${esc(tx(sec.stem))}</p>`;
+      if (sec.stemKey) ctx += `<p class="stem">${esc(s[sec.stemKey])}</p>`;
+      const control = it.type === 'warm' ? warmControl(it) : it.type === 'text' ? textControl(it) : (SLIDER_OPTS.includes(it.opt) ? sliderControl(it) : (swipeOk(it, card.area) ? swipeControl(it) : '') + choiceControl(it));
+      const answered = it.optional || state.answers[it.id] != null;
+      const needsNext = it.type === 'text' || it.type === 'warm' || SLIDER_OPTS.includes(it.opt) || answered || isLast;
+      const nextLabel = isLast ? (card.area === 'memory' ? s.memoryDone : fmt(s.finishLevel, { n: state.level })) : (it.type === 'warm' && state.answers[it.id] == null ? s.skipWarm : s.next);
+      body = `<section class="qcard ${reduceMotion ? '' : 'enter'}">
+        <div class="q-area">${icon(card.area, 'mini-ill')}<span>${esc(chapterTitle(card))}</span>${m.provisional ? `<span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}${it.type === 'warm' ? `<span class="chip chip-prov">${esc(s.warmChip)}</span>` : ''}</div>
+        ${ctx}
+        <h1 class="q-text" id="q-text">${esc(tx(it.text))}</h1>
+        ${control}
+        ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
+        <div class="qnav">${backBtn}${needsNext ? `<button class="btn primary" data-act="advance" id="next-btn"${answered ? '' : ' disabled'}>${esc(nextLabel)}</button>` : ''}</div>
+      </section>`;
+    }
+    return `<main class="stage ${tint(card.area)}${acOn(card.area) ? ' ac' : ''}" style="${acVar(card.area)}"><div class="stage-inner">${top}${body}</div></main>`;
+  }
+
+  // ---------- results ----------
+  function basisPanel(key) {
+    const s = S(); const m = SCALES[key];
+    if (!m) return '';
+    const tStatus = state.lang === 'en' ? 'original' : (m.trans[state.lang] ? m.trans[state.lang] : 'missing');
+    const rows = [[s.f.scale, `${m.name} — ${m.full}`], [s.f.authors, m.authors], [s.f.items, m.items], [s.f.license, s.lic[m.license]], [s.f.text, s.txt[m.text]], [s.f.trans, m.text === 'official' ? s.tr[tStatus] : '—'], [s.f.cite, m.cite]];
+    return `<dl class="basis-dl">${rows.map((r) => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>`;
+  }
+  function viewResults() {
+    const s = S();
+    const lvl = state.resultsLevel;
+    const res = computeAreas(state, lvl);
+    const flags = computeFlags(state);
+    const mb = maxBand(res);
+    const rec = mb === 2 ? s.recHigh : mb === 1 ? s.recAttention : s.recNone;
+    const assessed = AREAS.filter((a) => res[a.id] && res[a.id].assessed).sort((x, y) => res[y.id].band - res[x.id].band);
+    const notAssessed = AREAS.filter((a) => !(res[a.id] && res[a.id].assessed) && !(a.id === 'postpartum' && state.setup.baby !== 1));
+    const flaggedAreas = assessed.filter((a) => res[a.id].band >= 1);
+    const calmAreas = assessed.filter((a) => res[a.id].band === 0);
+    const bubbles = flaggedAreas.map((a, i) => { const r = res[a.id]; return `<button class="bubble band-${r.band}${acOn(a.id) ? ' ac' : ''}" data-act="goto" data-area="${a.id}" style="${acVar(a.id)}--d:${(5.6 + (i % 4) * 0.7).toFixed(1)}s;--dl:${(-i * 1.3).toFixed(1)}s"><span class="b-name">${esc(tx(a.name))}</span><span class="b-band">${esc(s.bands[r.band])}</span></button>`; }).join('');
+    const calmChips = calmAreas.map((a) => `<button class="calm-chip" data-act="goto" data-area="${a.id}">${acOn(a.id) ? `<span class="cdot ac" style="${acVar(a.id)}" aria-hidden="true"></span>` : ''}${esc(tx(a.name))}</button>`).join('');
+    const ringItems = AREAS.filter((a) => !(a.id === 'postpartum' && state.setup.baby !== 1)).map((a) => { const r = res[a.id]; if (!r || !r.assessed) return { area: a.id, state: 'off' }; return r.band >= 1 ? { area: a.id, state: 'flag', sw: r.band === 2 ? 24 : 18, r: r.band === 2 ? 103 : 100 } : { area: a.id, state: 'done' }; });
+    const yourCompass = exp.ring ? `<div class="your-compass"><div class="yc-ring"><svg viewBox="0 0 240 240" aria-hidden="true">${ringSegments(ringItems, 240, 96, 10, 3)}<circle class="yc-inner" cx="120" cy="120" r="80"/>${rose(120, 74, 56, 16)}</svg><div class="yc-center"><strong>${flaggedAreas.length}</strong><span>${esc(flaggedAreas.length === 1 ? s.withSignal1 : s.withSignal)}</span></div></div><p class="small center">${esc(s.ringLegend)}</p></div>` : '';
+    const tiles = `${bubbles ? `<div class="bubbles">${bubbles}</div>` : ''}
+      ${calmAreas.length ? `<div class="calm-card"><strong id="calm-h">${esc(s.bands[0])} · ${calmAreas.length}</strong><div class="calm-chips" role="group" aria-labelledby="calm-h">${calmChips}</div></div>` : ''}
+      ${notAssessed.length ? `<p class="small">${esc(s.notAssessedShort)}: ${esc(notAssessed.map((a) => tx(a.name)).join(', '))}</p>` : ''}`;
+    const row = (a) => {
+      const r = res[a.id];
+      return `<li class="area band-${r.band}" id="area-${a.id}" tabindex="-1">
+        <div class="area-top">${icon(a.id, 'mini-ill')}<h3>${esc(tx(a.name))}</h3><span class="pill pill-${r.band}">${esc(s.bands[r.band])}</span></div>
+        <p class="score">${esc(tx(r.score))}</p>
+        ${r.extra ? `<p class="score extra">${esc(tx(r.extra))}</p>` : ''}
+        <p class="conf">${esc(s.confidence)}: <span class="chip chip-${r.confidence}">${esc(s.conf[r.confidence])}</span>${r.provisional ? ` <span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}</p>
+        <details data-basis="${a.id}"><summary>${esc(s.basisBtn)}</summary>${r.scales.map(basisPanel).join('')}</details>
+      </li>`;
+    };
+    const attn = assessed.filter((a) => res[a.id].band >= 1);
+    const calm = assessed.filter((a) => res[a.id].band === 0);
+    const lists = (attn.length ? `<h2 class="group-h">${esc(s.groupAttention)} (${attn.length})</h2><ul class="areas">${attn.map(row).join('')}</ul>` : '')
+      + (calm.length ? `<h2 class="group-h">${esc(s.groupCalm)} (${calm.length})</h2><ul class="areas">${calm.map(row).join('')}</ul>` : '');
+    const flagged = attn.length > 0;
+    let next = '';
+    if (lvl === 1) next = !flagged ? `<p class="small">${esc(s.noFlags)}</p>` : modulesFor(2, state).length ? `<button class="btn primary big" data-act="go2">${esc(s.goLevel2)}</button>` : `<p class="small">${esc(s.noLevel2)}</p>`;
+    if (lvl === 2) next = flagged ? `<button class="btn primary big" data-act="go3">${esc(s.goLevel3)}</button>` : `<p class="small">${esc(s.noFlags)}</p>`;
+    const safety = flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : flags.safety === 'skip' ? `<p class="note">${esc(s.safetySkipped)}</p>` : '';
+    return `<main class="wrap results">
+      <section class="done-banner ${reduceMotion ? '' : 'enter'}">
+        <span class="done-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div><p class="eyebrow">${esc(fmt(s.levelDone, { n: lvl }))}${state.justEarned ? ` · ${esc(fmt(s.earned, { n: state.justEarned }))}` : ''}</p>
+        <h1 class="h-page">${esc(lvl === 3 ? s.resultsFinal : fmt(s.resultsTitleL, { n: lvl }))}</h1></div>
+      </section>
+      <section class="summary band-${mb}"><strong class="next-step">${esc(s.nextStep)}</strong><p class="rec">${esc(rec)}</p>${res.memory && res.memory.assessed && res.memory.band >= 1 ? `<p class="rec">${esc(s.recMemory)}</p>` : ''}<p class="small">${esc(s.disclaimer)}</p></section>
+      ${safety}
+      ${flags.quality ? `<p class="note warn">${esc(s.inconsistent)}</p>` : ''}
+      <section class="map"><h2 class="map-h">${esc(exp.ring ? s.yourCompass : s.mapTitle)}</h2>${yourCompass}<p class="small">${esc(s.tapHint)}</p>${tiles}${notAssessed.length && lvl === 1 ? `<p class="small">${esc(s.notAssessedNote)}</p>` : ''}</section>
+      ${lists}
+      <div class="actions">${next}<button class="btn" data-act="report">${esc(s.seeReport)}</button><button class="btn link" data-act="restart">${esc(s.restart)}</button></div>
+      <p class="small">${esc(s.pointsHint)}</p>
+    </main>`;
+  }
+
+  // ---------- report ----------
+  function reportText() {
+    const s = S();
+    const lvl = state.resultsLevel;
+    const res = computeAreas(state, lvl);
+    const flags = computeFlags(state);
+    const date = new Date().toLocaleDateString(LOCALES[state.lang].htmlLang);
+    const L = [];
+    L.push(`NORT — ${s.reportTitle.toUpperCase()}`);
+    L.push(`${s.reportDate}: ${date}`);
+    L.push(`${s.reportLevel}: ${lvl}`);
+    L.push(s.disclaimer);
+    L.push('');
+    AREAS.forEach((a) => {
+      const r = res[a.id];
+      if (!r || !r.assessed) return;
+      L.push(`• ${tx(a.name)}: ${s.bands[r.band]} — ${tx(r.score)} (${s.confidence.toLowerCase()} ${s.conf[r.confidence]})`);
+      if (r.extra) L.push(`  ${tx(r.extra)}`);
+    });
+    if (lvl >= 3) {
+      L.push(''); L.push(`${s.reportContext}:`);
+      AREAS.forEach((a) => {
+        const d = state.answers[`l3.${a.id}.dur`]; const i = state.answers[`l3.${a.id}.imp`];
+        if (d == null || i == null) return;
+        L.push(`• ${tx(a.name)}: ${optLabels('duration')[OPT.duration.values.indexOf(d)]}; ${s.impactQ} ${optLabels('impact')[OPT.impact.values.indexOf(i)]}`);
+      });
+      const yn = (id) => { const v = state.answers[id]; return v == null ? '—' : optLabels('ynDontKnow')[OPT.ynDontKnow.values.indexOf(v)]; };
+      L.push(`• ${s.profQ} ${yn('l3.prof')}`);
+      L.push(`• ${s.treatQ} ${yn('l3.treat')}`);
+      L.push(`• ${s.familyQ} ${yn('l3.family')}`);
+      if (state.answers['l3.worse']) L.push(`• ${s.worseQ} ${state.answers['l3.worse']}`);
+      if (state.answers['l3.better']) L.push(`• ${s.betterQ} ${state.answers['l3.better']}`);
+    }
+    const sk = Object.keys(state.skipped).filter((k) => state.skipped[k]).map((k) => k.split(':')[1]);
+    if (sk.length) { L.push(''); L.push(`${s.reportSkipped}: ${Array.from(new Set(sk)).map(areaName).join(', ')}`); }
+    L.push(''); L.push(`${s.reportFlags}:`);
+    const notes = [];
+    if (flags.safety === 'yes') notes.push(s.safetyFlag);
+    if (flags.safety === 'skip') notes.push(s.safetySkipped);
+    if (flags.quality) notes.push(s.inconsistent);
+    L.push(notes.length ? notes.map((n) => `• ${n}`).join('\n') : `• ${s.reportNone}`);
+    L.push('');
+    const used = new Set(); Object.values(res).forEach((r) => (r.scales || []).forEach((k) => used.add(k)));
+    L.push(`${s.f.cite}:`);
+    used.forEach((k) => { const m = SCALES[k]; if (m) L.push(`• ${m.name} — ${m.authors}. ${s.txt[m.text]}${state.lang !== 'en' && m.text === 'official' && m.trans[state.lang] === 'provisional' ? ` (${s.trShort})` : ''}.`); });
+    return L.join('\n');
+  }
+  function viewReport() {
+    const s = S();
+    return `<main class="wrap narrow">
+      <h1 class="h-page">${esc(s.reportTitle)}</h1>
+      <p class="lead">${esc(s.reportIntro)}</p>
+      <div class="actions"><button class="btn primary" data-act="copy">${esc(s.copy)}</button><button class="btn" data-act="back-results">${esc(s.backToResults)}</button></div>
+      ${state.copyMsg ? `<p class="note" role="status">${esc(state.copyMsg)}</p>` : ''}
+      <pre class="report" tabindex="0">${esc(reportText())}</pre>
+      <p class="small">${esc(s.pdfNote)}</p>
+    </main>`;
+  }
+
+  function crisisOverlay() {
+    const s = S();
+    return `<div class="overlay"><div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="crisis-h" tabindex="-1" id="crisis">
+      <h2 id="crisis-h">${esc(s.crisisTitle)}</h2>
+      <p>${esc(s.crisisText)}</p>
+      ${helpBlock(state.setup.country)}
+      <p class="small">${esc(s.crisisNote)}</p>
+      <button class="btn primary" data-act="crisis-ok">${esc(s.crisisContinue)}</button>
+    </div></div>`;
+  }
+
+  // ---------- render ----------
+  function render(keepScroll) {
+    clearTimeout(advanceTimer); clearInterval(breathTimer);
+    const y = window.scrollY;
+    document.documentElement.lang = LOCALES[state.lang].htmlLang;
+    document.documentElement.dir = LOCALES[state.lang].dir;
+    let v = '';
+    if (state.view === 'welcome') v = viewWelcome();
+    else if (state.view === 'setup') v = viewSetup();
+    else if (state.view === 'under18') v = viewUnder18();
+    else if (state.view === 'quiz') v = viewQuiz();
+    else if (state.view === 'results') v = viewResults();
+    else if (state.view === 'report') v = viewReport();
+    else if (state.view === 'handback') v = viewHandback();
+    const sheet = !state.crisisOpen && sensorSheetOpen();
+    EXP_KEYS.forEach((k) => document.documentElement.classList.toggle('exp-' + k, exp[k]));
+    root.innerHTML = header() + v + `<footer class="foot">${esc(S().footer)}<br><button class="exp-fab" data-act="exp-open">${esc(S().expButton)}</button></footer>` + (state.crisisOpen ? crisisOverlay() : '') + (sheet ? sensorSheet() : '') + (state.crisisOpen || sheet ? '' : expPanel()) + (state.toast ? toastHtml(state.toast) : '');
+    if (state.expOpen) { const d = document.getElementById('exp-dialog'); if (d && !d.contains(document.activeElement)) d.focus(); }
+    if (state.toast) { clearTimeout(toastTimer); toastTimer = setTimeout(() => { const el = document.getElementById('toast'); if (el) el.classList.add('out'); setTimeout(() => { const e2 = document.getElementById('toast'); if (e2) e2.remove(); }, 400); }, reduceMotion ? 2600 : 1800); state.toast = null; }
+    state.justDone = null;
+    if (sheet) { const d = document.getElementById('sensor-dialog'); if (d) d.focus(); }
+    if (state.crisisOpen) { const d = document.getElementById('crisis'); if (d) d.focus(); }
+    else if (state.view === 'quiz' || state.view === 'handback') { const q = document.getElementById('q-text') || root.querySelector('.ch-title'); if (q && !keepScroll) { q.setAttribute('tabindex', '-1'); q.focus({ preventScroll: true }); } }
+    if (keepScroll) window.scrollTo(0, y); else window.scrollTo(0, 0);
+    if (state.view === 'welcome') initCompass(); else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
+    const word = document.getElementById('breath-word');
+    if (word && !reduceMotion) { let inhale = true; breathTimer = setInterval(() => { inhale = !inhale; word.textContent = inhale ? S().breathIn : S().breathOut; }, 4000); }
+  }
+
+  function expPanel() {
+    const s = S();
+    if (!state.expOpen) return '';
+    return `<div class="overlay" id="exp-sheet"><div class="dialog sheet exp-dialog" role="dialog" aria-modal="true" aria-labelledby="exp-h" tabindex="-1" id="exp-dialog">
+      <h2 id="exp-h">${esc(s.expTitle)}</h2><p class="small">${esc(s.expText)}</p>
+      ${EXP_KEYS.map((k) => `<label class="exp-row" for="exp-${k}"><input type="checkbox" id="exp-${k}" data-exp="${k}"${exp[k] ? ' checked' : ''}><span><strong>${esc(s['exp_' + k])}</strong><span class="small">${esc(s['expd_' + k])}</span></span></label>`).join('')}
+      <button class="btn primary big" data-act="exp-close">${esc(s.expClose)}</button></div></div>`;
+  }
+  const live = document.createElement('div'); live.className = 'sr'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); document.body.appendChild(live);
+  function toastHtml(tst) {
+    setTimeout(() => { live.textContent = ''; setTimeout(() => { live.textContent = `${tst.title} ${tst.more}`; }, 60); }, 0);
+    return `<div class="toast${tst.calm ? ' calm' : ''}${acOn(tst.area) && !tst.calm ? ' ac' : ''}" style="${tst.calm ? '' : acVar(tst.area)}" id="toast" aria-hidden="true"><span class="t-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>${esc(tst.title)}</strong> ${esc(tst.more)}</span></div>`;
+  }
+  function startLevel(n) {
+    state.level = n; state.general = exp.general; state.pages = modulesFor(n, state); state.error = null; state.view = 'quiz'; state.lastAt = Date.now();
+    if (!state.pages.length) { finishLevel(); return; }
+    state.cardKey = currentCards()[0].key;
+    render();
+  }
+  function viewHandback() {
+    const s = S();
+    return `<main class="stage ${tint('memory')}"><div class="stage-inner"><section class="qcard chapter ${reduceMotion ? '' : 'enter'}">
+        <div class="ill-wrap">${DIAL_MINI}<span class="rim" aria-hidden="true">${NEEDLE_MINI}</span><span class="ill-core">${icon('memory')}</span></div>
+        <h1 class="ch-title">${esc(s.handbackTitle)}</h1>
+        <p class="ch-sub">${esc(s.handbackText)}</p>
+        <div class="qnav"><div class="qnav-main"><button class="btn primary big" data-act="handback-done">${esc(s.handbackBtn)}</button></div></div>
+      </section></div></main>`;
+  }
+  function finishLevel() {
+    state.justEarned = 0;
+    if (!state.levelsDone[state.level]) { state.levelsDone[state.level] = true; addPoints(30); state.justEarned = 30; }
+    state.resultsLevel = state.level; state.view = 'results'; render();
+  }
+  function advance() {
+    const cards = currentCards(); const i = currentIndex(cards); const card = cards[i];
+    if (card.type === 'q' && !card.item.optional && state.answers[card.item.id] == null) { state.error = S().needAll; render(true); return; }
+    state.error = null;
+    if (i >= cards.length - 1) {
+      // A relative just answered the memory part: hand the phone back before showing the user's results
+      if (card.type === 'q' && card.area === 'memory') { state.view = 'handback'; render(); return; }
+      finishLevel(); return;
+    }
+    const nx = cards[i + 1];
+    if (card.type === 'q' && card.area !== 'warm' && (nx.type !== 'q' || nx.area === 'warm') && nx.area !== 'safety') {
+      let ch = null; for (let k = i; k >= 0; k--) if (cards[k].type === 'chapter') { ch = cards[k]; break; }
+      if (ch) {
+        state.justDone = ch.key;
+        if (exp.interact && ch.area !== 'safety') {
+          const calm = SKIPPABLE.includes(ch.area) || ch.area === 'safety' || !!ch.mod.sensitive;
+          state.toast = { area: ch.area, calm, title: ch.area === 'round' ? S().roundDone : fmt(S().topicDone, { area: chapterTitle(ch) }), more: calm ? S().topicDoneCalm : S().topicDoneMore };
+        }
+      }
+    }
+    state.cardKey = cards[i + 1].key; state.lastAt = Date.now(); render();
+  }
+  function back() {
+    const cards = currentCards(); const i = currentIndex(cards); state.error = null;
+    if (i > 0) { state.cardKey = cards[i - 1].key; render(); return; }
+    if (state.level === 1) { state.view = 'setup'; render(); }
+    else { state.view = 'results'; state.resultsLevel = state.level - 1; render(); }
+  }
+  function recordAnswer(id, v) {
+    state.answers[id] = v;
+    const now = Date.now(); if (state.lastAt) state.gaps.push(now - state.lastAt); state.lastAt = now;
+  }
+  function updateSliderUI(id, idx) {
+    const wrap = root.querySelector(`[data-slider-wrap="${id}"]`); if (!wrap) return;
+    const input = wrap.querySelector('input'); const optKey = input.dataset.opt; const labels = optLabels(optKey); const n = labels.length;
+    wrap.classList.remove('untouched');
+    input.value = idx;
+    input.setAttribute('aria-valuetext', labels[idx]);
+    wrap.querySelector('.slider-value').textContent = labels[idx];
+    wrap.querySelector('.slider-track').style.setProperty('--pct', `${n > 1 ? (idx / (n - 1)) * 100 : 0}%`);
+    wrap.querySelectorAll('.stop').forEach((b) => b.classList.toggle('on', Number(b.dataset.stop) === idx));
+    const nb = document.getElementById('next-btn'); if (nb) nb.disabled = false;
+    const err = root.querySelector('.qcard .error'); if (err) err.remove();
+  }
+  function commitSlider(input) {
+    const id = input.dataset.slider; const o = OPT[input.dataset.opt]; const idx = Number(input.value);
+    const v = o.values[idx];
+    if (state.answers[id] !== v) recordAnswer(id, v);
+    updateSliderUI(id, idx);
+  }
+
+  function choose(id, optKey, idx) {
+    const v = OPT[optKey].values[idx];
+    recordAnswer(id, v); state.error = null;
+    if (id === 'phq.9' && typeof v === 'number' && v > 0) { state.crisisOpen = true; state.crisisThenAdvance = true; render(true); return; }
+    render(true);
+    const cards = currentCards(); const i = currentIndex(cards);
+    if (i < cards.length - 1) advanceTimer = setTimeout(advance, reduceMotion ? 0 : 280);
+  }
+  // swipe-to-answer for yes/no (experiment)
+  let swipeDrag = null;
+  root.addEventListener('pointerdown', (e) => {
+    const knob = e.target.closest('.sw-knob'); if (!knob) return;
+    const wrap = knob.closest('.swipe'); const r = wrap.getBoundingClientRect();
+    swipeDrag = { knob, wrap, x0: e.clientX, half: r.width / 2 - 28, dx: 0 };
+    try { knob.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+    knob.classList.add('drag'); e.preventDefault();
+  });
+  root.addEventListener('pointermove', (e) => {
+    if (!swipeDrag) return;
+    const dx = Math.max(-swipeDrag.half, Math.min(swipeDrag.half, e.clientX - swipeDrag.x0)); swipeDrag.dx = dx;
+    swipeDrag.knob.style.transform = `translateX(${dx}px) rotate(${dx / swipeDrag.half * 90}deg)`;
+    swipeDrag.wrap.classList.toggle('to-yes', dx > swipeDrag.half * 0.45); swipeDrag.wrap.classList.toggle('to-no', dx < -swipeDrag.half * 0.45);
+  });
+  const swipeEnd = () => {
+    if (!swipeDrag) return; const d = swipeDrag; swipeDrag = null; d.knob.classList.remove('drag');
+    const w = d.wrap; const side = d.dx > d.half * 0.45 ? 'yes' : d.dx < -d.half * 0.45 ? 'no' : null;
+    if (!side) { d.knob.style.transform = ''; w.classList.remove('to-yes', 'to-no'); return; }
+    choose(w.dataset.swipe, w.dataset.opt, Number(side === 'yes' ? w.dataset.yes : w.dataset.no));
+  };
+  root.addEventListener('pointerup', swipeEnd);
+  root.addEventListener('pointercancel', () => { if (!swipeDrag) return; const d = swipeDrag; swipeDrag = null; d.knob.classList.remove('drag'); d.knob.style.transform = ''; d.wrap.classList.remove('to-yes', 'to-no'); });
+
+  // ---------- events ----------
+  root.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.id === 'lang-select') { if (LOCALES[t.value]) { state.lang = t.value; store('norte.lang', t.value); state.error = null; render(true); } return; }
+    if (t.dataset.setup) {
+      const k = t.dataset.setup;
+      if (k === 'consent') state.setup.consent = t.checked;
+      else { const v = t.dataset.val; state.setup[k] = (v === '1' || v === '0') ? Number(v) : v; }
+      return;
+    }
+    if (t.dataset.slider) commitSlider(t);
+    if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
+  });
+  root.addEventListener('input', (e) => {
+    const t = e.target;
+    if (t.dataset.text) state.answers[t.dataset.text] = t.value.trim() ? t.value : null;
+    if (t.dataset.slider) commitSlider(t);
+  });
+  root.addEventListener('pointerup', (e) => { const t = e.target; if (t.dataset && t.dataset.slider) commitSlider(t); });
+  root.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t.dataset && t.dataset.slider) {
+      if (e.key === 'Enter' && state.answers[t.dataset.slider] != null) { e.preventDefault(); advance(); }
+      else if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) setTimeout(() => commitSlider(t), 0);
+    }
+  });
+  root.addEventListener('toggle', (e) => {
+    const t = e.target;
+    if (t.tagName === 'DETAILS' && t.open && t.dataset.basis && !state.basisRead[t.dataset.basis]) {
+      state.basisRead[t.dataset.basis] = true; addPoints(5);
+      const p = root.querySelector('.points-n'); if (p) p.textContent = state.points;
+    }
+  }, true);
+  root.addEventListener('click', (e) => {
+    const stop = e.target.closest('[data-stop]');
+    if (stop) { const id = stop.dataset.item; const wrap = root.querySelector(`[data-slider-wrap="${id}"]`); const input = wrap.querySelector('input'); input.value = stop.dataset.stop; commitSlider(input); input.focus(); return; }
+    const wb = e.target.closest('[data-warm]');
+    if (wb) { recordAnswer(wb.dataset.item, Number(wb.dataset.warm)); state.error = null; render(true); advanceTimer = setTimeout(advance, reduceMotion ? 0 : 380); return; }
+    const ch = e.target.closest('[data-choose]');
+    if (ch) { choose(ch.dataset.item, ch.dataset.opt, Number(ch.dataset.choose)); return; }
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const act = b.dataset.act; const s = S();
+    if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.view = 'setup'; state.error = null; render(); }
+    else if (act === 'exp-open') { state.expOpen = true; render(true); }
+    else if (act === 'exp-close') { state.expOpen = false; render(true); const f = root.querySelector('.exp-fab'); if (f) f.focus({ preventScroll: true }); }
+    else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
+    else if (act === 'sensor-no') { compass.asked = true; closeSensorSheet(); }
+    else if (act === 'home') { state.view = 'welcome'; state.error = null; render(); }
+    else if (act === 'setup-done') {
+      const st = state.setup;
+      if (st.age === 0) { state.view = 'under18'; render(); return; }
+      if (st.age !== 1 || !st.country || st.baby == null || !st.consent) { state.error = s.needSetup; render(true); return; }
+      startLevel(1);
+    }
+    else if (act === 'advance') advance();
+    else if (act === 'skip') {
+      const area = b.dataset.area;
+      state.skipped[`${state.level}:${area}`] = true;
+      state.pages.forEach((m) => m.sections.forEach((sec) => { if (chapterArea(m, sec) === area) sec.items.forEach((it) => { delete state.answers[it.id]; }); }));
+      advance();
+    }
+    else if (act === 'unskip') { delete state.skipped[`${state.level}:${b.dataset.area}`]; render(); }
+    else if (act === 'back') back();
+    else if (act === 'go2') startLevel(2);
+    else if (act === 'handback-done') finishLevel();
+    else if (act === 'go3') startLevel(3);
+    else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
+    else if (act === 'back-results') { state.view = 'results'; render(); }
+    else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
+    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle' }); render(); }
+    else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else render(true); }
+    else if (act === 'copy') {
+      const txt = reportText();
+      const done = (ok) => { state.copyMsg = ok ? s.copied : s.copyFail; render(true); };
+      try { navigator.clipboard.writeText(txt).then(() => done(true), () => done(false)); } catch (err) { done(false); }
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    const sheetEl = document.getElementById('sensor-dialog');
+    const expEl = document.getElementById('exp-dialog');
+    if (sheetEl && e.key === 'Escape') { compass.asked = true; closeSensorSheet(); return; }
+    if (expEl && e.key === 'Escape') { state.expOpen = false; render(true); const fb = root.querySelector('.exp-fab'); if (fb) fb.focus({ preventScroll: true }); return; }
+    if (e.key !== 'Tab') return;
+    const d = state.crisisOpen ? document.getElementById('crisis') : (sheetEl || expEl); if (!d) return;
+    const f = Array.from(d.querySelectorAll('a[href], button, input'));
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!d.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  render();
+})();
+
+</script>
+</body>
+</html>
