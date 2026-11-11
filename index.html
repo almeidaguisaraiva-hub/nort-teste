@@ -161,6 +161,9 @@ ul.ticks li::before { content: ''; position: absolute; left: 3px; top: .5em; wid
 .btn.primary:disabled { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); cursor: not-allowed; filter: none; }
 .btn.big { min-height: 56px; padding: 14px 28px; font-size: 1.15rem; }
 .btn.outline { background: transparent; border-color: var(--ink); min-height: 44px; font-size: .9rem; }
+.decline-row { display: flex; justify-content: center; margin-top: 10px; }
+.btn.link.decline { color: var(--ink-2, var(--ink)); font-weight: 400; }
+.btn.link.decline.on { font-weight: 700; color: var(--ink); text-decoration-thickness: 2px; }
 .btn.link { border-color: transparent; background: transparent; color: var(--ink); text-decoration: underline; padding-left: 6px; padding-right: 6px; min-height: 44px; white-space: nowrap; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
@@ -624,124 +627,124 @@ const AUDIT_ITEMS = [
 const PROVISIONAL = {
   bipolar: {
     screen: [
-      { pt: 'Você já teve períodos de vários dias seguidos com energia muito acima do seu normal?', en: 'Have you had stretches of several days with far more energy than is normal for you?' },
-      { pt: 'Já teve fases em que seu humor ou sua confiança ficaram tão altos que outras pessoas comentaram?', en: 'Have you had phases when your mood or confidence ran so high that other people commented on it?' }],
+      { pt: 'Ao longo da vida, com que frequência você teve períodos de vários dias seguidos com energia muito acima do seu normal?', en: 'Over your life, how often have you had stretches of several days with far more energy than is normal for you?' },
+      { pt: 'Ao longo da vida, com que frequência seu humor ou sua confiança ficaram tão altos que outras pessoas comentaram?', en: 'Over your life, how often has your mood or confidence run so high that other people commented on it?' }],
     full: [
-      { pt: 'Nessas fases, seus pensamentos pareciam correr rápido demais?', en: 'During those phases, did your thoughts seem to race?' },
-      { pt: 'Nessas fases, você fez coisas impulsivas que depois te trouxeram problemas (gastos, decisões arriscadas)?', en: 'During those phases, did you do impulsive things that later caused problems (spending, risky decisions)?' },
-      { pt: 'Nessas fases, você falou muito mais ou começou muito mais projetos do que de costume?', en: 'During those phases, did you talk much more or start many more projects than usual?' },
-      { pt: 'Essas fases se alternam com períodos de tristeza ou desânimo?', en: 'Do those phases alternate with periods of sadness or low mood?' }] },
+      { pt: 'Nessas fases, com que frequência seus pensamentos parecem correr rápido demais?', en: 'During those phases, how often do your thoughts seem to race?' },
+      { pt: 'Nessas fases, com que frequência você faz coisas impulsivas que depois te trazem problemas (gastos, decisões arriscadas)?', en: 'During those phases, how often do you do impulsive things that later cause problems (spending, risky decisions)?' },
+      { pt: 'Nessas fases, com que frequência você fala muito mais ou começa muito mais projetos do que de costume?', en: 'During those phases, how often do you talk much more or start many more projects than usual?' },
+      { pt: 'Com que frequência essas fases se alternam com períodos de tristeza ou desânimo?', en: 'How often do those phases alternate with periods of sadness or low mood?' }] },
   panic: {
     screen: [
-      { pt: 'Você teve crises súbitas de medo intenso, com coração acelerado ou falta de ar?', en: 'Have you had sudden attacks of intense fear, with a racing heart or shortness of breath?' },
-      { pt: 'Você fica preocupado/a com a possibilidade de ter uma nova crise?', en: 'Do you worry about having another attack?' }],
+      { pt: 'Com que frequência você tem crises súbitas de medo intenso, com coração acelerado ou falta de ar?', en: 'How often do you have sudden attacks of intense fear, with a racing heart or shortness of breath?' },
+      { pt: 'Com que frequência você fica preocupado/a com a possibilidade de ter uma nova crise?', en: 'How often do you worry about having another attack?' }],
     full: [
-      { pt: 'Nessas crises, sentiu tontura, suor ou tremores?', en: 'During these attacks, have you felt dizzy, sweaty or shaky?' },
-      { pt: 'Nessas crises, teve medo de perder o controle ou de morrer?', en: 'During these attacks, have you feared losing control or dying?' },
-      { pt: 'Você evita lugares ou situações por medo de ter uma crise?', en: 'Do you avoid places or situations for fear of having an attack?' },
-      { pt: 'As crises atrapalham seu trabalho, estudo ou vida social?', en: 'Do the attacks get in the way of work, study or social life?' }] },
+      { pt: 'Nessas crises, com que frequência você sente tontura, suor ou tremores?', en: 'During these attacks, how often do you feel dizzy, sweaty or shaky?' },
+      { pt: 'Nessas crises, com que frequência você tem medo de perder o controle ou de morrer?', en: 'During these attacks, how often do you fear losing control or dying?' },
+      { pt: 'Com que frequência você evita lugares ou situações por medo de ter uma crise?', en: 'How often do you avoid places or situations for fear of having an attack?' },
+      { pt: 'Com que frequência as crises atrapalham seu trabalho, estudo ou vida social?', en: 'How often do the attacks get in the way of work, study or social life?' }] },
   social: {
     screen: [
-      { pt: 'Situações sociais ou de exposição (falar em público, conhecer gente nova) te deixam muito ansioso/a?', en: 'Do social or performance situations (speaking in public, meeting new people) make you very anxious?' },
-      { pt: 'Você deixa de fazer coisas por medo do que os outros vão pensar de você?', en: 'Do you skip things because you fear what others will think of you?' }],
+      { pt: 'Com que frequência situações sociais ou de exposição (falar em público, conhecer gente nova) te deixam muito ansioso/a?', en: 'How often do social or performance situations (speaking in public, meeting new people) make you very anxious?' },
+      { pt: 'Com que frequência você deixa de fazer coisas por medo do que os outros vão pensar de você?', en: 'How often do you skip things because you fear what others will think of you?' }],
     full: [
-      { pt: 'Nessas situações, seu corpo reage (rosto quente, tremor, suor)?', en: 'In those situations, does your body react (flushed face, trembling, sweating)?' },
-      { pt: 'Você fica dias pensando antes de um evento social?', en: 'Do you spend days thinking about a social event beforehand?' },
-      { pt: 'Depois de uma conversa, você fica repassando o que disse?', en: 'After a conversation, do you keep replaying what you said?' },
-      { pt: 'Isso já te fez perder oportunidades no trabalho ou nos estudos?', en: 'Has this made you miss opportunities at work or in study?' }] },
+      { pt: 'Nessas situações, com que frequência seu corpo reage (rosto quente, tremor, suor)?', en: 'In those situations, how often does your body react (flushed face, trembling, sweating)?' },
+      { pt: 'Com que frequência você passa dias pensando num evento social antes de ele acontecer?', en: 'How often do you spend days thinking about a social event before it happens?' },
+      { pt: 'Depois de uma conversa, com que frequência você fica repassando o que disse?', en: 'After a conversation, how often do you keep replaying what you said?' },
+      { pt: 'Com que frequência isso te faz perder oportunidades no trabalho ou nos estudos?', en: 'How often does this make you miss opportunities at work or in study?' }] },
   ocd: {
     screen: [
-      { pt: 'Pensamentos ou imagens indesejados entram na sua mente e são difíceis de afastar?', en: 'Do unwanted thoughts or images come into your mind and feel hard to push away?' },
-      { pt: 'Você sente que precisa repetir ações (checar, limpar, contar, organizar) para se acalmar?', en: 'Do you feel you need to repeat actions (checking, cleaning, counting, arranging) to calm down?' }],
+      { pt: 'Com que frequência pensamentos ou imagens indesejados entram na sua mente e são difíceis de afastar?', en: 'How often do unwanted thoughts or images come into your mind and feel hard to push away?' },
+      { pt: 'Com que frequência você sente que precisa repetir ações (checar, limpar, contar, organizar) para se acalmar?', en: 'How often do you feel you need to repeat actions (checking, cleaning, counting, arranging) to calm down?' }],
     full: [
-      { pt: 'Esses pensamentos ou rituais tomam muito tempo do seu dia?', en: 'Do these thoughts or rituals take up a lot of your day?' },
-      { pt: 'Você evita coisas ou lugares por causa deles?', en: 'Do you avoid things or places because of them?' },
-      { pt: 'Tentar parar te deixa muito ansioso/a?', en: 'Does trying to stop make you very anxious?' },
-      { pt: 'Eles atrapalham seu trabalho ou suas relações?', en: 'Do they get in the way of your work or relationships?' }] },
+      { pt: 'Com que frequência esses pensamentos ou rituais tomam muito tempo do seu dia?', en: 'How often do these thoughts or rituals take up a lot of your day?' },
+      { pt: 'Com que frequência você evita coisas ou lugares por causa deles?', en: 'How often do you avoid things or places because of them?' },
+      { pt: 'Com que frequência você fica muito ansioso/a ao tentar parar?', en: 'How often does trying to stop make you very anxious?' },
+      { pt: 'Com que frequência eles atrapalham seu trabalho ou suas relações?', en: 'How often do they get in the way of your work or relationships?' }] },
   eating: {
     screen: [
-      { pt: 'A comida, o peso ou o formato do corpo ocupam muito dos seus pensamentos?', en: 'Do food, weight or body shape take up a lot of your thoughts?' },
-      { pt: 'Você sente que perde o controle sobre o quanto come?', en: 'Do you feel you lose control over how much you eat?' }],
+      { pt: 'Com que frequência a comida, o peso ou o formato do corpo ocupam muito dos seus pensamentos?', en: 'How often do food, weight or body shape take up a lot of your thoughts?' },
+      { pt: 'Com que frequência você sente que perde o controle sobre o quanto come?', en: 'How often do you feel you lose control over how much you eat?' }],
     full: [
-      { pt: 'Você se sente culpado/a ou com medo depois de comer?', en: 'Do you feel guilty or afraid after eating?' },
-      { pt: 'Você pula refeições ou restringe muito o que come por causa do peso?', en: 'Do you skip meals or heavily restrict what you eat because of your weight?' },
-      { pt: 'Você já fez algo para compensar o que comeu?', en: 'Have you done things to make up for what you ate?' },
-      { pt: 'Sua relação com a comida atrapalha sua vida social?', en: 'Does your relationship with food get in the way of your social life?' }] },
+      { pt: 'Com que frequência você se sente culpado/a ou com medo depois de comer?', en: 'How often do you feel guilty or afraid after eating?' },
+      { pt: 'Com que frequência você pula refeições ou restringe muito o que come por causa do peso?', en: 'How often do you skip meals or heavily restrict what you eat because of your weight?' },
+      { pt: 'Com que frequência você faz algo para compensar o que comeu?', en: 'How often do you do things to make up for what you ate?' },
+      { pt: 'Com que frequência sua relação com a comida atrapalha sua vida social?', en: 'How often does your relationship with food get in the way of your social life?' }] },
   sleep: {
     screen: [
       { pt: 'Nas últimas semanas, com que frequência você teve dificuldade para pegar no sono ou continuar dormindo, ou acordou cedo demais?', en: 'Over the last few weeks, how often have you had trouble falling or staying asleep, or woken up too early?' },
-      { pt: 'O sono ruim afeta seu humor, sua energia ou sua concentração durante o dia?', en: 'Does poor sleep affect your mood, energy or concentration during the day?' }],
+      { pt: 'Com que frequência o sono ruim afeta seu humor, sua energia ou sua concentração durante o dia?', en: 'How often does poor sleep affect your mood, energy or concentration during the day?' }],
     full: [
-      { pt: 'Você fica preocupado/a com o seu sono?', en: 'Do you worry about your sleep?' },
-      { pt: 'Você acorda se sentindo cansado/a mesmo depois de uma noite inteira?', en: 'Do you wake up tired even after a full night?' },
-      { pt: 'Você precisa de cochilos para aguentar o dia?', en: 'Do you need naps to get through the day?' },
-      { pt: 'O sono ruim já durou várias semanas seguidas?', en: 'Has poor sleep lasted several weeks in a row?' }] },
+      { pt: 'Com que frequência você fica preocupado/a com o seu sono?', en: 'How often do you worry about your sleep?' },
+      { pt: 'Com que frequência você acorda se sentindo cansado/a mesmo depois de uma noite inteira?', en: 'How often do you wake up tired even after a full night?' },
+      { pt: 'Com que frequência você precisa de cochilos para aguentar o dia?', en: 'How often do you need naps to get through the day?' },
+      { pt: 'Com que frequência o sono ruim se repete por semanas seguidas?', en: 'How often does poor sleep go on for weeks at a time?' }] },
   substances: {
     screen: [
       { pt: 'Nos últimos 3 meses, com que frequência você usou outras substâncias (como cannabis, estimulantes ou calmantes sem receita)?', en: 'In the last 3 months, how often have you used other substances (such as cannabis, stimulants or non-prescribed sedatives)?' },
-      { pt: 'Você sentiu um desejo forte ou urgência de usar?', en: 'Have you felt a strong urge or craving to use?' }],
+      { pt: 'Com que frequência você sente um desejo forte ou urgência de usar?', en: 'How often do you feel a strong urge or craving to use?' }],
     full: [
-      { pt: 'Você usou mais do que pretendia?', en: 'Have you used more than you intended?' },
-      { pt: 'O uso te fez deixar de cumprir algo que era esperado de você?', en: 'Has using made you fail to do something expected of you?' },
-      { pt: 'Alguém já se preocupou com o seu uso?', en: 'Has anyone been concerned about your use?' },
-      { pt: 'Você tentou diminuir e não conseguiu?', en: 'Have you tried to cut down and not managed to?' }] },
+      { pt: 'Com que frequência você usa mais do que pretendia?', en: 'How often do you use more than you intended?' },
+      { pt: 'Com que frequência o uso te faz deixar de cumprir algo que era esperado de você?', en: 'How often does using make you fail to do something expected of you?' },
+      { pt: 'Com que frequência alguém demonstra preocupação com o seu uso?', en: 'How often does someone show concern about your use?' },
+      { pt: 'Com que frequência você tenta diminuir e não consegue?', en: 'How often do you try to cut down and not manage to?' }] },
   gambling: {
     screen: [
       { pt: 'Com que frequência você aposta em jogos, cassinos online ou apostas esportivas?', en: 'How often do you bet on games, online casinos or sports?' },
-      { pt: 'As apostas já te deixaram estressado/a ou preocupado/a com dinheiro?', en: 'Has betting left you stressed or worried about money?' }],
+      { pt: 'Com que frequência as apostas te deixam estressado/a ou preocupado/a com dinheiro?', en: 'How often does betting leave you stressed or worried about money?' }],
     full: [
-      { pt: 'Você esconde das pessoas o quanto aposta?', en: 'Do you hide from people how much you bet?' },
-      { pt: 'Você precisa apostar valores maiores para sentir a mesma emoção?', en: 'Do you need to bet larger amounts to feel the same excitement?' },
-      { pt: 'Você tem dificuldade para parar quando decide parar?', en: 'Do you find it hard to stop when you decide to?' },
-      { pt: 'As apostas já causaram brigas ou problemas em casa?', en: 'Has betting caused arguments or problems at home?' }] },
+      { pt: 'Com que frequência você esconde das pessoas o quanto aposta?', en: 'How often do you hide from people how much you bet?' },
+      { pt: 'Com que frequência você precisa apostar valores maiores para sentir a mesma emoção?', en: 'How often do you need to bet larger amounts to feel the same excitement?' },
+      { pt: 'Com que frequência você tem dificuldade para parar quando decide parar?', en: 'How often do you find it hard to stop when you decide to?' },
+      { pt: 'Com que frequência as apostas causam brigas ou problemas em casa?', en: 'How often does betting cause arguments or problems at home?' }] },
   autism: {
     screen: [
-      { pt: 'Você acha difícil entender o que as pessoas querem dizer nas entrelinhas?', en: 'Do you find it hard to read between the lines of what people say?' },
-      { pt: 'Mudanças inesperadas na rotina te deixam muito desconfortável?', en: 'Do unexpected changes to your routine make you very uncomfortable?' }],
+      { pt: 'Com que frequência você acha difícil entender o que as pessoas querem dizer nas entrelinhas?', en: 'How often do you find it hard to read between the lines of what people say?' },
+      { pt: 'Com que frequência mudanças inesperadas na rotina te deixam muito desconfortável?', en: 'How often do unexpected changes to your routine make you very uncomfortable?' }],
     full: [
-      { pt: 'Sons, luzes, cheiros ou texturas te incomodam mais do que parecem incomodar os outros?', en: 'Do sounds, lights, smells or textures bother you more than they seem to bother others?' },
-      { pt: 'Você tem interesses muito intensos e específicos?', en: 'Do you have very intense, specific interests?' },
-      { pt: 'Socializar te deixa exausto/a, mesmo quando é com quem você gosta?', en: 'Does socialising leave you exhausted, even with people you like?' },
-      { pt: 'Você prefere fazer as coisas sempre do mesmo jeito?', en: 'Do you prefer to do things the same way every time?' }] },
+      { pt: 'Com que frequência sons, luzes, cheiros ou texturas te incomodam mais do que parecem incomodar os outros?', en: 'How often do sounds, lights, smells or textures bother you more than they seem to bother others?' },
+      { pt: 'Com que frequência você mergulha em interesses muito intensos e específicos?', en: 'How often do you get absorbed in very intense, specific interests?' },
+      { pt: 'Com que frequência socializar te deixa exausto/a, mesmo quando é com quem você gosta?', en: 'How often does socialising leave you exhausted, even with people you like?' },
+      { pt: 'Com que frequência você prefere fazer as coisas sempre do mesmo jeito?', en: 'How often do you prefer to do things the same way every time?' }] },
   borderline: {
     screen: [
-      { pt: 'Suas emoções mudam de forma intensa e rápida, de um momento para o outro?', en: 'Do your emotions shift intensely and quickly from one moment to the next?' },
-      { pt: 'Seus relacionamentos costumam ser muito intensos e instáveis?', en: 'Are your relationships often very intense and unstable?' }],
+      { pt: 'Com que frequência suas emoções mudam de forma intensa e rápida, de um momento para o outro?', en: 'How often do your emotions shift intensely and quickly from one moment to the next?' },
+      { pt: 'Com que frequência seus relacionamentos ficam muito intensos e instáveis?', en: 'How often do your relationships become very intense and unstable?' }],
     full: [
-      { pt: 'Você tem muito medo de ser abandonado/a?', en: 'Are you very afraid of being abandoned?' },
-      { pt: 'Você age por impulso de formas que depois te prejudicam?', en: 'Do you act on impulse in ways that later harm you?' },
-      { pt: 'Você sente um vazio que não passa?', en: 'Do you feel an emptiness that does not go away?' },
-      { pt: 'Você sente raiva muito forte e difícil de controlar?', en: 'Do you feel very strong anger that is hard to control?' }] },
+      { pt: 'Com que frequência você sente muito medo de ser abandonado/a?', en: 'How often do you feel very afraid of being abandoned?' },
+      { pt: 'Com que frequência você age por impulso de formas que depois te prejudicam?', en: 'How often do you act on impulse in ways that later harm you?' },
+      { pt: 'Com que frequência você sente um vazio que não passa?', en: 'How often do you feel an emptiness that does not go away?' },
+      { pt: 'Com que frequência você sente uma raiva muito forte e difícil de controlar?', en: 'How often do you feel very strong anger that is hard to control?' }] },
   psychosis: {
     screen: [
-      { pt: 'Você já sentiu que coisas comuns ao seu redor estavam estranhas ou diferentes de um jeito difícil de explicar?', en: 'Have ordinary things around you ever felt strange or different in a way that is hard to explain?' },
-      { pt: 'Você já ouviu ou viu coisas que outras pessoas pareciam não perceber?', en: 'Have you heard or seen things that other people did not seem to notice?' }],
+      { pt: 'Com que frequência coisas comuns ao seu redor parecem estranhas ou diferentes de um jeito difícil de explicar?', en: 'How often do ordinary things around you feel strange or different in a way that is hard to explain?' },
+      { pt: 'Com que frequência você ouve ou vê coisas que outras pessoas parecem não perceber?', en: 'How often do you hear or see things that other people do not seem to notice?' }],
     full: [
-      { pt: 'Você já sentiu que outras pessoas podiam ler ou ouvir seus pensamentos?', en: 'Have you felt that other people could read or hear your thoughts?' },
-      { pt: 'Você já sentiu que estava sendo vigiado/a ou perseguido/a sem motivo claro?', en: 'Have you felt watched or targeted without a clear reason?' },
-      { pt: 'Seus pensamentos já ficaram confusos ou difíceis de organizar?', en: 'Have your thoughts become confused or hard to organise?' },
-      { pt: 'Essas experiências te deixaram assustado/a ou angustiado/a?', en: 'Have these experiences left you frightened or distressed?' }] },
+      { pt: 'Com que frequência você sente que outras pessoas podem ler ou ouvir seus pensamentos?', en: 'How often do you feel that other people can read or hear your thoughts?' },
+      { pt: 'Com que frequência você sente que está sendo vigiado/a ou perseguido/a sem motivo claro?', en: 'How often do you feel watched or targeted without a clear reason?' },
+      { pt: 'Com que frequência seus pensamentos ficam confusos ou difíceis de organizar?', en: 'How often do your thoughts become confused or hard to organise?' },
+      { pt: 'Com que frequência essas experiências te deixam assustado/a ou angustiado/a?', en: 'How often do these experiences leave you frightened or distressed?' }] },
   postpartum: {
     screen: [
-      { pt: 'Desde que o bebê nasceu, você tem se sentido triste ou sem prazer nas coisas?', en: 'Since the baby was born, have you felt sad or lost pleasure in things?' },
-      { pt: 'Tem sentido uma preocupação ou ansiedade difícil de controlar?', en: 'Have you felt worry or anxiety that is hard to control?' }],
+      { pt: 'Desde que o bebê nasceu, com que frequência você tem se sentido triste ou sem prazer nas coisas?', en: 'Since the baby was born, how often have you felt sad or lost pleasure in things?' },
+      { pt: 'Com que frequência você sente uma preocupação ou ansiedade difícil de controlar?', en: 'How often do you feel worry or anxiety that is hard to control?' }],
     full: [
-      { pt: 'Você se sente sobrecarregado/a a maior parte do tempo?', en: 'Do you feel overwhelmed most of the time?' },
-      { pt: 'Você tem chorado mais do que de costume?', en: 'Have you been crying more than usual?' },
-      { pt: 'Tem dificuldade para dormir mesmo quando o bebê dorme?', en: 'Do you find it hard to sleep even when the baby sleeps?' },
-      { pt: 'Você se culpa quando as coisas dão errado?', en: 'Do you blame yourself when things go wrong?' }] },
+      { pt: 'Com que frequência você se sente sobrecarregado/a?', en: 'How often do you feel overwhelmed?' },
+      { pt: 'Com que frequência você chora mais do que de costume?', en: 'How often do you cry more than usual?' },
+      { pt: 'Com que frequência você tem dificuldade para dormir mesmo quando o bebê dorme?', en: 'How often do you find it hard to sleep even when the baby sleeps?' },
+      { pt: 'Com que frequência você se culpa quando as coisas dão errado?', en: 'How often do you blame yourself when things go wrong?' }] },
   trauma: {
     full: [
-      { pt: 'Lembranças do evento te causam reações físicas fortes?', en: 'Do memories of the event cause strong physical reactions?' },
-      { pt: 'Você sente que não tem valor ou que fracassou como pessoa?', en: 'Do you feel worthless or that you have failed as a person?' },
-      { pt: 'Você tem dificuldade para se sentir próximo/a das pessoas?', en: 'Do you find it hard to feel close to people?' },
-      { pt: 'Quando algo te chateia, demora muito para você se acalmar?', en: 'When something upsets you, does it take a long time to calm down?' }] },
+      { pt: 'Com que frequência lembranças do evento te causam reações físicas fortes?', en: 'How often do memories of the event cause strong physical reactions?' },
+      { pt: 'Com que frequência você sente que não tem valor ou que fracassou como pessoa?', en: 'How often do you feel worthless or that you have failed as a person?' },
+      { pt: 'Com que frequência você tem dificuldade para se sentir próximo/a das pessoas?', en: 'How often do you find it hard to feel close to people?' },
+      { pt: 'Quando algo te chateia, com que frequência demora muito para você se acalmar?', en: 'When something upsets you, how often does it take a long time to calm down?' }] },
   adhd: {
     full: [
-      { pt: 'Você perde a atenção facilmente em conversas ou leituras?', en: 'Do you easily lose focus in conversations or while reading?' },
-      { pt: 'Você perde ou esquece objetos com frequência?', en: 'Do you often lose or forget things?' },
-      { pt: 'Você interrompe os outros ou responde antes de a pergunta terminar?', en: 'Do you interrupt others or answer before the question is finished?' },
-      { pt: 'Você tem dificuldade de esperar a sua vez?', en: 'Do you find it hard to wait your turn?' }] }
+      { pt: 'Com que frequência você perde a atenção em conversas ou leituras?', en: 'How often do you lose focus in conversations or while reading?' },
+      { pt: 'Com que frequência você perde ou esquece objetos?', en: 'How often do you lose or forget things?' },
+      { pt: 'Com que frequência você interrompe os outros ou responde antes de a pergunta terminar?', en: 'How often do you interrupt others or answer before the question is finished?' },
+      { pt: 'Com que frequência você tem dificuldade de esperar a sua vez?', en: 'How often do you find it hard to wait your turn?' }] }
 };
 const PROVISIONAL_SCALE = { bipolar: 'bipolar', panic: 'panic', social: 'social', ocd: 'ocd', eating: 'eating', sleep: 'sleep', substances: 'substances', gambling: 'gambling', autism: 'autism', borderline: 'borderline', psychosis: 'psychosis', postpartum: 'postpartum', trauma: 'itq', adhd: 'asrs18' };
 
@@ -807,6 +810,7 @@ const UI = {
     ageQ: 'Você tem 18 anos ou mais?',
     countryQ: 'Onde você está agora?',
     countryHint: 'Usamos isso só para mostrar os números de ajuda certos.',
+    countryGuessed: 'Já marcamos pelo fuso horário do seu aparelho. Se não estiver certo, é só trocar.',
     countries: { AU: 'Austrália', BR: 'Brasil', OTHER: 'Outro país' },
     babyQ: 'Você teve um bebê nos últimos 12 meses?',
     consentTitle: 'Seus dados de saúde',
@@ -864,6 +868,8 @@ const UI = {
     seeExamples: 'Ver exemplos (alguns podem ser difíceis de ler)',
     ptsdExamples: ['um acidente grave ou incêndio', 'uma agressão física ou sexual, ou abuso', 'um terremoto ou enchente', 'uma guerra', 'ver alguém ser morto ou gravemente ferido', 'perder alguém querido por homicídio ou suicídio'],
     reportSkipped: 'Temas que a pessoa preferiu pular',
+    reportDeclined: 'Perguntas não respondidas (a pessoa preferiu não responder), por área',
+    declinedNote: 'Perguntas que você preferiu não responder: {n}. As áreas delas ficam sem resultado ou mantêm o resultado do nível anterior.',
     groupAttention: 'Pedem atenção', groupCalm: 'Sem sinais relevantes',
     chapterOf: 'Tema {i} de {n}', partOf: 'Parte {i} de {n}', questionsN: '{n} perguntas', questions1: '1 pergunta', letsGo: 'Vamos lá',
     breathTitle: 'Pausa para respirar', breathText: 'Metade do caminho. Que tal respirar junto com o círculo antes de seguir?', breathIn: 'Inspire', breathOut: 'Expire', breathStatic: 'Inspire contando até 4, expire contando até 4. Repita duas vezes.',
@@ -878,6 +884,7 @@ const UI = {
     compassOff: 'Sem sensor por aqui. Arraste a seta até o N, ou toque no centro.',
     compassDenied: 'Sem permissão para a bússola. Arraste a seta até o N, ou toque no centro.',
     compassFound: 'Achou. Esse é o seu norte. Toque no centro quando quiser.',
+    compassFoundLive: 'Achou o norte! Toque no centro para começar. A seta continua girando com o celular.',
     sensorAskTitle: 'Usar a bússola do celular?',
     sensorAskText: 'Assim a seta gira quando você vira o celular. O Nort usa isso só nesta tela e não guarda nem envia nada.',
     sensorAllow: 'Permitir', sensorNotNow: 'Agora não',
@@ -961,6 +968,7 @@ const UI = {
     ageQ: 'Are you 18 or older?',
     countryQ: 'Where are you right now?',
     countryHint: 'We only use this to show the right help numbers.',
+    countryGuessed: 'We picked it from your device’s time zone. If that’s wrong, just change it.',
     countries: { AU: 'Australia', BR: 'Brazil', OTHER: 'Another country' },
     babyQ: 'Have you had a baby in the last 12 months?',
     consentTitle: 'Your health data',
@@ -1018,6 +1026,8 @@ const UI = {
     seeExamples: 'See examples (some may be hard to read)',
     ptsdExamples: ['a serious accident or fire', 'a physical or sexual assault or abuse', 'an earthquake or flood', 'a war', 'seeing someone be killed or seriously injured', 'having a loved one die through homicide or suicide'],
     reportSkipped: 'Topics the person chose to skip',
+    reportDeclined: 'Questions not answered (the person preferred not to say), by area',
+    declinedNote: 'Questions you preferred not to answer: {n}. Their areas show no result, or keep the result from the previous level.',
     groupAttention: 'Need attention', groupCalm: 'No notable signs',
     chapterOf: 'Topic {i} of {n}', partOf: 'Part {i} of {n}', questionsN: '{n} questions', questions1: '1 question', letsGo: 'Let’s go',
     breathTitle: 'A pause to breathe', breathText: 'Halfway there. How about breathing along with the circle before you carry on?', breathIn: 'Breathe in', breathOut: 'Breathe out', breathStatic: 'Breathe in for a count of 4, out for a count of 4. Repeat twice.',
@@ -1032,6 +1042,7 @@ const UI = {
     compassOff: 'No sensor here. Drag the arrow to N, or tap the centre.',
     compassDenied: 'No compass permission. Drag the arrow to N, or tap the centre.',
     compassFound: 'Found it. That’s your north. Tap the centre when you’re ready.',
+    compassFoundLive: 'You found north! Tap the centre to start. The arrow keeps turning with your phone.',
     sensorAskTitle: 'Use your phone’s compass?',
     sensorAskText: 'The arrow turns as you turn your phone. Nort only uses this on this screen and doesn’t store or send anything.',
     sensorAllow: 'Allow', sensorNotNow: 'Not now',
@@ -1226,7 +1237,7 @@ function level1Modules(state) {
       { introKey: 'ptsdIntroShort', examplesKey: 'ptsdExamples', items: [item('ptsd.0', { ref: 'ptsdQ' }, 'ynSkip')] },
       { stemKey: 'pastMonth', showIf: (a) => a['ptsd.0'] === 1, items: PTSD_ITEMS.map((t, i) => item(`ptsd.${i + 1}`, t, 'yn')) }] },
     { id: 'asrs', title: L('asrs'), scale: 'asrs6', area: 'adhd', sections: [{ stemKey: 'asrsStem', items: ASRS_ITEMS.map((t, i) => item(`asrs.${i + 1}`, t, 'asrs')) }] },
-    { id: 'auditc', title: L('auditc'), scale: 'auditc', area: 'alcohol', sections: [{ stemKey: 'drinkNote', items: AUDIT_ITEMS.slice(0, 3).map((t, i) => item(`audit.${i + 1}`, t, t.opt, i > 0 ? { showIf: (a) => a['audit.1'] != null && a['audit.1'] !== 0 } : {})) }] },
+    { id: 'auditc', title: L('auditc'), scale: 'auditc', area: 'alcohol', sections: [{ stemKey: 'drinkNote', items: AUDIT_ITEMS.slice(0, 3).map((t, i) => item(`audit.${i + 1}`, t, t.opt, i > 0 ? { showIf: (a) => typeof a['audit.1'] === 'number' && a['audit.1'] !== 0 } : {})) }] },
     { id: 'provA', title: L('provA'), provisional: true, sections: ['bipolar', 'panic', 'social', 'ocd'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
     { id: 'provB', title: L('provB'), provisional: true, sensitive: true, sections: ['eating', 'sleep', 'substances', 'gambling'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
     { id: 'provC', title: L('provC'), provisional: true, sections: ['autism', 'borderline', 'psychosis'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) }
@@ -1360,7 +1371,8 @@ function moduleComplete(mod, answers) {
 // ---------- Scoring ----------
 function num(v) { return typeof v === 'number' ? v : 0; }
 function sumIds(ans, ids) { return ids.reduce((s, id) => s + num(ans[id]), 0); }
-function allAnswered(ans, ids) { return ids.every((id) => ans[id] != null); }
+// 'skip' = "prefer not to say": the question was seen but not answered, so it never counts towards a score
+function allAnswered(ans, ids) { return ids.every((id) => ans[id] != null && ans[id] !== 'skip'); }
 function range(prefix, from, to) { const a = []; for (let i = from; i <= to; i++) a.push(prefix + i); return a; }
 
 const LABELS = {
@@ -1376,7 +1388,7 @@ function T(pt, en) { return { pt, en }; }
 function computeAreas(state, maxLevel) {
   const a = state.answers;
   const lv = maxLevel || 3;
-  const l3done = (id) => lv >= 3 && a[`l3.${id}.dur`] != null && a[`l3.${id}.imp`] != null;
+  const l3done = (id) => lv >= 3 && allAnswered(a, [`l3.${id}.dur`, `l3.${id}.imp`]);
   const out = {};
   const confStep = (base, id) => (l3done(id) ? (base === 'low' ? 'medium' : 'high') : base);
 
@@ -1441,7 +1453,7 @@ function computeAreas(state, maxLevel) {
   }
 
   // Alcohol — AUDIT-C then AUDIT
-  if (a['audit.1'] != null) {
+  if (allAnswered(a, ['audit.1'])) {
     const c = a['audit.1'] === 0 ? 0 : (allAnswered(a, ['audit.2', 'audit.3']) ? sumIds(a, ['audit.1', 'audit.2', 'audit.3']) : null);
     const full = range('audit.', 4, 10);
     if (lv >= 2 && c != null && allAnswered(a, full)) {
@@ -1521,9 +1533,23 @@ function computeFlags(state) {
   return { inconsistent, fast, straight, quality: inconsistent || fast || straight, safety };
 }
 
+// Questions answered with "prefer not to say", counted per area (the safety question has its own note)
+function declinedByArea(state) {
+  const PREFIX = { who5: 'wellbeing', phq: 'depression', gad: 'anxiety', k10: 'distress', ptsd: 'trauma', asrs: 'adhd', audit: 'alcohol', iq: 'memory', ctrl: 'controls' };
+  const out = {};
+  Object.keys(state.answers).forEach((id) => {
+    // phq.9 and ptsd.0 have their own "prefer not to say" option and their own note
+    if (state.answers[id] !== 'skip' || id === 'phq.9' || id === 'ptsd.0') return;
+    const p = id.split('.');
+    const area = (p[0] === 'prov' || p[0] === 'l3') ? p[1] : PREFIX[p[0]];
+    if (area) out[area] = (out[area] || 0) + 1;
+  });
+  return out;
+}
+
 function maxBand(res) { let m = 0; Object.values(res).forEach((r) => { if (r.assessed && r.band > m) m = r.band; }); return m; }
 
-if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags, level1Modules, level1General, level2Modules, level3Modules, visibleItems, moduleComplete, maxBand, buildCards };
+if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags, level1Modules, level1General, level2Modules, level3Modules, visibleItems, moduleComplete, maxBand, buildCards, declinedByArea };
 
 // ---------- App (UI) ----------
 (function () {
@@ -1531,15 +1557,28 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function store(key, val) { try { if (val === undefined) return window.localStorage.getItem(key); window.localStorage.setItem(key, val); } catch (e) { return null; } return null; }
+  // Where the person is, read from the device's time zone: no permission, nothing leaves the phone.
+  const BR_TZ = ['Sao_Paulo', 'Bahia', 'Fortaleza', 'Recife', 'Belem', 'Manaus', 'Cuiaba', 'Campo_Grande', 'Porto_Velho', 'Boa_Vista', 'Rio_Branco', 'Araguaina', 'Maceio', 'Santarem', 'Noronha', 'Eirunepe'];
+  const PT_TZ = ['Europe/Lisbon', 'Atlantic/Azores', 'Atlantic/Madeira', 'Africa/Luanda', 'Africa/Maputo', 'Atlantic/Cape_Verde', 'Africa/Bissau', 'Africa/Sao_Tome', 'Asia/Dili'];
+  function deviceTz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } }
+  function guessCountry() {
+    const tz = deviceTz();
+    if (tz.startsWith('Australia/')) return 'AU';
+    if (tz.startsWith('America/') && BR_TZ.includes(tz.slice(8))) return 'BR';
+    return null;
+  }
+  const placeCountry = guessCountry();
   function initialLang() {
     const saved = store('norte.lang');
     if (saved && LOCALES[saved]) return saved;
+    if (placeCountry === 'BR' || PT_TZ.includes(deviceTz())) return 'pt';
+    if (placeCountry === 'AU') return 'en';
     const nav = (navigator.language || '').toLowerCase();
     return nav.startsWith('pt') ? 'pt' : 'en';
   }
 
   const fresh = () => ({
-    view: 'welcome', setup: { age: null, country: null, baby: null, consent: false },
+    view: 'welcome', setup: { age: null, country: placeCountry, baby: null, consent: false },
     answers: {}, gaps: [], lastAt: null, level: 1, pages: [], cardKey: null, levelsDone: {},
     error: null, skipped: {}, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
   });
@@ -1622,7 +1661,9 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   const NEEDLE_MINI = '<svg class="ind" viewBox="0 0 200 200"><path class="nd-s1" d="M100 170 L100 100 L92 136 Z"/><path class="nd-s2" d="M100 170 L108 136 L100 100 Z"/><path class="nd-n1" d="M100 22 L100 100 L91 62 Z"/><path class="nd-n2" d="M100 22 L109 62 L100 100 Z"/></svg>';
 
   // ---------- compass (welcome) ----------
-  const compass = { deg: -140, found: false, dragging: false, sensor: 'idle', onOrient: null, timer: null, asked: false };
+  const compass = { deg: -140, found: false, dragging: false, sensor: 'idle', onOrient: null, timer: null, asked: false, buzzed: false, manualFound: false };
+  // Signal once when the arrow first reaches north (short vibration where the phone supports it).
+  function foundSignal() { if (compass.buzzed) return; compass.buzzed = true; try { if (navigator.vibrate && !reduceMotion) navigator.vibrate(30); } catch (e) { /* ignore */ } }
   const norm = (a) => ((a % 360) + 540) % 360 - 180;
   const toNorth = (a) => a - norm(a);
   const hasSensor = typeof window.DeviceOrientationEvent !== 'undefined' && !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
@@ -1641,7 +1682,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
   function closeSensorSheet() { const sh = document.getElementById('sensor-sheet'); if (sh) sh.remove(); const go = root.querySelector('.compass-go'); if (go) go.focus({ preventScroll: true }); }
   function compassHintKey() {
-    if (compass.found) return 'compassFound';
+    if (compass.found) return compass.sensor === 'on' ? 'compassFoundLive' : 'compassFound';
     if (compass.sensor === 'asking' || compass.sensor === 'waiting') return 'compassWait';
     if (compass.sensor === 'on') return 'compassTurn';
     if (compass.sensor === 'off') return 'compassOff';
@@ -1672,12 +1713,16 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       else if (typeof e.alpha === 'number' && e.absolute !== false) h = 360 - e.alpha;
       if (h === null) return;
       compass.granted = true;
-      if (compass.dragging || compass.found) return;
+      if (compass.dragging) return;
       const angle = (window.screen && window.screen.orientation && typeof window.screen.orientation.angle === 'number') ? window.screen.orientation.angle : 0;
       const target = norm(h + angle);
       const next = compass.deg + norm(target - compass.deg);
-      if (Math.abs(target) < 12) { stopSensor(); compass.deg = toNorth(next); compass.found = true; compass.sensor = 'idle'; compassUpdate(); return; }
-      if (compass.sensor === 'on' && Math.abs(next - compass.deg) < 0.8) return;
+      // The arrow keeps following the phone. Near N it counts as found (enter at 12°, leave at 20° so it doesn't flicker).
+      const wasFound = compass.found;
+      // Found by dragging: keep the signal until the next drag, while the arrow keeps following the phone.
+      compass.found = compass.manualFound || Math.abs(target) < (wasFound ? 20 : 12);
+      if (compass.found && !wasFound) foundSignal();
+      if (compass.sensor === 'on' && compass.found === wasFound && Math.abs(next - compass.deg) < 0.8) return;
       compass.deg = next; compass.sensor = 'on'; compassUpdate();
     };
     window.addEventListener(useAbsolute ? 'deviceorientationabsolute' : 'deviceorientation', compass.onOrient);
@@ -1700,12 +1745,12 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
   function initCompass() {
     const dial = document.getElementById('dial'); if (!dial) return;
-    dial.addEventListener('pointerdown', (e) => { try { dial.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } compass.dragging = true; compass.found = false; compass.deg = dialAngle(e, dial); compassUpdate(); });
+    dial.addEventListener('pointerdown', (e) => { try { dial.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } compass.dragging = true; compass.found = false; compass.manualFound = false; compass.deg = dialAngle(e, dial); compassUpdate(); });
     dial.addEventListener('pointermove', (e) => { if (!compass.dragging) return; compass.deg = dialAngle(e, dial); compassUpdate(); });
-    const up = () => { if (!compass.dragging) return; const d = norm(compass.deg); compass.dragging = false; compass.found = Math.abs(d) < 18; compass.deg = compass.found ? 0 : d; if (compass.found) { stopSensor(); compass.sensor = 'idle'; } else if (canSense && compass.granted && !compass.onOrient) { compass.sensor = 'idle'; startSensor(); } compassUpdate(); };
+    const up = () => { if (!compass.dragging) return; const d = norm(compass.deg); compass.dragging = false; compass.found = Math.abs(d) < 18; compass.manualFound = compass.found; compass.deg = compass.found ? 0 : d; if (compass.found) foundSignal(); if (canSense && compass.granted && !compass.onOrient) { compass.sensor = 'idle'; startSensor(); } compassUpdate(); };
     dial.addEventListener('pointerup', up); dial.addEventListener('pointercancel', up);
     compassUpdate();
-    if (canSense && compass.granted && compass.sensor === 'idle' && !compass.found && !compass.onOrient) startSensor();
+    if (canSense && compass.granted && compass.sensor === 'idle' && !compass.onOrient) startSensor();
   }
 
   function viewWelcome() {
@@ -1753,7 +1798,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     return `<main class="wrap narrow">
       <h1 class="h-page">${esc(s.setupTitle)}</h1>
       <fieldset class="field"><legend>${esc(s.ageQ)}</legend>${choice('age', [1, 0], [s.yes, s.no], st.age)}</fieldset>
-      <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
+      <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}${placeCountry && st.country === placeCountry ? ` ${esc(s.countryGuessed)}` : ''}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
       <fieldset class="field"><legend>${esc(s.babyQ)}</legend>${choice('baby', [1, 0, 'skip'], [s.yes, s.no, s.preferNot], st.baby)}</fieldset>
       <section class="consent">
         <h2>${esc(s.consentTitle)}</h2>
@@ -1781,14 +1826,14 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   function sliderControl(it) {
     const o = OPT[it.opt]; const labels = optLabels(it.opt); const n = o.values.length;
     const cur = state.answers[it.id];
-    const answered = cur != null;
+    const answered = cur != null && cur !== 'skip';
     const idx = answered ? o.values.indexOf(cur) : Math.floor((n - 1) / 2);
     const pct = n > 1 ? (idx / (n - 1)) * 100 : 0;
     const stops = labels.map((l, i) => `<button type="button" class="stop${answered && i === idx ? ' on' : ''}" data-stop="${i}" data-item="${it.id}">${esc(l)}</button>`).join('');
     return `<div class="slider-wrap${answered ? '' : ' untouched'}" data-slider-wrap="${it.id}" style="--n:${n}">
-      <output class="slider-value" id="sv-${it.id.replace(/\./g, '_')}" aria-live="polite">${esc(answered ? labels[idx] : S().sliderHint)}</output>
+      <output class="slider-value" id="sv-${it.id.replace(/\./g, '_')}" aria-live="polite">${esc(answered ? labels[idx] : cur === 'skip' ? S().preferNot : S().sliderHint)}</output>
       <div class="slider-track" style="--pct:${pct}%">
-        <input type="range" class="slider" min="0" max="${n - 1}" step="1" value="${idx}" data-slider="${it.id}" data-opt="${it.opt}" aria-label="${esc(tx(it.text))}" aria-valuetext="${esc(answered ? labels[idx] : S().sliderHint)}">
+        <input type="range" class="slider" min="0" max="${n - 1}" step="1" value="${idx}" data-slider="${it.id}" data-opt="${it.opt}" aria-label="${esc(tx(it.text))}" aria-valuetext="${esc(answered ? labels[idx] : cur === 'skip' ? S().preferNot : S().sliderHint)}">
       </div>
       <div class="stop-labels">${stops}</div>
     </div>`;
@@ -1872,6 +1917,10 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       if (sec.stemKey) ctx += `<p class="stem">${esc(s[sec.stemKey])}</p>`;
       const control = it.type === 'warm' ? warmControl(it) : it.type === 'text' ? textControl(it) : (SLIDER_OPTS.includes(it.opt) ? sliderControl(it) : (swipeOk(it, card.area) ? swipeControl(it) : '') + choiceControl(it));
       const answered = it.optional || state.answers[it.id] != null;
+      // "Prefer not to say" on every question that doesn't already offer it among its options
+      const canDecline = it.type === 'radio' && !OPT[it.opt].values.some((v) => typeof v === 'string');
+      const declined = state.answers[it.id] === 'skip';
+      const declineBtn = canDecline ? `<div class="decline-row"><button type="button" class="btn link decline${declined ? ' on' : ''}" data-act="decline" data-item="${it.id}" aria-pressed="${declined}">${esc(s.preferNot)}</button></div>` : '';
       const needsNext = it.type === 'text' || it.type === 'warm' || SLIDER_OPTS.includes(it.opt) || answered || isLast;
       const nextLabel = isLast ? (card.area === 'memory' ? s.memoryDone : fmt(s.finishLevel, { n: state.level })) : (it.type === 'warm' && state.answers[it.id] == null ? s.skipWarm : s.next);
       body = `<section class="qcard ${reduceMotion ? '' : 'enter'}">
@@ -1879,6 +1928,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
         ${ctx}
         <h1 class="q-text" id="q-text">${esc(tx(it.text))}</h1>
         ${control}
+        ${declineBtn}
         ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
         <div class="qnav">${backBtn}${needsNext ? `<button class="btn primary" data-act="advance" id="next-btn"${answered ? '' : ' disabled'}>${esc(nextLabel)}</button>` : ''}</div>
       </section>`;
@@ -1930,6 +1980,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     let next = '';
     if (lvl === 1) next = !flagged ? `<p class="small">${esc(s.noFlags)}</p>` : modulesFor(2, state).length ? `<button class="btn primary big" data-act="go2">${esc(s.goLevel2)}</button>` : `<p class="small">${esc(s.noLevel2)}</p>`;
     if (lvl === 2) next = flagged ? `<button class="btn primary big" data-act="go3">${esc(s.goLevel3)}</button>` : `<p class="small">${esc(s.noFlags)}</p>`;
+    const declinedN = Object.values(declinedByArea(state)).reduce((x, y) => x + y, 0);
     const safety = flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : flags.safety === 'skip' ? `<p class="note">${esc(s.safetySkipped)}</p>` : '';
     return `<main class="wrap results">
       <section class="done-banner ${reduceMotion ? '' : 'enter'}">
@@ -1940,6 +1991,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       <section class="summary band-${mb}"><strong class="next-step">${esc(s.nextStep)}</strong><p class="rec">${esc(rec)}</p>${res.memory && res.memory.assessed && res.memory.band >= 1 ? `<p class="rec">${esc(s.recMemory)}</p>` : ''}<p class="small">${esc(s.disclaimer)}</p></section>
       ${safety}
       ${flags.quality ? `<p class="note warn">${esc(s.inconsistent)}</p>` : ''}
+      ${declinedN ? `<p class="note">${esc(fmt(s.declinedNote, { n: declinedN }))}</p>` : ''}
       <section class="map"><h2 class="map-h">${esc(exp.ring ? s.yourCompass : s.mapTitle)}</h2>${yourCompass}<p class="small">${esc(s.tapHint)}</p>${tiles}${notAssessed.length && lvl === 1 ? `<p class="small">${esc(s.notAssessedNote)}</p>` : ''}</section>
       ${lists}
       <div class="actions">${next}<button class="btn" data-act="report">${esc(s.seeReport)}</button><button class="btn link" data-act="restart">${esc(s.restart)}</button></div>
@@ -1970,7 +2022,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       L.push(''); L.push(`${s.reportContext}:`);
       AREAS.forEach((a) => {
         const d = state.answers[`l3.${a.id}.dur`]; const i = state.answers[`l3.${a.id}.imp`];
-        if (d == null || i == null) return;
+        if (typeof d !== 'number' || typeof i !== 'number') return;
         L.push(`• ${tx(a.name)}: ${optLabels('duration')[OPT.duration.values.indexOf(d)]}; ${s.impactQ} ${optLabels('impact')[OPT.impact.values.indexOf(i)]}`);
       });
       const yn = (id) => { const v = state.answers[id]; return v == null ? '—' : optLabels('ynDontKnow')[OPT.ynDontKnow.values.indexOf(v)]; };
@@ -1982,6 +2034,8 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     }
     const sk = Object.keys(state.skipped).filter((k) => state.skipped[k]).map((k) => k.split(':')[1]);
     if (sk.length) { L.push(''); L.push(`${s.reportSkipped}: ${Array.from(new Set(sk)).map(areaName).join(', ')}`); }
+    const dec = declinedByArea(state);
+    if (Object.keys(dec).length) { L.push(''); L.push(`${s.reportDeclined}:`); Object.keys(dec).forEach((k) => L.push(`• ${areaName(k) || s.ctrlTitle}: ${dec[k]}`)); }
     L.push(''); L.push(`${s.reportFlags}:`);
     const notes = [];
     if (flags.safety === 'yes') notes.push(s.safetyFlag);
@@ -2121,6 +2175,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     wrap.querySelector('.slider-track').style.setProperty('--pct', `${n > 1 ? (idx / (n - 1)) * 100 : 0}%`);
     wrap.querySelectorAll('.stop').forEach((b) => b.classList.toggle('on', Number(b.dataset.stop) === idx));
     const nb = document.getElementById('next-btn'); if (nb) nb.disabled = false;
+    const db = root.querySelector('.decline'); if (db) { db.classList.remove('on'); db.setAttribute('aria-pressed', 'false'); }
     const err = root.querySelector('.qcard .error'); if (err) err.remove();
   }
   function commitSlider(input) {
@@ -2217,6 +2272,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       startLevel(1);
     }
     else if (act === 'advance') advance();
+    else if (act === 'decline') { recordAnswer(b.dataset.item, 'skip'); state.error = null; advance(); }
     else if (act === 'skip') {
       const area = b.dataset.area;
       state.skipped[`${state.level}:${area}`] = true;
@@ -2231,7 +2287,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
     else if (act === 'back-results') { state.view = 'results'; render(); }
     else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
-    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle' }); render(); }
+    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, manualFound: false }); render(); }
     else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else render(true); }
     else if (act === 'copy') {
       const txt = reportText();
