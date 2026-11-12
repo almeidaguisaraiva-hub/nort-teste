@@ -457,7 +457,7 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .av-opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .av-opt { min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
 .av-opt.on { border-color: var(--ink); background: var(--ink); color: var(--accent-ink); }
-.av-opt.sw { width: 44px; padding: 0; background: var(--sw); border-color: rgba(31, 42, 68, .25); }
+.av-opt.sw { width: 44px; padding: 0; background: var(--sw); border-color: var(--muted); }
 .av-opt.sw.on { background: var(--sw); border-color: var(--surface); box-shadow: 0 0 0 3px var(--ink); }
 .text-in { font: inherit; min-height: 48px; padding: 0 14px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); width: 100%; }
 .text-in.short { width: auto; }
@@ -495,6 +495,17 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .react-line { margin: 0; padding: 10px 14px; border-radius: 16px; background: var(--surface); border: 2px solid var(--soft); font-weight: 700; color: var(--ink); text-align: center; }
 @media (max-height: 760px) { .stage3d { height: 210px; } .stage3d.builder { height: 260px; } }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .stage3d { background: linear-gradient(180deg, #24314A 0%, #1A2539 100%); } }
+
+.av-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.av-tab { flex: none; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+.av-tab.on { background: var(--ink); border-color: var(--ink); color: var(--accent-ink); }
+.av-panel { display: grid; gap: 14px; }
+
+.clone-lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.clone-lines li { padding: 10px 12px; border-radius: 14px; background: var(--bg); display: flex; gap: 10px; }
+.clone-lines li span { font-weight: 800; min-width: 1.2em; }
+.clone-lines li.now { background: var(--soft); outline: 2px solid var(--ink); }
+.clone-lines li.done { color: var(--ink-2); }
 
 </style>
 </head>
@@ -970,13 +981,24 @@ const UI = {
     roundTitle: 'Rodada {n}', roundDone: 'Rodada concluída.',
     talkTitle: 'Conversa', avTitle: 'Crie a sua versão', avLead: 'Monte um personagem que é você. É ele que vai conversar com você agora, com poucas perguntas abertas. Você responde falando ou escrevendo, do seu jeito.',
     avNameLabel: 'Nome do seu personagem', avNameDefault: 'Eu', avTone: 'Tom {n}', avSkin: 'Tom de pele', avHair: 'Cabelo', avHairColor: 'Cor do cabelo', avEyes: 'Olhos', avShirt: 'Roupa', avExtra: 'Acessório',
-    avNames: { hair: ['Curto', 'Comprido', 'Cacheado', 'Coque', 'Sem cabelo'], hairColor: ['Preto', 'Castanho', 'Acobreado', 'Loiro', 'Grisalho', 'Ruivo'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], extra: ['Nenhum', 'Óculos', 'Boné'] },
+    avTabs: { face: 'Rosto', hair: 'Cabelo', body: 'Corpo', clothes: 'Roupa', extras: 'Acessórios' }, avRandom: 'Surpreenda-me',
+    avLegend: { skin: 'Tom de pele', face: 'Formato do rosto', nose: 'Nariz', eyeColor: 'Cor dos olhos', brows: 'Sobrancelhas', beard: 'Barba e bigode', hair: 'Penteado', hairColor: 'Cor do cabelo', height: 'Altura', build: 'Tipo de corpo', top: 'Estilo da roupa', shirt: 'Cor da roupa', bottom: 'Parte de baixo', pantsColor: 'Cor da calça, short ou saia', shoes: 'Cor do tênis', extra: 'Acessório' },
+    avNames: { skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
+      hair: ['Curto', 'Comprido', 'Cacheado', 'Coque', 'Sem cabelo', 'Raspado', 'De lado', 'Black power', 'Rabo de cavalo', 'Tranças'], hairColor: ['Preto', 'Castanho', 'Acobreado', 'Loiro', 'Grisalho', 'Ruivo', 'Platinado', 'Azul', 'Roxo'], height: ['Baixa', 'Média', 'Alta'], build: ['Magro', 'Médio', 'Largo'],
+      top: ['Camiseta', 'Moletom', 'Camisa', 'Jaqueta', 'Suéter', 'Vestido'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], bottom: ['Calça', 'Short', 'Saia'], pantsColor: ['Marinho', 'Jeans', 'Grafite', 'Bege', 'Preto', 'Off-white'], shoes: ['Branco', 'Marinho', 'Coral', 'Marrom', 'Verde'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], extra: ['Nenhum', 'Óculos', 'Boné', 'Óculos escuros', 'Brincos', 'Fones'] },
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Este navegador não tem voz. O personagem vai aparecer só em texto.', voiceHello: 'Oi! Eu sou você. Vamos conversar um pouco?', voiceHelloName: 'Oi! Eu sou {name}. Vamos conversar um pouco?',
     talkPrivacyAI: 'Como funciona: se você usar o microfone, sua voz vira texto num serviço da Anthropic. O texto da resposta é lido por uma IA (Claude, da Anthropic) só para encontrar indicadores nas áreas da saúde mental. A IA não dá diagnóstico. Neste protótipo, nenhuma resposta fica guardada depois que você fecha a página. Se você usa leitor de tela, pode escolher "Sem voz".',
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
     reactSad: 'Obrigado por dividir isso comigo. Parece pesado, e faz sentido se sentir assim.', reactAnxious: 'Entendi. Vamos com calma, uma coisa de cada vez.', reactHappy: 'Que bom ouvir isso!', reactExcited: 'Que demais! Fico feliz por você.', reactNeutral: 'Obrigado por contar.', reactSkip: 'Tudo bem, vamos para a próxima.',
     talkHello: 'Oi! Eu sou {name}, a sua versão. Vou te fazer algumas perguntas. Responda do seu jeito, sem pressa.', avDrag: 'Arraste o personagem para girar.',
-    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribe: 'Seu personagem: cabelo {hair}, cor {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
+    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓',
+    cloneTitle: 'Sua voz no seu personagem', cloneLead: 'Leia em voz alta as frases abaixo, uma de cada vez, num lugar silencioso. Com uns 30 segundos de gravação, o seu personagem passa a falar com a sua voz.',
+    cloneNote: 'Se ouvir a sua própria voz te deixar desconfortável, escolha uma voz pronta. Você pode trocar quando quiser.',
+    cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Ela é apagada quando eu recomeçar ou fechar a página (e, no máximo, em 2 horas).',
+    cloneHow: 'Leia cada frase e toque em Parar', cloneRecord: 'Gravar a frase {n}', cloneStop: 'Parar', cloneTotal: 'Gravado: {n} s (mínimo 30 s)', cloneGo: 'Criar minha voz', cloneBusy: 'Criando a sua voz…', cloneBack: 'Voltar sem gravar',
+    cloneMicDenied: 'Sem acesso ao microfone. Permita o microfone nas configurações do navegador ou escolha uma voz pronta.', cloneFail: 'Não deu para criar a sua voz agora. Tente de novo ou escolha uma voz pronta.', cloneVerify: 'A ElevenLabs pediu uma verificação extra para esta voz. Por enquanto, escolha uma voz pronta.',
+    cloneLines: ['Oi, este é o meu personagem e esta é a minha voz.', 'Hoje eu quero conversar comigo com calma, sem pressa nenhuma.', 'Às vezes o dia é leve, às vezes é pesado, e tudo bem sentir as duas coisas.', 'Eu gosto de ouvir música, caminhar e estar perto de quem eu gosto.', 'Quando algo me preocupa, eu respiro fundo e penso no próximo passo.', 'Vou responder do meu jeito, com sinceridade, e cuidar de mim no caminho.'],
+    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
     talkStart: 'Começar a conversa', quickQuiz: 'Prefiro responder perguntas rápidas',
     talkFirst: 'Fique à vontade: fale o que tiver vontade, do jeito que você sente. Se não quiser responder alguma pergunta, é só pular.',
     talkPlaceholder: 'Fale ou escreva do seu jeito. Não existe resposta certa.', talkAnswerLabel: 'Sua resposta', talkReplay: 'Ouvir de novo', talkSkip: 'Pular esta pergunta', talkNeed: 'Responda do seu jeito ou toque em "Pular esta pergunta".',
@@ -1158,12 +1180,23 @@ const UI = {
     roundTitle: 'Round {n}', roundDone: 'Round complete.',
     talkTitle: 'Conversation', avTitle: 'Create your own self', avLead: 'Build a character who is you. They will talk with you now, with a few open questions. You answer by speaking or typing, in your own way.',
     avNameLabel: 'Your character’s name', avNameDefault: 'Me', avTone: 'Tone {n}', avSkin: 'Skin tone', avHair: 'Hair', avHairColor: 'Hair colour', avEyes: 'Eyes', avShirt: 'Clothes', avExtra: 'Accessory',
-    avNames: { hair: ['Short', 'Long', 'Curly', 'Bun', 'No hair'], hairColor: ['Black', 'Brown', 'Copper', 'Blond', 'Grey', 'Red'], eyes: ['Open', 'Smiling', 'Calm'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], extra: ['None', 'Glasses', 'Cap'] },
+    avTabs: { face: 'Face', hair: 'Hair', body: 'Body', clothes: 'Clothes', extras: 'Accessories' }, avRandom: 'Surprise me',
+    avLegend: { skin: 'Skin tone', face: 'Face shape', nose: 'Nose', eyeColor: 'Eye colour', brows: 'Eyebrows', beard: 'Beard and moustache', hair: 'Hairstyle', hairColor: 'Hair colour', height: 'Height', build: 'Body type', top: 'Clothing style', shirt: 'Clothes colour', bottom: 'Bottoms', pantsColor: 'Trousers, shorts or skirt colour', shoes: 'Shoe colour', extra: 'Accessory' },
+    avNames: { skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
+      hair: ['Short', 'Long', 'Curly', 'Bun', 'No hair', 'Buzz cut', 'Side part', 'Afro', 'Ponytail', 'Braids'], hairColor: ['Black', 'Brown', 'Copper', 'Blond', 'Grey', 'Red', 'Platinum', 'Blue', 'Purple'], height: ['Short', 'Average', 'Tall'], build: ['Slim', 'Medium', 'Broad'],
+      top: ['T-shirt', 'Hoodie', 'Shirt', 'Jacket', 'Sweater', 'Dress'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], bottom: ['Trousers', 'Shorts', 'Skirt'], pantsColor: ['Navy', 'Denim', 'Charcoal', 'Beige', 'Black', 'Off-white'], shoes: ['White', 'Navy', 'Coral', 'Brown', 'Green'], eyes: ['Open', 'Smiling', 'Calm'], extra: ['None', 'Glasses', 'Cap', 'Sunglasses', 'Earrings', 'Headphones'] },
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'This browser has no voice. The character will show as text only.', voiceHello: 'Hi! I am you. Shall we talk for a bit?', voiceHelloName: 'Hi! I am {name}. Shall we talk for a bit?',
     talkPrivacyAI: 'How it works: if you use the microphone, your voice becomes text in an Anthropic service. The text of your answer is read by an AI (Claude, by Anthropic) only to find indicators across areas of mental health. The AI does not diagnose. In this prototype, no answer is kept after you close the page. If you use a screen reader, you can choose "No voice".',
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
     reactSad: 'Thank you for sharing that with me. It sounds heavy, and it makes sense to feel that way.', reactAnxious: 'I hear you. Let’s take it slowly, one thing at a time.', reactHappy: 'So good to hear that!', reactExcited: 'That’s wonderful! I’m happy for you.', reactNeutral: 'Thanks for telling me.', reactSkip: 'That’s fine, let’s go to the next one.',
     talkHello: 'Hi! I’m {name}, your own self. I’ll ask you a few questions. Answer in your own way, no rush.', avDrag: 'Drag the character to turn it.',
+    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓',
+    cloneTitle: 'Your voice in your character', cloneLead: 'Read the sentences below out loud, one at a time, somewhere quiet. With about 30 seconds of recording, your character will speak with your voice.',
+    cloneNote: 'If hearing your own voice makes you uncomfortable, choose a ready-made voice. You can switch whenever you like.',
+    cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs only to create my character’s voice in this session. It is my own voice. It is deleted when I start over or close the page (and at most within 2 hours).',
+    cloneHow: 'Read each sentence and tap Stop', cloneRecord: 'Record sentence {n}', cloneStop: 'Stop', cloneTotal: 'Recorded: {n} s (minimum 30 s)', cloneGo: 'Create my voice', cloneBusy: 'Creating your voice…', cloneBack: 'Go back without recording',
+    cloneMicDenied: 'No microphone access. Allow the microphone in your browser settings or choose a ready-made voice.', cloneFail: 'Your voice couldn’t be created right now. Try again or choose a ready-made voice.', cloneVerify: 'ElevenLabs asked for an extra check for this voice. For now, choose a ready-made voice.',
+    cloneLines: ['Hi, this is my character and this is my voice.', 'Today I want to talk with myself calmly, with no rush at all.', 'Some days are light, some days are heavy, and it is okay to feel both.', 'I like listening to music, going for walks and being near the people I love.', 'When something worries me, I take a deep breath and think about the next step.', 'I will answer in my own way, honestly, and take care of myself along the way.'],
     indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
     talkStart: 'Start the conversation', quickQuiz: 'I’d rather answer quick questions',
     talkFirst: 'Take your time: say whatever you feel like, the way you feel it. If you don’t want to answer a question, just skip it.',
@@ -1717,6 +1750,9 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
 // (NOT official text). The answer, spoken or typed, is read for indicators — never a diagnosis —
 // and the person then chooses which official questionnaires to take (level 2).
 
+// Address of the Nort voice server (Cloudflare Worker, see server/). Empty = own voice off.
+const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) || '';
+
 const TALK_QS = [
   { id: 'mood', areas: ['wellbeing', 'depression', 'bipolar'],
     q: { pt: 'Como você tem se sentido nas últimas semanas? Pode falar do seu humor, da sua energia, do que ainda te dá prazer, e se teve fases muito para cima ou muito para baixo.',
@@ -1864,17 +1900,32 @@ function talkLevel2Modules(state) {
 
 // ---------- The character (built from simple shapes) ----------
 const AV = {
-  skin: ['#F5D7C0', '#E8B896', '#C98F68', '#A8704D', '#7A4E33', '#4E3222'],
-  hairColor: ['#1F1A17', '#5A3A22', '#A0652E', '#D9B26A', '#B8B8B8', '#C2523C'],
-  hair: ['short', 'long', 'curly', 'bun', 'none'],
-  eyes: ['round', 'happy', 'calm'],
+  skin: ['#F5D7C0', '#E8B896', '#C98F68', '#A8704D', '#7A4E33', '#4E3222', '#FBE6D6', '#3A2418'],
+  face: ['round', 'oval', 'square', 'heart'],
+  nose: ['small', 'round', 'long', 'wide'],
+  eyeColor: ['#3B2A20', '#6B4423', '#3E7CB1', '#4E8A5A', '#7A7F87', '#9C6B30'],
+  brows: ['thin', 'medium', 'thick', 'arched'],
+  beard: ['none', 'stubble', 'short', 'full', 'mustache', 'goatee'],
+  hair: ['short', 'long', 'curly', 'bun', 'none', 'buzz', 'side', 'afro', 'ponytail', 'braids'],
+  hairColor: ['#1F1A17', '#5A3A22', '#A0652E', '#D9B26A', '#B8B8B8', '#C2523C', '#E9E2D0', '#2E4A7A', '#8E5BA8'],
+  height: ['short', 'medium', 'tall'],
+  build: ['slim', 'medium', 'broad'],
+  top: ['tshirt', 'hoodie', 'shirt', 'jacket', 'sweater', 'dress'],
   shirt: ['#1F2A44', '#E8684A', '#3E8E7E', '#7A6FB0', '#D9A441', '#5B7FA6'],
-  extra: ['none', 'glasses', 'cap']
+  bottom: ['pants', 'shorts', 'skirt'],
+  pantsColor: ['#2B3550', '#4A6A9A', '#3D3A35', '#8C7B62', '#1F1F1F', '#E8E3D8'],
+  shoes: ['#FFFFFF', '#1F2A44', '#E8684A', '#8A6A4E', '#3E8E7E'],
+  eyes: ['round', 'happy', 'calm'],
+  extra: ['none', 'glasses', 'cap', 'sunglasses', 'earrings', 'headphones']
 };
-const AV_DEFAULT = { skin: 2, hairColor: 1, hair: 0, eyes: 0, shirt: 1, extra: 0, name: '' };
+const AV_DEFAULT = { skin: 2, face: 0, nose: 1, eyeColor: 1, brows: 1, beard: 0, hair: 0, hairColor: 1, height: 1, build: 1, top: 0, shirt: 1, bottom: 0, pantsColor: 0, shoes: 0, eyes: 0, extra: 0, name: '' };
+// Builder tabs: which options each tab shows; color rows show swatches
+const AV_TABS = { face: ['skin', 'face', 'nose', 'eyeColor', 'brows', 'beard'], hair: ['hair', 'hairColor'], body: ['height', 'build'], clothes: ['top', 'shirt', 'bottom', 'pantsColor', 'shoes'], extras: ['extra'] };
+const AV_COLORS = ['skin', 'eyeColor', 'hairColor', 'shirt', 'pantsColor', 'shoes'];
 function avatarSVG(c, cls) {
   const skin = AV.skin[c.skin] || AV.skin[2], hc = AV.hairColor[c.hairColor] || AV.hairColor[1], sh = AV.shirt[c.shirt] || AV.shirt[1];
-  const hair = AV.hair[c.hair] || 'short', eyes = AV.eyes[c.eyes] || 'round', extra = AV.extra[c.extra] || 'none';
+  const hair0 = AV.hair[c.hair] || 'short', eyes = AV.eyes[c.eyes] || 'round', extra0 = AV.extra[c.extra] || 'none';
+  const hair = { buzz: 'short', side: 'short', afro: 'curly', ponytail: 'bun', braids: 'long' }[hair0] || hair0, extra = extra0 === 'sunglasses' ? 'glasses' : extra0;
   const top = `<path d="M31 55 Q30 24 60 24 Q90 24 89 55 Q82 38 60 37 Q38 38 31 55 Z" fill="${hc}"/>`;
   const back = hair === 'long' ? `<path d="M30 52 Q24 92 38 100 L44 62 Z M90 52 Q96 92 82 100 L76 62 Z" fill="${hc}"/>` : '';
   const front = hair === 'short' ? top : hair === 'long' ? top : hair === 'bun' ? `<circle cx="60" cy="20" r="10" fill="${hc}"/>${top}` : hair === 'curly'
@@ -1981,59 +2032,132 @@ const N3D = (() => {
     parts.compass.position.set((total + 1) * st.step, 0, 0);
     parts.total = total;
   }
-  function dispose(obj) { obj.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material.map !== faceTex) o.material.dispose(); }); }
+  function dispose(obj) { obj.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); }
+  // ---- the character: base body + interchangeable parts (face shape, nose, hair, beard, clothes, body) ----
   function buildChar(look) {
     if (char) { scene.remove(char); dispose(char); }
     const L = Object.assign({}, AV_DEFAULT, look || {});
-    const skin = new T.Color(AV.skin[L.skin] || AV.skin[2]), hairC = new T.Color(AV.hairColor[L.hairColor] || AV.hairColor[1]), shirtC = new T.Color(AV.shirt[L.shirt] || AV.shirt[1]);
-    const skinM = mat(skin, { roughness: 0.6 }), hairM = mat(hairC, { roughness: 0.7 }), shirtM = mat(shirtC), pantsM = mat(0x2B3550), shoeM = mat(0xFFFFFF);
+    const pick = (k) => AV[k][L[k]] !== undefined ? AV[k][L[k]] : AV[k][AV_DEFAULT[k]];
+    const skinHex = pick('skin'), hairHex = pick('hairColor'), shirtHex = pick('shirt');
+    const skinM = mat(skinHex, { roughness: 0.62 }), hairM = mat(hairHex, { roughness: 0.75 }), shirtM = mat(shirtHex, { roughness: 0.7 });
+    const pantsM = mat(pick('pantsColor'), { roughness: 0.8 }), shoeM = mat(pick('shoes'), { roughness: 0.5 }), darkM = mat(0x1F2A44, { roughness: 0.4 });
+    const H = pick('hair'), top = pick('top'), bottom = pick('bottom'), beard = pick('beard'), extra = pick('extra'), face = pick('face'), nose = pick('nose');
+    const legK = { short: 0.82, medium: 1, tall: 1.18 }[pick('height')] || 1;
+    const wide = { slim: 0.86, medium: 1, broad: 1.2 }[pick('build')] || 1;
+    const lift = 0.62 * (legK - 1);
     char = new T.Group(); scene.add(char);
     const body = new T.Group(); char.add(body); parts.body = body;
-    const torso = new T.Mesh(new T.CapsuleGeometry(0.34, 0.42, 8, 24), shirtM); torso.position.y = 1.02; torso.scale.set(1, 1, 0.82); body.add(torso);
-    parts.legs = [-0.15, 0.15].map((x) => { const g = new T.Group(); g.position.set(x, 0.72, 0); const leg = new T.Mesh(new T.CapsuleGeometry(0.12, 0.38, 6, 16), pantsM); leg.position.y = -0.3; g.add(leg); const shoe = new T.Mesh(new T.SphereGeometry(0.15, 20, 12), shoeM); shoe.scale.set(1, 0.6, 1.4); shoe.position.set(0, -0.62, 0.05); g.add(shoe); body.add(g); return g; });
-    parts.arms = [-1, 1].map((sx) => { const g = new T.Group(); g.position.set(sx * 0.4, 1.3, 0); const a = new T.Mesh(new T.CapsuleGeometry(0.095, 0.38, 6, 16), shirtM); a.position.y = -0.24; g.add(a); const h = new T.Mesh(new T.SphereGeometry(0.11, 20, 14), skinM); h.position.y = -0.5; g.add(h); body.add(g); return g; });
-    const neck = new T.Mesh(new T.CylinderGeometry(0.1, 0.12, 0.15, 16), skinM); neck.position.y = 1.43; body.add(neck);
-    const head = new T.Group(); head.position.y = 1.95; body.add(head); parts.head = head;
-    const skull = new T.Mesh(new T.SphereGeometry(0.5, 48, 32), skinM); skull.scale.set(1, 1.02, 0.95); head.add(skull);
-    [-1, 1].forEach((sx) => { const ear = new T.Mesh(new T.SphereGeometry(0.1, 16, 12), skinM); ear.scale.set(0.6, 1, 0.8); ear.position.set(sx * 0.49, -0.02, 0); head.add(ear); });
-    const nose = new T.Mesh(new T.SphereGeometry(0.055, 16, 12), skinM); nose.position.set(0, -0.06, 0.48); head.add(nose);
-    const face = new T.Mesh(new T.SphereGeometry(0.503, 48, 32, Math.PI / 2 - 0.85, 1.7, Math.PI / 2 - 0.75, 1.5), new T.MeshBasicMaterial({ map: faceTex, transparent: true, depthWrite: false }));
-    face.scale.set(1, 1.02, 0.95); head.add(face);
-    const hair = L.hair, H = AV.hair[hair] || 'short';
-    const cap = (r, cut) => { const m = new T.Mesh(new T.SphereGeometry(r, 40, 20, 0, Math.PI * 2, 0, Math.PI * cut), hairM); m.scale.set(1, 1.02, 0.97); return m; };
-    if (H === 'short' || H === 'long' || H === 'bun') { const c = cap(0.535, 0.44); c.rotation.x = -0.28; c.position.z = -0.02; head.add(c); }
-    if (H === 'long') { const b = new T.Mesh(new T.SphereGeometry(0.5, 32, 20), hairM); b.scale.set(1.05, 1.25, 0.55); b.position.set(0, -0.28, -0.2); head.add(b); }
+    // legs (pants / shorts / skirt) and shoes
+    parts.legs = [-0.15 * wide, 0.15 * wide].map((x) => {
+      const g = new T.Group(); g.position.set(x, 0.72 + lift, 0); g.scale.y = legK;
+      const legM = bottom === 'pants' ? pantsM : skinM;
+      const leg = new T.Mesh(new T.CapsuleGeometry(0.12 * Math.sqrt(wide), 0.38, 6, 16), legM); leg.position.y = -0.3; g.add(leg);
+      if (bottom === 'shorts') { const sh = new T.Mesh(new T.CylinderGeometry(0.15 * Math.sqrt(wide), 0.16 * Math.sqrt(wide), 0.24, 16), pantsM); sh.position.y = -0.08; g.add(sh); }
+      const shoe = new T.Mesh(new T.SphereGeometry(0.15, 20, 12), shoeM); shoe.scale.set(1, 0.6 / legK, 1.4); shoe.position.set(0, -0.62, 0.05); g.add(shoe);
+      body.add(g); return g;
+    });
+    const up = new T.Group(); up.position.y = lift; body.add(up);
+    // torso by clothing style
+    const torso = new T.Mesh(new T.CapsuleGeometry(0.34, 0.42, 8, 24), shirtM); torso.position.y = 1.02; torso.scale.set(wide, 1, 0.82 * wide); up.add(torso);
+    if (top === 'hoodie') { const hood = new T.Mesh(new T.SphereGeometry(0.3, 24, 14, 0, Math.PI * 2, 0, Math.PI / 2), mat(shirtHex, { side: T.DoubleSide })); hood.scale.set(1.15 * wide, 0.55, 0.62); hood.position.set(0, 1.34, -0.17); hood.rotation.x = -0.55; up.add(hood); const front = 0.28 * wide; const pocket = new T.Mesh(new T.BoxGeometry(0.36 * wide, 0.13, 0.012), mat(new T.Color(shirtHex).multiplyScalar(0.85))); pocket.position.set(0, 0.9, front + 0.004); up.add(pocket); [-1, 1].forEach((sx) => { const st2 = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 0.16, 6), mat(0xFFFFFF)); st2.position.set(sx * 0.06, 1.22, front + 0.01); up.add(st2); }); }
+    if (top === 'shirt') { [-1, 1].forEach((sx) => { const c = new T.Mesh(new T.BoxGeometry(0.16, 0.04, 0.1), mat(0xFFFFFF)); c.position.set(sx * 0.08, 1.36, 0.2); c.rotation.set(0.3, 0, sx * -0.5); up.add(c); }); for (let i = 0; i < 3; i++) { const b = new T.Mesh(new T.SphereGeometry(0.022, 8, 6), mat(0xFFFFFF)); b.position.set(0, 1.22 - i * 0.14, 0.285 * wide); up.add(b); } }
+    if (top === 'jacket') { const jM = mat(new T.Color(shirtHex).multiplyScalar(0.62)); [-1, 1].forEach((sx) => { const pnl = new T.Mesh(new T.CapsuleGeometry(0.2, 0.42, 6, 16), jM); pnl.scale.set(wide * 0.85, 1, 0.72 * wide); pnl.position.set(sx * 0.19 * wide, 1.02, 0.05); up.add(pnl); const lap = new T.Mesh(new T.BoxGeometry(0.1, 0.22, 0.012), jM); lap.position.set(sx * 0.1, 1.28, 0.3 * wide); lap.rotation.z = sx * 0.35; up.add(lap); }); const zip = new T.Mesh(new T.BoxGeometry(0.02, 0.5, 0.01), mat(0xD9DEE4)); zip.position.set(0.035, 1.0, 0.3 * wide); up.add(zip); }
+    if (top === 'sweater') { const col = new T.Mesh(new T.TorusGeometry(0.15, 0.055, 12, 28), mat(new T.Color(shirtHex).multiplyScalar(0.8))); col.rotation.x = Math.PI / 2 - 0.25; col.position.set(0, 1.38, 0.02); up.add(col); const hem = new T.Mesh(new T.TorusGeometry(0.33 * wide, 0.035, 10, 32), mat(new T.Color(shirtHex).multiplyScalar(0.8))); hem.scale.set(1, 0.82, 1); hem.rotation.x = Math.PI / 2; hem.position.y = 0.72; up.add(hem); torso.scale.x *= 1.06; }
+    if (top === 'dress' || bottom === 'skirt') { const sk = new T.Mesh(new T.CylinderGeometry(0.3 * wide, 0.5 * wide, 0.48, 28, 1, true), mat(top === 'dress' ? shirtHex : pick('pantsColor'), { side: T.DoubleSide, roughness: 0.75 })); sk.position.y = 0.7; up.add(sk); }
+    // arms (sleeves follow the clothes)
+    parts.arms = [-1, 1].map((sx) => {
+      const g = new T.Group(); g.position.set(sx * 0.4 * wide, 1.3, 0);
+      const a = new T.Mesh(new T.CapsuleGeometry(0.095 * Math.sqrt(wide), 0.38, 6, 16), top === 'dress' ? skinM : (top === 'jacket' ? mat(new T.Color(shirtHex).multiplyScalar(0.7)) : shirtM)); a.position.y = -0.24; g.add(a);
+      const h = new T.Mesh(new T.SphereGeometry(0.11, 20, 14), skinM); h.position.y = -0.5; g.add(h);
+      up.add(g); return g;
+    });
+    const neck = new T.Mesh(new T.CylinderGeometry(0.1, 0.12, 0.15, 16), skinM); neck.position.y = 1.43; up.add(neck);
+    // head: face shape
+    const head = new T.Group(); head.position.y = 1.95; up.add(head); parts.head = head;
+    const fs = { round: [1, 1.02, 0.95], oval: [0.92, 1.1, 0.93], square: [1.1, 0.97, 0.96], heart: [1.02, 1.04, 0.94] }[face] || [1, 1.02, 0.95];
+    const skull = new T.Mesh(new T.SphereGeometry(0.5, 48, 32), skinM); skull.scale.set(...fs); head.add(skull);
+    // (square face = wider, slightly shorter skull; no extra jaw piece)
+    if (face === 'heart') { const chin = new T.Mesh(new T.SphereGeometry(0.2, 24, 16), skinM); chin.scale.set(1, 0.8, 0.8); chin.position.set(0, -0.31, 0.15); head.add(chin); }
+    [-1, 1].forEach((sx) => { const ear = new T.Mesh(new T.SphereGeometry(0.1, 16, 12), skinM); ear.scale.set(0.6, 1, 0.8); ear.position.set(sx * 0.49 * fs[0], -0.02, 0); head.add(ear); });
+    const ns = { small: [0.045, 0.8, 0.9], round: [0.07, 1, 1], long: [0.055, 1.6, 1.1], wide: [0.06, 0.9, 0.9] }[nose] || [0.055, 1, 1];
+    const noseM = new T.Mesh(new T.SphereGeometry(ns[0], 16, 12), skinM); noseM.scale.set(nose === 'wide' ? 1.6 : 1, ns[1], ns[2]); noseM.position.set(0, -0.07, 0.47 * fs[2] / 0.95 + 0.01); head.add(noseM);
+    const faceMesh = new T.Mesh(new T.SphereGeometry(0.503, 48, 32, Math.PI / 2 - 0.85, 1.7, Math.PI / 2 - 0.75, 1.5), new T.MeshBasicMaterial({ map: faceTex, transparent: true, depthWrite: false }));
+    faceMesh.scale.set(...fs); head.add(faceMesh);
+    // beard
+    // beard, moustache and goatee are painted on the face (see drawFace)
+    // hair
+    const cap = (r, cut, tilt) => { const m = new T.Mesh(new T.SphereGeometry(r, 40, 20, 0, Math.PI * 2, 0, Math.PI * cut), hairM); m.scale.set(fs[0], fs[1], fs[2] + 0.02); m.rotation.x = tilt; head.add(m); return m; };
+    if (['short', 'long', 'bun', 'ponytail', 'braids'].includes(H)) cap(0.535, 0.44, -0.28);
+    if (H === 'buzz') cap(0.512, 0.47, -0.2);
+    if (H === 'side') { cap(0.535, 0.42, -0.3); const sw = new T.Mesh(new T.SphereGeometry(0.3, 24, 16), hairM); sw.scale.set(1.3, 0.45, 0.9); sw.position.set(0.12, 0.32, 0.22); sw.rotation.z = -0.35; head.add(sw); }
+    if (H === 'long') { const b = new T.Mesh(new T.SphereGeometry(0.5, 32, 20), hairM); b.scale.set(1.05 * fs[0], 1.3, 0.55); b.position.set(0, -0.3, -0.2); head.add(b); }
     if (H === 'bun') { const b = new T.Mesh(new T.SphereGeometry(0.2, 24, 16), hairM); b.position.set(0, 0.5, -0.18); head.add(b); }
-    if (H === 'curly') { const curl = new T.SphereGeometry(0.13, 12, 10); const n = 70; for (let i = 0; i < n; i++) { const y = 1 - (i / (n - 1)) * 1.2; const r = Math.sqrt(Math.max(0, 1 - y * y)); const a = i * 2.39996; const p = new T.Vector3(Math.cos(a) * r, y, Math.sin(a) * r); if (p.y < 0.05 || (p.z > 0.45 && p.y < 0.6)) continue; const s = new T.Mesh(curl, hairM); s.position.copy(p.multiplyScalar(0.52)); head.add(s); } }
-    const ex = AV.extra[L.extra] || 'none';
-    if (ex === 'glasses') { const gm = mat(0x1F2A44); [-1, 1].forEach((sx) => { const r = new T.Mesh(new T.TorusGeometry(0.105, 0.016, 10, 32), gm); r.position.set(sx * 0.16, 0.02, 0.5); head.add(r); }); const br = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 0.11, 8), gm); br.rotation.z = Math.PI / 2; br.position.set(0, 0.03, 0.52); head.add(br); }
-    if (ex === 'cap') { const c = new T.Mesh(new T.SphereGeometry(0.55, 40, 20, 0, Math.PI * 2, 0, Math.PI * 0.42), shirtM); c.rotation.x = -0.18; head.add(c); const brim = new T.Mesh(new T.CylinderGeometry(0.34, 0.34, 0.03, 32, 1, false, -Math.PI / 2, Math.PI), shirtM); brim.position.set(0, 0.24, 0.32); brim.rotation.x = 0.12; head.add(brim); }
-    const shadow = new T.Mesh(new T.CircleGeometry(0.55, 32), new T.MeshBasicMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.16, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.005; char.add(shadow);
-    st.look = L;
+    if (H === 'ponytail') { const pt = new T.Mesh(new T.CapsuleGeometry(0.1, 0.5, 6, 12), hairM); pt.position.set(0, 0.05, -0.55); pt.rotation.x = 0.5; head.add(pt); const tie = new T.Mesh(new T.TorusGeometry(0.08, 0.025, 8, 16), mat(0xE8684A)); tie.position.set(0, 0.28, -0.48); tie.rotation.x = 1.1; head.add(tie); }
+    if (H === 'braids') { [-1, 1].forEach((sx) => { const root = new T.Mesh(new T.SphereGeometry(0.1, 14, 10), hairM); root.position.set(sx * 0.44, 0.12, -0.12); head.add(root); for (let i = 0; i < 6; i++) { const s = new T.Mesh(new T.SphereGeometry(0.085 - i * 0.006, 12, 10), hairM); s.scale.set(1, 1.25, 1); s.position.set(sx * (0.47 + i * 0.008), 0.02 - i * 0.12, -0.14 - i * 0.02); head.add(s); } }); }
+    if (H === 'curly' || H === 'afro') {
+      const big = H === 'afro'; const curl = new T.SphereGeometry(big ? 0.17 : 0.13, 12, 10); const n = big ? 110 : 70;
+      for (let i = 0; i < n; i++) { const y = 1 - (i / (n - 1)) * (big ? 1.45 : 1.2); const r = Math.sqrt(Math.max(0, 1 - y * y)); const a = i * 2.39996; const p = new T.Vector3(Math.cos(a) * r, y, Math.sin(a) * r); if (p.y < (big ? -0.25 : 0.05) || (p.z > 0.42 && p.y < 0.6) || (extra === 'cap' && p.y > 0.55)) continue; const s = new T.Mesh(curl, hairM); s.position.copy(p.multiplyScalar(big ? 0.62 : 0.52)); head.add(s); }
+    }
+    // accessories
+    if (extra === 'glasses' || extra === 'sunglasses') {
+      const gm = mat(0x1F2A44);
+      [-1, 1].forEach((sx) => { const r = new T.Mesh(new T.TorusGeometry(0.105, 0.016, 10, 32), gm); r.position.set(sx * 0.16, 0.0, 0.5); head.add(r); if (extra === 'sunglasses') { const l = new T.Mesh(new T.CircleGeometry(0.1, 24), new T.MeshStandardMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.85, roughness: 0.2 })); l.position.set(sx * 0.16, 0.0, 0.505); head.add(l); } });
+      const br = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 0.11, 8), gm); br.rotation.z = Math.PI / 2; br.position.set(0, 0.01, 0.52); head.add(br);
+    }
+    if (extra === 'cap') { const c = new T.Mesh(new T.SphereGeometry(H === 'afro' ? 0.66 : H === 'curly' ? 0.6 : 0.55, 40, 20, 0, Math.PI * 2, 0, Math.PI * 0.42), shirtM); c.rotation.x = -0.18; head.add(c); const brim = new T.Mesh(new T.CylinderGeometry(0.34, 0.34, 0.03, 32, 1, false, -Math.PI / 2, Math.PI), shirtM); brim.position.set(0, 0.24, 0.32); brim.rotation.x = 0.12; head.add(brim); }
+    if (extra === 'earrings') { [-1, 1].forEach((sx) => { const e = new T.Mesh(new T.SphereGeometry(0.035, 12, 10), mat(0xD9A441, { metalness: 0.6, roughness: 0.3 })); e.position.set(sx * 0.5 * fs[0], -0.12, 0.02); head.add(e); }); }
+    if (extra === 'headphones') { const band = new T.Mesh(new T.TorusGeometry(0.53, 0.035, 10, 40, Math.PI), darkM); band.position.y = 0.02; head.add(band); [-1, 1].forEach((sx) => { const cup = new T.Mesh(new T.CylinderGeometry(0.13, 0.13, 0.08, 24), mat(0xE8684A)); cup.rotation.z = Math.PI / 2; cup.position.set(sx * 0.53 * fs[0], 0, 0); head.add(cup); }); }
+    const shadow = new T.Mesh(new T.CircleGeometry(0.55 * wide, 32), new T.MeshBasicMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.16, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.005; char.add(shadow);
+    st.look = L; st.face = { skin: skinHex, iris: pick('eyeColor'), brows: pick('brows'), beard, hair: hairHex };
     char.position.set(st.x, 0, st.z);
   }
   function drawFace(e, blink, mouthOpen) {
     const c = faceCtx, W = 512; c.clearRect(0, 0, W, W);
-    const ink = '#1F2A44';
-    // eyes: x at 0.37/0.63 of the face patch, y in the middle
-    const ey = 250, eh = Math.max(0.08, 34 * e.eye * (1 - blink)), ew = 24;
+    const ink = '#1F2A44', F = st.face || { skin: '#C98F68', iris: '#5A3A22', brows: 'medium' };
+    const ey = 250, open = Math.max(0, e.eye * (1 - blink));
     [[188, -1], [324, 1]].forEach(([x, side]) => {
-      c.fillStyle = ink; c.beginPath(); c.ellipse(x, ey, ew, eh, 0, 0, Math.PI * 2); c.fill();
-      if (eh > 10) { c.fillStyle = '#FFFFFF'; c.beginPath(); c.arc(x + 7, ey - eh * 0.4, 7, 0, Math.PI * 2); c.fill(); }
-      // brows: browIn raises the inner end (worried / caring), brow raises both
-      const by = 190 - e.brow * 40, inner = e.browIn * 22;
-      c.strokeStyle = ink; c.lineWidth = 11; c.lineCap = 'round'; c.beginPath();
-      c.moveTo(x - side * 30, by + 6); c.lineTo(x + side * 26, by - inner * (side === 1 ? 1 : 1) + (side === -1 ? 0 : 0));
+      if (open < 0.15) { c.strokeStyle = ink; c.lineWidth = 8; c.lineCap = 'round'; c.beginPath(); c.moveTo(x - 26, ey); c.quadraticCurveTo(x, ey + 10, x + 26, ey); c.stroke(); }
+      else {
+        const eh = 32 * open, ew = 28;
+        c.fillStyle = '#FFFFFF'; c.beginPath(); c.ellipse(x, ey, ew, eh, 0, 0, Math.PI * 2); c.fill();
+        c.save(); c.beginPath(); c.ellipse(x, ey, ew, eh, 0, 0, Math.PI * 2); c.clip();
+        c.fillStyle = F.iris; c.beginPath(); c.arc(x + side * 2, ey + 2, 19, 0, Math.PI * 2); c.fill();
+        c.fillStyle = '#111111'; c.beginPath(); c.arc(x + side * 2, ey + 2, 9, 0, Math.PI * 2); c.fill();
+        c.fillStyle = '#FFFFFF'; c.beginPath(); c.arc(x + side * 2 + 7, ey - 6, 6, 0, Math.PI * 2); c.fill();
+        c.restore();
+        c.strokeStyle = ink; c.lineWidth = 5; c.beginPath(); c.ellipse(x, ey, ew, eh, 0, Math.PI * 1.05, Math.PI * 1.95); c.stroke();
+      }
+      // brows: thin / medium / thick / arched; browIn raises the inner end (worried, caring)
+      const by = 196 - e.brow * 40, inner = e.browIn * 22;
+      const bw = { thin: 6, medium: 10, thick: 16, arched: 10 }[F.brows] || 10;
+      c.strokeStyle = ink; c.lineWidth = bw; c.lineCap = 'round'; c.beginPath();
+      c.moveTo(x + side * 30, by + 6); c.quadraticCurveTo(x, by - (F.brows === 'arched' ? 16 : 6), x - side * 26, by - inner);
       c.stroke();
     });
-    if (e.cheek > 0.05) { c.fillStyle = `rgba(232, 104, 74, ${0.28 * e.cheek})`; [150, 362].forEach((x) => { c.beginPath(); c.ellipse(x, 315, 30, 18, 0, 0, Math.PI * 2); c.fill(); }); }
-    // mouth: curve (smile > 0, frown < 0), opens while talking
-    const my = 360, mw = 46 + Math.max(0, e.mouth) * 18;
+    if (e.cheek > 0.05) { c.fillStyle = `rgba(232, 104, 74, ${0.28 * e.cheek})`; [146, 366].forEach((x) => { c.beginPath(); c.ellipse(x, 318, 30, 18, 0, 0, Math.PI * 2); c.fill(); }); }
+    // facial hair painted around the mouth (the mouth is drawn on top, so emotions stay visible)
+    if (F.beard && F.beard !== 'none') {
+      const full = F.beard === 'full', jaw = full || F.beard === 'short' || F.beard === 'stubble', stub = F.beard === 'stubble';
+      const col = stub ? '#2E241F' : F.hair;
+      c.fillStyle = col; c.globalAlpha = stub ? 0.22 : 1;
+      if (jaw) {
+        // jaw line from the sideburns down to the chin; the top edge hugs the mouth corners
+        const y0 = full ? 262 : 300, side = full ? 44 : 34;
+        c.beginPath(); c.moveTo(66, y0); c.bezierCurveTo(66, 450, 160, 512, 256, 512); c.bezierCurveTo(352, 512, 446, 450, 446, y0);
+        c.lineTo(446 - side, y0); c.quadraticCurveTo(410, 350, 324, 352); c.quadraticCurveTo(300, 396, 256, 398); c.quadraticCurveTo(212, 396, 188, 352); c.quadraticCurveTo(102, 350, 66 + side, y0); c.closePath(); c.fill();
+      }
+      if ((jaw && !stub) || F.beard === 'mustache' || F.beard === 'goatee') {
+        c.beginPath(); c.moveTo(194, 350); c.bezierCurveTo(210, 318, 302, 318, 318, 350); c.bezierCurveTo(290, 336, 222, 336, 194, 350); c.fill();
+      }
+      if (F.beard === 'goatee') { c.beginPath(); c.moveTo(214, 392); c.quadraticCurveTo(256, 404, 298, 392); c.quadraticCurveTo(300, 460, 256, 470); c.quadraticCurveTo(212, 460, 214, 392); c.fill(); }
+      c.globalAlpha = 1;
+    }
+    const my = 362, mw = 44 + Math.max(0, e.mouth) * 18;
     if (mouthOpen > 0.08) {
       c.fillStyle = '#3A1E22'; c.beginPath(); c.ellipse(256, my + 4, mw * 0.62, 8 + mouthOpen * 30, 0, 0, Math.PI * 2); c.fill();
       c.fillStyle = '#E8684A'; c.beginPath(); c.ellipse(256, my + 10 + mouthOpen * 14, mw * 0.36, 4 + mouthOpen * 10, 0, 0, Math.PI); c.fill();
     } else {
-      c.strokeStyle = ink; c.lineWidth = 10; c.lineCap = 'round'; c.beginPath();
+      c.strokeStyle = '#7A3B32'; c.lineWidth = 10; c.lineCap = 'round'; c.beginPath();
       c.moveTo(256 - mw, my); c.quadraticCurveTo(256, my + e.mouth * 46, 256 + mw, my); c.stroke();
     }
     faceTex.needsUpdate = true;
@@ -2743,6 +2867,7 @@ function toneOf(text) {
     return caps.ready;
   }
   let avatar = (() => { try { const a = JSON.parse(store('nort.avatar') || 'null'); if (a && typeof a === 'object') return Object.assign({}, AV_DEFAULT, a, { name: '' }); } catch (e) { /* ignore */ } return Object.assign({}, AV_DEFAULT); })();
+  Object.keys(AV).forEach((k) => { if (!(Number.isInteger(avatar[k]) && avatar[k] >= 0 && avatar[k] < AV[k].length)) avatar[k] = AV_DEFAULT[k]; });
   let voiceCfg = (() => { try { const v = JSON.parse(store('nort.voice') || 'null'); if (v && typeof v === 'object') return Object.assign({ id: 'auto', rate: 1 }, v); } catch (e) { /* ignore */ } return { id: 'auto', rate: 1 }; })();
   // Only the look and the voice are remembered on this device; the name stays in this page's memory.
   function saveAvatar() { const look = Object.assign({}, avatar); delete look.name; store('nort.avatar', JSON.stringify(look)); store('nort.voice', JSON.stringify(voiceCfg)); }
@@ -2756,10 +2881,11 @@ function toneOf(text) {
     const s = S(); const o = [];
     if (caps.tts) CLAUDE_VOICES.forEach((v) => o.push({ id: 'c:' + v, label: s.voiceNames[v] }));
     else browserVoices().forEach((v) => o.push({ id: 'b:' + v.name, label: v.name.replace(/\s*\(.*\)\s*/, '').replace(/^(Microsoft|Google)\s+/, '') }));
+    if (ownVoicePossible()) o.push({ id: 'own', label: ownVoice.id ? s.voiceOwnReady : s.voiceOwn });
     o.push({ id: 'off', label: s.voiceOff });
     return o;
   }
-  function voiceId() { const o = voiceOptions(); return o.some((x) => x.id === voiceCfg.id) ? voiceCfg.id : o[0].id; }
+  function voiceId() { const o = voiceOptions(); if (voiceCfg.id === 'own' && !ownVoice.id) return o[0].id === 'own' ? (o[1] || o[0]).id : o[0].id; return o.some((x) => x.id === voiceCfg.id) ? voiceCfg.id : (o[0].id === 'own' && !ownVoice.id ? (o[1] || o[0]).id : o[0].id); }
   let speakTok = 0;
   function setSpeaking(on) { document.querySelectorAll('.avatar.live').forEach((el) => el.classList.toggle('talking', on && !reduceMotion)); N3D.talking(on); }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2807,10 +2933,14 @@ function toneOf(text) {
   async function say(text) {
     const id = voiceId(); if (id === 'off' || !text) return;
     const tok = ++speakTok;
+    if (id === 'own' && ownVoice.id) return speakRemote(text, tok);
     if (id.startsWith('c:') && caps.tts) {
       try { setSpeaking(true); await Promise.race([caps.tts.speak(text, { voice: id.slice(2), rate: voiceCfg.rate, language: state.lang === 'pt' ? 'pt-BR' : 'en' }), wait((4000 + text.length * 110) / (voiceCfg.rate || 1))]); } catch (e) { /* stopped, busy or not allowed */ }
       if (tok === speakTok) setSpeaking(false); return;
     }
+    return sayDevice(text, id, tok);
+  }
+  function sayDevice(text, id, tok) {
     return new Promise((resolve) => {
       try {
         if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) { resolve(); return; }
@@ -2823,7 +2953,7 @@ function toneOf(text) {
       } catch (e) { resolve(); }
     });
   }
-  function stopSay() { speakTok++; try { if (caps.tts) caps.tts.stop(); } catch (e) { /* ignore */ } try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) { /* ignore */ } setSpeaking(false); }
+  function stopSay() { speakTok++; try { if (audioEl) audioEl.pause(); } catch (e) { /* ignore */ } try { if (caps.tts) caps.tts.stop(); } catch (e) { /* ignore */ } try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) { /* ignore */ } setSpeaking(false); }
 
   const mic = { on: false, rec: null, partial: '', denied: false };
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2868,11 +2998,11 @@ function toneOf(text) {
   function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && ['happy', 'excited', 'neutral'].includes(state.talk.react.emo1)) state.talk.react = reactFor('sad'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); say(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
-    state.talk.an[q.id] = localAnalyze(q, ans);
+    state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
     if (!caps.sample) return;
     const t = state.talk;
     const job = caps.sample.json(aiPrompt(q, tx(q.q), ans, state.lang), { modelTier: 'quick' })
-      .then((raw) => { if (state.talk !== t || t.jobs[q.id] !== job) return; const r = cleanAI(q, raw); t.an[q.id] = r; if (r.risk !== 'none') flagRisk(); })
+      .then((raw) => { if (state.talk !== t || t.jobs[q.id] !== job) return; const r = cleanAI(q, raw); t.an[q.id] = r; ownVoiceGuard(q.id); if (r.risk !== 'none') flagRisk(); })
       .catch(() => { if (state.talk === t && t.jobs[q.id] === job && t.an[q.id]) t.an[q.id].aiFailed = true; });
     t.jobs[q.id] = job;
   }
@@ -2916,21 +3046,19 @@ function toneOf(text) {
   }
   function viewAvatar() {
     const s = S(); const n = s.avNames;
-    const row = (key, legend, labels, colors) => `<fieldset class="av-row"><legend>${esc(legend)}</legend><div class="av-opts">${AV[key].map((v, i) => avOpt(key, i, labels[i], colors ? v : null)).join('')}</div></fieldset>`;
-    const skinLabels = AV.skin.map((x, i) => fmt(s.avTone, { n: i + 1 }));
+    const row = (key) => `<fieldset class="av-row"><legend>${esc(s.avLegend[key])}</legend><div class="av-opts">${AV[key].map((v, i) => avOpt(key, i, n[key][i], AV_COLORS.includes(key) ? v : null)).join('')}</div></fieldset>`;
+    const tab = state.avTab || 'face';
+    const tabs = `<div class="av-tabs" role="group" aria-label="${esc(s.avTitle)}">${Object.keys(AV_TABS).map((k) => `<button type="button" class="av-tab${k === tab ? ' on' : ''}" aria-pressed="${k === tab}" data-act="av-tab" data-tab="${k}">${esc(s.avTabs[k])}</button>`).join('')}</div>`;
     const vid = voiceId();
     const hasVoice = !!caps.tts || browserVoices().length > 0;
     return `<main class="wrap narrow avatar-view">
       <h1 class="h-page">${esc(s.avTitle)}</h1>
       <p class="lead">${esc(s.avLead)}</p>
-      <div class="av-stage" role="img" aria-label="${esc(fmt(s.avDescribe, { hair: s.avNames.hair[avatar.hair], color: s.avNames.hairColor[avatar.hairColor], eyes: s.avNames.eyes[avatar.eyes], shirt: s.avNames.shirt[avatar.shirt], extra: s.avNames.extra[avatar.extra] }))}"><div class="stage3d builder" id="stage3d">${avatarSVG(avatar, 'big live')}</div>${N3D.ok ? `<p class="small center">${esc(s.avDrag)}</p>` : ''}<p class="av-name" id="av-name-show">${esc(avatar.name || s.avNameDefault)}</p></div>
+      <div class="av-stage" role="img" aria-label="${esc(fmt(s.avDescribe, { hair: s.avNames.hair[avatar.hair], color: s.avNames.hairColor[avatar.hairColor], eyes: s.avNames.eyeColor[avatar.eyeColor], shirt: s.avNames.shirt[avatar.shirt], extra: s.avNames.extra[avatar.extra] }))}"><div class="stage3d builder" id="stage3d">${avatarSVG(avatar, 'big live')}</div>${N3D.ok ? `<p class="small center">${esc(s.avDrag)}</p>` : ''}<p class="av-name" id="av-name-show">${esc(avatar.name || s.avNameDefault)}</p></div>
       <div class="av-row"><label class="av-label" for="av-name">${esc(s.avNameLabel)}</label><input id="av-name" class="text-in" maxlength="24" autocomplete="off" value="${esc(avatar.name)}" placeholder="${esc(s.avNameDefault)}"></div>
-      ${row('skin', s.avSkin, skinLabels, true)}
-      ${row('hair', s.avHair, n.hair)}
-      ${row('hairColor', s.avHairColor, n.hairColor, true)}
-      ${row('eyes', s.avEyes, n.eyes)}
-      ${row('shirt', s.avShirt, n.shirt, true)}
-      ${row('extra', s.avExtra, n.extra)}
+      ${tabs}
+      <div class="av-panel">${AV_TABS[tab].map(row).join('')}</div>
+      <p><button type="button" class="btn" data-act="av-random">${esc(s.avRandom)}</button></p>
       <fieldset class="av-row"><legend>${esc(s.voiceTitle)}</legend>
         <div class="av-opts">${voiceOptions().map((o) => `<button type="button" class="av-opt${o.id === vid ? ' on' : ''}" data-voice="${esc(o.id)}" aria-pressed="${o.id === vid}">${esc(o.label)}</button>`).join('')}</div>
         ${hasVoice ? `<div class="voice-tools"><label class="av-label" for="voice-rate">${esc(s.voiceRate)}</label><select id="voice-rate" class="text-in short">${[0.85, 1, 1.2].map((r, i) => `<option value="${r}"${voiceCfg.rate === r ? ' selected' : ''}>${esc(s.voiceRates[i])}</option>`).join('')}</select><button type="button" class="btn" data-act="voice-test"${vid === 'off' ? ' disabled' : ''}>${esc(s.voiceTest)}</button></div>` : `<p class="small">${esc(s.voiceNone)}</p>`}
@@ -2994,6 +3122,92 @@ function toneOf(text) {
     </main>`;
   }
 
+  // ---------- your own voice (ElevenLabs through the Nort voice server; not inside the Claude link) ----------
+  const VOICE_API = String(NORT_VOICE_API || '').replace(/\/$/, '');
+  const ownVoice = { id: null, recs: [], rec: null, stream: null, startedAt: 0, k: 0, busy: false, err: null, consent: false, timer: null };
+  function ownVoicePossible() { return !!VOICE_API && !inFrame && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof window.MediaRecorder !== 'undefined'; }
+  let audioEl = null;
+  function speakRemote(text, tok) {
+    return new Promise((resolve) => {
+      let done = false; const finish = () => { if (done) return; done = true; if (tok === speakTok) setSpeaking(false); resolve(); };
+      setTimeout(finish, (8000 + text.length * 120) / (voiceCfg.rate || 1));
+      fetch(`${VOICE_API}/speak`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, voice_id: ownVoice.id, lang: state.lang }) })
+        .then((r) => (r.ok ? r.blob() : Promise.reject(new Error('speak'))))
+        .then((blob) => {
+          if (tok !== speakTok) { finish(); return; }
+          const url = URL.createObjectURL(blob); if (audioEl) audioEl.pause();
+          audioEl = new Audio(url); audioEl.playbackRate = voiceCfg.rate || 1;
+          audioEl.onplay = () => setSpeaking(true);
+          audioEl.onended = audioEl.onerror = audioEl.onpause = () => { URL.revokeObjectURL(url); finish(); };
+          audioEl.play().catch(finish);
+        })
+        .catch(() => { sayDevice(text, '', tok).then(finish); });
+    });
+  }
+  function deleteOwnVoice() {
+    if (!ownVoice.id) return;
+    try { fetch(`${VOICE_API}/voice/${ownVoice.id}`, { method: 'DELETE', keepalive: true }).catch(() => {}); } catch (e) { /* ignore */ }
+    ownVoice.id = null; if (voiceCfg.id === 'own') voiceCfg.id = 'auto';
+  }
+  window.addEventListener('pagehide', deleteOwnVoice);
+  // Hearing one's own voice can be distressing for someone with unusual experiences: back to a ready-made voice.
+  function ownVoiceGuard(qid) {
+    if (voiceCfg.id !== 'own') return;
+    const r = state.talk.an[qid]; if (!r || !r.areas || !r.areas.psychosis || r.areas.psychosis.level === 'none') return;
+    voiceCfg.id = 'auto'; state.talk.voiceSwitched = true;
+  }
+  function recSeconds() { return ownVoice.recs.reduce((a, r) => a + r.secs, 0) + (ownVoice.rec ? (Date.now() - ownVoice.startedAt) / 1000 : 0); }
+  function recUI() {
+    const t = document.getElementById('rec-total'); if (t) t.textContent = fmt(S().cloneTotal, { n: Math.floor(recSeconds()) });
+    const go = document.getElementById('clone-go'); if (go) go.disabled = !(recSeconds() >= 30 && !ownVoice.rec && !ownVoice.busy);
+  }
+  async function recToggle() {
+    if (ownVoice.rec) { ownVoice.rec.stop(); return; }
+    ownVoice.err = null; stopSay();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const chunks = []; const r = new window.MediaRecorder(stream);
+      r.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+      r.onstop = () => {
+        const secs = (Date.now() - ownVoice.startedAt) / 1000; stream.getTracks().forEach((tr) => tr.stop());
+        clearInterval(ownVoice.timer); ownVoice.rec = null;
+        if (secs >= 1.5 && chunks.length) { ownVoice.recs = ownVoice.recs.filter((x) => x.k !== ownVoice.k); ownVoice.recs.push({ k: ownVoice.k, secs, blob: new Blob(chunks, { type: r.mimeType || 'audio/webm' }) }); ownVoice.k = Math.min(ownVoice.k + 1, S().cloneLines.length - 1); }
+        render(true);
+      };
+      ownVoice.rec = r; ownVoice.startedAt = Date.now(); r.start(); ownVoice.timer = setInterval(recUI, 250); render(true);
+    } catch (e) { ownVoice.err = S().cloneMicDenied; ownVoice.rec = null; render(true); }
+  }
+  async function cloneSend() {
+    if (ownVoice.busy || recSeconds() < 30 || !ownVoice.consent) return;
+    ownVoice.busy = true; ownVoice.err = null; render(true);
+    try {
+      const f = new FormData(); f.append('consent', 'yes');
+      ownVoice.recs.forEach((r, i) => f.append('files', r.blob, `amostra-${i + 1}.${(r.blob.type || '').includes('mp4') ? 'm4a' : 'webm'}`));
+      const res = await fetch(`${VOICE_API}/clone`, { method: 'POST', body: f });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok || !d.voice_id) throw new Error('clone');
+      if (d.requires_verification) { ownVoice.err = S().cloneVerify; ownVoice.busy = false; render(true); return; }
+      ownVoice.id = d.voice_id; ownVoice.recs = []; voiceCfg.id = 'own'; ownVoice.busy = false;
+      state.view = 'avatar'; render(); say(fmt(S().voiceHelloName, { name: (avatar.name || '').trim() || S().avNameDefault }));
+    } catch (e) { ownVoice.busy = false; ownVoice.err = S().cloneFail; render(true); }
+  }
+  function viewVoiceClone() {
+    const s = S(); const lines = s.cloneLines;
+    const done = (k) => ownVoice.recs.some((r) => r.k === k);
+    return `<main class="wrap narrow clone-view">
+      <h1 class="h-page">${esc(s.cloneTitle)}</h1>
+      <p class="lead">${esc(s.cloneLead)}</p>
+      <p class="note">${esc(s.cloneNote)}</p>
+      <label class="check" for="clone-consent"><input type="checkbox" id="clone-consent"${ownVoice.consent ? ' checked' : ''}><span>${esc(s.cloneConsent)}</span></label>
+      ${ownVoice.consent ? `<section class="soft-card"><h2>${esc(s.cloneHow)}</h2>
+        <ol class="clone-lines">${lines.map((l, k) => `<li class="${k === ownVoice.k ? 'now' : ''}${done(k) ? ' done' : ''}"><span aria-hidden="true">${done(k) ? '✓' : k + 1}</span> ${esc(l)}</li>`).join('')}</ol>
+        <div class="mic-row"><button type="button" id="rec-btn" class="mic-btn${ownVoice.rec ? ' on' : ''}" data-act="rec" aria-pressed="${!!ownVoice.rec}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>${esc(ownVoice.rec ? s.cloneStop : fmt(s.cloneRecord, { n: ownVoice.k + 1 }))}</span></button></div>
+        <p class="small center" id="rec-total" aria-live="polite">${esc(fmt(s.cloneTotal, { n: Math.floor(recSeconds()) }))}</p></section>` : ''}
+      ${ownVoice.err ? `<p class="error" role="alert">${esc(ownVoice.err)}</p>` : ''}
+      <div class="actions"><button class="btn primary big" id="clone-go" data-act="clone-go"${ownVoice.consent && recSeconds() >= 30 && !ownVoice.rec && !ownVoice.busy ? '' : ' disabled'}>${esc(ownVoice.busy ? s.cloneBusy : s.cloneGo)}</button><button class="btn link" data-act="clone-back">← ${esc(s.cloneBack)}</button></div>
+    </main>`;
+  }
+
   // ---------- render ----------
   function render(keepScroll) {
     clearTimeout(advanceTimer); clearInterval(breathTimer);
@@ -3011,6 +3225,7 @@ function toneOf(text) {
     else if (state.view === 'avatar') v = viewAvatar();
     else if (state.view === 'talk') v = viewTalk();
     else if (state.view === 'indicators') v = viewIndicators();
+    else if (state.view === 'voiceclone') v = viewVoiceClone();
     const sheet = !state.crisisOpen && sensorSheetOpen();
     EXP_KEYS.forEach((k) => document.documentElement.classList.toggle('exp-' + k, exp[k]));
     document.documentElement.dataset.font = font;
@@ -3169,6 +3384,7 @@ function toneOf(text) {
       return;
     }
     if (t.dataset.slider) commitSlider(t);
+    if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) ownVoice.recs = []; render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
     if (t.id === 'voice-rate') { voiceCfg.rate = Number(t.value) || 1; saveAvatar(); return; }
     if (t.dataset.font && FONTS.includes(t.dataset.font)) { font = t.dataset.font; store('nort.font', font); render(true); const again = document.getElementById('font-' + font); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
@@ -3203,6 +3419,7 @@ function toneOf(text) {
     const avb = e.target.closest('[data-av]');
     if (avb) { avatar[avb.dataset.av] = Number(avb.dataset.i); saveAvatar(); render(true); const again = root.querySelector(`[data-av="${avb.dataset.av}"][data-i="${avb.dataset.i}"]`); if (again) again.focus({ preventScroll: true }); return; }
     const vb = e.target.closest('[data-voice]');
+    if (vb && vb.dataset.voice === 'own' && !ownVoice.id) { stopSay(); state.view = 'voiceclone'; render(); return; }
     if (vb) { voiceCfg.id = vb.dataset.voice; saveAvatar(); render(true); const again = root.querySelector(`[data-voice="${CSS.escape(vb.dataset.voice)}"]`); if (again) again.focus({ preventScroll: true }); if (voiceCfg.id !== 'off') say(S().voiceHello); return; }
     const ch = e.target.closest('[data-choose]');
     if (ch) { choose(ch.dataset.item, ch.dataset.opt, Number(ch.dataset.choose)); return; }
@@ -3215,6 +3432,11 @@ function toneOf(text) {
     }
     if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.view = 'setup'; state.error = null; render(); }
     else if (act === 'compass-manual') manualMode();
+    else if (act === 'av-tab') { state.avTab = b.dataset.tab; render(true); const again = root.querySelector(`[data-act="av-tab"][data-tab="${b.dataset.tab}"]`); if (again) again.focus({ preventScroll: true }); }
+    else if (act === 'av-random') { Object.keys(AV).forEach((k) => { if (k !== 'eyes') avatar[k] = Math.floor(Math.random() * AV[k].length); }); saveAvatar(); render(true); const again = root.querySelector('[data-act="av-random"]'); if (again) again.focus({ preventScroll: true }); const st0 = root.querySelector('.av-stage'); if (st0) live.textContent = st0.getAttribute('aria-label') || ''; }
+    else if (act === 'rec') recToggle();
+    else if (act === 'clone-go') cloneSend();
+    else if (act === 'clone-back') { if (ownVoice.rec) ownVoice.rec.stop(); state.view = 'avatar'; render(); }
     else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); startLevel(1); }
     else if (act === 'talk-start') { saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.error = null; state.view = 'talk'; render(); }
     else if (act === 'voice-test') { const nm = (avatar.name || '').trim(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
@@ -3256,7 +3478,7 @@ function toneOf(text) {
     else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
     else if (act === 'back-results') { state.view = state.talkMode && !state.levelsDone[2] ? 'indicators' : 'results'; render(); }
     else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
-    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
+    else if (act === 'restart') { deleteOwnVoice(); const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
     else if (act === 'crisis-ok' && state.view === 'talk') { state.crisisOpen = false; state.talk.said = null; render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn') || document.getElementById('q-text'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else { render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn'); if (f) f.focus({ preventScroll: true }); } }
     else if (act === 'copy') {
