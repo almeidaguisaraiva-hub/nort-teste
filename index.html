@@ -619,6 +619,19 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .login-new { margin: 0; text-align: center; color: #E3F3EA; }
 .login-card :focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
 .login-field input:focus-visible { outline: none; }
+/* small cues under the question (what you could talk about) */
+.hint-chips { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.hint-chips li { font-size: .85rem; font-weight: 600; padding: 2px 4px; color: #17432F; cursor: default; }
+.hint-chips li::before { content: '· '; font-weight: 800; }
+/* "Your compass" at the end: pieces drawn one by one, the rose turns in */
+.your-compass.anim .seg:not(.seg-off) { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: segdraw .55s cubic-bezier(.3, .8, .3, 1) forwards; animation-delay: calc(var(--k, 0) * 110ms + .5s); }
+.your-compass.anim .seg-off { opacity: 0; animation: segfade .5s ease-out forwards; animation-delay: calc(var(--k, 0) * 110ms + .5s); }
+.your-compass.anim .yc-rose { transform-origin: 120px 120px; animation: rosein 1.2s cubic-bezier(.2, 1.3, .4, 1) .2s both; }
+@keyframes segdraw { to { stroke-dashoffset: 0; } }
+@keyframes segfade { to { opacity: 1; } }
+@keyframes rosein { from { transform: rotate(-200deg) scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+.results.scene3d .yc-gap { flex: none; height: clamp(170px, 26vh, 240px); margin-bottom: -10px; }
+.results.scene3d .done-banner, .results.scene3d .map-h { position: relative; }
 
 </style>
 </head>
@@ -1104,16 +1117,50 @@ const UI = {
     avNames: { skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
       hair: ['Curto', 'Comprido', 'Cacheado', 'Coque', 'Sem cabelo', 'Raspado', 'De lado', 'Black power', 'Rabo de cavalo', 'Tranças'], hairColor: ['Preto', 'Castanho', 'Acobreado', 'Loiro', 'Grisalho', 'Ruivo', 'Platinado', 'Azul', 'Roxo'], height: ['Baixa', 'Média', 'Alta'], build: ['Magro', 'Médio', 'Largo'],
       top: ['Camiseta', 'Moletom', 'Camisa', 'Jaqueta', 'Suéter', 'Vestido'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], bottom: ['Calça', 'Short', 'Saia'], pantsColor: ['Marinho', 'Jeans', 'Grafite', 'Bege', 'Preto', 'Off-white'], shoes: ['Branco', 'Marinho', 'Coral', 'Marrom', 'Verde'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], extra: ['Nenhum', 'Óculos', 'Boné', 'Óculos escuros', 'Brincos', 'Fones'] },
-    voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Este navegador não tem voz. O personagem vai aparecer só em texto.', voiceHello: 'Oi! Eu sou você. Vamos conversar um pouco?', voiceHelloName: 'Oi! Eu sou {name}. Vamos conversar um pouco?',
+    voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Este navegador não tem voz. O personagem vai aparecer só em texto.', voiceHello: 'Oi! É com essa voz que eu vou conversar com você. Gostou?', voiceHelloName: 'Oi, {name}! É com essa voz que eu vou conversar com você. Gostou?',
     talkPrivacyAI: 'Como funciona: se você usar o microfone, sua voz vira texto num serviço da Anthropic. O texto da resposta é lido por uma IA (Claude, da Anthropic) só para encontrar indicadores nas áreas da saúde mental. A IA não dá diagnóstico. Neste protótipo, nenhuma resposta fica guardada depois que você fecha a página. Se você usa leitor de tela, pode escolher "Sem voz".',
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
     loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas ainda não são guardadas. Para testar, crie uma conta.', loginNotFound: 'Não encontramos essa conta. No protótipo as contas não ficam guardadas: toque em "Criar uma conta".', loginForgotMsg: 'No protótipo ainda não dá para recuperar a senha. Na versão final, vamos mandar um link para o seu e-mail.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
-    countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Ela só vale enquanto esta página estiver aberta; nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
+    hintLabel: 'Você pode falar sobre', countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Ela só vale enquanto esta página estiver aberta; nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Vire o celular até a seta apontar para o N, ou arraste a seta, e toque em Começar.', birthHint: 'Toque para escolher a data (ano, mês e dia).', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
-    reactSad: 'Obrigado por dividir isso comigo. Parece pesado, e faz sentido se sentir assim.', reactAnxious: 'Entendi. Vamos com calma, uma coisa de cada vez.', reactHappy: 'Que bom ouvir isso!', reactExcited: 'Que demais! Fico feliz por você.', reactNeutral: 'Obrigado por contar.', reactSkip: 'Tudo bem, vamos para a próxima.',
-    talkHello: 'Oi! Eu sou {name}, a sua versão. Vou te fazer algumas perguntas. Responda do seu jeito, sem pressa.', avDrag: 'Arraste o personagem para girar.',
-    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'O personagem fala com a sua voz. Você lê algumas frases curtas e, antes de gravar, pedimos sua permissão (voz é um dado sensível: vai para a ElevenLabs, nos EUA, e é apagada ao sair).', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com uma voz natural, o que o personagem fala vai para o serviço de voz (ElevenLabs, nos EUA) para virar áudio. As suas respostas não são enviadas. O resumo dos resultados é lido pela voz do aparelho.', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
+    // What the character says in the conversation: short, warm, spoken lines (no parentheses or slashes).
+    // Several variants each; the app never repeats a line twice in a row.
+    talkHellos: ['Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho?', 'E aí, {name}! Que bom que você veio. Vamos bater um papo rapidinho?', 'Olá, {name}! Que bom ter você aqui. Vamos conversar um pouco, sem pressa?'],
+    talkHellosNoName: ['Oi! Que bom te ver por aqui. Bora conversar um pouquinho?', 'E aí! Que bom que você veio. Vamos bater um papo rapidinho?', 'Olá! Que bom ter você aqui. Vamos conversar um pouco, sem pressa?'],
+    talkHelloHow: ['Você pode falar ou escrever, como preferir. E se não quiser responder alguma coisa, é só pular.', 'Pode responder falando ou escrevendo. Se alguma pergunta não combinar com você, é só pular.', 'Fala ou escreve do seu jeito, tá? Dá para pular qualquer pergunta.'],
+    reactLines: {
+      sad: ['Obrigado por dividir isso comigo, parece pesado mesmo.', 'Puxa, isso parece difícil, e faz sentido se sentir assim.', 'Entendi, deve estar sendo um período puxado.', 'Sinto muito que esteja sendo assim, obrigado por me contar.', 'Não é pouca coisa carregar isso, obrigado por falar.'],
+      anxious: ['Entendi, parece que tem muita coisa ocupando a sua cabeça.', 'Faz sentido isso deixar você em alerta.', 'Entendi, vamos com calma, uma coisa de cada vez.', 'Parece cansativo ter essa preocupação sempre por perto.', 'Obrigado por contar, dá para ver que isso pesa no seu dia.'],
+      happy: ['Que bom ouvir isso!', 'Que bom, fico contente de saber.', 'Ah, que legal, isso é bom de ouvir.', 'Gostei de saber disso.'],
+      excited: ['Que demais, dá para sentir a sua animação!', 'Que notícia boa, fico feliz por você!', 'Uau, que bom!'],
+      neutral: ['Entendi, obrigado por contar.', 'Hum, entendi.', 'Valeu por me contar.', 'Entendi, isso me ajuda a te conhecer melhor.'],
+      skip: ['Tudo bem, vamos para a próxima.', 'Sem problema, a gente pula essa.', 'Tranquilo, seguimos.'],
+      care: ['Obrigado por continuar aqui comigo.', 'Estou aqui com você, sem pressa.', 'Obrigado por confiar isso a mim.', 'Vamos no seu ritmo, tá bom?']
+    },
+    reactBridges: ['E me conta uma coisa.', 'Agora, outra coisa.', 'Deixa eu te perguntar outra coisa.', 'Próxima, então.'],
+    bridgeSafety: 'Agora vem uma pergunta importante, que a gente faz para todo mundo.',
+    bridgeSensitive: 'Agora vem uma pergunta mais delicada, e tudo bem pular.',
+    // Spoken cues after each question (the chips under the bubble), for people who listen instead of reading
+    hintLeads: ['Pode falar, por exemplo, {list}.', 'Se ajudar, fala {list}.', 'Vale contar, por exemplo, {list}.', 'Se quiser, pode falar {list}.'], hintOr: 'ou',
+    // Reflections on what the person mentioned (words without accents; * = any ending). Used only when the
+    // clause that mentions the topic carries the same feeling as the whole answer, and never after a risk sign.
+    reactTopics: [
+      { k: ['dorm*', 'sono', 'insoni*', 'acord*', 'madrugada'], hardPhr: ['insoni*', 'durmo mal', 'dormindo mal', 'dormido mal', 'dormi mal', 'nao consigo dormir', 'nao durmo', 'pouco sono', 'acordo cansad*', 'acordo varias vezes', 'acordo de madrugada'], hard: 'Dormir mal deixa tudo mais pesado mesmo.', good: 'Dormir bem faz uma diferença enorme no dia.' },
+      { k: [], hardPhr: ['cansad*', 'exaust*', 'sem energia', 'esgotad*'], hard: 'Esse cansaço todo pesa mesmo.' },
+      { k: ['comer', 'comendo', 'comida', 'fome', 'apetite', 'refeic*', 'almoc*', 'jantar', 'cafe da manha'], hardPhr: ['sem fome', 'sem apetite', 'nao consigo comer', 'comendo mal', 'comendo demais', 'como demais', 'pulo refeic*'], hard: 'Quando a cabeça pesa, o apetite costuma sentir junto.' },
+      { k: ['trabalh*', 'emprego', 'chefe', 'servico', 'escritorio', 'expediente', 'reuniao', 'reunioes'], hard: 'O trabalho às vezes pesa mais do que a gente gostaria.', good: 'Que bom que o trabalho está fluindo.' },
+      { k: ['estud*', 'faculdade', 'escola', 'prova', 'provas', 'aula', 'aulas', 'curso', 'tcc'], hard: 'Os estudos cansam mesmo, ainda mais quando acumula.', good: 'Que bom que os estudos estão indo bem.' },
+      { k: ['dinheiro', 'contas', 'divida*', 'grana', 'boleto*', 'aluguel', 'salario'], hard: 'Aperto de dinheiro tira o sossego de qualquer um.' },
+      { k: ['familia', 'mae', 'pai', 'pais', 'filh*', 'irma', 'irmao', 'irmaos', 'marido', 'esposa'], hard: 'Quando a coisa pesa em casa, a gente sente em tudo.', good: 'Que bom isso com a sua família.' },
+      { k: ['namorad*', 'namoro', 'parceir*', 'relacionamento', 'casamento'], hard: 'Quando o relacionamento balança, mexe com tudo.', good: 'Que bom que está bem com quem você gosta.' },
+      { k: ['amig*', 'galera', 'turma'], hard: 'As amizades mexem muito com a gente.', good: 'Ter amigos por perto faz muita diferença.' }
+    ],
+    indSayDone: ['Pronto, terminamos. Obrigado por conversar comigo.', 'Prontinho. Obrigado por me contar tudo isso.'], indSayDoneCare: 'Obrigado por confiar em mim e dividir tudo isso.',
+    indSayStrong: 'Pelo que você contou, vale olhar com mais calma: {areas}.', indSaySome: 'Se você quiser, também dá para olhar: {areas}.', indSayNone: 'Nada do que você contou pediu um olhar mais de perto, mas você pode escolher qualquer área na tela.',
+    indSayEnd: 'Isso não é diagnóstico, são só pistas para escolher os questionários oficiais. Você decide. E conversar com um psicólogo ou psiquiatra é sempre uma boa ideia.',
+    avDrag: 'Arraste o personagem para girar.',
+    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'O personagem fala com a sua voz. Você lê algumas frases curtas e, antes de gravar, pedimos sua permissão (voz é um dado sensível: vai para a ElevenLabs, nos EUA, e é apagada ao sair).', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com uma voz natural, o que o personagem fala (inclusive frases curtas sobre o tema que você contou) vai para o serviço de voz (ElevenLabs, nos EUA) para virar áudio. As suas respostas não são enviadas. O resumo dos resultados é lido pela voz do aparelho.', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
     cloneTitle: 'Sua voz no seu personagem', cloneLead: 'Leia em voz alta as frases abaixo, uma de cada vez, num lugar silencioso. Com uns 30 segundos de gravação, o seu personagem passa a falar com a sua voz.',
     cloneNote: 'Se ouvir a sua própria voz te deixar desconfortável, escolha uma voz pronta. Você pode trocar quando quiser.',
     cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs (empresa dos Estados Unidos) só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Sei que voz é dado biométrico, um dado sensível pela LGPD. As frases que o personagem fala, inclusive o nome dele, também vão para a ElevenLabs para virar áudio. A voz é apagada quando eu recomeçar ou fechar a página e, no máximo, em 2 horas; registros técnicos seguem a política de privacidade da ElevenLabs.',
@@ -1309,16 +1356,45 @@ const UI = {
     avNames: { skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
       hair: ['Short', 'Long', 'Curly', 'Bun', 'No hair', 'Buzz cut', 'Side part', 'Afro', 'Ponytail', 'Braids'], hairColor: ['Black', 'Brown', 'Copper', 'Blond', 'Grey', 'Red', 'Platinum', 'Blue', 'Purple'], height: ['Short', 'Average', 'Tall'], build: ['Slim', 'Medium', 'Broad'],
       top: ['T-shirt', 'Hoodie', 'Shirt', 'Jacket', 'Sweater', 'Dress'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], bottom: ['Trousers', 'Shorts', 'Skirt'], pantsColor: ['Navy', 'Denim', 'Charcoal', 'Beige', 'Black', 'Off-white'], shoes: ['White', 'Navy', 'Coral', 'Brown', 'Green'], eyes: ['Open', 'Smiling', 'Calm'], extra: ['None', 'Glasses', 'Cap', 'Sunglasses', 'Earrings', 'Headphones'] },
-    voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'This browser has no voice. The character will show as text only.', voiceHello: 'Hi! I am you. Shall we talk for a bit?', voiceHelloName: 'Hi! I am {name}. Shall we talk for a bit?',
+    voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'This browser has no voice. The character will show as text only.', voiceHello: 'Hi! This is the voice I’ll use to talk with you. Do you like it?', voiceHelloName: 'Hi, {name}! This is the voice I’ll use to talk with you. Do you like it?',
     talkPrivacyAI: 'How it works: if you use the microphone, your voice becomes text in an Anthropic service. The text of your answer is read by an AI (Claude, by Anthropic) only to find indicators across areas of mental health. The AI does not diagnose. In this prototype, no answer is kept after you close the page. If you use a screen reader, you can choose "No voice".',
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
     loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored yet. To try it, create an account.', loginNotFound: 'We couldn’t find that account. In the prototype accounts are not stored: tap "Create an account".', loginForgotMsg: 'Password recovery is not available in the prototype yet. In the final version we will send a link to your email.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
-    countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. It only works while this page is open; nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
+    hintLabel: 'You could talk about', countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. It only works while this page is open; nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Turn your phone until the arrow points to N, or drag the arrow, and tap Start.', birthHint: 'Tap to pick the date (year, month and day).', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
-    reactSad: 'Thank you for sharing that with me. It sounds heavy, and it makes sense to feel that way.', reactAnxious: 'I hear you. Let’s take it slowly, one thing at a time.', reactHappy: 'So good to hear that!', reactExcited: 'That’s wonderful! I’m happy for you.', reactNeutral: 'Thanks for telling me.', reactSkip: 'That’s fine, let’s go to the next one.',
-    talkHello: 'Hi! I’m {name}, your own self. I’ll ask you a few questions. Answer in your own way, no rush.', avDrag: 'Drag the character to turn it.',
-    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Your character speaks in your voice. You read a few short sentences, and we ask your permission before recording (your voice is sensitive data: it goes to ElevenLabs, in the US, and is deleted when you leave).', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, what the character says goes to the voice service (ElevenLabs, in the US) to become audio. Your answers are not sent. The results summary is read by the device voice.', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
+    talkHellos: ['Hi, {name}! Good to see you. Shall we have a little chat?', 'Hey, {name}! Glad you’re here. Up for a quick chat?', 'Hello, {name}! Nice to have you here. Let’s talk for a bit, no rush.'],
+    talkHellosNoName: ['Hi! Good to see you. Shall we have a little chat?', 'Hey! Glad you’re here. Up for a quick chat?', 'Hello! Nice to have you here. Let’s talk for a bit, no rush.'],
+    talkHelloHow: ['You can talk or type, whatever feels easier. And if you’d rather not answer something, just skip it.', 'Answer by speaking or typing. If a question doesn’t fit you, just skip it.', 'Say it or type it, your way. You can skip any question.'],
+    reactLines: {
+      sad: ['Thanks for sharing that with me, it sounds really heavy.', 'Oh, that sounds hard, and it makes sense to feel that way.', 'I hear you, it sounds like a rough stretch.', 'I’m sorry it’s been like that, thank you for telling me.', 'That’s a lot to carry, thanks for opening up.'],
+      anxious: ['I hear you, it sounds like a lot is on your mind.', 'It makes sense that this keeps you on edge.', 'Okay, let’s take it slowly, one thing at a time.', 'It sounds tiring to have that worry around all the time.', 'Thanks for telling me, I can tell it weighs on your day.'],
+      happy: ['So good to hear that!', 'Nice, I’m glad to hear it.', 'Oh, that’s lovely to hear.', 'I like hearing that.'],
+      excited: ['That’s brilliant, I can feel your excitement!', 'Great news, I’m happy for you!', 'Wow, that’s great!'],
+      neutral: ['Got it, thanks for telling me.', 'Mm, I see.', 'Thanks for sharing that.', 'Okay, that helps me get to know you.'],
+      skip: ['That’s fine, let’s go to the next one.', 'No problem, we’ll skip that one.', 'All good, let’s keep going.'],
+      care: ['Thank you for staying here with me.', 'I’m here with you, no rush.', 'Thank you for trusting me with that.', 'We’ll go at your pace, okay?']
+    },
+    reactBridges: ['Can I ask you something else?', 'Now, something different.', 'Let me ask you another thing.', 'Next one, then.'],
+    bridgeSafety: 'Now an important question, one we ask everyone.',
+    bridgeSensitive: 'This next one is more delicate, and it’s fine to skip it.',
+    hintLeads: ['You could talk about, for example, {list}.', 'If it helps, tell me about {list}.', 'Maybe talk about {list}.', 'You might mention {list}.'], hintOr: 'or',
+    reactTopics: [
+      { k: ['sleep*', 'slept', 'insomnia', 'awake', 'bed', 'bedtime', 'nap*'], hardPhr: ['insomnia', 'ca not sleep', 'cannot sleep', 'could not sleep', 'not sleeping', 'sleeping badly', 'sleep badly', 'slept badly', 'poor sleep', 'bad sleep', 'wake up tired', 'waking up at night', 'barely sleep*'], hard: 'Bad sleep makes everything feel heavier.', good: 'Good sleep makes such a difference to the day.' },
+      { k: [], hardPhr: ['tired', 'exhausted', 'no energy', 'worn out', 'drained'], hard: 'That kind of tiredness really weighs on you.' },
+      { k: ['eat', 'eating', 'ate', 'food', 'appetite', 'meal*', 'lunch', 'dinner', 'breakfast', 'hungry'], hardPhr: ['no appetite', 'not eating', 'skip meals', 'skipping meals', 'eating too much', 'overeating', 'barely eat*'], hard: 'When your mind feels heavy, appetite often goes with it.' },
+      { k: ['work', 'working', 'job', 'boss', 'office', 'shift*', 'meeting*'], hard: 'Work can weigh on you more than it should.', good: 'Glad work is going well.' },
+      { k: ['study*', 'studies', 'uni', 'university', 'college', 'school', 'exam*', 'class', 'classes', 'assignment*'], hard: 'Study can be really draining, especially when it piles up.', good: 'Nice to hear study is going well.' },
+      { k: ['money', 'bills', 'debt*', 'rent', 'salary'], hard: 'Money stress can take anyone’s peace away.' },
+      { k: ['family', 'mum', 'mom', 'dad', 'parents', 'kids', 'son', 'daughter', 'sister', 'brother', 'husband', 'wife'], hard: 'When things are hard at home, you feel it everywhere.', good: 'That’s lovely to hear about your family.' },
+      { k: ['partner', 'boyfriend', 'girlfriend', 'relationship', 'marriage'], hard: 'When a relationship wobbles, it shakes everything a bit.', good: 'Glad things are good with someone you care about.' },
+      { k: ['friend*', 'mates'], hard: 'Friendships can really affect how we feel.', good: 'Good friends make a real difference.' }
+    ],
+    indSayDone: ['All done. Thanks for talking with me.', 'That’s it. Thank you for telling me all that.'], indSayDoneCare: 'Thank you for trusting me and sharing all of that.',
+    indSayStrong: 'From what you told me, it’s worth a closer look at: {areas}.', indSaySome: 'If you like, you could also look at: {areas}.', indSayNone: 'Nothing you told me called for a closer look, but you can pick any area on the screen.',
+    indSayEnd: 'This is not a diagnosis, just pointers to choose the official questionnaires. You decide. And talking to a psychologist or psychiatrist is always a good idea.',
+    avDrag: 'Drag the character to turn it.',
+    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Your character speaks in your voice. You read a few short sentences, and we ask your permission before recording (your voice is sensitive data: it goes to ElevenLabs, in the US, and is deleted when you leave).', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, what the character says (including short lines about what you talked about) goes to the voice service (ElevenLabs, in the US) to become audio. Your answers are not sent. The results summary is read by the device voice.', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
     cloneTitle: 'Your voice in your character', cloneLead: 'Read the sentences below out loud, one at a time, somewhere quiet. With about 30 seconds of recording, your character will speak with your voice.',
     cloneNote: 'If hearing your own voice makes you uncomfortable, choose a ready-made voice. You can switch whenever you like.',
     cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs (a United States company) only to create my character’s voice in this session. It is my own voice. I understand a voice is biometric data, which is sensitive personal information. The sentences the character says, including its name, are also sent to ElevenLabs to become audio. The voice is deleted when I start over or close the page, and at most within 2 hours; technical logs follow ElevenLabs’ privacy policy.',
@@ -1883,35 +1959,46 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
 // Address of the Nort voice server (Cloudflare Worker, see server/). Empty = own voice off.
 const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) || 'https://nort-voz.nortvoz.workers.dev';
 
-// Few open questions, each built to bring at least 3 things (what happens, how often, how much it weighs),
-// from methods with research behind them: the Day Reconstruction Method (Kahneman et al., 2004),
-// metaphor-based elicitation, the "miracle question" of solution-focused therapy (de Shazer) and
-// open questions from motivational interviewing (Miller & Rollnick). Not official text; to be validated.
+// Few open questions, ONE short question each (Guilherme, 12/11/2026: "mais fáceis, menos apertadas").
+// What used to be crammed into the question now goes to 3 short cue chips (`hint`) under the bubble.
+// Methods with research behind them: the Day Reconstruction Method (Kahneman et al., 2004, Science),
+// open questions from motivational interviewing (Miller & Rollnick) and the "miracle question" of
+// solution-focused brief therapy (de Shazer, 1988). The "weather" item is a plain mood question with a
+// familiar image (sun/rain), anchored by the word "humor/mood". Not official text; to be validated.
+// `areas` = what each answer is read for (AREA_HINT / AREA_WORDS below); the cues aim at those words.
 const TALK_QS = [
   { id: 'day', areas: ['sleep', 'depression', 'wellbeing', 'adhd', 'alcohol', 'substances', 'eating'],
-    q: { pt: 'Me conta um dia comum seu da última semana, do acordar até dormir: como foi a noite antes, o que fez e comeu, com quem esteve, quando foi difícil se concentrar e em que momento se sentiu melhor e pior.',
-         en: 'Walk me through an ordinary day from last week, from waking up to going to sleep: how the night before was, what you did and ate, who you were with, when it was hard to focus, and when you felt best and worst.' } },
+    q: { pt: 'Me conta como foi um dia comum seu na última semana.',
+         en: 'Tell me about an ordinary day you had last week.' },
+    hint: { pt: ['como você dormiu', 'o que comeu e bebeu', 'foco e ânimo'], en: ['how you slept', 'what you ate and drank', 'focus and mood'] } },
   { id: 'weather', areas: ['wellbeing', 'depression', 'bipolar', 'anxiety', 'distress'],
-    q: { pt: 'Se as suas duas últimas semanas fossem uma previsão do tempo, como estaria o céu? Quantos dias de sol, de nublado e de tempestade, e o que fez o tempo mudar? (Ou conte do seu jeito.)',
-         en: 'If your last two weeks were a weather forecast, what would the sky look like? How many sunny, cloudy and stormy days, and what made the weather change? (Or just tell me in your own words.)' } },
+    q: { pt: 'Como andou seu humor nas últimas duas semanas: mais sol, nuvem ou chuva?',
+         en: 'How has your mood been over the last two weeks: more sun, clouds or rain?' },
+    hint: { pt: ['dias bons e ruins', 'sua energia', 'o que fez mudar'], en: ['good and bad days', 'your energy', 'what made it change'] } },
   { id: 'safety', type: 'safety' },
   { id: 'mind', areas: ['anxiety', 'panic', 'ocd', 'gambling', 'alcohol', 'substances'],
-    q: { pt: 'O que tem ocupado a sua cabeça mais do que você gostaria? Quando isso aparece, o que acontece no seu corpo e o que você costuma fazer para aliviar?',
-         en: 'What has been taking up more of your mind than you would like? When it shows up, what happens in your body and what do you usually do to ease it?' } },
+    q: { pt: 'O que tem ocupado sua cabeça mais do que você gostaria?',
+         en: 'What has been on your mind more than you would like?' },
+    hint: { pt: ['o que te preocupa', 'o que sente no corpo', 'o que faz para aliviar'], en: ['what worries you', 'what your body feels', 'what you do to ease it'] } },
   { id: 'people', areas: ['social', 'borderline', 'autism'],
-    q: { pt: 'Pense nas pessoas da sua vida: quando foi a última vez que você se sentiu muito bem com alguém, e a última vez que estar com gente, ou uma relação, te deixou mal? Depois de passar tempo com pessoas, você costuma ficar com mais energia ou esgotado(a)?',
-         en: 'Think about the people in your life: when was the last time you felt really good with someone, and the last time being around people, or a relationship, left you feeling bad? After time with people, do you usually feel energised or drained?' } },
+    q: { pt: 'Como você tem se sentido com as pessoas da sua vida?',
+         en: 'How have you been feeling with the people in your life?' },
+    hint: { pt: ['quem te faz bem', 'o que te deixa mal', 'energia depois de encontros'], en: ['who is good for you', 'what gets you down', 'energy after seeing people'] } },
   { id: 'hard', areas: ['trauma', 'psychosis'], sensitive: true,
-    q: { pt: 'Se você quiser, conte se passou por alguma experiência muito difícil que ainda volta na sua cabeça, ou se tem percebido coisas que as outras pessoas parecem não perceber.',
-         en: 'If you want, tell me whether you have been through a very hard experience that still comes back to you, or whether you have noticed things other people do not seem to notice.' } },
+    q: { pt: 'Se quiser, tem alguma experiência difícil ou fora do comum para contar?',
+         en: 'If you want, is there a hard or unusual experience you would like to share?' },
+    hint: { pt: ['lembranças que voltam', 'ficar sempre em alerta', 'coisas que outros não percebem'], en: ['memories that come back', 'always being on guard', "things others don't notice"] } },
   { id: 'miracle', areas: ['distress', 'depression', 'anxiety', 'wellbeing'],
-    q: { pt: 'Imagina que amanhã você acorda e, durante a noite, uma coisa que hoje pesa na sua vida simplesmente sumiu. Qual seria o primeiro sinal de que algo mudou, o que você faria diferente e quem perceberia?',
-         en: 'Imagine you wake up tomorrow and, overnight, one thing that weighs on your life today has simply gone. What would be the first sign that something changed, what would you do differently, and who would notice?' } },
+    q: { pt: 'Se amanhã sumisse algo que hoje te pesa, o que mudaria primeiro?',
+         en: 'If something weighing on you disappeared tomorrow, what would change first?' },
+    hint: { pt: ['o que mais pesa hoje', 'o que você faria', 'quem perceberia'], en: ['what weighs most now', "what you'd do", 'who would notice'] } },
   { id: 'baby', areas: ['postpartum'], onlyBaby: true,
-    q: { pt: 'Como você está desde a chegada do bebê? O que mudou no seu sono, no seu humor e no seu jeito de cuidar de você?', en: 'How have you been since the baby arrived? What has changed in your sleep, your mood and the way you look after yourself?' } },
+    q: { pt: 'Como você está desde que o bebê chegou?', en: 'How have you been since the baby arrived?' },
+    hint: { pt: ['seu humor', 'medos ou culpa', 'sono e cansaço'], en: ['your mood', 'worries or guilt', 'sleep and tiredness'] } },
   { id: 'memory', areas: ['memory'],
-    q: { pt: 'Você ou pessoas próximas têm notado mudanças na sua memória ou no seu raciocínio nos últimos anos? Se sim, conte o que mudou, desde quando, e se isso atrapalha o dia a dia (compromissos, contas, conversas).',
-         en: 'Have you or people close to you noticed changes in your memory or thinking over the last few years? If so, tell me what changed, since when, and whether it gets in the way of daily life (appointments, bills, conversations).' } }
+    q: { pt: 'Como está sua memória comparada com alguns anos atrás?',
+         en: 'How is your memory compared with a few years ago?' },
+    hint: { pt: ['esquecer recados ou datas', 'contas e decisões', 'desde quando'], en: ['forgetting messages or dates', 'bills and decisions', 'since when'] } }
 ];
 function talkQuestions(state) { return TALK_QS.filter((q) => !q.onlyBaby || state.setup.baby === 1); }
 
@@ -1991,9 +2078,10 @@ level: "strong" = frequent or persistent difficulties, or a clear impact on life
 evidence: a short neutral paraphrase of what the person said (max 12 words, in ${lang === 'pt' ? 'Brazilian Portuguese' : 'English'}), no diagnostic words; "" when level is none.
 risk: "urgent" or "possible" if there is ANY mention of wanting to die, suicidal thoughts, self-harm, harming others, or being in danger now; otherwise "none".
 other: ids from this list that the answer clearly speaks about even though not asked: ${all}.
-Reply with JSON only: {"areas":{"<id>":{"level":"none|some|strong","evidence":"..."}},"risk":"none|possible|urgent","other":["<id>"]}`;
+reply: what a warm friend would say back, in ${lang === 'pt' ? 'Brazilian Portuguese (informal "você")' : 'English'}: ONE short sentence, at most 20 words, that reflects what they shared and validates the feeling. No advice, no questions, no diagnosis or condition names, no emojis, no quotes, not cheerful if the answer is sad or worried. Never mention death, suicide or self-harm. If risk is not "none", reply must be "".
+Reply with JSON only: {"areas":{"<id>":{"level":"none|some|strong","evidence":"..."}},"risk":"none|possible|urgent","other":["<id>"],"reply":"..."}`;
 }
-function cleanAI(qdef, raw) {
+function cleanAI(qdef, raw, lang) {
   const out = { areas: {}, risk: 'none', other: [], mode: 'ai' };
   const lv = (x) => { const v = String(x || '').toLowerCase(); return ['none', 'some', 'strong'].includes(v) ? v : 'none'; };
   // No diagnostic words in what the person sees
@@ -2005,7 +2093,25 @@ function cleanAI(qdef, raw) {
   });
   const rk = String((raw && raw.risk) || '').toLowerCase(); if (['possible', 'urgent'].includes(rk)) out.risk = rk;
   if (raw && Array.isArray(raw.other)) out.other = raw.other.filter((id) => AREAS_BY_ID[id] && !qdef.areas.includes(id));
+  out.reply = out.risk === 'none' ? cleanReply(raw && raw.reply, DX, lang) : '';
   return out;
+}
+// The AI's short empathetic reply, only if it is safe to say aloud: one plain sentence, ≤ 20 words,
+// no markdown/quotes/emojis, no questions, no advice, no diagnostic words, nothing about risk.
+function cleanReply(x, DX, lang) {
+  if (typeof x !== 'string') return '';
+  let t = x.replace(/[*_#`~]/g, '').replace(/[>|\[\]{}<]/g, ' ').replace(/["“”«»]/g, '').replace(/^['‘’]+|['‘’]+$/g, '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').replace(/\s+/g, ' ').replace(/\s+([,.!…])/g, '$1').trim();
+  if (!t || t.length > 160 || t.split(' ').length > 20) return '';
+  if (/\?/.test(t) || /https?:|www\./i.test(t) || riskWords(t) || (DX && DX.test(t))) return '';
+  // no hint of a condition, no judgement, nothing that minimises
+  if (/deprimid|depressed|depress|ansiedade|ansios|anxiety|anxious|trauma|p[aâ]nico|panic|mania|man[ií]a|maniac|psic|psych|v[ií]cio|viciad|addict|bipolar|tdah|adhd|autis|fracass|failure|worthless|in[uú]til|ningu[eé]m se importa|nobody cares|todo mundo passa|everyone goes through|n[aã]o [eé] t[aã]o|not that bad|exager|overreact|frescura|drama/i.test(t)) return '';
+  if (/\b(deveria|devia|tente|tenta|procure|procura|recomendo|sugiro|experimente|should|try|recommend|suggest|consider|you need to|voc[eê] precisa)\b/i.test(t)) return '';
+  if (/\b(morr\w*|morte|suic\w*|machuc\w*|die|dies|dying|died|death|dead|kill\w*|harm\w*)\b/i.test(norm0(t)) && !/\bharmon/i.test(norm0(t))) return '';
+  // must be in the person's language
+  if (lang === 'pt' && !/[ãõçáéíóúâêô]|\b(que|de|você|voce|isso|bom|mesmo|com|para|pra|muito|tudo)\b/i.test(t)) return '';
+  if (lang === 'en' && (/[ãõç]/i.test(t) || !/\b(the|you|that|it|is|so|good|really|with|for|this|your)\b/i.test(t))) return '';
+  if (!/[.!…]$/.test(t)) t += '.';
+  return t;
 }
 
 // Level 2 after the conversation: the complete official scale for each area the person chose
@@ -2069,7 +2175,7 @@ function avatarSVG(c, cls) {
   return `<svg class="avatar ${cls || ''}" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="60" fill="var(--soft)"/>${back}<path d="M18 120 Q20 90 60 88 Q100 90 102 120 Z" fill="${sh}"/><rect x="53" y="76" width="14" height="14" rx="5" fill="${skin}"/><circle cx="60" cy="58" r="27" fill="${skin}"/>${front}${eye}${acc}<path class="av-mouth" d="M52 70 Q60 76 68 70" stroke="#1F2A44" stroke-width="2.6" fill="none" stroke-linecap="round"/><ellipse class="av-mouth-open" cx="60" cy="71" rx="5" ry="3.5" fill="#1F2A44"/></svg>`;
 }
 
-if (typeof module !== 'undefined') module.exports = Object.assign(module.exports || {}, { TALK_QS, talkLevel2Modules, localAnalyze, riskWords, cleanAI });
+if (typeof module !== 'undefined') module.exports = Object.assign(module.exports || {}, { TALK_QS, talkLevel2Modules, localAnalyze, riskWords, cleanAI, cleanReply });
 
 // Small pictures for the character builder options (drawn with the person's own skin and hair colors)
 function avIcon(key, v, look) {
@@ -2511,6 +2617,15 @@ const N3D = (() => {
     resetFind() { st.present = false; if (parts.hc) parts.hc.visible = true; st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; st.walking = false; st.walkDone = null; st.emo = 'neutral'; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
     // where the held compass is on screen (0..1), so the big compass can come out of his hands
     handScreen() { if (!api.ok || !parts.hc || !parts.hc.parent) return null; const v = new T.Vector3(); parts.hc.getWorldPosition(v); v.project(camera); return { x: (v.x + 1) / 2, y: (1 - v.y) / 2 }; },
+    // end of the journey: he stands above "your compass", shows his compass, then reacts to the results
+    finale(emo) {
+      if (!api.ok) return;
+      st.mode = 'talk'; world.visible = true; parts.path.visible = false; parts.compass.visible = false; st.walking = false; st.walkDone = null; st.x = 0;
+      if (!st.holding) { st.holding = true; holdCompass(); }
+      parts.hc.visible = true; st.present = emo === 'happy'; st.emo = emo === 'happy' ? 'happy' : 'calm';
+      const later = (ms, f) => setTimeout(f, st.reduce ? 0 : ms);
+      later(1600, () => { if (st.mode !== 'talk') return; st.present = false; st.emo = emo || 'calm'; if (emo === 'happy') st.wave = 1.4; else st.nod = 0.8; });
+    },
     // the big compass on the screen comes out of his hand: the small one leaves his hand and he lowers the arm
     giveCompass() { if (!api.ok || !parts.hc) return; st.present = false; parts.hc.visible = false; st.emo = 'happy'; },
     heldNeedle(deg) { if (parts.hcNeedle) parts.hcNeedle.rotation.y = -deg * Math.PI / 180; },
@@ -2616,9 +2731,9 @@ function toneOf(text) {
     const p = (a) => { const q = (a - 90) * Math.PI / 180; return `${(cx + r * Math.cos(q)).toFixed(2)} ${(cy + r * Math.sin(q)).toFixed(2)}`; };
     return `M${p(a0)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${p(a1)}`;
   }
-  function ringSegments(items, size, r, sw, gap) {
+  function ringSegments(items, size, r, sw, gap, draw) {
     const step = 360 / items.length;
-    return items.map((it, k) => `<path class="seg seg-${it.state}${it.just ? ' just' : ''}${acOn(it.area) ? ' ac' : ''}" style="${acVar(it.area)}" d="${arc(size / 2, size / 2, it.r || r, k * step + gap / 2, (k + 1) * step - gap / 2)}" stroke-width="${it.sw || sw}"/>`).join('');
+    return items.map((it, k) => `<path class="seg seg-${it.state}${it.just ? ' just' : ''}${acOn(it.area) ? ' ac' : ''}" style="${acVar(it.area)}${draw ? `--k:${k};` : ''}"${draw ? ' pathLength="1"' : ''} d="${arc(size / 2, size / 2, it.r || r, k * step + gap / 2, (k + 1) * step - gap / 2)}" stroke-width="${it.sw || sw}"/>`).join('');
   }
 
   // ---------- helpers ----------
@@ -3095,7 +3210,7 @@ function toneOf(text) {
     const bubbles = flaggedAreas.map((a, i) => { const r = res[a.id]; return `<button class="bubble band-${r.band}${acOn(a.id) ? ' ac' : ''}" data-act="goto" data-area="${a.id}" style="${acVar(a.id)}--d:${(5.6 + (i % 4) * 0.7).toFixed(1)}s;--dl:${(-i * 1.3).toFixed(1)}s"><span class="b-name">${esc(tx(a.name))}</span><span class="b-band">${esc(s.bands[r.band])}</span></button>`; }).join('');
     const calmChips = calmAreas.map((a) => `<button class="calm-chip" data-act="goto" data-area="${a.id}">${acOn(a.id) ? `<span class="cdot ac" style="${acVar(a.id)}" aria-hidden="true"></span>` : ''}${esc(tx(a.name))}</button>`).join('');
     const ringItems = AREAS.filter((a) => !(a.id === 'postpartum' && state.setup.baby !== 1)).map((a) => { const r = res[a.id]; if (!r || !r.assessed) return { area: a.id, state: 'off' }; return r.band >= 1 ? { area: a.id, state: 'flag', sw: r.band === 2 ? 24 : 18, r: r.band === 2 ? 103 : 100 } : { area: a.id, state: 'done' }; });
-    const yourCompass = exp.ring ? `<div class="your-compass"><div class="yc-ring"><svg viewBox="0 0 240 240" aria-hidden="true">${ringSegments(ringItems, 240, 96, 10, 3)}<circle class="yc-inner" cx="120" cy="120" r="80"/>${rose(120, 74, 56, 16)}</svg><div class="yc-center"><strong>${flaggedAreas.length}</strong><span>${esc(flaggedAreas.length === 1 ? s.withSignal1 : s.withSignal)}</span></div></div><p class="small center">${esc(s.ringLegend)}</p></div>` : '';
+    const yourCompass = exp.ring ? `${N3D.ok ? '<div class="scene-gap yc-gap" aria-hidden="true"></div>' : ''}<div class="your-compass${reduceMotion || state.ycAnimKey === `${lvl}` ? '' : ' anim'}"><div class="yc-ring"><svg viewBox="0 0 240 240" aria-hidden="true">${ringSegments(ringItems, 240, 96, 10, 3, !reduceMotion && state.ycAnimKey !== `${lvl}`)}<circle class="yc-inner" cx="120" cy="120" r="80"/><g class="yc-rose">${rose(120, 74, 56, 16)}</g></svg><div class="yc-center"><strong id="yc-n" data-n="${flaggedAreas.length}">${flaggedAreas.length}</strong><span>${esc(flaggedAreas.length === 1 ? s.withSignal1 : s.withSignal)}</span></div></div><p class="small center">${esc(s.ringLegend)}</p></div>` : '';
     const tiles = `${bubbles ? `<div class="bubbles">${bubbles}</div>` : ''}
       ${calmAreas.length ? `<div class="calm-card"><strong id="calm-h">${esc(s.bands[0])} · ${calmAreas.length}</strong><div class="calm-chips" role="group" aria-labelledby="calm-h">${calmChips}</div></div>` : ''}
       ${notAssessed.length ? `<p class="small">${esc(s.notAssessedShort)}: ${esc(notAssessed.map((a) => tx(a.name)).join(', '))}</p>` : ''}`;
@@ -3123,7 +3238,7 @@ function toneOf(text) {
     if (lvl === 2) next = flagged ? `<button class="btn primary big" data-act="go3">${esc(s.goLevel3)}</button>` : `<p class="small">${esc(s.noFlags)}</p>`;
     const declinedN = Object.values(declinedByArea(state)).reduce((x, y) => x + y, 0);
     const safety = flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : flags.safety === 'skip' ? `<p class="note">${esc(s.safetySkipped)}</p>` : '';
-    return `<main class="wrap results">
+    return `<main class="wrap results${N3D.ok && exp.ring ? ' scene3d' : ''}">${N3D.ok && exp.ring ? '<div class="stage3d" id="stage3d" aria-hidden="true"></div>' : ''}
       <section class="done-banner ${reduceMotion ? '' : 'enter'}">
         <span class="done-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <div><p class="eyebrow">${esc(fmt(s.levelDone, { n: lvl }))}${state.justEarned ? ` · ${esc(fmt(s.earned, { n: state.justEarned }))}` : ''}</p>
@@ -3260,46 +3375,120 @@ function toneOf(text) {
   let speakTok = 0; let helloTimer = null;
   function setSpeaking(on) { document.querySelectorAll('.avatar.live').forEach((el) => el.classList.toggle('talking', on && !reduceMotion)); N3D.talking(on); }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-  // One step of the conversation: react to the last answer, walk to the next stop, then ask
+  // One step of the conversation: greet (first time) or react to the last answer, walk to the next stop, then ask
   let stepTok = 0;
   async function runStep(q, i) {
-    const tok = ++stepTok; const s = S();
-    const react = state.talk.react; state.talk.react = null;
+    const tok = ++stepTok;
+    const react0 = state.talk.react; state.talk.react = null;
     const total = talkQuestions(state).length;
+    const greet = i === 0 && !state.talk.greeted;
+    if (greet) state.talk.greeted = true;
     if (N3D.ok) {
-      if (!state.talk.arrived) { state.talk.arrived = true; await N3D.scene(total, i, true); if (state.talk.i === 0 && tok === stepTok) await say(fmt(s.talkHello, { name: (avatar.name || '').trim() || s.avNameDefault })); }
+      if (!state.talk.arrived) { state.talk.arrived = true; await N3D.scene(total, i, true); if (greet && tok === stepTok) await showReact(helloLine()); }
       else {
         await N3D.scene(total, i, false);
-        if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line); if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
+        const react = await finishReact(react0, q);
+        if (tok !== stepTok) return;
+        if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; }
+        if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line); if (state.crisisOpen) return; if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
         if (tok !== stepTok) return;
         N3D.emote('neutral'); await N3D.walkTo(i);
       }
       if (tok !== stepTok) return;
       N3D.emote('listening');
-    } else if (react && react.line) await showReact(react.line);
+    } else if (greet) await showReact(helloLine());
+    else { const react = await finishReact(react0, q); if (tok !== stepTok) return; if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; } if (react && react.line) await showReact(react.line); }
+    if (tok !== stepTok) return;
     showReact(null);
-    if (tok !== stepTok || state.view !== 'talk' || state.crisisOpen || mic.on) return;
+    if (state.view !== 'talk' || state.crisisOpen || mic.on) return;
     say(talkSpeech(q));
   }
-  // The character's words after an answer: on screen (and read by screen readers) and, with a voice on, spoken
+  // The character's words: on screen (#react-line, read by screen readers) and, with a voice on, spoken
   async function showReact(line) {
     const el = document.getElementById('react-line'); if (el) { el.textContent = line || ''; el.hidden = !line; }
-    if (!line) return;
-    if (voiceId() === 'off' || mic.on) await wait(1700); else await say(line);
+    if (!line || state.crisisOpen) return;
+    if (voiceId() === 'off' || mic.on) await wait(Math.min(4500, 1200 + line.length * 30)); else await say(speakable(line));
+  }
+  // A greeting that sounds like a person: the name only if the person gave one, never "I am you"
+  function helloName() { const n = (avatar.name || '').trim(); return n && n.length <= 30 && !['eu', 'me', 'voce', 'you', 'i'].includes(norm0(n)) ? n : ''; }
+  function helloLine() { const s = S(); const n = helloName(); return `${n ? fmt(pickLine(s.talkHellos), { name: n }) : pickLine(s.talkHellosNoName)} ${pickLine(s.talkHelloHow)}`; }
+  // Never the same line twice in a row (the last few lines are kept out while there are others to pick)
+  const recentLines = [];
+  function pickLine(pool) {
+    const list = (Array.isArray(pool) ? pool : [pool]).filter(Boolean); if (!list.length) return '';
+    let from = list.filter((l) => !recentLines.includes(l)); if (!from.length) from = list.filter((l) => l !== recentLines[recentLines.length - 1]); if (!from.length) from = list;
+    const line = from[Math.floor(Math.random() * from.length)];
+    recentLines.push(line); if (recentLines.length > 5) recentLines.shift();
+    return line;
+  }
+  // Text made easier to hear: no parentheses, slashes or dashes read aloud. "incomodado/a" → "incomodado ou incomodada".
+  function speakable(text) {
+    return String(text || '')
+      .replace(/(\p{L}+)o\/a\b/gu, '$1o ou $1a').replace(/(\p{L}+)o\(a\)/gu, '$1o ou $1a').replace(/\((?:a|o|as|os|e)\)/g, '').replace(/(\p{L})\/(?:a|o|as|os)\b/gu, '$1')
+      .replace(/\s*\(([^)]*)\)/g, (m, inner) => (/[.!?]\s*$/.test(inner) ? ` ${inner}` : `, ${inner},`))
+      .replace(/\s+[—–]\s+/g, ', ').replace(/\b(?:ex\.:?|e\.g\.,?)\s*/gi, state.lang === 'pt' ? 'por exemplo, ' : 'for example, ')
+      .replace(/[*_#`]/g, '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '')
+      .replace(/,\s*([.!?])/g, '$1').replace(/,\s*,/g, ',').replace(/\s{2,}/g, ' ').trim();
   }
   function talkTone(q) {
-    if (q.type === 'safety') { const v = state.answers['phq.9']; return v === 'skip' ? 'skip' : typeof v === 'number' && v > 0 ? 'sad' : 'neutral'; }
+    if (q.type === 'safety') { const v = state.answers['phq.9']; return v === 'skip' ? 'skip' : typeof v === 'number' && v > 0 ? 'care' : 'neutral'; }
     const ans = (state.talk.answers[q.id] || '').trim();
     if (!ans) return 'skip';
-    if (riskWords(ans) || state.crisisOpen) return 'sad';
+    if (riskWords(ans) || state.crisisOpen) return 'care';
     let tone = toneOf(ans);
-    const worrying = state.talk.an[q.id] && Object.values(state.talk.an[q.id].areas || {}).some((x) => x.level !== 'none');
-    if ((tone === 'happy' || tone === 'excited') && (worrying || state.talkRisk)) tone = 'neutral';
+    if ((tone === 'happy' || tone === 'excited') && (worrying(q.id) || state.talkRisk)) tone = 'neutral';
     return tone;
   }
-  function reactFor(tone) {
-    const s = S();
-    return { sad: { emo1: 'sad', emo2: 'compassion', line: s.reactSad }, anxious: { emo1: 'calm', line: s.reactAnxious }, happy: { emo1: 'happy', line: s.reactHappy }, excited: { emo1: 'excited', line: s.reactExcited }, neutral: { emo1: 'listening', nod: true, line: s.reactNeutral }, skip: { emo1: 'neutral', line: s.reactSkip } }[tone];
+  function worrying(qid) { const r = state.talk.an[qid]; return !!r && Object.values(r.areas || {}).some((x) => x.level !== 'none'); }
+  // After any risk sign the character only uses compassionate lines ("care"), never celebrates.
+  function reactFor(tone, ans) {
+    const s = S(); const P = s.reactLines;
+    const t = state.talkRisk && tone !== 'skip' ? 'care' : (P[tone] ? tone : 'neutral');
+    const emo = { care: { emo1: 'sad', emo2: 'compassion' }, sad: { emo1: 'sad', emo2: 'compassion' }, anxious: { emo1: 'calm' }, happy: { emo1: 'happy' }, excited: { emo1: 'excited' }, neutral: { emo1: 'listening', nod: true }, skip: { emo1: 'neutral' } }[t];
+    const line = (ans && topicLine(ans, t)) || pickLine(P[t]);
+    return Object.assign({ tone: t, line }, emo);
+  }
+  // Reflect something concrete the person mentioned (sleep, work, family…), only when the part of the
+  // answer that mentions it carries the same feeling as the whole answer. Fixed lines: nothing is echoed back.
+  const padWords = (text) => ` ${norm0(text).replace(/n['’]t\b/g, ' not').replace(/[^a-z0-9]+/g, ' ').trim()} `;
+  function topicLine(ans, tone) {
+    if (state.talkRisk || riskWords(ans) || !['sad', 'anxious', 'happy', 'excited'].includes(tone)) return '';
+    if ((AREA_WORDS.eating || []).some((w) => norm0(ans).includes(norm0(w)))) return '';
+    const T = S().reactTopics || []; const hard = tone === 'sad' || tone === 'anxious';
+    const has = (txt, list) => (list || []).some((w) => toneRx(w).test(txt));
+    const negIn = (txt) => NEG_WORDS.some((w) => txt.includes(` ${w} `));
+    const fresh = (line) => (line && !recentLines.includes(line) ? (recentLines.push(line), recentLines.length > 5 && recentLines.shift(), line) : '');
+    const clauses = norm0(ans).split(/[.!?;,\n]+|\s(?:mas|porem|so que|but|though|although)\s/).map(padWords);
+    // Phrases that are hard on their own ("durmo mal", "can't sleep"); a clause with a negation counts
+    // only when the phrase itself carries it ("não consigo dormir"), so "não estou cansado" is left alone.
+    if (hard) for (const pw of clauses) { const hit = T.find((x) => x.hard && (x.hardPhr || []).some((w) => toneRx(w).test(pw) && (!negIn(pw) || negIn(padWords(w))))); if (hit) return fresh(hit.hard); }
+    for (const pw of clauses) {
+      if (negIn(pw)) continue; // negations: too easy to get wrong
+      const ct = toneOf(pw);
+      if (hard ? !(ct === 'sad' || ct === 'anxious') : !(ct === 'happy' || ct === 'excited')) continue;
+      const hit = T.find((x) => (hard ? x.hard : x.good) && has(pw, x.k));
+      if (hit) return fresh(hard ? hit.hard : hit.good);
+    }
+    return '';
+  }
+  // Right before the character reacts: use the AI's short reply if it arrived in time (≈2.5 s after
+  // "Next"), drop joy if the AI found something worrying, and add a natural bridge to the next question.
+  async function finishReact(react, next) {
+    if (!react) return null;
+    if (react.ready) { try { await react.ready; } catch (e) { /* fall back to the local line */ } }
+    let out = react;
+    if (state.talkRisk && react.tone !== 'care' && react.tone !== 'skip') out = reactFor('care');
+    else if (react.qid) {
+      const r = state.talk.an[react.qid];
+      if ((react.tone === 'happy' || react.tone === 'excited') && worrying(react.qid)) out = reactFor('neutral');
+      const cheer = /parab[eé]ns|que demais|incr[ií]vel|maravilh|congrat|awesome|amazing|wonderful|fantastic|!/i;
+      if (r && r.mode === 'ai' && r.reply && react.tone !== 'skip' && react.tone !== 'care' && !((out.tone === 'sad' || out.tone === 'anxious' || out.tone === 'neutral') && cheer.test(r.reply))) out = Object.assign({}, out, { line: r.reply, ai: true });
+    }
+    const s = S(); let bridge = '';
+    if (next && next.type === 'safety') bridge = s.bridgeSafety;
+    else if (next && next.sensitive) bridge = s.bridgeSensitive;
+    else if (!out.ai && ['happy', 'excited', 'neutral'].includes(out.tone) && Math.random() < 0.5) bridge = pickLine(s.reactBridges); // after something sad, no hurry to move on
+    return bridge ? Object.assign({}, out, { line: `${out.line} ${bridge}` }) : out;
   }
   async function say(text) {
     const id = voiceId(); if (id === 'off' || !text) return;
@@ -3348,7 +3537,18 @@ function toneOf(text) {
     try { r.start(); } catch (e) { mic.on = false; mic.rec = null; micUI(); }
   }
   function stopMic() { try { if (mic.rec) mic.rec.stop(); } catch (e) { /* ignore */ } try { if (caps.dict && mic.on) caps.dict.stop().catch(() => {}); } catch (e) { /* ignore */ } mic.on = false; mic.rec = null; mic.partial = ''; }
-  function talkSpeech(q) { return q.type === 'safety' ? `${tx(PHQ_STEM)} ${tx(PHQ_ITEMS[8])}. ${S().optionsAre}: ${optLabels('phqSafety').join('; ')}.` : tx(q.q); }
+  function talkSpeech(q) {
+    if (q.type === 'safety') return speakable(`${tx(PHQ_STEM)} ${tx(PHQ_ITEMS[8])}. ${S().optionsAre}: ${optLabels('phqSafety').join('; ')}.`);
+    return speakable(`${tx(q.say || q.q)} ${hintSpeech(q)}`);
+  }
+  // The cue chips, said the way a person would: "Pode falar, por exemplo, de como você dormiu, do que comeu e bebeu, ou de foco e ânimo."
+  function hintSpeech(q) {
+    const s = S(); const h = q.hint && q.hint[state.lang]; if (!h || !h.length || !s.hintLeads) return '';
+    const de = (c) => { if (state.lang !== 'pt') return c; const m = c.match(/^(o|a|os|as|seu|sua|seus|suas)\s/i); if (m) { const art = { o: 'do', a: 'da', os: 'dos', as: 'das', seu: 'do seu', sua: 'da sua', seus: 'dos seus', suas: 'das suas' }[m[1].toLowerCase()]; return `${art} ${c.slice(m[0].length)}`; } return /^desde\b/i.test(c) ? c : `de ${c}`; };
+    const items = h.map(de); const list = items.length > 1 ? `${items.slice(0, -1).join(', ')}, ${s.hintOr} ${items[items.length - 1]}` : items[0];
+    const qi = Math.max(0, TALK_QS.findIndex((x) => x.id === q.id));
+    return fmt(s.hintLeads[qi % s.hintLeads.length], { list });
+  }
   function curTalkQ() { const qs = talkQuestions(state); return qs[Math.min(state.talk.i, qs.length - 1)]; }
   // Words that arrive after the mic stops still go to the question that was being answered
   function appendAnswer(text, qid) {
@@ -3368,14 +3568,14 @@ function toneOf(text) {
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
   function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own' || id.startsWith('e:')) { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
-  function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && ['happy', 'excited', 'neutral'].includes(state.talk.react.emo1)) state.talk.react = reactFor('sad'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
+  function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
     state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
     if (!caps.sample) return;
     const t = state.talk;
     const job = caps.sample.json(aiPrompt(q, tx(q.q), ans, state.lang), { modelTier: 'quick' })
-      .then((raw) => { if (state.talk !== t || t.jobs[q.id] !== job) return; const r = cleanAI(q, raw); t.an[q.id] = r; ownVoiceGuard(q.id); if (r.risk !== 'none') flagRisk(); })
+      .then((raw) => { if (state.talk !== t || t.jobs[q.id] !== job) return; const r = cleanAI(q, raw, state.lang); t.an[q.id] = r; ownVoiceGuard(q.id); if (r.risk !== 'none') flagRisk(); })
       .catch(() => { if (state.talk === t && t.jobs[q.id] === job && t.an[q.id]) t.an[q.id].aiFailed = true; });
     t.jobs[q.id] = job;
   }
@@ -3409,7 +3609,11 @@ function toneOf(text) {
     }
     stopMic();
     state.error = null;
-    state.talk.react = reactFor(talkTone(q));
+    const ansNow = q.type === 'safety' ? '' : (state.talk.answers[q.id] || '').trim();
+    const react = reactFor(talkTone(q), ansNow);
+    const job = ansNow && state.talk.jobs[q.id];
+    if (job) { react.qid = q.id; react.ready = Promise.race([job, wait(2500)]); } else if (ansNow) react.qid = q.id;
+    state.talk.react = react;
     if (state.talk.i >= qs.length - 1) { state.view = 'indicators'; state.talk.analyzing = Object.keys(state.talk.jobs).length > 0; render(); waitIndicators(); return; }
     state.talk.i++; render();
   }
@@ -3457,6 +3661,7 @@ function toneOf(text) {
     if (isSafety) notes.push(`<p class="note">${esc(s.sensitiveNote)}</p>`);
     else if (q.sensitive) notes.push(`<p class="note sensitive">${esc(s.sensitivePart)}</p>`);
     else if (q.gentle) notes.push(`<p class="note">${esc(s.gentleNote)}</p>`);
+    const hints = !isSafety && q.hint && q.hint[state.lang] ? `<ul class="hint-chips" aria-label="${esc(s.hintLabel)}">${q.hint[state.lang].map((h) => `<li>${esc(h)}</li>`).join('')}</ul>` : '';
     const answer = state.talk.answers[q.id] || '';
     const control = isSafety
       ? choiceControl(item('phq.9', PHQ_ITEMS[8], 'phqSafety'))
@@ -3467,7 +3672,7 @@ function toneOf(text) {
     if (N3D.ok) return `<main class="scene3d talk-scene">
       <div class="stage3d" id="stage3d" aria-hidden="true"></div>
       <div class="scene-top"><div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
-      <div class="comic${reduceMotion ? '' : ' pop'}" id="comic"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><h1 class="q-text" id="q-text">${esc(text)}</h1>${voiceId() !== 'off' ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
+      <div class="comic${reduceMotion ? '' : ' pop'}" id="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><h1 class="q-text" id="q-text">${esc(text)}</h1>${hints}${voiceId() !== 'off' ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
       <div class="scene-gap" aria-hidden="true"></div>
       <section class="answer-card">
         ${notes.join('')}
@@ -3478,7 +3683,7 @@ function toneOf(text) {
     return `<main class="stage tint-sky"><div class="stage-inner">
       <div class="quiz-top"><div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
       <section class="qcard talk-card ${reduceMotion ? '' : 'enter'}">
-        ${N3D.ok ? `<div class="stage3d talk" id="stage3d"></div><p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><div class="bubble-talk up"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><h1 class="q-text" id="q-text">${esc(text)}</h1></div>` : `<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><h1 class="q-text" id="q-text">${esc(text)}</h1></div></div>`}
+        ${N3D.ok ? `<div class="stage3d talk" id="stage3d"></div><p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><div class="bubble-talk up"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><h1 class="q-text" id="q-text">${esc(text)}</h1></div>` : `<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<h1 class="q-text" id="q-text">${esc(text)}</h1>${hints}</div></div>`}
         ${voiceId() !== 'off' ? `<p class="talk-tools"><button type="button" class="btn link" data-act="talk-replay">${esc(s.talkReplay)}</button></p>` : ''}
         ${notes.join('')}
         ${control}
@@ -3488,7 +3693,7 @@ function toneOf(text) {
   }
   function viewIndicators() {
     const s = S();
-    const head = (title) => N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="comic"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><h1 class="q-text" id="q-text">${esc(title)}</h1></div><div class="scene-gap" aria-hidden="true"></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
+    const head = (title) => N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<h1 class="q-text" id="q-text">${esc(title)}</h1></div><div class="scene-gap" aria-hidden="true"></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
     if (state.talk.analyzing) return `<main class="wrap narrow${N3D.ok ? ' scene3d' : ''}">${head(s.indWait)}<div class="actions"><button class="btn" data-act="ind-nowait">${esc(s.indNoWait)}</button></div></main>`;
     const ind = collectIndicators();
     const shown = AREAS.filter((a) => a.id !== 'postpartum' || state.setup.baby === 1);
@@ -3616,7 +3821,7 @@ function toneOf(text) {
       if (res.status === 429) { ownVoice.err = S().cloneBusyServer; ownVoice.busy = false; render(true); return; }
       if (!res.ok || !d.voice) { const e = new Error('clone'); e.why = [res.status, d.error, d.status, d.code].filter(Boolean).join(' · '); throw e; }
       ownVoice.id = d.voice; ownVoice.recs = []; voiceCfg.id = 'own'; ownVoice.busy = false;
-      state.view = 'avatar'; render(); say(fmt(S().voiceHelloName, { name: (avatar.name || '').trim() || S().avNameDefault }));
+      state.view = 'avatar'; render(); { const nm = helloName(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     } catch (e) { ownVoice.busy = false; ownVoice.err = S().cloneFail + (e && e.why ? ` (${e.why})` : ''); render(true); }
   }
   function viewVoiceClone() {
@@ -3672,12 +3877,15 @@ function toneOf(text) {
     const st3 = document.getElementById('stage3d');
     if (st3 && N3D.ok) { N3D.setLook(avatar); N3D.attach(st3); if (state.view === 'avatar') N3D.builder(); }
     sceneBand();
+    if (state.view === 'results' && N3D.ok && exp.ring && state.finaleKey !== `${state.resultsLevel}`) { state.finaleKey = `${state.resultsLevel}`; const mb = maxBand(computeAreas(state, state.resultsLevel)); N3D.finale(mb === 2 || computeFlags(state).safety === 'yes' ? 'compassion' : mb === 1 ? 'calm' : 'happy'); }
+    if (state.view === 'results' && document.querySelector('.your-compass.anim')) state.ycAnimKey = `${state.resultsLevel}`;
     if (state.view === 'talk' && !state.crisisOpen) { const q = curTalkQ(); const key = `${state.talk.i}:${state.lang}`; if (state.talk.said !== key) { state.talk.said = key; runStep(q, state.talk.i); } }
     if (state.view === 'indicators' && N3D.ok) { const total = talkQuestions(state).length; N3D.scene(total, total, false).then(() => N3D.walkTo(total)); if (state.talk.analyzing) N3D.emote('thinking'); else { const ind = Object.values(collectIndicators()); N3D.emote(state.talkRisk || ind.some((x) => x.level === 'strong') ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy'); } }
     if (state.view === 'indicators' && !state.talk.analyzing && state.talk.said !== 'ind') {
       state.talk.said = 'ind'; const ind = collectIndicators(); const nm = (lv) => AREAS.filter((a) => ind[a.id] && ind[a.id].level === lv).map((a) => tx(a.name)).join(', ');
       const st = nm('strong'), so = nm('some');
-      const sum = `${S().indTitle}. ${S().indLead} ${st ? `${S().indStrong}: ${st}.` : S().indNone} ${so ? `${S().indSome}: ${so}.` : ''}`;
+      const s = S(); const care = state.talkRisk || (typeof state.answers['phq.9'] === 'number' && state.answers['phq.9'] > 0);
+      const sum = speakable(`${care ? s.indSayDoneCare : pickLine(s.indSayDone)} ${st ? fmt(s.indSayStrong, { areas: st }) : s.indSayNone} ${so ? fmt(s.indSaySome, { areas: so }) : ''} ${s.indSayEnd}`);
       if (remoteVoice()) sayDevice(sum, '', ++speakTok); else say(sum);
     }
     if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; const reveal = () => { if (state.view !== 'find' || state.findShown) return; state.findShown = true; const ui = document.getElementById('find-ui'); if (ui) { const h = N3D.handScreen && N3D.handScreen(); const cb = document.getElementById('compass-block'); if (h && cb) { const r = cb.getBoundingClientRect(); ui.style.setProperty('--fx', `${Math.round(h.x * innerWidth - (r.left + r.width / 2))}px`); ui.style.setProperty('--fy', `${Math.round(h.y * innerHeight - (r.top + r.height / 2))}px`); } ui.classList.remove('waiting'); if (!reduceMotion) ui.classList.add('show'); } setTimeout(() => { if (state.view === 'find') N3D.giveCompass(); }, reduceMotion ? 0 : 250); compassUpdate(); }; N3D.findScene().then(reveal); setTimeout(reveal, 8000); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
@@ -3892,7 +4100,7 @@ function toneOf(text) {
     else if (act === 'clone-back') { stopRecording(false); state.view = 'avatar'; render(); }
     else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); state.afterFind = 'quiz'; state.view = 'find'; render(); }
     else if (act === 'talk-start') { saveAvatar(); state.afterFind = 'talk'; state.error = null; state.view = 'find'; render(); }
-    else if (act === 'voice-test') { const nm = (avatar.name || '').trim(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
+    else if (act === 'voice-test') { const nm = helloName(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     else if (act === 'talk-replay') say(talkSpeech(curTalkQ()));
     else if (act === 'mic') micToggle();
     else if (act === 'talk-next') talkNext();
