@@ -437,6 +437,12 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .dial:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 
+/* "To start, point north" line above the compass */
+.compass-goal { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; text-align: center; color: var(--ink); background: var(--soft); padding: 8px 16px; border-radius: 999px; margin-bottom: 4px; }
+.compass-goal.done { background: var(--coral-soft); color: var(--coral-deep); }
+/* optional deepening (1 sign of 3) */
+.weak-card .opt-chip.on { background: var(--ink); color: var(--accent-ink); }
+
 </style>
 </head>
 <body>
@@ -894,7 +900,7 @@ const UI = {
     heroNote: 'Uma pergunta por vez, no seu ritmo.',
     compassTitle: 'A bússola da saúde mental',
     compassPoints: ['N', 'L', 'S', 'O'],
-    compassDrag: 'Arraste a seta até o N para começar.',
+    compassDrag: 'Arraste a seta com o dedo ou use as setas do teclado.',
     compassWait: 'Ligando a bússola…',
     compassTurn: 'A seta aponta para o norte de verdade. Vire o celular até ela ficar em cima do N.',
     compassOff: 'Sem sensor por aqui. Arraste a seta até o N para começar.',
@@ -909,11 +915,15 @@ const UI = {
     sensorAllow: 'Permitir', sensorNotNow: 'Agora não',
     nextStep: 'Próximo passo', notAssessedShort: 'Não avaliadas agora',
     roundTitle: 'Rodada {n}', roundDone: 'Rodada concluída.',
-    roundTraumaSub: 'Uma parte mais delicada', roundSensSub: 'Mais algumas situações, com calma', roundPPSub: 'Desde a chegada do bebê', roundCtrlSub: 'Só para conferir', roundMemSub: 'Para alguém que te conhece bem',
+    generalTitle: 'Questionário geral', generalSub: 'Uma pergunta por vez, no seu ritmo', sensTitle: 'Uma parte mais delicada', memoryPartTitle: 'Para alguém que te conhece bem', questionOf: 'Pergunta {i} de {n}',
+    weakTitle: 'Quer se aprofundar em mais alguma área?', weakText: 'Nestas áreas apareceu 1 sinal, abaixo do ponto de atenção. Não é necessário aprofundar, mas você pode, se quiser. Toque para incluir no nível 2.',
+    entryItems: '3 perguntas de entrada (a escala completa tem {n})', entryNote: 'Regra de triagem do Nort (2 de 3 com sinal), não é o ponto de corte da escala. A pontuação validada vem com a escala completa no nível 2.', noFlagsWeak: 'Nenhuma área deu sinal suficiente para aprofundar. Se quiser, escolha alguma acima.',
+    compassGoalSensor: 'Para começar, aponte o celular para o norte', compassGoalDrag: 'Para começar, leve a seta até o N', compassGoalDone: 'Pronto! Pode começar',
+    roundTraumaSub: 'Responda só o que você se sentir à vontade para responder', roundSensSub: 'Mais algumas situações, com calma', roundPPSub: 'Desde a chegada do bebê', roundCtrlSub: 'Só para conferir', roundMemSub: 'Passe o celular para um familiar ou amigo próximo',
     sensitivePart: 'As próximas perguntas são mais delicadas e podem mexer com você. Você pode pular esta parte agora e voltar quando quiser.', skipPart: 'Pular esta parte', skippedPart: 'Você pulou esta parte. Ela vai aparecer como não avaliada no resultado.',
     expFont: 'Fonte', fontNames: { nunito: 'Nunito (arredondada)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (anterior)' },
     round1Sub: 'Como as últimas semanas têm sido', round2Sub: 'Coisas que podem ter incomodado', round3Sub: 'Situações do dia a dia', round4Sub: 'Seu jeito no dia a dia', round5Sub: 'Alguns hábitos',
-    generalIntro: 'Aqui as perguntas vêm misturadas, sem dizer o tema de cada uma. Elas falam de humor, ansiedade, sono, atenção, hábitos, memória e outras áreas da saúde mental. As partes mais delicadas avisam antes e podem ser puladas. No fim, você vê o resultado de cada área.',
+    generalIntro: 'Aqui as perguntas vêm uma atrás da outra, misturadas, sem dizer o tema de cada uma. Elas falam de humor, ansiedade, sono, atenção, hábitos, memória e outras áreas da saúde mental. As partes mais delicadas avisam antes e podem ser puladas. No fim, você vê o resultado de cada área.',
     warmTitle: 'Aquecimento', warmChip: 'não entra no resultado', skipWarm: 'Pular',
     memoryIntro: 'Para quem vai responder: esta parte é para alguém da família ou amigo próximo que conhece esta pessoa há pelo menos 10 anos. Compare como ela está hoje com como era 10 anos atrás. Se ela sempre esqueceu onde deixava as coisas e continua igual, marque "Não mudou muito".',
     memoryNote: 'Esta parte foi feita para pessoas a partir de 50 anos. Quem responde é um familiar ou amigo próximo: passe o celular para essa pessoa. Se você tem menos de 50 anos ou não tem ninguém por perto agora, é só pular.',
@@ -926,7 +936,7 @@ const UI = {
     topicDone: 'Tema concluído: {area}.', topicDoneMore: 'Mais um pedaço da sua bússola.', topicDoneCalm: 'Obrigado por responder.',
     swipeHint: 'Arraste a bolinha para um lado ou toque numa opção.',
     expButton: 'Testes', expTitle: 'Ideias em teste', expText: 'Ligue e desligue para comparar. Isso existe só no protótipo.',
-    exp_general: 'Modo geral', expd_general: 'Perguntas misturadas em rodadas, sem dizer o tema, com aquecimentos ilustrados. Vale ao começar um questionário novo.',
+    exp_general: 'Modo geral', expd_general: 'Um questionário geral, com as perguntas misturadas e sem dizer o tema. Vale ao começar um questionário novo.',
     exp_ring: 'Bússola que ganha cor', expd_ring: 'O progresso vira uma bússola que se completa a cada tema, e o resultado mostra a sua bússola inteira.',
     exp_colors: 'Cor por área', expd_colors: 'Cada área tem a sua cor nas telas de tema, nas perguntas e no mapa.',
     exp_interact: 'Interações', expd_interact: 'Ponteiro no slider, arrastar para responder sim ou não e um aviso ao terminar cada tema.',
@@ -1058,7 +1068,7 @@ const UI = {
     heroNote: 'One question at a time, at your own pace.',
     compassTitle: 'The mental health compass',
     compassPoints: ['N', 'E', 'S', 'W'],
-    compassDrag: 'Drag the arrow to N to start.',
+    compassDrag: 'Drag the arrow with your finger or use the arrow keys.',
     compassWait: 'Turning on the compass…',
     compassTurn: 'The arrow points to true north. Turn your phone until it sits on the N.',
     compassOff: 'No sensor here. Drag the arrow to N to start.',
@@ -1073,11 +1083,15 @@ const UI = {
     sensorAllow: 'Allow', sensorNotNow: 'Not now',
     nextStep: 'Next step', notAssessedShort: 'Not assessed yet',
     roundTitle: 'Round {n}', roundDone: 'Round complete.',
-    roundTraumaSub: 'A more sensitive part', roundSensSub: 'A few more situations, take your time', roundPPSub: 'Since the baby arrived', roundCtrlSub: 'Just double-checking', roundMemSub: 'For someone who knows you well',
+    generalTitle: 'General questionnaire', generalSub: 'One question at a time, at your own pace', sensTitle: 'A more sensitive part', memoryPartTitle: 'For someone who knows you well', questionOf: 'Question {i} of {n}',
+    weakTitle: 'Want to look deeper at any other area?', weakText: 'These areas showed one sign, below the attention point. You don’t need to go deeper, but you can if you like. Tap to add them to level 2.',
+    entryItems: '3 entry questions (the full scale has {n})', entryNote: 'Nort screening rule (2 of 3 with a sign), not the scale’s cut-off. The validated score comes with the full scale in level 2.', noFlagsWeak: 'No area showed enough signs to go deeper. If you like, pick one above.',
+    compassGoalSensor: 'To start, point your phone north', compassGoalDrag: 'To start, bring the arrow to N', compassGoalDone: 'Ready! You can start',
+    roundTraumaSub: 'Answer only what you feel comfortable with', roundSensSub: 'A few more situations, take your time', roundPPSub: 'Since the baby arrived', roundCtrlSub: 'Just double-checking', roundMemSub: 'Hand the phone to a relative or close friend',
     sensitivePart: 'The next questions are more sensitive and may stir things up. You can skip this part now and come back whenever you like.', skipPart: 'Skip this part', skippedPart: 'You skipped this part. It will show as not assessed in your result.',
     expFont: 'Font', fontNames: { nunito: 'Nunito (rounded)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (previous)' },
     round1Sub: 'How the last few weeks have been', round2Sub: 'Things that may have bothered you', round3Sub: 'Everyday situations', round4Sub: 'How you go about your day', round5Sub: 'Some habits',
-    generalIntro: 'Here the questions come mixed, without naming the topic of each one. They cover mood, anxiety, sleep, attention, habits, memory and other areas of mental health. The more sensitive parts warn you first and can be skipped. At the end, you see the result for each area.',
+    generalIntro: 'Here the questions come one after another, mixed, without naming the topic of each one. They cover mood, anxiety, sleep, attention, habits, memory and other areas of mental health. The more sensitive parts warn you first and can be skipped. At the end, you see the result for each area.',
     warmTitle: 'Warm-up', warmChip: 'not part of your result', skipWarm: 'Skip',
     memoryIntro: 'For the person answering: this part is for a relative or close friend who has known this person for at least 10 years. Compare how they are now with how they were 10 years ago. If they always forgot where they left things and still do, choose "Not much change".',
     memoryNote: 'This part is meant for people aged 50 and over. A relative or close friend answers it: hand them the phone. If you are under 50 or nobody is around right now, just skip it.',
@@ -1090,7 +1104,7 @@ const UI = {
     topicDone: 'Topic done: {area}.', topicDoneMore: 'One more piece of your compass.', topicDoneCalm: 'Thank you for answering.',
     swipeHint: 'Drag the knob to one side, or tap an option.',
     expButton: 'Tests', expTitle: 'Ideas being tested', expText: 'Switch them on and off to compare. This only exists in the prototype.',
-    exp_general: 'General mode', expd_general: 'Questions mixed into rounds, without naming the topic, with illustrated warm-ups. Applies when you start a new questionnaire.',
+    exp_general: 'General mode', expd_general: 'One general questionnaire, questions mixed, without naming the topic. Applies when you start a new questionnaire.',
     exp_ring: 'Compass that fills with colour', expd_ring: 'Progress becomes a compass that completes with each topic, and the result shows your whole compass.',
     exp_colors: 'Colour per area', expd_colors: 'Each area has its own colour on topic screens, questions and the map.',
     exp_interact: 'Interactions', expd_interact: 'Needle on the slider, drag to answer yes or no, and a short message when you finish each topic.',
@@ -1257,14 +1271,15 @@ function provItems(area, kind) {
 function level1Modules(state) {
   const L = (k) => ({ ref: 'pageTitles.' + k });
   const mods = [
-    { id: 'who5', title: L('who5'), scale: 'who5', area: 'wellbeing', sections: [{ stemKey: 'who5Stem', items: WHO5_ITEMS.map((t, i) => item(`who5.${i + 1}`, t, 'who5')) }] },
+    // At most 3 questions per topic in level 1. Longer official scales start with their first 3 items (text unchanged); the rest comes in level 2.
+    { id: 'who5', title: L('who5'), scale: 'who5', area: 'wellbeing', sections: [{ stemKey: 'who5Stem', items: WHO5_ITEMS.slice(0, 3).map((t, i) => item(`who5.${i + 1}`, t, 'who5')) }] },
     { id: 'phq2', title: L('phq2'), scale: 'phq2', area: 'depression', sections: [{ stem: PHQ_STEM, items: [item('phq.1', PHQ_ITEMS[0], 'phq'), item('phq.2', PHQ_ITEMS[1], 'phq')] }] },
     { id: 'safety', titleKey: 'safetyTitle', scale: 'phq9', area: 'safety', sensitive: true, sections: [{ stem: PHQ_STEM, items: [item('phq.9', PHQ_ITEMS[8], 'phqSafety')] }] },
     { id: 'gad2', title: L('gad2'), scale: 'gad2', area: 'anxiety', sections: [{ stem: PHQ_STEM, items: [item('gad.1', GAD_ITEMS[0], 'phq'), item('gad.2', GAD_ITEMS[1], 'phq')] }] },
     { id: 'ptsd', title: L('ptsd'), scale: 'pcptsd5', area: 'trauma', sensitive: true, sections: [
       { introKey: 'ptsdIntroShort', examplesKey: 'ptsdExamples', items: [item('ptsd.0', { ref: 'ptsdQ' }, 'ynSkip')] },
-      { stemKey: 'pastMonth', showIf: (a) => a['ptsd.0'] === 1, items: PTSD_ITEMS.map((t, i) => item(`ptsd.${i + 1}`, t, 'yn')) }] },
-    { id: 'asrs', title: L('asrs'), scale: 'asrs6', area: 'adhd', sections: [{ stemKey: 'asrsStem', items: ASRS_ITEMS.map((t, i) => item(`asrs.${i + 1}`, t, 'asrs')) }] },
+      { stemKey: 'pastMonth', showIf: (a) => a['ptsd.0'] === 1, items: PTSD_ITEMS.slice(0, 2).map((t, i) => item(`ptsd.${i + 1}`, t, 'yn')) }] },
+    { id: 'asrs', title: L('asrs'), scale: 'asrs6', area: 'adhd', sections: [{ stemKey: 'asrsStem', items: ASRS_ITEMS.slice(0, 3).map((t, i) => item(`asrs.${i + 1}`, t, 'asrs')) }] },
     { id: 'auditc', title: L('auditc'), scale: 'auditc', area: 'alcohol', sections: [{ stemKey: 'drinkNote', items: AUDIT_ITEMS.slice(0, 3).map((t, i) => item(`audit.${i + 1}`, t, t.opt, i > 0 ? { showIf: (a) => typeof a['audit.1'] === 'number' && a['audit.1'] !== 0 } : {})) }] },
     { id: 'provA', title: L('provA'), provisional: true, sections: ['bipolar', 'panic', 'social', 'ocd'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
     { id: 'provB', title: L('provB'), provisional: true, sensitive: true, sections: ['eating', 'sleep', 'substances', 'gambling'].map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) },
@@ -1273,21 +1288,17 @@ function level1Modules(state) {
   if (state.setup.baby === 1) mods.push({ id: 'provPP', title: L('provPP'), provisional: true, sections: [{ area: 'postpartum', stemKey: 'provStem', items: provItems('postpartum', 'screen') }] });
   mods.push({ id: 'controls', titleKey: 'ctrlTitle', sections: [{ items: [item('ctrl.1', { ref: 'ctrl1' }, 'yn'), item('ctrl.2', { ref: 'ctrl2' }, 'yn')] }] });
   // Last, so the relative who answers it doesn't then see questions about the user's own mood
-  mods.push(memoryModule());
+  mods.push(memoryModule(0, 3));
   return mods;
 }
 
 // Optional part a relative answers about the user (Short IQCODE)
-function memoryModule() {
-  return { id: 'memory', title: AREAS_BY_ID.memory.name, scale: 'iqcode16', area: 'memory', sections: [{ introKey: 'memoryIntro', stem: IQCODE_STEM, items: IQCODE_ITEMS.map((t, i) => item(`iq.${i + 1}`, t, 'iqcode')) }] };
+function memoryModule(from, to) {
+  return { id: 'memory', title: AREAS_BY_ID.memory.name, scale: 'iqcode16', area: 'memory', sections: [{ introKey: 'memoryIntro', stem: IQCODE_STEM, items: IQCODE_ITEMS.slice(from, to).map((t, i) => item(`iq.${from + i + 1}`, t, 'iqcode')) }] };
 }
 
-// "General mode" level 1: same questions, mixed in rounds that share the answer format, without naming the topic.
-// Sensitive parts keep their own labelled, skippable chapters. Warm-ups are not scored.
-function warmModule(n) {
-  const w = WARMUPS[n];
-  return { id: 'warm' + n, titleKey: 'warmTitle', area: 'warm', sections: [{ area: 'warm', items: [Object.assign(item(w.id, w.q, null), { type: 'warm', optional: true, warm: w })] }] };
-}
+// "General mode" level 1: one continuous questionnaire ("Questionário geral"), questions mixed, topic never named.
+// Only the parts that must warn first (safety, sensitive topics, memory) get their own screen before them.
 function interleave(lists) {
   const out = []; const max = Math.max(...lists.map((x) => x.length));
   for (let i = 0; i < max; i++) lists.forEach((x) => { if (x[i]) out.push(x[i]); });
@@ -1300,40 +1311,43 @@ function level1General(state) {
   const byId = {}; base.forEach((m) => { byId[m.id] = m; });
   const items = (m) => m.sections.reduce((acc, s) => acc.concat(s.items), []);
   const prov = (ar) => provItems(ar, 'screen');
-  const round = (n, subKey, stemPart, list, extra) => Object.assign({ id: 'round' + n, titleKey: 'roundTitle', titleVars: { n: { pt: String(n), en: String(n) } }, subKey, hideTopic: true, area: 'round', sections: [Object.assign({ area: 'round', items: list }, stemPart)] }, extra || {});
+  const general = (id, sections, extra) => Object.assign({ id, titleKey: 'generalTitle', subKey: 'generalSub', hideTopic: true, area: 'round', sections: sections.map((sec) => Object.assign({ area: 'round' }, sec)) }, extra || {});
+  const part = (m, titleKey, subKey) => Object.assign({}, m, { titleKey, titleVars: null, subKey, hideTopic: true });
   const mods = [];
-  mods.push(warmModule(0));
-  mods.push(round(1, 'round1Sub', { stemKey: 'who5Stem' }, items(byId.who5), { first: true }));
-  mods.push(round(2, 'round2Sub', { stem: PHQ_STEM }, interleave([items(byId.phq2), items(byId.gad2)])));
+  mods.push(general('general1', [{ stemKey: 'who5Stem', items: items(byId.who5) }, { stem: PHQ_STEM, items: interleave([items(byId.phq2), items(byId.gad2)]) }], { first: true }));
   mods.push(byId.safety);
-  mods.push(warmModule(1));
-  mods.push(round(3, 'round3Sub', { stemKey: 'provStem' }, interleave(['bipolar', 'sleep', 'panic', 'social', 'gambling', 'ocd', 'autism'].map(prov)), { provisional: true }));
-  mods.push(round(4, 'round4Sub', { stemKey: 'asrsStem' }, items(byId.asrs)));
-  mods.push(warmModule(2));
-  mods.push(Object.assign({}, byId.auditc, { id: 'round5', titleKey: 'roundTitle', titleVars: { n: { pt: '5', en: '5' } }, subKey: 'round5Sub', hideTopic: true, area: 'round', sections: byId.auditc.sections.map((s) => Object.assign({}, s, { area: 'round' })) }));
-  // From here on the parts keep their warning and skip option, but are still numbered as rounds: no topic names in general mode.
-  let n = 5;
-  const asRound = (m, subKey) => Object.assign({}, m, { titleKey: 'roundTitle', titleVars: { n: { pt: String(++n), en: String(n) } }, subKey, hideTopic: true });
-  mods.push(asRound(byId.ptsd, 'roundTraumaSub'));
-  mods.push(asRound({ id: 'provSens', provisional: true, sensitive: true, sections: [{ area: 'sens', stemKey: 'provStem', items: interleave(SENS_AREAS.map(prov)) }] }, 'roundSensSub'));
-  if (byId.provPP) mods.push(asRound(byId.provPP, 'roundPPSub'));
-  mods.push(asRound(byId.controls, 'roundCtrlSub'));
-  mods.push(asRound(byId.memory, 'roundMemSub'));
+  mods.push(general('general2', [
+    { stemKey: 'provStem', provisional: true, items: interleave(['bipolar', 'sleep', 'panic', 'social', 'gambling', 'ocd', 'autism'].map(prov)) },
+    { stemKey: 'asrsStem', items: items(byId.asrs) },
+    Object.assign({}, byId.auditc.sections[0])], { noIntro: true }));
+  mods.push(part(byId.ptsd, 'sensTitle', 'roundTraumaSub'));
+  mods.push(part({ id: 'provSens', provisional: true, sensitive: true, sections: [{ area: 'sens', stemKey: 'provStem', items: interleave(SENS_AREAS.map(prov)) }] }, 'sensTitle', 'roundSensSub'));
+  if (byId.provPP) mods.push(part(byId.provPP, 'generalTitle', 'roundPPSub'));
+  mods.push(general('general3', byId.controls.sections, { noIntro: true }));
+  mods.push(part(byId.memory, 'memoryPartTitle', 'roundMemSub'));
   return mods;
 }
 
 // Level 2 pages: only areas that showed signs in level 1
 function level2Modules(state) {
   const r = computeAreas(state, 1);
-  const flagged = (id) => r[id] && r[id].assessed && r[id].band >= 1;
+  const optIn = state.optIn || {};
+  const flagged = (id) => r[id] && r[id].assessed && (r[id].band >= 1 || (r[id].weak && optIn[id]));
   const mods = [];
+  if (flagged('wellbeing')) mods.push({ id: 'who5b', title: AREAS_BY_ID.wellbeing.name, scale: 'who5', area: 'wellbeing', sections: [{ stemKey: 'who5Stem', items: WHO5_ITEMS.slice(3).map((t, i) => item(`who5.${i + 4}`, t, 'who5')) }] });
   if (flagged('depression')) mods.push({ id: 'phq9', title: { ref: 'pageTitles.phq2' }, scale: 'phq9', area: 'depression', sections: [{ stem: PHQ_STEM, items: PHQ_ITEMS.slice(2, 8).map((t, i) => item(`phq.${i + 3}`, t, 'phq')) }] });
   if (flagged('anxiety')) mods.push({ id: 'gad7', title: { ref: 'pageTitles.gad2' }, scale: 'gad7', area: 'anxiety', sections: [{ stem: PHQ_STEM, items: GAD_ITEMS.slice(2).map((t, i) => item(`gad.${i + 3}`, t, 'phq')) }] });
   if (flagged('depression') || flagged('anxiety') || flagged('wellbeing')) mods.push({ id: 'k10', title: AREAS_BY_ID.distress.name, scale: 'k10', area: 'distress', sections: [{ stemKey: 'k10Stem', items: K10_ITEMS.map((t, i) => item(`k10.${i + 1}`, t, 'k10')) }] });
-  if (flagged('trauma')) mods.push({ id: 'trauma2', title: AREAS_BY_ID.trauma.name, scale: 'itq', area: 'trauma', provisional: true, toImport: true, sensitive: true, sections: [{ area: 'trauma', stemKey: 'provStem', items: provItems('trauma', 'full') }] });
-  if (flagged('adhd')) mods.push({ id: 'adhd2', title: AREAS_BY_ID.adhd.name, scale: 'asrs18', area: 'adhd', provisional: true, sections: [{ area: 'adhd', stemKey: 'provStem', items: provItems('adhd', 'full') }] });
+  if (flagged('trauma')) mods.push({ id: 'trauma2', title: AREAS_BY_ID.trauma.name, scale: 'pcptsd5', area: 'trauma', sensitive: true, toImport: true, sections: [
+    { area: 'trauma', stemKey: 'pastMonth', items: PTSD_ITEMS.slice(2).map((t, i) => item(`ptsd.${i + 3}`, t, 'yn')) },
+    { area: 'trauma', stemKey: 'provStem', provisional: true, items: provItems('trauma', 'full') }] });
+  if (flagged('adhd')) mods.push({ id: 'adhd2', title: AREAS_BY_ID.adhd.name, scale: 'asrs6', area: 'adhd', sections: [
+    { area: 'adhd', stemKey: 'asrsStem', items: ASRS_ITEMS.slice(3).map((t, i) => item(`asrs.${i + 4}`, t, 'asrs')) },
+    { area: 'adhd', stemKey: 'provStem', provisional: true, items: provItems('adhd', 'full') }] });
   if (flagged('alcohol')) mods.push({ id: 'audit', titleKey: 'auditTitle', scale: 'audit', area: 'alcohol', sections: [{ items: AUDIT_ITEMS.slice(3).map((t, i) => item(`audit.${i + 4}`, t, t.opt)) }] });
   PROV_AREAS.forEach((ar) => { if (flagged(ar)) mods.push({ id: 'p2-' + ar, title: AREAS_BY_ID[ar].name, scale: PROVISIONAL_SCALE[ar], area: ar, provisional: true, sensitive: ar === 'eating' || ar === 'psychosis', sections: [{ area: ar, stemKey: 'provStem', items: provItems(ar, 'full') }] }); });
+  // Last, answered by the same relative: the rest of the Short IQCODE
+  if (flagged('memory')) mods.push(memoryModule(3, 16));
   return mods;
 }
 
@@ -1424,9 +1438,18 @@ function computeAreas(state, maxLevel) {
   const out = {};
   const confStep = (base, id) => (l3done(id) ? (base === 'low' ? 'medium' : 'high') : base);
 
-  // Wellbeing — WHO-5 (complete scale)
+  // Entry signal from the first 3 items of a longer official scale: 2 of 3 = sign (level 2); 1 of 3 = optional deepening.
+  const entry = (ids, isPos, scale, T3) => {
+    const n = ids.filter((id) => isPos(a[id])).length;
+    return { assessed: true, band: n >= 2 ? 1 : 0, weak: n === 1, entry: true, confidence: 'low', scales: [scale], score: T3(n) };
+  };
+
+  // Wellbeing — WHO-5 (complete scale in level 2; first 3 items in level 1)
   const who = range('who5.', 1, 5);
-  if (allAnswered(a, who)) {
+  if (!(lv >= 2 && allAnswered(a, who)) && allAnswered(a, range('who5.', 1, 3))) {
+    out.wellbeing = entry(range('who5.', 1, 3), (v) => typeof v === 'number' && v <= 2, 'who5', (n) => T(`WHO-5, 3 primeiras perguntas: ${n} de 3 com sinal (regra do Nort: atenção a partir de 2)`, `WHO-5, first 3 questions: ${n} of 3 with a sign (Nort rule: attention from 2)`));
+  }
+  if (lv >= 2 && allAnswered(a, who)) {
     const pct = sumIds(a, who) * 4;
     const band = pct <= 28 ? 2 : pct <= 50 ? 1 : 0;
     const lab = band === 2 ? T('bem-estar muito baixo', 'very low wellbeing') : band === 1 ? T('bem-estar baixo', 'low wellbeing') : T('bem-estar adequado', 'adequate wellbeing');
@@ -1442,7 +1465,7 @@ function computeAreas(state, maxLevel) {
     out.depression = { assessed: true, band, confidence: confStep('medium', 'depression'), scales: ['phq9'], score: T(`PHQ-9: ${s}/27 · ${lab.pt}`, `PHQ-9: ${s}/27 · ${lab.en}`) };
   } else if (allAnswered(a, ['phq.1', 'phq.2'])) {
     const s = sumIds(a, ['phq.1', 'phq.2']);
-    out.depression = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'depression'), scales: ['phq2'], score: T(`PHQ-2: ${s}/6 (positivo a partir de 3)`, `PHQ-2: ${s}/6 (positive from 3)`) };
+    out.depression = { assessed: true, band: s >= 3 ? 1 : 0, weak: s < 3 && (a['phq.1'] >= 2 || a['phq.2'] >= 2), confidence: confStep('low', 'depression'), scales: ['phq2'], score: T(`PHQ-2: ${s}/6 (positivo a partir de 3)`, `PHQ-2: ${s}/6 (positive from 3)`) };
   }
 
   // Anxiety — GAD-2 then GAD-7
@@ -1454,7 +1477,7 @@ function computeAreas(state, maxLevel) {
     out.anxiety = { assessed: true, band, confidence: confStep('medium', 'anxiety'), scales: ['gad7'], score: T(`GAD-7: ${s}/21 · ${lab.pt}`, `GAD-7: ${s}/21 · ${lab.en}`) };
   } else if (allAnswered(a, ['gad.1', 'gad.2'])) {
     const s = sumIds(a, ['gad.1', 'gad.2']);
-    out.anxiety = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'anxiety'), scales: ['gad2'], score: T(`GAD-2: ${s}/6 (positivo a partir de 3)`, `GAD-2: ${s}/6 (positive from 3)`) };
+    out.anxiety = { assessed: true, band: s >= 3 ? 1 : 0, weak: s < 3 && (a['gad.1'] >= 2 || a['gad.2'] >= 2), confidence: confStep('low', 'anxiety'), scales: ['gad2'], score: T(`GAD-2: ${s}/6 (positivo a partir de 3)`, `GAD-2: ${s}/6 (positive from 3)`) };
   }
 
   // General distress — K10 (level 2 only)
@@ -1469,7 +1492,11 @@ function computeAreas(state, maxLevel) {
   // Trauma — PC-PTSD-5 (+ provisional level 2)
   if (a['ptsd.0'] === 0) out.trauma = { assessed: true, band: 0, confidence: 'low', scales: ['pcptsd5'], score: T('Nenhum evento traumático relatado', 'No traumatic event reported') };
   else if (a['ptsd.0'] === 'skip') out.trauma = { assessed: false, skipped: true, scales: ['pcptsd5'] };
-  else if (a['ptsd.0'] === 1 && allAnswered(a, range('ptsd.', 1, 5))) {
+  else if (a['ptsd.0'] === 1 && !(lv >= 2 && allAnswered(a, range('ptsd.', 1, 5))) && allAnswered(a, ['ptsd.1', 'ptsd.2'])) {
+    // The event question counts as one of the 3
+    out.trauma = entry(['ptsd.0', 'ptsd.1', 'ptsd.2'], (v) => v === 1, 'pcptsd5', (n) => T(`PC-PTSD-5, entrada: ${n} de 3 com sinal (regra do Nort: atenção a partir de 2)`, `PC-PTSD-5, entry: ${n} of 3 with a sign (Nort rule: attention from 2)`));
+  }
+  else if (a['ptsd.0'] === 1 && lv >= 2 && allAnswered(a, range('ptsd.', 1, 5))) {
     const s = sumIds(a, range('ptsd.', 1, 5));
     out.trauma = { assessed: true, band: s >= 3 ? 1 : 0, confidence: confStep('low', 'trauma'), scales: ['pcptsd5'], score: T(`PC-PTSD-5: ${s}/5 (positivo a partir de 3)`, `PC-PTSD-5: ${s}/5 (positive from 3)`) };
     addProvisionalNote(out.trauma, a, 'trauma', lv);
@@ -1477,7 +1504,10 @@ function computeAreas(state, maxLevel) {
 
   // ADHD — ASRS v1.1 screener (shaded-box rule)
   const asrs = range('asrs.', 1, 6);
-  if (allAnswered(a, asrs)) {
+  if (!(lv >= 2 && allAnswered(a, asrs)) && allAnswered(a, range('asrs.', 1, 3))) {
+    out.adhd = entry(range('asrs.', 1, 3), (v) => typeof v === 'number' && v >= 2, 'asrs6', (n) => T(`ASRS, 3 primeiras perguntas: ${n} de 3 na faixa sombreada (regra do Nort: atenção a partir de 2)`, `ASRS, first 3 questions: ${n} of 3 in the shaded range (Nort rule: attention from 2)`));
+  }
+  if (lv >= 2 && allAnswered(a, asrs)) {
     let n = 0;
     asrs.forEach((id, i) => { if (a[id] >= (i < 3 ? 2 : 3)) n++; });
     out.adhd = { assessed: true, band: n >= 4 ? 1 : 0, confidence: confStep('low', 'adhd'), scales: ['asrs6'], score: T(`ASRS: ${n} de 6 respostas na faixa sombreada (positivo a partir de 4)`, `ASRS: ${n} of 6 answers in the shaded range (positive from 4)`) };
@@ -1500,7 +1530,13 @@ function computeAreas(state, maxLevel) {
 
   // Memory and thinking — Short IQCODE (answered by a relative); mean of 16 items, 1–5
   const iq = range('iq.', 1, 16);
-  if (allAnswered(a, iq)) {
+  if (!(lv >= 2 && allAnswered(a, iq)) && allAnswered(a, range('iq.', 1, 3))) {
+    out.memory = entry(range('iq.', 1, 3), (v) => typeof v === 'number' && v >= 4, 'iqcode16', (n) => T(`IQCODE, 3 primeiras perguntas: ${n} de 3 com piora (regra do Nort: atenção a partir de 2)`, `IQCODE, first 3 questions: ${n} of 3 worse (Nort rule: attention from 2)`));
+    out.memory.extra = out.memory.band >= 1
+      ? T('Respondido por um familiar ou amigo. Mudanças de memória têm muitas causas, como sono, humor, remédios, tireoide ou audição. Quem avalia é um médico (clínico geral, geriatra ou neurologista).', 'Answered by a relative or friend. Memory changes have many causes, such as sleep, mood, medicines, thyroid or hearing. A doctor (GP, geriatrician or neurologist) is the one to assess it.')
+      : T('Respondido por um familiar ou amigo.', 'Answered by a relative or friend.');
+  }
+  if (lv >= 2 && allAnswered(a, iq)) {
     const m = sumIds(a, iq) / 16;
     const band = m >= 3.6 ? 2 : m >= 3.3 ? 1 : 0;
     const shown = m.toFixed(2);
@@ -1523,7 +1559,7 @@ function computeAreas(state, maxLevel) {
       s = sumIds(a, scr); max = 8;
       band = s >= 4 ? 1 : 0;
     }
-    out[ar] = { assessed: true, band, confidence: 'test', provisional: true, scales: [PROVISIONAL_SCALE[ar]], score: T(`Perguntas provisórias: ${s}/${max} (pontuação de teste)`, `Provisional questions: ${s}/${max} (test score)`) };
+    out[ar] = { assessed: true, band, weak: band === 0 && scr.some((id) => a[id] >= 3), confidence: 'test', provisional: true, scales: [PROVISIONAL_SCALE[ar]], score: T(`Perguntas provisórias: ${s}/${max} (pontuação de teste)`, `Provisional questions: ${s}/${max} (test score)`) };
   });
   return out;
 }
@@ -1600,11 +1636,24 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     return null;
   }
   const placeCountry = guessCountry();
+  // Language follows where the person is (time zone), always: Brazil -> pt, Australia -> en, France -> fr, and so on.
+  // A language the app doesn't have yet falls back to English. Only when the place is unknown: last choice, then the phone's language.
+  // Rough map, good enough for now: Quebec phones often report America/Toronto (-> English); Switzerland -> German.
+  const TZ_LANG = { 'Europe/Paris': 'fr', 'Europe/Brussels': 'fr', 'Europe/Luxembourg': 'fr', 'America/Montreal': 'fr', 'Africa/Dakar': 'fr', 'Africa/Abidjan': 'fr',
+    'Europe/Madrid': 'es', 'Atlantic/Canary': 'es', 'America/Mexico_City': 'es', 'America/Bogota': 'es', 'America/Lima': 'es', 'America/Santiago': 'es', 'America/Argentina/Buenos_Aires': 'es', 'America/Montevideo': 'es', 'America/Asuncion': 'es', 'America/La_Paz': 'es', 'America/Caracas': 'es', 'America/Guayaquil': 'es',
+    'Europe/Berlin': 'de', 'Europe/Vienna': 'de', 'Europe/Zurich': 'de', 'Europe/Rome': 'it', 'Europe/Amsterdam': 'nl', 'Asia/Tokyo': 'ja', 'Asia/Shanghai': 'zh', 'Asia/Seoul': 'ko',
+    'Europe/London': 'en', 'Europe/Dublin': 'en', 'Pacific/Auckland': 'en', 'America/New_York': 'en', 'America/Chicago': 'en', 'America/Denver': 'en', 'America/Los_Angeles': 'en', 'America/Toronto': 'en', 'America/Vancouver': 'en' };
+  function placeLang() {
+    const tz = deviceTz();
+    if (placeCountry === 'BR' || PT_TZ.includes(tz)) return 'pt';
+    if (placeCountry === 'AU') return 'en';
+    return TZ_LANG[tz] || null;
+  }
   function initialLang() {
+    const place = placeLang();
+    if (place) return LOCALES[place] ? place : FALLBACK_LOCALE;
     const saved = store('norte.lang');
     if (saved && LOCALES[saved]) return saved;
-    if (placeCountry === 'BR' || PT_TZ.includes(deviceTz())) return 'pt';
-    if (placeCountry === 'AU') return 'en';
     const nav = (navigator.language || '').toLowerCase();
     return nav.startsWith('pt') ? 'pt' : 'en';
   }
@@ -1612,7 +1661,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   const fresh = () => ({
     view: 'welcome', setup: { age: null, country: placeCountry, baby: null, consent: false },
     answers: {}, gaps: [], lastAt: null, level: 1, pages: [], cardKey: null, levelsDone: {},
-    error: null, skipped: {}, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
+    error: null, skipped: {}, optIn: {}, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
   });
   const state = Object.assign(fresh(), { lang: initialLang(), points: parseInt(store('norte.points') || '0', 10) || 0 });
   let advanceTimer = null, breathTimer = null, toastTimer = null;
@@ -1726,6 +1775,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     if (compass.sensor === 'denied') return 'compassDenied';
     return 'compassDrag';
   }
+  function compassGoalKey() { return compass.found ? 'compassGoalDone' : ['on', 'waiting', 'asking'].includes(compass.sensor) ? 'compassGoalSensor' : 'compassGoalDrag'; }
   function compassUpdate() {
     const block = document.getElementById('compass-block'); if (!block) return;
     const needle = document.getElementById('needle');
@@ -1739,6 +1789,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     const dial = document.getElementById('dial');
     if (dial) { const d = Math.round(((norm(compass.deg) % 360) + 360) % 360); dial.setAttribute('aria-valuenow', String(d)); dial.setAttribute('aria-valuetext', compass.found ? S().compassAtN : fmt(S().compassDeg, { n: Math.abs(Math.round(norm(compass.deg))) })); dial.tabIndex = compass.sensor === 'on' ? -1 : 0; }
     block.classList.toggle('wob', !compass.found && !compass.dragging && compass.sensor !== 'on' && !reduceMotion);
+    const goal = document.getElementById('compass-goal'); if (goal) { const g = S()[compassGoalKey()]; if (goal.textContent !== g) goal.textContent = g; goal.classList.toggle('done', compass.found); }
     const manual = document.getElementById('compass-manual'); if (manual) manual.hidden = !['on', 'waiting'].includes(compass.sensor) || compass.found;
     const hint = document.getElementById('compass-hint'); const txt = S()[compassHintKey()];
     if (hint && hint.textContent !== txt) hint.textContent = txt;
@@ -1822,6 +1873,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
           <h1 class="compass-title">${esc(s.compassTitle)}</h1>
         </div>
         <div class="compass-block" id="compass-block">
+          <p class="compass-goal" id="compass-goal">${esc(s[compassGoalKey()])}</p>
           <div class="north-mark" aria-hidden="true"><svg viewBox="0 0 14 9"><path d="M0 0 L14 0 L7 9 Z"/></svg></div>
           <div class="compass">
             <div class="dial" id="dial" role="slider" tabindex="0" aria-label="${esc(s.compassDialLabel)}" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0">
@@ -1881,7 +1933,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
 
   // ---------- quiz cards ----------
   // Warm-up modules have no intro card of their own.
-  function currentCards() { return buildCards(state.pages, state.answers, state.level, state.skipped).filter((c) => !(c.type === 'chapter' && c.area === 'warm')); }
+  function currentCards() { return buildCards(state.pages, state.answers, state.level, state.skipped).filter((c) => !(c.type === 'chapter' && (c.area === 'warm' || c.mod.noIntro))); }
   function currentIndex(cards) { let i = cards.findIndex((c) => c.key === state.cardKey); if (i < 0) i = 0; state.cardKey = cards[i].key; return i; }
 
   function sliderControl(it) {
@@ -1927,11 +1979,16 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     const chIdx = cards.slice(0, i + 1).filter((c) => c.type === 'chapter').length;
     const pct = Math.round((i / cards.length) * 100);
     const isLast = i === cards.length - 1;
+    // General questionnaire: progress counts questions, not topics
+    const qCount = cards.filter((c) => c.type === 'q').length;
+    const qBefore = cards.slice(0, i).filter((c) => c.type === 'q').length;
+    const generalMode = state.general && state.level === 1;
+    const progressText = generalMode ? fmt(s.questionOf, { i: Math.min(qBefore + 1, qCount), n: qCount }) : fmt(s.chapterOf, { i: Math.max(chIdx, 1), n: chapters.length });
     const dots = chapters.map((c, k) => `<span class="dot ${tint(c.area)}${k + 1 < chIdx ? ' done' : k + 1 === chIdx ? ' now' : ''}"></span>`).join('');
     const bar = `<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>`;
     const top = exp.ring
-      ? `<div class="quiz-top ring-top"><svg class="prog-ring" viewBox="0 0 72 72" aria-hidden="true">${ringSegments(chapters.map((c, k) => ({ area: c.area, state: k + 1 < chIdx ? 'done' : k + 1 === chIdx ? 'now' : 'todo', just: c.key === state.justDone })), 72, 29, 9, 5)}<path class="nd-n2" d="M36 17 L40 36 L36 33 L32 36 Z"/><path class="nd-s2" d="M36 55 L40 36 L36 39 L32 36 Z"/></svg><div class="ring-meta"><span>${esc(s.level)} ${state.level}</span><strong>${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: Math.max(chIdx, 1), n: chapters.length }))}</strong></div>${bar}</div>`
-      : `<div class="quiz-top"><div class="quiz-meta"><span>${esc(s.level)} ${state.level}</span><span>${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: Math.max(chIdx, 1), n: chapters.length }))}</span></div>
+      ? `<div class="quiz-top ring-top"><svg class="prog-ring" viewBox="0 0 72 72" aria-hidden="true">${ringSegments(chapters.map((c, k) => ({ area: c.area, state: k + 1 < chIdx ? 'done' : k + 1 === chIdx ? 'now' : 'todo', just: c.key === state.justDone })), 72, 29, 9, 5)}<path class="nd-n2" d="M36 17 L40 36 L36 33 L32 36 Z"/><path class="nd-s2" d="M36 55 L40 36 L36 39 L32 36 Z"/></svg><div class="ring-meta"><span>${esc(s.level)} ${state.level}</span><strong>${esc(progressText)}</strong></div>${bar}</div>`
+      : `<div class="quiz-top"><div class="quiz-meta"><span>${esc(s.level)} ${state.level}</span><span>${esc(progressText)}</span></div>
       ${bar}
       <div class="dots" aria-hidden="true">${dots}</div></div>`;
     let body = '';
@@ -1945,13 +2002,13 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       else if (card.area === 'memory') notes.push(`<p class="note sensitive">${esc(s.memoryNote)}</p>`);
       else if (skippable) notes.push(`<p class="note sensitive">${esc(m.hideTopic ? s.sensitivePart : s.sensitiveTopic)}</p>`);
       else if (m.sensitive || card.area === 'safety') notes.push(`<p class="note">${esc(s.sensitiveNote)}</p>`);
-      if (m.provisional && !card.skipped) notes.push(`<p class="note prov">${esc(m.toImport ? s.toImportNote : s.provisionalNote)}</p>`);
+      if ((m.provisional || m.sections.some((x) => x.provisional)) && !card.skipped) notes.push(`<p class="note prov">${esc(m.toImport ? s.toImportNote : s.provisionalNote)}</p>`);
       const mainBtns = card.skipped
         ? `<button class="btn" data-act="unskip" data-area="${card.area}">${esc(s.answerNow)}</button><button class="btn primary big" data-act="advance">${esc(s.continue)}</button>`
         : `${skippable ? `<button class="btn" data-act="skip" data-area="${card.area}">${esc(m.hideTopic ? s.skipPart : s.skipTopic)}</button>` : ''}<button class="btn primary big" data-act="advance">${esc(s.letsGo)}</button>`;
       body = `<section class="qcard chapter ${reduceMotion ? '' : 'enter'}">
         <div class="ill-wrap">${DIAL_MINI}<span class="rim" aria-hidden="true">${NEEDLE_MINI}</span><span class="ill-core">${icon(m.hideTopic ? 'round' : card.area)}</span></div>
-        <p class="eyebrow">${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: chIdx, n: chapters.length }))} · ${esc(card.count === 1 ? s.questions1 : fmt(s.questionsN, { n: card.count }))}</p>
+        <p class="eyebrow">${esc(generalMode ? (m.first ? fmt(s.questionsN, { n: qCount }) : progressText) : `${fmt(s.chapterOf, { i: chIdx, n: chapters.length })} · ${card.count === 1 ? s.questions1 : fmt(s.questionsN, { n: card.count })}`)}</p>
         <h1 class="ch-title">${esc(chapterTitle(card))}${m.provisional ? ` <span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}</h1>
         <p class="ch-sub">${esc(m.subKey ? s[m.subKey] : tx(AREA_INTRO[card.area]))}</p>
         ${notes.join('')}
@@ -1985,7 +2042,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       const needsNext = true;
       const nextLabel = isLast ? (card.area === 'memory' ? s.memoryDone : fmt(s.finishLevel, { n: state.level })) : (it.type === 'warm' && state.answers[it.id] == null ? s.skipWarm : s.next);
       body = `<section class="qcard ${reduceMotion ? '' : 'enter'}">
-        <div class="q-area">${icon(m.hideTopic ? 'round' : card.area, 'mini-ill')}<span>${esc(chapterTitle(card))}</span>${m.provisional ? `<span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}${it.type === 'warm' ? `<span class="chip chip-prov">${esc(s.warmChip)}</span>` : ''}</div>
+        <div class="q-area">${icon(m.hideTopic ? 'round' : card.area, 'mini-ill')}<span>${esc(chapterTitle(card))}</span>${m.provisional || sec.provisional ? `<span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}${it.type === 'warm' ? `<span class="chip chip-prov">${esc(s.warmChip)}</span>` : ''}</div>
         ${ctx}
         <h1 class="q-text" id="q-text">${esc(tx(it.text))}</h1>
         ${control}
@@ -1998,9 +2055,11 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
 
   // ---------- results ----------
-  function basisPanel(key) {
+  function basisPanel(key, r) {
     const s = S(); const m = SCALES[key];
     if (!m) return '';
+    // Entry signal (first questions only): say so, it is not the validated score
+    if (r && r.entry && r.scales[0] === key) return `<dl class="basis-dl">${[[s.f.scale, `${m.name} — ${m.full}`], [s.f.authors, m.authors], [s.f.items, fmt(s.entryItems, { n: m.items })], [s.f.license, s.lic[m.license]], [s.f.text, s.txt[m.text]], [s.f.cite, m.cite]].map((x) => `<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl><p class="small">${esc(s.entryNote)}</p>`;
     const tStatus = state.lang === 'en' ? 'original' : (m.trans[state.lang] ? m.trans[state.lang] : 'missing');
     const rows = [[s.f.scale, `${m.name} — ${m.full}`], [s.f.authors, m.authors], [s.f.items, m.items], [s.f.license, s.lic[m.license]], [s.f.text, s.txt[m.text]], [s.f.trans, m.text === 'official' ? s.tr[tStatus] : '—'], [s.f.cite, m.cite]];
     return `<dl class="basis-dl">${rows.map((r) => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>`;
@@ -2030,7 +2089,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
         <p class="score">${esc(tx(r.score))}</p>
         ${r.extra ? `<p class="score extra">${esc(tx(r.extra))}</p>` : ''}
         <p class="conf">${esc(s.confidence)}: <span class="chip chip-${r.confidence}">${esc(s.conf[r.confidence])}</span>${r.provisional ? ` <span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}</p>
-        <details data-basis="${a.id}"><summary>${esc(s.basisBtn)}</summary>${r.scales.map(basisPanel).join('')}</details>
+        <details data-basis="${a.id}"><summary>${esc(s.basisBtn)}</summary>${r.scales.map((k) => basisPanel(k, r)).join('')}</details>
       </li>`;
     };
     const attn = assessed.filter((a) => res[a.id].band >= 1);
@@ -2038,8 +2097,12 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     const lists = (attn.length ? `<h2 class="group-h">${esc(s.groupAttention)} (${attn.length})</h2><ul class="areas">${attn.map(row).join('')}</ul>` : '')
       + (calm.length ? `<h2 class="group-h">${esc(s.groupCalm)} (${calm.length})</h2><ul class="areas">${calm.map(row).join('')}</ul>` : '');
     const flagged = attn.length > 0;
+    // 1 sign of 3: not needed, but the person can choose to look deeper at level 2
+    const weakAreas = lvl === 1 ? calm.filter((a) => res[a.id].weak) : [];
+    const optInAny = weakAreas.some((a) => state.optIn[a.id]);
+    const weakCard = weakAreas.length ? `<section class="soft-card weak-card"><h2>${esc(s.weakTitle)}</h2><p class="small">${esc(s.weakText)}</p><div class="calm-chips">${weakAreas.map((a) => `<button type="button" class="calm-chip opt-chip${state.optIn[a.id] ? ' on' : ''}" data-act="optin" data-area="${a.id}" aria-pressed="${!!state.optIn[a.id]}"><span aria-hidden="true">${state.optIn[a.id] ? '✓ ' : '+ '}</span>${esc(tx(a.name))}</button>`).join('')}</div></section>` : '';
     let next = '';
-    if (lvl === 1) next = !flagged ? `<p class="small">${esc(s.noFlags)}</p>` : modulesFor(2, state).length ? `<button class="btn primary big" data-act="go2">${esc(s.goLevel2)}</button>` : `<p class="small">${esc(s.noLevel2)}</p>`;
+    if (lvl === 1) next = !flagged && !optInAny ? `<p class="small">${esc(weakAreas.length ? s.noFlagsWeak : s.noFlags)}</p>` : modulesFor(2, state).length ? `<button class="btn primary big" data-act="go2">${esc(s.goLevel2)}</button>` : `<p class="small">${esc(s.noLevel2)}</p>`;
     if (lvl === 2) next = flagged ? `<button class="btn primary big" data-act="go3">${esc(s.goLevel3)}</button>` : `<p class="small">${esc(s.noFlags)}</p>`;
     const declinedN = Object.values(declinedByArea(state)).reduce((x, y) => x + y, 0);
     const safety = flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : flags.safety === 'skip' ? `<p class="note">${esc(s.safetySkipped)}</p>` : '';
@@ -2055,6 +2118,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       ${declinedN ? `<p class="note">${esc(fmt(s.declinedNote, { n: declinedN }))}</p>` : ''}
       <section class="map"><h2 class="map-h">${esc(exp.ring ? s.yourCompass : s.mapTitle)}</h2>${yourCompass}<p class="small">${esc(s.tapHint)}</p>${tiles}${notAssessed.length && lvl === 1 ? `<p class="small">${esc(s.notAssessedNote)}</p>` : ''}</section>
       ${lists}
+      ${weakCard}
       <div class="actions">${next}<button class="btn" data-act="report">${esc(s.seeReport)}</button><button class="btn link" data-act="restart">${esc(s.restart)}</button></div>
       <p class="small">${esc(s.pointsHint)}</p>
     </main>`;
@@ -2078,6 +2142,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       if (!r || !r.assessed) return;
       L.push(`• ${tx(a.name)}: ${s.bands[r.band]} — ${tx(r.score)} (${s.confidence.toLowerCase()} ${s.conf[r.confidence]})`);
       if (r.extra) L.push(`  ${tx(r.extra)}`);
+      if (r.entry) L.push(`  ${s.entryNote}`);
     });
     if (lvl >= 3) {
       L.push(''); L.push(`${s.reportContext}:`);
@@ -2210,7 +2275,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       let ch = null; for (let k = i; k >= 0; k--) if (cards[k].type === 'chapter') { ch = cards[k]; break; }
       if (ch) {
         state.justDone = ch.key;
-        if (exp.interact && ch.area !== 'safety') {
+        if (exp.interact && ch.area !== 'safety' && !ch.mod.hideTopic) {
           const calm = SKIPPABLE.includes(ch.area) || ch.area === 'safety' || !!ch.mod.sensitive;
           state.toast = { area: ch.area, calm, title: ch.mod.hideTopic ? S().roundDone : fmt(S().topicDone, { area: chapterTitle(ch) }), more: calm ? S().topicDoneCalm : S().topicDoneMore };
         }
@@ -2331,6 +2396,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     }
     if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.view = 'setup'; state.error = null; render(); }
     else if (act === 'compass-manual') manualMode();
+    else if (act === 'optin') { const ar = b.dataset.area; state.optIn[ar] = !state.optIn[ar]; render(true); const again = root.querySelector(`[data-act="optin"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'exp-open') { state.expOpen = true; render(true); }
     else if (act === 'exp-close') { state.expOpen = false; render(true); const f = root.querySelector('.exp-fab'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
