@@ -994,7 +994,8 @@ const UI = {
     voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓',
     cloneTitle: 'Sua voz no seu personagem', cloneLead: 'Leia em voz alta as frases abaixo, uma de cada vez, num lugar silencioso. Com uns 30 segundos de gravação, o seu personagem passa a falar com a sua voz.',
     cloneNote: 'Se ouvir a sua própria voz te deixar desconfortável, escolha uma voz pronta. Você pode trocar quando quiser.',
-    cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Ela é apagada quando eu recomeçar ou fechar a página (e, no máximo, em 2 horas).',
+    cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs (empresa dos Estados Unidos) só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Sei que voz é dado biométrico, um dado sensível pela LGPD. As frases que o personagem fala, inclusive o nome dele, também vão para a ElevenLabs para virar áudio. A voz é apagada quando eu recomeçar ou fechar a página e, no máximo, em 2 horas; registros técnicos seguem a política de privacidade da ElevenLabs.',
+    cloneShort: 'Essa gravação ficou curta demais. Leia a frase inteira e depois toque em Parar.', cloneBusyServer: 'Muitas tentativas agora. Espere um minuto e tente de novo.', cloneDone: 'gravada', ownVoiceOff: 'Voltei para uma voz pronta nesta conversa. A sua voz foi apagada.',
     cloneHow: 'Leia cada frase e toque em Parar', cloneRecord: 'Gravar a frase {n}', cloneStop: 'Parar', cloneTotal: 'Gravado: {n} s (mínimo 30 s)', cloneGo: 'Criar minha voz', cloneBusy: 'Criando a sua voz…', cloneBack: 'Voltar sem gravar',
     cloneMicDenied: 'Sem acesso ao microfone. Permita o microfone nas configurações do navegador ou escolha uma voz pronta.', cloneFail: 'Não deu para criar a sua voz agora. Tente de novo ou escolha uma voz pronta.', cloneVerify: 'A ElevenLabs pediu uma verificação extra para esta voz. Por enquanto, escolha uma voz pronta.',
     cloneLines: ['Oi, este é o meu personagem e esta é a minha voz.', 'Hoje eu quero conversar comigo com calma, sem pressa nenhuma.', 'Às vezes o dia é leve, às vezes é pesado, e tudo bem sentir as duas coisas.', 'Eu gosto de ouvir música, caminhar e estar perto de quem eu gosto.', 'Quando algo me preocupa, eu respiro fundo e penso no próximo passo.', 'Vou responder do meu jeito, com sinceridade, e cuidar de mim no caminho.'],
@@ -1193,7 +1194,8 @@ const UI = {
     voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓',
     cloneTitle: 'Your voice in your character', cloneLead: 'Read the sentences below out loud, one at a time, somewhere quiet. With about 30 seconds of recording, your character will speak with your voice.',
     cloneNote: 'If hearing your own voice makes you uncomfortable, choose a ready-made voice. You can switch whenever you like.',
-    cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs only to create my character’s voice in this session. It is my own voice. It is deleted when I start over or close the page (and at most within 2 hours).',
+    cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs (a United States company) only to create my character’s voice in this session. It is my own voice. I understand a voice is biometric data, which is sensitive personal information. The sentences the character says, including its name, are also sent to ElevenLabs to become audio. The voice is deleted when I start over or close the page, and at most within 2 hours; technical logs follow ElevenLabs’ privacy policy.',
+    cloneShort: 'That recording was too short. Read the whole sentence, then tap Stop.', cloneBusyServer: 'Too many attempts right now. Wait a minute and try again.', cloneDone: 'recorded', ownVoiceOff: 'I switched back to a ready-made voice for this conversation. Your voice was deleted.',
     cloneHow: 'Read each sentence and tap Stop', cloneRecord: 'Record sentence {n}', cloneStop: 'Stop', cloneTotal: 'Recorded: {n} s (minimum 30 s)', cloneGo: 'Create my voice', cloneBusy: 'Creating your voice…', cloneBack: 'Go back without recording',
     cloneMicDenied: 'No microphone access. Allow the microphone in your browser settings or choose a ready-made voice.', cloneFail: 'Your voice couldn’t be created right now. Try again or choose a ready-made voice.', cloneVerify: 'ElevenLabs asked for an extra check for this voice. For now, choose a ready-made voice.',
     cloneLines: ['Hi, this is my character and this is my voice.', 'Today I want to talk with myself calmly, with no rush at all.', 'Some days are light, some days are heavy, and it is okay to feel both.', 'I like listening to music, going for walks and being near the people I love.', 'When something worries me, I take a deep breath and think about the next step.', 'I will answer in my own way, honestly, and take care of myself along the way.'],
@@ -1751,7 +1753,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
 // and the person then chooses which official questionnaires to take (level 2).
 
 // Address of the Nort voice server (Cloudflare Worker, see server/). Empty = own voice off.
-const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) || '';
+const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) || 'https://nort-voz.nortvoz.workers.dev';
 
 const TALK_QS = [
   { id: 'mood', areas: ['wellbeing', 'depression', 'bipolar'],
@@ -2995,7 +2997,8 @@ function toneOf(text) {
     const nums = (c === 'AU' || c === 'BR') ? HELP[c].map((h) => `${tx(h.name)}: ${h.num}`).join('. ') : `${s.crisisOther} find a helpline ponto com.`;
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
-  function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && ['happy', 'excited', 'neutral'].includes(state.talk.react.emo1)) state.talk.react = reactFor('sad'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); say(crisisSpeech()); }
+  function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own') { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
+  function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && ['happy', 'excited', 'neutral'].includes(state.talk.react.emo1)) state.talk.react = reactFor('sad'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
     state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
@@ -3075,6 +3078,7 @@ function toneOf(text) {
     const pct = Math.round((i / qs.length) * 100);
     const notes = [];
     if (i === 0) notes.push(`<p class="note">${esc(s.talkFirst)}</p>`);
+    if (ownVoice.notice) notes.push(`<p class="note" role="status">${esc(ownVoice.notice)}</p>`);
     if (isSafety) notes.push(`<p class="note">${esc(s.sensitiveNote)}</p>`);
     else if (q.sensitive) notes.push(`<p class="note sensitive">${esc(s.sensitivePart)}</p>`);
     else if (q.gentle) notes.push(`<p class="note">${esc(s.gentleNote)}</p>`);
@@ -3124,46 +3128,57 @@ function toneOf(text) {
 
   // ---------- your own voice (ElevenLabs through the Nort voice server; not inside the Claude link) ----------
   const VOICE_API = String(NORT_VOICE_API || '').replace(/\/$/, '');
-  const ownVoice = { id: null, recs: [], rec: null, stream: null, startedAt: 0, k: 0, busy: false, err: null, consent: false, timer: null };
-  function ownVoicePossible() { return !!VOICE_API && !inFrame && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof window.MediaRecorder !== 'undefined'; }
-  let audioEl = null;
+  // ownVoice.id is the signed session token from the voice server (never the raw voice id)
+  const ownVoice = { id: null, recs: [], rec: null, stream: null, startedAt: 0, k: 0, busy: false, err: null, consent: false, timer: null, starting: false, discard: false, blocked: false, notice: null };
+  // The option only shows once the server says the ElevenLabs key is in place (GET /health -> ready)
+  function checkVoiceServer() { if (!VOICE_API || inFrame || ownVoice.checked) return Promise.resolve(); ownVoice.checked = true; return fetch(`${VOICE_API}/health`).then((r) => r.json()).then((d) => { ownVoice.ready = !!(d && d.ready); }).catch(() => { ownVoice.ready = false; }); }
+  function ownVoicePossible() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !ownVoice.blocked && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof window.MediaRecorder !== 'undefined'; }
+  const audioEl = typeof window.Audio === 'function' ? new window.Audio() : null;
+  const SILENT = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
+  function unlockAudio() { if (!audioEl || audioEl.dataset.unlocked) return; try { audioEl.src = SILENT; const p = audioEl.play(); if (p) p.then(() => { audioEl.dataset.unlocked = '1'; }).catch(() => {}); } catch (e) { /* ignore */ } }
   function speakRemote(text, tok) {
     return new Promise((resolve) => {
       let done = false; const finish = () => { if (done) return; done = true; if (tok === speakTok) setSpeaking(false); resolve(); };
       setTimeout(finish, (8000 + text.length * 120) / (voiceCfg.rate || 1));
-      fetch(`${VOICE_API}/speak`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, voice_id: ownVoice.id, lang: state.lang }) })
+      fetch(`${VOICE_API}/speak`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, voice: ownVoice.id, lang: state.lang }) })
         .then((r) => (r.ok ? r.blob() : Promise.reject(new Error('speak'))))
         .then((blob) => {
-          if (tok !== speakTok) { finish(); return; }
-          const url = URL.createObjectURL(blob); if (audioEl) audioEl.pause();
-          audioEl = new Audio(url); audioEl.playbackRate = voiceCfg.rate || 1;
+          if (tok !== speakTok || !audioEl) { finish(); return; }
+          const url = URL.createObjectURL(blob); audioEl.pause();
+          const end = () => { audioEl.onplay = audioEl.onended = audioEl.onerror = audioEl.onpause = null; URL.revokeObjectURL(url); finish(); };
+          audioEl.src = url; audioEl.playbackRate = voiceCfg.rate || 1;
           audioEl.onplay = () => setSpeaking(true);
-          audioEl.onended = audioEl.onerror = audioEl.onpause = () => { URL.revokeObjectURL(url); finish(); };
-          audioEl.play().catch(finish);
+          audioEl.onended = audioEl.onerror = audioEl.onpause = end;
+          audioEl.play().catch(() => { audioEl.onplay = audioEl.onended = audioEl.onerror = audioEl.onpause = null; URL.revokeObjectURL(url); if (tok === speakTok) sayDevice(text, '', tok).then(finish); else finish(); });
         })
-        .catch(() => { sayDevice(text, '', tok).then(finish); });
+        .catch(() => { if (tok === speakTok) sayDevice(text, '', tok).then(finish); else finish(); });
     });
   }
   function deleteOwnVoice() {
     if (!ownVoice.id) return;
-    try { fetch(`${VOICE_API}/voice/${ownVoice.id}`, { method: 'DELETE', keepalive: true }).catch(() => {}); } catch (e) { /* ignore */ }
+    const u = `${VOICE_API}/voice/${encodeURIComponent(ownVoice.id)}/delete`;
+    try { if (!(navigator.sendBeacon && navigator.sendBeacon(u))) fetch(u, { method: 'POST', keepalive: true }).catch(() => {}); } catch (e) { /* ignore */ }
     ownVoice.id = null; if (voiceCfg.id === 'own') voiceCfg.id = 'auto';
   }
   window.addEventListener('pagehide', deleteOwnVoice);
   // Hearing one's own voice can be distressing for someone with unusual experiences: back to a ready-made voice.
   function ownVoiceGuard(qid) {
     if (voiceCfg.id !== 'own') return;
-    const r = state.talk.an[qid]; if (!r || !r.areas || !r.areas.psychosis || r.areas.psychosis.level === 'none') return;
-    voiceCfg.id = 'auto'; state.talk.voiceSwitched = true;
+    const r = state.talk.an[qid]; if (!r) return;
+    const sign = (r.areas && r.areas.psychosis && r.areas.psychosis.level !== 'none') || (r.other || []).includes('psychosis');
+    if (!sign) return;
+    deleteOwnVoice(); ownVoice.blocked = true; voiceCfg.id = 'auto'; ownVoice.notice = S().ownVoiceOff;
   }
   function recSeconds() { return ownVoice.recs.reduce((a, r) => a + r.secs, 0) + (ownVoice.rec ? (Date.now() - ownVoice.startedAt) / 1000 : 0); }
   function recUI() {
     const t = document.getElementById('rec-total'); if (t) t.textContent = fmt(S().cloneTotal, { n: Math.floor(recSeconds()) });
     const go = document.getElementById('clone-go'); if (go) go.disabled = !(recSeconds() >= 30 && !ownVoice.rec && !ownVoice.busy);
   }
+  function stopRecording(discard) { ownVoice.discard = !!discard; try { if (ownVoice.rec) ownVoice.rec.stop(); } catch (e) { /* ignore */ } }
   async function recToggle() {
     if (ownVoice.rec) { ownVoice.rec.stop(); return; }
-    ownVoice.err = null; stopSay();
+    if (ownVoice.starting) return;
+    ownVoice.err = null; stopSay(); ownVoice.starting = true;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
       const chunks = []; const r = new window.MediaRecorder(stream);
@@ -3171,11 +3186,13 @@ function toneOf(text) {
       r.onstop = () => {
         const secs = (Date.now() - ownVoice.startedAt) / 1000; stream.getTracks().forEach((tr) => tr.stop());
         clearInterval(ownVoice.timer); ownVoice.rec = null;
+        if (ownVoice.discard || !ownVoice.consent) { ownVoice.discard = false; render(true); return; }
+        if (secs < 1.5) ownVoice.err = S().cloneShort;
         if (secs >= 1.5 && chunks.length) { ownVoice.recs = ownVoice.recs.filter((x) => x.k !== ownVoice.k); ownVoice.recs.push({ k: ownVoice.k, secs, blob: new Blob(chunks, { type: r.mimeType || 'audio/webm' }) }); ownVoice.k = Math.min(ownVoice.k + 1, S().cloneLines.length - 1); }
-        render(true);
+        render(true); live.textContent = fmt(S().cloneTotal, { n: Math.floor(recSeconds()) }); const rb = document.getElementById('rec-btn'); if (rb) rb.focus({ preventScroll: true });
       };
-      ownVoice.rec = r; ownVoice.startedAt = Date.now(); r.start(); ownVoice.timer = setInterval(recUI, 250); render(true);
-    } catch (e) { ownVoice.err = S().cloneMicDenied; ownVoice.rec = null; render(true); }
+      ownVoice.rec = r; ownVoice.startedAt = Date.now(); r.start(); ownVoice.starting = false; ownVoice.timer = setInterval(recUI, 250); render(true); const rb = document.getElementById('rec-btn'); if (rb) rb.focus({ preventScroll: true });
+    } catch (e) { ownVoice.starting = false; ownVoice.err = S().cloneMicDenied; ownVoice.rec = null; render(true); }
   }
   async function cloneSend() {
     if (ownVoice.busy || recSeconds() < 30 || !ownVoice.consent) return;
@@ -3185,9 +3202,10 @@ function toneOf(text) {
       ownVoice.recs.forEach((r, i) => f.append('files', r.blob, `amostra-${i + 1}.${(r.blob.type || '').includes('mp4') ? 'm4a' : 'webm'}`));
       const res = await fetch(`${VOICE_API}/clone`, { method: 'POST', body: f });
       const d = await res.json().catch(() => ({}));
-      if (!res.ok || !d.voice_id) throw new Error('clone');
-      if (d.requires_verification) { ownVoice.err = S().cloneVerify; ownVoice.busy = false; render(true); return; }
-      ownVoice.id = d.voice_id; ownVoice.recs = []; voiceCfg.id = 'own'; ownVoice.busy = false;
+      if (res.status === 409) { ownVoice.err = S().cloneVerify; ownVoice.busy = false; render(true); return; }
+      if (res.status === 429) { ownVoice.err = S().cloneBusyServer; ownVoice.busy = false; render(true); return; }
+      if (!res.ok || !d.voice) throw new Error('clone');
+      ownVoice.id = d.voice; ownVoice.recs = []; voiceCfg.id = 'own'; ownVoice.busy = false;
       state.view = 'avatar'; render(); say(fmt(S().voiceHelloName, { name: (avatar.name || '').trim() || S().avNameDefault }));
     } catch (e) { ownVoice.busy = false; ownVoice.err = S().cloneFail; render(true); }
   }
@@ -3200,11 +3218,11 @@ function toneOf(text) {
       <p class="note">${esc(s.cloneNote)}</p>
       <label class="check" for="clone-consent"><input type="checkbox" id="clone-consent"${ownVoice.consent ? ' checked' : ''}><span>${esc(s.cloneConsent)}</span></label>
       ${ownVoice.consent ? `<section class="soft-card"><h2>${esc(s.cloneHow)}</h2>
-        <ol class="clone-lines">${lines.map((l, k) => `<li class="${k === ownVoice.k ? 'now' : ''}${done(k) ? ' done' : ''}"><span aria-hidden="true">${done(k) ? '✓' : k + 1}</span> ${esc(l)}</li>`).join('')}</ol>
+        <ol class="clone-lines">${lines.map((l, k) => `<li class="${k === ownVoice.k ? 'now' : ''}${done(k) ? ' done' : ''}"><span aria-hidden="true">${done(k) ? '✓' : k + 1}</span> ${esc(l)}${done(k) ? ` <span class="sr">(${esc(s.cloneDone)})</span>` : ''}</li>`).join('')}</ol>
         <div class="mic-row"><button type="button" id="rec-btn" class="mic-btn${ownVoice.rec ? ' on' : ''}" data-act="rec" aria-pressed="${!!ownVoice.rec}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>${esc(ownVoice.rec ? s.cloneStop : fmt(s.cloneRecord, { n: ownVoice.k + 1 }))}</span></button></div>
-        <p class="small center" id="rec-total" aria-live="polite">${esc(fmt(s.cloneTotal, { n: Math.floor(recSeconds()) }))}</p></section>` : ''}
+        <p class="small center" id="rec-total">${esc(fmt(s.cloneTotal, { n: Math.floor(recSeconds()) }))}</p></section>` : ''}
       ${ownVoice.err ? `<p class="error" role="alert">${esc(ownVoice.err)}</p>` : ''}
-      <div class="actions"><button class="btn primary big" id="clone-go" data-act="clone-go"${ownVoice.consent && recSeconds() >= 30 && !ownVoice.rec && !ownVoice.busy ? '' : ' disabled'}>${esc(ownVoice.busy ? s.cloneBusy : s.cloneGo)}</button><button class="btn link" data-act="clone-back">← ${esc(s.cloneBack)}</button></div>
+      <div class="actions"><button class="btn primary big" id="clone-go" data-act="clone-go"${ownVoice.consent && recSeconds() >= 30 && !ownVoice.rec && !ownVoice.busy ? '' : ' disabled'}>${esc(ownVoice.busy ? s.cloneBusy : s.cloneGo)}</button><button class="btn link" data-act="clone-back">← ${esc(ownVoice.recs.length ? s.back : s.cloneBack)}</button></div>
     </main>`;
   }
 
@@ -3346,7 +3364,7 @@ function toneOf(text) {
     // The crisis notice opens when the safety answer goes above 0 (not again if it already was).
     if (id === 'phq.9' && typeof v === 'number' && v > 0 && !(typeof prev === 'number' && prev > 0)) { state.crisisOpen = true; state.crisisThenAdvance = false; }
     render(true);
-    if (state.crisisOpen && state.view === 'talk') { stopSay(); if (N3D.ok) N3D.emote('compassion'); say(crisisSpeech()); }
+    if (state.crisisOpen && state.view === 'talk') { stopSay(); if (N3D.ok) N3D.emote('compassion'); sayReady(crisisSpeech()); }
     if (!state.crisisOpen) { const again = root.querySelector(`[data-item="${id}"][data-choose="${idx}"]`); if (again) again.focus({ preventScroll: true }); }
   }
   // swipe-to-answer for yes/no (experiment)
@@ -3384,7 +3402,7 @@ function toneOf(text) {
       return;
     }
     if (t.dataset.slider) commitSlider(t);
-    if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) ownVoice.recs = []; render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
+    if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) { stopRecording(true); ownVoice.recs = []; ownVoice.k = 0; } render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
     if (t.id === 'voice-rate') { voiceCfg.rate = Number(t.value) || 1; saveAvatar(); return; }
     if (t.dataset.font && FONTS.includes(t.dataset.font)) { font = t.dataset.font; store('nort.font', font); render(true); const again = document.getElementById('font-' + font); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
@@ -3435,10 +3453,10 @@ function toneOf(text) {
     else if (act === 'av-tab') { state.avTab = b.dataset.tab; render(true); const again = root.querySelector(`[data-act="av-tab"][data-tab="${b.dataset.tab}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'av-random') { Object.keys(AV).forEach((k) => { if (k !== 'eyes') avatar[k] = Math.floor(Math.random() * AV[k].length); }); saveAvatar(); render(true); const again = root.querySelector('[data-act="av-random"]'); if (again) again.focus({ preventScroll: true }); const st0 = root.querySelector('.av-stage'); if (st0) live.textContent = st0.getAttribute('aria-label') || ''; }
     else if (act === 'rec') recToggle();
-    else if (act === 'clone-go') cloneSend();
-    else if (act === 'clone-back') { if (ownVoice.rec) ownVoice.rec.stop(); state.view = 'avatar'; render(); }
+    else if (act === 'clone-go') { unlockAudio(); cloneSend(); }
+    else if (act === 'clone-back') { stopRecording(false); state.view = 'avatar'; render(); }
     else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); startLevel(1); }
-    else if (act === 'talk-start') { saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.error = null; state.view = 'talk'; render(); }
+    else if (act === 'talk-start') { unlockAudio(); saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.error = null; state.view = 'talk'; render(); }
     else if (act === 'voice-test') { const nm = (avatar.name || '').trim(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     else if (act === 'talk-replay') say(talkSpeech(curTalkQ()));
     else if (act === 'mic') micToggle();
@@ -3459,7 +3477,7 @@ function toneOf(text) {
       const st = state.setup;
       if (st.age === 0) { state.view = 'under18'; render(); return; }
       if (st.age !== 1 || !st.country || st.baby == null || !st.consent) { state.error = s.needSetup; render(true); return; }
-      if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
+      if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load(), checkVoiceServer()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
       startLevel(1);
     }
     else if (act === 'advance') advance();
@@ -3478,7 +3496,7 @@ function toneOf(text) {
     else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
     else if (act === 'back-results') { state.view = state.talkMode && !state.levelsDone[2] ? 'indicators' : 'results'; render(); }
     else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
-    else if (act === 'restart') { deleteOwnVoice(); const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
+    else if (act === 'restart') { stopRecording(true); deleteOwnVoice(); Object.assign(ownVoice, { recs: [], consent: false, k: 0, err: null, blocked: false, notice: null }); const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
     else if (act === 'crisis-ok' && state.view === 'talk') { state.crisisOpen = false; state.talk.said = null; render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn') || document.getElementById('q-text'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else { render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn'); if (f) f.focus({ preventScroll: true }); } }
     else if (act === 'copy') {
