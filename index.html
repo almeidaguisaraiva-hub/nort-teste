@@ -511,6 +511,42 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .signup .soft-card { gap: 10px; }
 .find .stage3d { height: 260px; }
 
+/* ---------- palettes (Tests panel): green by default ---------- */
+:root[data-palette="floresta"] {
+  --bg: #EAF5EE; --surface: #FFFFFF; --soft: #D2EADB; --ink: #0D3B2A; --ink-2: #1E5240; --muted: #3C5F50; --line: #B6D7C3;
+  --accent: #0E7A4D; --accent-ink: #FFFFFF; --accent-soft: #D2EADB; --needle-s: #6C9282; --thumb-idle: #4B7764; --dot-idle: #B6D7C3;
+  --disabled-bg: #C3DDCC; --disabled-ink: #1E5240; --ok: #0E7A4D; --ok-soft: #D2EADB;
+  --t-sky: #E2F2EA; --t-sky-2: #ADD9C1; --t-mint: #DDF3E6; --t-mint-2: #A6DDBD;
+}
+:root[data-palette="esmeralda"] {
+  --bg: #E7F6F2; --surface: #FFFFFF; --soft: #CBEDE2; --ink: #063B33; --ink-2: #13544A; --muted: #32605A; --line: #ADD9CC;
+  --accent: #00805F; --accent-ink: #FFFFFF; --accent-soft: #CBEDE2; --needle-s: #5F9387; --thumb-idle: #3F7A6D; --dot-idle: #ADD9CC;
+  --disabled-bg: #BCE2D6; --disabled-ink: #13544A; --ok: #00805F; --ok-soft: #CBEDE2;
+  --t-sky: #DDF3EE; --t-sky-2: #9FD8C8; --t-mint: #DAF4EC; --t-mint-2: #98DCC6;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-palette="floresta"]:not([data-theme="light"]), :root[data-palette="esmeralda"]:not([data-theme="light"]) {
+    --bg: #0A2018; --surface: #102C21; --soft: #173B2D; --ink: #E3F3EA; --ink-2: #BEE0CD; --muted: #9CC4AF; --line: #24503E;
+    --accent: #4FCB91; --accent-ink: #072117; --accent-soft: #173B2D; --needle-s: #7FA894; --thumb-idle: #7FA894; --dot-idle: #2C5946;
+    --disabled-bg: #24503E; --disabled-ink: #9CC4AF; --ok: #4FCB91; --ok-soft: #173B2D;
+  }
+}
+.top .mark { width: 30px; height: 30px; color: var(--accent); }
+.brand-name { color: var(--ink); }
+
+/* ---------- the character lives on the app, not in a box ---------- */
+.stage3d { background: transparent; border-radius: 0; }
+.find .compass-hero { position: relative; }
+.find .stage3d { position: fixed; inset: 0; height: auto; z-index: 0; pointer-events: none; background: linear-gradient(180deg, var(--bg) 0%, var(--soft) 100%); }
+.find .hero-head, .find .compass-block, .find .compass-hint, .find #compass-manual { position: relative; z-index: 1; }
+.find .find-ui { position: relative; z-index: 1; display: grid; justify-items: center; gap: 10px; }
+.find .find-ui.waiting { visibility: hidden; }
+.find .find-ui.show { animation: showcompass .7s cubic-bezier(.2, 1.3, .4, 1); }
+@keyframes showcompass { from { opacity: 0; transform: translateY(40px) scale(.6); } to { opacity: 1; transform: none; } }
+.find .hero-head { text-shadow: 0 1px 0 var(--bg); }
+.find .spacer3d { height: 30vh; }
+.find .compass { width: min(260px, 70vw); }
+
 </style>
 </head>
 <body>
@@ -995,7 +1031,7 @@ const UI = {
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
     signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
-    findTitle: 'Ajude {name} a achar o norte', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
+    findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Vire o celular até a seta apontar para o N, ou arraste a seta, e toque em Começar.', birthHint: 'Toque para escolher a data (ano, mês e dia).', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
     reactSad: 'Obrigado por dividir isso comigo. Parece pesado, e faz sentido se sentir assim.', reactAnxious: 'Entendi. Vamos com calma, uma coisa de cada vez.', reactHappy: 'Que bom ouvir isso!', reactExcited: 'Que demais! Fico feliz por você.', reactNeutral: 'Obrigado por contar.', reactSkip: 'Tudo bem, vamos para a próxima.',
     talkHello: 'Oi! Eu sou {name}, a sua versão. Vou te fazer algumas perguntas. Responda do seu jeito, sem pressa.', avDrag: 'Arraste o personagem para girar.',
     voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓',
@@ -1024,6 +1060,7 @@ const UI = {
     compassGoalSensor: 'Para começar, aponte o celular para o norte', compassGoalDrag: 'Para começar, leve a seta até o N', compassGoalDone: 'Pronto! Pode começar',
     roundTraumaSub: 'Responda só o que você se sentir à vontade para responder', roundSensSub: 'Mais algumas situações, com calma', roundPPSub: 'Desde a chegada do bebê', roundCtrlSub: 'Só para conferir', roundMemSub: 'Passe o celular para um familiar ou amigo próximo',
     sensitivePart: 'As próximas perguntas são mais delicadas e podem mexer com você. Você pode pular esta parte agora e voltar quando quiser.', skipPart: 'Pular esta parte', skippedPart: 'Você pulou esta parte. Ela vai aparecer como não avaliada no resultado.',
+    expPalette: 'Cores', paletteNames: { floresta: 'Floresta (verde forte)', esmeralda: 'Esmeralda', nevoa: 'Névoa (anterior)' },
     expFont: 'Fonte', fontNames: { nunito: 'Nunito (arredondada)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (anterior)' },
     round1Sub: 'Como as últimas semanas têm sido', round2Sub: 'Coisas que podem ter incomodado', round3Sub: 'Situações do dia a dia', round4Sub: 'Seu jeito no dia a dia', round5Sub: 'Alguns hábitos',
     generalIntro: 'Aqui as perguntas vêm uma atrás da outra, misturadas, sem dizer o tema de cada uma. Elas falam de humor, ansiedade, sono, atenção, hábitos, memória e outras áreas da saúde mental. As partes mais delicadas avisam antes e podem ser puladas. No fim, você vê o resultado de cada área.',
@@ -1198,7 +1235,7 @@ const UI = {
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
     signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. Nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
-    findTitle: 'Help {name} find north', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
+    findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Turn your phone until the arrow points to N, or drag the arrow, and tap Start.', birthHint: 'Tap to pick the date (year, month and day).', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
     reactSad: 'Thank you for sharing that with me. It sounds heavy, and it makes sense to feel that way.', reactAnxious: 'I hear you. Let’s take it slowly, one thing at a time.', reactHappy: 'So good to hear that!', reactExcited: 'That’s wonderful! I’m happy for you.', reactNeutral: 'Thanks for telling me.', reactSkip: 'That’s fine, let’s go to the next one.',
     talkHello: 'Hi! I’m {name}, your own self. I’ll ask you a few questions. Answer in your own way, no rush.', avDrag: 'Drag the character to turn it.',
     voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓',
@@ -1227,6 +1264,7 @@ const UI = {
     compassGoalSensor: 'To start, point your phone north', compassGoalDrag: 'To start, bring the arrow to N', compassGoalDone: 'Ready! You can start',
     roundTraumaSub: 'Answer only what you feel comfortable with', roundSensSub: 'A few more situations, take your time', roundPPSub: 'Since the baby arrived', roundCtrlSub: 'Just double-checking', roundMemSub: 'Hand the phone to a relative or close friend',
     sensitivePart: 'The next questions are more sensitive and may stir things up. You can skip this part now and come back whenever you like.', skipPart: 'Skip this part', skippedPart: 'You skipped this part. It will show as not assessed in your result.',
+    expPalette: 'Colours', paletteNames: { floresta: 'Forest (strong green)', esmeralda: 'Emerald', nevoa: 'Mist (previous)' },
     expFont: 'Font', fontNames: { nunito: 'Nunito (rounded)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (previous)' },
     round1Sub: 'How the last few weeks have been', round2Sub: 'Things that may have bothered you', round3Sub: 'Everyday situations', round4Sub: 'How you go about your day', round5Sub: 'Some habits',
     generalIntro: 'Here the questions come one after another, mixed, without naming the topic of each one. They cover mood, anxiety, sleep, attention, habits, memory and other areas of mental health. The more sensitive parts warn you first and can be skipped. At the end, you see the result for each area.',
@@ -1999,13 +2037,13 @@ const N3D = (() => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = T.SRGBColorSpace;
     scene = new T.Scene();
-    scene.fog = new T.Fog(0xEAF0F4, 14, 34);
+    scene.fog = new T.Fog(0xE9F4EC, 10, 26);
     camera = new T.PerspectiveCamera(35, 1, 0.1, 100);
     scene.add(new T.HemisphereLight(0xffffff, 0xB9C7D3, 1.6));
     const sun = new T.DirectionalLight(0xffffff, 1.6); sun.position.set(3, 6, 5); scene.add(sun);
     // world: ground, stone path to the compass, trees
     world = new T.Group(); scene.add(world);
-    const ground = new T.Mesh(new T.CircleGeometry(60, 64), mat(0xDCE6EC, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; world.add(ground);
+    const ground = new T.Mesh(new T.CircleGeometry(60, 64), mat(0xD5EADB, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; world.add(ground);
     const path = new T.Group(); world.add(path); parts.path = path;
     const compass = new T.Group(); world.add(compass); parts.compass = compass;
     const plate = new T.Mesh(new T.CylinderGeometry(1.1, 1.2, 0.12, 48), mat(0xFFFFFF)); plate.position.y = 0.06; compass.add(plate);
@@ -2228,8 +2266,9 @@ const N3D = (() => {
     // camera
     const cx = st.mode === 'builder' ? 0 : st.x;
     // close up while talking (so the face reads), wider while walking
-    const camPos = st.mode === 'find' && st.holding && !moving ? [cx + 0.15, 1.5, 3.7] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.9, 5.8] : [cx, 1.85, 3.9];
-    const look = st.mode === 'builder' ? [cx, 1.45, 0] : st.mode === 'find' && st.holding && !moving ? [cx + 0.15, 1.3, 0] : [cx, moving ? 1.4 : 1.6, 0];
+    // find: full-screen scene, the character framed in the upper middle of the screen (the big compass comes below)
+    const camPos = st.mode === 'find' ? [cx, 1.2, 12.5] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.9, 5.8] : [cx, 1.85, 3.9];
+    const look = st.mode === 'find' ? [cx, 0.96, 0] : st.mode === 'builder' ? [cx, 1.45, 0] : [cx, moving ? 1.4 : 1.6, 0];
     const ck = st.reduce ? 1 : Math.min(1, dt * 3);
     camera.position.set(lerp(camera.position.x, camPos[0], ck), lerp(camera.position.y, camPos[1], ck), lerp(camera.position.z, camPos[2], ck * 0.8));
     camera.lookAt(look[0] + (camera.position.x - camPos[0]), look[1], look[2]);
@@ -2279,7 +2318,7 @@ const N3D = (() => {
         .then(() => { st.holding = true; st.reach = false; holdCompass(); st.crouch = 0; return wait(500); })
         .then(() => { st.emo = 'happy'; });
     },
-    resetFind() { st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
+    resetFind() { st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; st.walking = false; st.walkDone = null; st.emo = 'neutral'; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
     heldNeedle(deg) { if (parts.hcNeedle) parts.hcNeedle.rotation.y = -deg * Math.PI / 180; },
   });
   Object.defineProperty(api, 'holding', { get: () => !!st.holding });
@@ -2361,6 +2400,8 @@ function toneOf(text) {
   let advanceTimer = null, breathTimer = null, toastTimer = null;
   const EXP_KEYS = ['talk', 'general', 'ring', 'colors', 'interact'];
   const exp = (() => { const o = { talk: true, general: true, ring: true, colors: true, interact: true }; try { const raw = store('nort.exp'); if (raw) { const p = JSON.parse(raw); EXP_KEYS.forEach((k) => { if (typeof p[k] === 'boolean') o[k] = p[k]; }); } } catch (e) { /* ignore */ } return o; })();
+  const PALETTES = ['floresta', 'esmeralda', 'nevoa'];
+  let palette = (() => { const f = store('nort.palette'); return PALETTES.includes(f) ? f : 'floresta'; })();
   const FONTS = ['nunito', 'fraunces', 'figtree', 'classic'];
   const FONT_FAMILY = { nunito: "'Nunito', sans-serif", fraunces: "'Fraunces', serif", figtree: "'Figtree', sans-serif", classic: "'Bricolage Grotesque', sans-serif" };
   let font = (() => { const f = store('nort.font'); return FONTS.includes(f) ? f : 'nunito'; })();
@@ -2399,7 +2440,8 @@ function toneOf(text) {
   function tint(area) { return 'tint-' + (AREA_TINT[area] || 'sky'); }
 
   // ---------- shared pieces ----------
-  const NORTH = '<svg class="mark" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 3.5 L14.5 10 L11.8 9.2 L11.8 15 L10.2 15 L10.2 9.2 L7.5 10 Z" style="fill: var(--coral)"/></svg>';
+  // Logo: an "N" at the centre of a compass ring, with a coral pointer for north
+  const NORTH = '<svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16 1.2 L19 6.4 L13 6.4 Z" style="fill: var(--coral)"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M29.2 16h-2.4M5.2 16H2.8M16 29.2v-2.4"/></g><path d="M11.2 21.6V10.4h1.6l6 8.2v-8.2h1.9v11.2h-1.6l-6-8.2v8.2z" fill="currentColor"/></svg>';
 
   function header() {
     const opts = Object.keys(LOCALES).map((k) => `<option value="${k}"${k === state.lang ? ' selected' : ''}>${esc(LOCALES[k].name)}</option>`).join('');
@@ -2562,7 +2604,7 @@ function toneOf(text) {
   function ageFrom(iso) {
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); if (!m) return null;
     const b = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])); const now = new Date();
-    if (isNaN(b) || b > now || Number(m[1]) < 1900) return null;
+    if (isNaN(b) || b > now || Number(m[1]) < 1900 || b.getDate() !== Number(m[3]) || b.getMonth() !== Number(m[2]) - 1) return null;
     let a = now.getFullYear() - b.getFullYear(); if (now.getMonth() < b.getMonth() || (now.getMonth() === b.getMonth() && now.getDate() < b.getDate())) a--;
     return a;
   }
@@ -2572,19 +2614,19 @@ function toneOf(text) {
     const lvl = s.levels.map((l, i) => `<li><span class="lvl-n">${i + 1}</span><div><strong>${esc(l[0])}</strong><p>${esc(l[1])}</p></div></li>`).join('');
     return `<main class="wrap narrow signup">
       <section class="hero-head"><h1 class="compass-title">${esc(s.compassTitle)}</h1><p class="lead">${esc(s.signupLead)}</p></section>
-      <section class="soft-card">
+      <form class="soft-card" id="signup-form" novalidate>
         <h2>${esc(s.signupTitle)}</h2>
         <p class="note prov">${esc(s.signupProto)}</p>
         <label class="field-l" for="su-email">${esc(s.emailL)}</label><input id="su-email" class="text-in" type="email" autocomplete="email" inputmode="email" value="${esc(a.email)}">
         <label class="field-l" for="su-pass">${esc(s.passL)}</label><input id="su-pass" class="text-in" type="password" autocomplete="new-password" minlength="8">
-        <label class="field-l" for="su-birth">${esc(s.birthL)}</label><input id="su-birth" class="text-in" type="date" autocomplete="bday" value="${esc(a.birth)}">
+        <label class="field-l" for="su-birth">${esc(s.birthL)}</label><input id="su-birth" class="text-in" type="date" autocomplete="bday" value="${esc(a.birth)}" placeholder="AAAA-MM-DD" aria-describedby="su-birth-hint"><p class="hint" id="su-birth-hint">${esc(s.birthHint)}</p>
         <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}${placeCountry && st.country === placeCountry ? ` ${esc(s.countryGuessed)}` : ''}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
         <fieldset class="field"><legend>${esc(s.babyQ)}</legend>${choice('baby', [1, 0, 'skip'], [s.yes, s.no, s.preferNot], st.baby)}</fieldset>
         <section class="consent"><h2>${esc(s.consentTitle)}</h2><p>${esc(exp.talk ? s.consentTalk : s.consentText)}</p>
           <label class="check" for="consent"><input type="checkbox" id="consent" data-setup="consent"${st.consent ? ' checked' : ''}><span>${esc(s.consentCheck)}</span></label></section>
-        ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
-        <button class="btn primary big" data-act="signup-done">${esc(s.signupBtn)}</button>
-      </section>
+        ${state.error ? `<p class="error" id="su-error" role="alert">${esc(state.error)}</p>` : ''}
+        <button class="btn primary big" type="submit" data-act="signup-done">${esc(s.signupBtn)}</button>
+      </form>
       <div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
       <p class="small center">${esc(s.disclaimer)}</p>
       <section class="two">
@@ -2596,12 +2638,12 @@ function toneOf(text) {
   }
   // ---------- find the compass (after the character): the character finds it, the person points north ----------
   function viewFind() {
-    const s = S(); const name = (avatar.name || '').trim() || s.avNameDefault;
+    const s = S(); const name = (avatar.name || '').trim();
     return `<main class="wrap narrow welcome find">
       <section class="compass-hero">
-        <div class="hero-head"><h1 class="h-page">${esc(fmt(s.findTitle, { name }))}</h1><p class="lead">${esc(s.findLead)}</p></div>
-        ${N3D.ok ? `<div class="stage3d talk" id="stage3d"></div>` : ''}
-        ${compassBlockHtml(s)}
+        <div class="hero-head"><p><button class="btn link" data-act="find-back">← ${esc(s.back)}</button></p><h1 class="h-page">${esc(name ? fmt(s.findTitle, { name }) : s.findTitleNoName)}</h1><p class="lead">${esc(N3D.ok ? s.findLead : s.findLeadNo3D)}</p></div>
+        ${N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="spacer3d" aria-hidden="true"></div>` : ''}
+        <div class="find-ui${N3D.ok && !N3D.holding && !state.findShown ? ' waiting' : ''}" id="find-ui">${compassBlockHtml(s)}</div>
       </section>
     </main>`;
   }
@@ -3345,6 +3387,7 @@ function toneOf(text) {
     const sheet = !state.crisisOpen && sensorSheetOpen();
     EXP_KEYS.forEach((k) => document.documentElement.classList.toggle('exp-' + k, exp[k]));
     document.documentElement.dataset.font = font;
+    document.documentElement.dataset.palette = palette;
     root.innerHTML = header() + v + `<footer class="foot">${esc(S().footer)}<br><button class="exp-fab" data-act="exp-open">${esc(S().expButton)}</button></footer>` + (state.crisisOpen ? crisisOverlay() : '') + (sheet ? sensorSheet() : '') + (state.crisisOpen || sheet ? '' : expPanel()) + (state.toast ? toastHtml(state.toast) : '');
     if (state.expOpen) { const d = document.getElementById('exp-dialog'); if (d && !d.contains(document.activeElement)) d.focus(); }
     if (state.toast) { clearTimeout(toastTimer); toastTimer = setTimeout(() => { const el = document.getElementById('toast'); if (el) el.classList.add('out'); setTimeout(() => { const e2 = document.getElementById('toast'); if (e2) e2.remove(); }, 400); }, reduceMotion ? 2600 : 1800); state.toast = null; }
@@ -3363,7 +3406,7 @@ function toneOf(text) {
       const st = nm('strong'), so = nm('some');
       say(`${S().indTitle}. ${S().indLead} ${st ? `${S().indStrong}: ${st}.` : S().indNone} ${so ? `${S().indSome}: ${so}.` : ''}`);
     }
-    if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; N3D.findScene().then(() => { if (state.view === 'find') compassUpdate(); }); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
+    if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; const reveal = () => { if (state.view !== 'find' || state.findShown) return; state.findShown = true; const ui = document.getElementById('find-ui'); if (ui) { ui.classList.remove('waiting'); if (!reduceMotion) ui.classList.add('show'); } compassUpdate(); }; N3D.findScene().then(reveal); setTimeout(reveal, 8000); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
     const word = document.getElementById('breath-word');
     if (word && !reduceMotion) { let inhale = true; breathTimer = setInterval(() => { inhale = !inhale; word.textContent = inhale ? S().breathIn : S().breathOut; }, 4000); }
   }
@@ -3374,6 +3417,7 @@ function toneOf(text) {
     return `<div class="overlay" id="exp-sheet"><div class="dialog sheet exp-dialog" role="dialog" aria-modal="true" aria-labelledby="exp-h" tabindex="-1" id="exp-dialog">
       <h2 id="exp-h">${esc(s.expTitle)}</h2><p class="small">${esc(s.expText)}</p>
       ${EXP_KEYS.map((k) => `<label class="exp-row" for="exp-${k}"><input type="checkbox" id="exp-${k}" data-exp="${k}"${exp[k] ? ' checked' : ''}><span><strong>${esc(s['exp_' + k])}</strong><span class="small">${esc(s['expd_' + k])}</span></span></label>`).join('')}
+      <fieldset class="exp-row exp-font"><legend><strong>${esc(s.expPalette)}</strong></legend>${PALETTES.map((f) => `<label class="font-opt" for="pal-${f}"><input type="radio" name="palette" id="pal-${f}" data-palette="${f}"${palette === f ? ' checked' : ''}><span>${esc(s.paletteNames[f])}</span></label>`).join('')}</fieldset>
       <fieldset class="exp-row exp-font"><legend><strong>${esc(s.expFont)}</strong></legend>${FONTS.map((f) => `<label class="font-opt" for="font-${f}"><input type="radio" name="font" id="font-${f}" data-font="${f}"${font === f ? ' checked' : ''}><span style="font-family:${FONT_FAMILY[f]}">${esc(s.fontNames[f])}</span></label>`).join('')}</fieldset>
       <button class="btn primary big" data-act="exp-close">${esc(s.expClose)}</button></div></div>`;
   }
@@ -3502,12 +3546,16 @@ function toneOf(text) {
     if (t.dataset.slider) commitSlider(t);
     if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) { stopRecording(true); ownVoice.recs = []; ownVoice.k = 0; } render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
     if (t.id === 'voice-rate') { voiceCfg.rate = Number(t.value) || 1; saveAvatar(); return; }
+    if (t.dataset.palette && PALETTES.includes(t.dataset.palette)) { palette = t.dataset.palette; store('nort.palette', palette); render(true); const again = document.getElementById('pal-' + palette); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.font && FONTS.includes(t.dataset.font)) { font = t.dataset.font; store('nort.font', font); render(true); const again = document.getElementById('font-' + font); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
   });
+  root.addEventListener('submit', (e) => { if (e.target && e.target.id === 'signup-form') { e.preventDefault(); const btn = e.target.querySelector('[data-act="signup-done"]'); if (btn) btn.click(); } });
   root.addEventListener('input', (e) => {
     const t = e.target;
     if (t.dataset.text) state.answers[t.dataset.text] = t.value.trim() ? t.value : null;
+    if (t.id === 'su-email') state.account.email = t.value;
+    if (t.id === 'su-birth') state.account.birth = t.value;
     if (t.id === 'av-name') { avatar.name = t.value.slice(0, 24); saveAvatar(); const sh = document.getElementById('av-name-show'); if (sh) sh.textContent = avatar.name || S().avNameDefault; }
     if (t.id === 'talk-answer') { if (N3D.ok && (!state.talk.lastNod || Date.now() - state.talk.lastNod > 2500)) { state.talk.lastNod = Date.now(); N3D.nod(); } const q = curTalkQ(); state.talk.answers[q.id] = t.value; if (t.value.trim()) delete state.talk.skipped[q.id]; const nb = document.getElementById('next-btn'); if (nb) nb.disabled = !t.value.trim() && !state.talk.skipped[q.id]; }
     if (t.dataset.slider) commitSlider(t);
@@ -3570,17 +3618,21 @@ function toneOf(text) {
     else if (act === 'exp-close') { state.expOpen = false; render(true); const f = root.querySelector('.exp-fab'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
     else if (act === 'sensor-no') { compass.asked = true; closeSensorSheet(); }
+    else if (act === 'find-back') { stopSensor(); state.view = exp.talk && state.afterFind === 'talk' ? 'avatar' : 'signup'; render(); }
     else if (act === 'home') { state.view = 'signup'; state.error = null; render(); }
     else if (act === 'signup-done') {
       const st = state.setup; const email = (document.getElementById('su-email') || {}).value || ''; const pass = (document.getElementById('su-pass') || {}).value || ''; const birth = (document.getElementById('su-birth') || {}).value || '';
       state.account.email = email; state.account.birth = birth;
       const age = ageFrom(birth);
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { state.error = s.errEmail; render(true); return; }
-      if (pass.length < 8) { state.error = s.errPass; render(true); return; }
-      if (age == null) { state.error = s.errBirth; render(true); return; }
+      const fail = (msg, id) => { state.error = msg; state.errorField = id; render(true); const el = document.getElementById(id); if (el) { el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', 'su-error'); el.focus(); } };
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fail(s.errEmail, 'su-email'); return; }
+      if (pass.length < 8) { fail(s.errPass, 'su-pass'); return; }
+      if (age == null) { fail(s.errBirth, 'su-birth'); return; }
       if (age < 18) { st.age = 0; state.view = 'under18'; render(); return; }
       st.age = 1;
-      if (!st.country || st.baby == null || !st.consent) { state.error = s.needSignup; render(true); return; }
+      if (!st.country) { fail(s.needCountry, 'country-0'); return; }
+      if (st.baby == null) { fail(s.needBaby, 'baby-0'); return; }
+      if (!st.consent) { fail(s.needConsent, 'consent'); return; }
       state.error = null; N3D.setReduce(reduceMotion);
       if (!exp.talk) { state.afterFind = 'quiz'; state.view = 'find'; render(); N3D.load().then(() => { if (state.view === 'find') render(true); }); return; }
       if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load(), checkVoiceServer()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
