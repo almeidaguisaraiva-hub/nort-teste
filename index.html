@@ -6,7 +6,7 @@
 <title>Nort</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cormorant+Garamond:wght@600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Nunito:wght@400;600;700;800&family=Fraunces:opsz,wght@9..144,600;700&family=Figtree:wght@400;600;700&family=Cormorant+Garamond:wght@600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
 <style>
 /* Norte · paleta Névoa · direção B (bússola). Fundo azul-acinzentado claro, tinta marinho, agulha coral. */
 :root {
@@ -420,6 +420,22 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .warm-opt.on { border-color: var(--ink); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--coral); }
 /* fixed light-scheme colours so the scenes read the same in dark mode */
 .warm-ill { width: 100%; max-width: 84px; aspect-ratio: 1; --ill-a: #1F2A44; --ill-b: #E8684A; --ill-c: #FFFFFF; --ill-d: #DAE3EA; }
+
+/* font test (Tests panel) */
+:root[data-font="nunito"] { --font-display: 'Nunito', system-ui, sans-serif; --font-body: 'Nunito', system-ui, sans-serif; }
+:root[data-font="fraunces"] { --font-display: 'Fraunces', Georgia, serif; --font-body: 'Figtree', system-ui, sans-serif; }
+:root[data-font="figtree"] { --font-display: 'Figtree', system-ui, sans-serif; --font-body: 'Figtree', system-ui, sans-serif; }
+:root[data-font="nunito"] h1, :root[data-font="nunito"] .q-text { font-weight: 800; letter-spacing: -0.02em; }
+.exp-font { border: 0; margin: 0; display: grid; gap: 4px; }
+.exp-font legend { padding: 0 0 6px; }
+.font-opt { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; font-size: 1.05rem; }
+.font-opt input { width: 22px; height: 22px; accent-color: var(--ink); flex: none; margin: 0; }
+
+/* Start only works at N */
+.compass-go.locked { background: var(--soft); color: var(--ink-2); box-shadow: 0 0 0 4px var(--surface), 0 0 0 5px rgba(31, 42, 68, .18); cursor: not-allowed; }
+.compass-go.shake { animation: shake .4s ease-in-out; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.dial:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 
 </style>
 </head>
@@ -878,18 +894,24 @@ const UI = {
     heroNote: 'Uma pergunta por vez, no seu ritmo.',
     compassTitle: 'A bússola da saúde mental',
     compassPoints: ['N', 'L', 'S', 'O'],
-    compassDrag: 'Arraste a seta até o N, ou só toque no centro.',
+    compassDrag: 'Arraste a seta até o N para começar.',
     compassWait: 'Ligando a bússola…',
-    compassTurn: 'Vire o celular até a seta apontar para o N.',
-    compassOff: 'Sem sensor por aqui. Arraste a seta até o N, ou toque no centro.',
-    compassDenied: 'Sem permissão para a bússola. Arraste a seta até o N, ou toque no centro.',
-    compassFound: 'Achou. Esse é o seu norte. Toque no centro quando quiser.',
-    compassFoundLive: 'Achou o norte! Toque no centro para começar. A seta continua girando com o celular.',
+    compassTurn: 'A seta aponta para o norte de verdade. Vire o celular até ela ficar em cima do N.',
+    compassOff: 'Sem sensor por aqui. Arraste a seta até o N para começar.',
+    compassDenied: 'Sem permissão para a bússola. Arraste a seta até o N para começar.',
+    compassFound: 'Achou. Esse é o seu norte. Toque no centro para começar.',
+    compassFoundLive: 'Você está de frente para o norte! Toque no centro para começar.',
+    compassNeedNorth: 'Primeiro leve a seta até o N. Depois toque no centro.', compassNeedNorthLive: 'Primeiro vire o celular até a seta ficar em cima do N.',
+    compassManual: 'Usar sem o sensor',
+    compassDialLabel: 'Seta da bússola. Use as setas do teclado para girar até o N.', compassAtN: 'Apontando para o N', compassDeg: 'A {n} graus do N',
     sensorAskTitle: 'Usar a bússola do celular?',
     sensorAskText: 'Assim a seta gira quando você vira o celular. O Nort usa isso só nesta tela e não guarda nem envia nada.',
     sensorAllow: 'Permitir', sensorNotNow: 'Agora não',
     nextStep: 'Próximo passo', notAssessedShort: 'Não avaliadas agora',
     roundTitle: 'Rodada {n}', roundDone: 'Rodada concluída.',
+    roundTraumaSub: 'Uma parte mais delicada', roundSensSub: 'Mais algumas situações, com calma', roundPPSub: 'Desde a chegada do bebê', roundCtrlSub: 'Só para conferir', roundMemSub: 'Para alguém que te conhece bem',
+    sensitivePart: 'As próximas perguntas são mais delicadas e podem mexer com você. Você pode pular esta parte agora e voltar quando quiser.', skipPart: 'Pular esta parte', skippedPart: 'Você pulou esta parte. Ela vai aparecer como não avaliada no resultado.',
+    expFont: 'Fonte', fontNames: { nunito: 'Nunito (arredondada)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (anterior)' },
     round1Sub: 'Como as últimas semanas têm sido', round2Sub: 'Coisas que podem ter incomodado', round3Sub: 'Situações do dia a dia', round4Sub: 'Seu jeito no dia a dia', round5Sub: 'Alguns hábitos',
     generalIntro: 'Aqui as perguntas vêm misturadas, sem dizer o tema de cada uma. Elas falam de humor, ansiedade, sono, atenção, hábitos, memória e outras áreas da saúde mental. As partes mais delicadas avisam antes e podem ser puladas. No fim, você vê o resultado de cada área.',
     warmTitle: 'Aquecimento', warmChip: 'não entra no resultado', skipWarm: 'Pular',
@@ -1036,18 +1058,24 @@ const UI = {
     heroNote: 'One question at a time, at your own pace.',
     compassTitle: 'The mental health compass',
     compassPoints: ['N', 'E', 'S', 'W'],
-    compassDrag: 'Drag the arrow to N, or just tap the centre.',
+    compassDrag: 'Drag the arrow to N to start.',
     compassWait: 'Turning on the compass…',
-    compassTurn: 'Turn your phone until the arrow points to N.',
-    compassOff: 'No sensor here. Drag the arrow to N, or tap the centre.',
-    compassDenied: 'No compass permission. Drag the arrow to N, or tap the centre.',
-    compassFound: 'Found it. That’s your north. Tap the centre when you’re ready.',
-    compassFoundLive: 'You found north! Tap the centre to start. The arrow keeps turning with your phone.',
+    compassTurn: 'The arrow points to true north. Turn your phone until it sits on the N.',
+    compassOff: 'No sensor here. Drag the arrow to N to start.',
+    compassDenied: 'No compass permission. Drag the arrow to N to start.',
+    compassFound: 'Found it. That’s your north. Tap the centre to start.',
+    compassFoundLive: 'You’re facing north! Tap the centre to start.',
+    compassNeedNorth: 'First bring the arrow to N, then tap the centre.', compassNeedNorthLive: 'First turn your phone until the arrow sits on the N.',
+    compassManual: 'Use without the sensor',
+    compassDialLabel: 'Compass arrow. Use the arrow keys to turn it to N.', compassAtN: 'Pointing to N', compassDeg: '{n} degrees from N',
     sensorAskTitle: 'Use your phone’s compass?',
     sensorAskText: 'The arrow turns as you turn your phone. Nort only uses this on this screen and doesn’t store or send anything.',
     sensorAllow: 'Allow', sensorNotNow: 'Not now',
     nextStep: 'Next step', notAssessedShort: 'Not assessed yet',
     roundTitle: 'Round {n}', roundDone: 'Round complete.',
+    roundTraumaSub: 'A more sensitive part', roundSensSub: 'A few more situations, take your time', roundPPSub: 'Since the baby arrived', roundCtrlSub: 'Just double-checking', roundMemSub: 'For someone who knows you well',
+    sensitivePart: 'The next questions are more sensitive and may stir things up. You can skip this part now and come back whenever you like.', skipPart: 'Skip this part', skippedPart: 'You skipped this part. It will show as not assessed in your result.',
+    expFont: 'Font', fontNames: { nunito: 'Nunito (rounded)', fraunces: 'Fraunces + Figtree', figtree: 'Figtree', classic: 'Bricolage + Atkinson (previous)' },
     round1Sub: 'How the last few weeks have been', round2Sub: 'Things that may have bothered you', round3Sub: 'Everyday situations', round4Sub: 'How you go about your day', round5Sub: 'Some habits',
     generalIntro: 'Here the questions come mixed, without naming the topic of each one. They cover mood, anxiety, sleep, attention, habits, memory and other areas of mental health. The more sensitive parts warn you first and can be skipped. At the end, you see the result for each area.',
     warmTitle: 'Warm-up', warmChip: 'not part of your result', skipWarm: 'Skip',
@@ -1265,12 +1293,14 @@ function interleave(lists) {
   for (let i = 0; i < max; i++) lists.forEach((x) => { if (x[i]) out.push(x[i]); });
   return out;
 }
+// Sensitive provisional areas asked together (one skippable part) in general mode
+const SENS_AREAS = ['eating', 'substances', 'borderline', 'psychosis'];
 function level1General(state) {
   const base = level1Modules(state);
   const byId = {}; base.forEach((m) => { byId[m.id] = m; });
   const items = (m) => m.sections.reduce((acc, s) => acc.concat(s.items), []);
   const prov = (ar) => provItems(ar, 'screen');
-  const round = (n, subKey, stemPart, list, extra) => Object.assign({ id: 'round' + n, titleKey: 'roundTitle', titleVars: { n: { pt: String(n), en: String(n) } }, subKey, area: 'round', sections: [Object.assign({ area: 'round', items: list }, stemPart)] }, extra || {});
+  const round = (n, subKey, stemPart, list, extra) => Object.assign({ id: 'round' + n, titleKey: 'roundTitle', titleVars: { n: { pt: String(n), en: String(n) } }, subKey, hideTopic: true, area: 'round', sections: [Object.assign({ area: 'round', items: list }, stemPart)] }, extra || {});
   const mods = [];
   mods.push(warmModule(0));
   mods.push(round(1, 'round1Sub', { stemKey: 'who5Stem' }, items(byId.who5), { first: true }));
@@ -1280,13 +1310,15 @@ function level1General(state) {
   mods.push(round(3, 'round3Sub', { stemKey: 'provStem' }, interleave(['bipolar', 'sleep', 'panic', 'social', 'gambling', 'ocd', 'autism'].map(prov)), { provisional: true }));
   mods.push(round(4, 'round4Sub', { stemKey: 'asrsStem' }, items(byId.asrs)));
   mods.push(warmModule(2));
-  mods.push(Object.assign({}, byId.auditc, { id: 'round5', titleKey: 'roundTitle', titleVars: { n: { pt: '5', en: '5' } }, subKey: 'round5Sub', area: 'round', sections: byId.auditc.sections.map((s) => Object.assign({}, s, { area: 'round' })) }));
-  mods.push(byId.ptsd);
-  const sens = ['eating', 'substances', 'borderline', 'psychosis'];
-  mods.push({ id: 'provSens', provisional: true, sensitive: true, title: { ref: 'pageTitles.provB' }, sections: sens.map((ar) => ({ area: ar, stemKey: 'provStem', items: provItems(ar, 'screen') })) });
-  if (byId.provPP) mods.push(byId.provPP);
-  mods.push(byId.controls);
-  mods.push(byId.memory);
+  mods.push(Object.assign({}, byId.auditc, { id: 'round5', titleKey: 'roundTitle', titleVars: { n: { pt: '5', en: '5' } }, subKey: 'round5Sub', hideTopic: true, area: 'round', sections: byId.auditc.sections.map((s) => Object.assign({}, s, { area: 'round' })) }));
+  // From here on the parts keep their warning and skip option, but are still numbered as rounds: no topic names in general mode.
+  let n = 5;
+  const asRound = (m, subKey) => Object.assign({}, m, { titleKey: 'roundTitle', titleVars: { n: { pt: String(++n), en: String(n) } }, subKey, hideTopic: true });
+  mods.push(asRound(byId.ptsd, 'roundTraumaSub'));
+  mods.push(asRound({ id: 'provSens', provisional: true, sensitive: true, sections: [{ area: 'sens', stemKey: 'provStem', items: interleave(SENS_AREAS.map(prov)) }] }, 'roundSensSub'));
+  if (byId.provPP) mods.push(asRound(byId.provPP, 'roundPPSub'));
+  mods.push(asRound(byId.controls, 'roundCtrlSub'));
+  mods.push(asRound(byId.memory, 'roundMemSub'));
   return mods;
 }
 
@@ -1337,7 +1369,7 @@ function chapterArea(m, sec) {
   if (m.id === 'l3-global') return 'history';
   return 'controls';
 }
-const SKIPPABLE = ['trauma', 'eating', 'substances', 'borderline', 'psychosis', 'postpartum', 'memory'];
+const SKIPPABLE = ['sens', 'trauma', 'eating', 'substances', 'borderline', 'psychosis', 'postpartum', 'memory'];
 function buildCards(mods, answers, level, skipped) {
   const cards = [];
   let last = null;
@@ -1586,6 +1618,9 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   let advanceTimer = null, breathTimer = null, toastTimer = null;
   const EXP_KEYS = ['general', 'ring', 'colors', 'interact'];
   const exp = (() => { const o = { general: true, ring: true, colors: true, interact: true }; try { const raw = store('nort.exp'); if (raw) { const p = JSON.parse(raw); EXP_KEYS.forEach((k) => { if (typeof p[k] === 'boolean') o[k] = p[k]; }); } } catch (e) { /* ignore */ } return o; })();
+  const FONTS = ['nunito', 'fraunces', 'figtree', 'classic'];
+  const FONT_FAMILY = { nunito: "'Nunito', sans-serif", fraunces: "'Fraunces', serif", figtree: "'Figtree', sans-serif", classic: "'Bricolage Grotesque', sans-serif" };
+  let font = (() => { const f = store('nort.font'); return FONTS.includes(f) ? f : 'nunito'; })();
   const AREA_ORDER = AREAS.map((a) => a.id);
   // Golden-angle spacing squeezed into 25°–330° so no area reads as an alarm red.
   function areaHue(area) { const i = AREA_ORDER.indexOf(area); return i < 0 ? null : Math.round(25 + ((40 + i * 137.5) % 360) * 305 / 360); }
@@ -1614,6 +1649,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   function areaName(area) { return AREAS_BY_ID[area] ? tx(AREAS_BY_ID[area].name) : ''; }
   function chapterTitle(card) {
     const m = card.mod;
+    if (m.hideTopic) return moduleTitle(m);
     if (m.id.startsWith('l3-') || card.area === 'safety' || card.area === 'controls' || card.area === 'history') return moduleTitle(m);
     return areaName(card.area) || moduleTitle(m);
   }
@@ -1661,7 +1697,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   const NEEDLE_MINI = '<svg class="ind" viewBox="0 0 200 200"><path class="nd-s1" d="M100 170 L100 100 L92 136 Z"/><path class="nd-s2" d="M100 170 L108 136 L100 100 Z"/><path class="nd-n1" d="M100 22 L100 100 L91 62 Z"/><path class="nd-n2" d="M100 22 L109 62 L100 100 Z"/></svg>';
 
   // ---------- compass (welcome) ----------
-  const compass = { deg: -140, found: false, dragging: false, sensor: 'idle', onOrient: null, timer: null, asked: false, buzzed: false, manualFound: false };
+  const compass = { deg: -140, found: false, dragging: false, sensor: 'idle', onOrient: null, timer: null, asked: false, buzzed: false, nudge: false };
   // Signal once when the arrow first reaches north (short vibration where the phone supports it).
   function foundSignal() { if (compass.buzzed) return; compass.buzzed = true; try { if (navigator.vibrate && !reduceMotion) navigator.vibrate(30); } catch (e) { /* ignore */ } }
   const norm = (a) => ((a % 360) + 540) % 360 - 180;
@@ -1682,6 +1718,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
   function closeSensorSheet() { const sh = document.getElementById('sensor-sheet'); if (sh) sh.remove(); const go = root.querySelector('.compass-go'); if (go) go.focus({ preventScroll: true }); }
   function compassHintKey() {
+    if (compass.nudge && !compass.found) return compass.sensor === 'on' ? 'compassNeedNorthLive' : 'compassNeedNorth';
     if (compass.found) return compass.sensor === 'on' ? 'compassFoundLive' : 'compassFound';
     if (compass.sensor === 'asking' || compass.sensor === 'waiting') return 'compassWait';
     if (compass.sensor === 'on') return 'compassTurn';
@@ -1696,31 +1733,42 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     needle.classList.toggle('drag', compass.dragging || reduceMotion);
     needle.classList.toggle('live', compass.sensor === 'on');
     block.classList.toggle('found', compass.found);
+    // "Start" only works once the arrow points to N
+    const go = block.querySelector('.compass-go');
+    if (go) { go.classList.toggle('locked', !compass.found); go.setAttribute('aria-disabled', String(!compass.found)); }
+    const dial = document.getElementById('dial');
+    if (dial) { const d = Math.round(((norm(compass.deg) % 360) + 360) % 360); dial.setAttribute('aria-valuenow', String(d)); dial.setAttribute('aria-valuetext', compass.found ? S().compassAtN : fmt(S().compassDeg, { n: Math.abs(Math.round(norm(compass.deg))) })); dial.tabIndex = compass.sensor === 'on' ? -1 : 0; }
     block.classList.toggle('wob', !compass.found && !compass.dragging && compass.sensor !== 'on' && !reduceMotion);
+    const manual = document.getElementById('compass-manual'); if (manual) manual.hidden = !['on', 'waiting'].includes(compass.sensor) || compass.found;
     const hint = document.getElementById('compass-hint'); const txt = S()[compassHintKey()];
     if (hint && hint.textContent !== txt) hint.textContent = txt;
   }
   function stopSensor() {
     if (compass.onOrient) { window.removeEventListener('deviceorientationabsolute', compass.onOrient); window.removeEventListener('deviceorientation', compass.onOrient); }
-    compass.onOrient = null; clearTimeout(compass.timer); compass.timer = null;
+    compass.onOrient = null; clearTimeout(compass.timer); compass.timer = null; clearInterval(compass.watch); compass.watch = null;
   }
+  // Way out when the sensor is on: drag or keyboard instead (motion must never be the only way in).
+  function manualMode() { stopSensor(); compass.sensor = 'off'; compass.found = false; compassUpdate(); const d = document.getElementById('dial'); if (d) d.focus({ preventScroll: true }); }
   function startSensor() {
     if (compass.onOrient) return;
     const useAbsolute = 'ondeviceorientationabsolute' in window;
     compass.onOrient = (e) => {
       let h = null;
-      if (typeof e.webkitCompassHeading === 'number') h = e.webkitCompassHeading;
+      // iPhone reports a negative accuracy while the compass is not calibrated: don't trust that heading.
+      if (typeof e.webkitCompassHeading === 'number') { if (typeof e.webkitCompassAccuracy === 'number' && e.webkitCompassAccuracy < 0) return; h = e.webkitCompassHeading; }
       else if (typeof e.alpha === 'number' && e.absolute !== false) h = 360 - e.alpha;
       if (h === null) return;
-      compass.granted = true;
+      compass.granted = true; compass.lastEvt = Date.now();
       if (compass.dragging) return;
       const angle = (window.screen && window.screen.orientation && typeof window.screen.orientation.angle === 'number') ? window.screen.orientation.angle : 0;
-      const target = norm(h + angle);
+      // Like a real compass: the arrow always points to true north, so it turns opposite to the phone.
+      // It sits on the N when the phone faces north (enter at 12°, leave at 25° so it doesn't flicker).
+      const heading = norm(h + angle);
+      const target = -heading;
       const next = compass.deg + norm(target - compass.deg);
-      // The arrow keeps following the phone. Near N it counts as found (enter at 12°, leave at 20° so it doesn't flicker).
       const wasFound = compass.found;
-      // Found by dragging: keep the signal until the next drag, while the arrow keeps following the phone.
-      compass.found = compass.manualFound || Math.abs(target) < (wasFound ? 20 : 12);
+      compass.found = Math.abs(heading) < (wasFound ? 25 : 12);
+      if (compass.found) compass.nudge = false;
       if (compass.found && !wasFound) foundSignal();
       if (compass.sensor === 'on' && compass.found === wasFound && Math.abs(next - compass.deg) < 0.8) return;
       compass.deg = next; compass.sensor = 'on'; compassUpdate();
@@ -1728,6 +1776,8 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     window.addEventListener(useAbsolute ? 'deviceorientationabsolute' : 'deviceorientation', compass.onOrient);
     compass.sensor = 'waiting'; compassUpdate();
     compass.timer = setTimeout(() => { if (compass.sensor === 'waiting') { stopSensor(); compass.sensor = 'off'; compassUpdate(); } }, 2500);
+    // Sensor that goes quiet after starting: fall back to dragging.
+    compass.watch = setInterval(() => { if (compass.sensor === 'on' && Date.now() - (compass.lastEvt || 0) > 3000) { stopSensor(); compass.sensor = 'off'; compass.found = false; compassUpdate(); } }, 1000);
   }
   function enableSensor() {
     if (compass.onOrient || compass.sensor !== 'idle') return;
@@ -1745,9 +1795,19 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
   function initCompass() {
     const dial = document.getElementById('dial'); if (!dial) return;
-    dial.addEventListener('pointerdown', (e) => { try { dial.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } compass.dragging = true; compass.found = false; compass.manualFound = false; compass.deg = dialAngle(e, dial); compassUpdate(); });
+    // Dragging (and the arrow keys) is the way to find N when there is no sensor; with the sensor on, the arrow follows the real north.
+    dial.addEventListener('pointerdown', (e) => { if (compass.sensor === 'on') return; try { dial.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } compass.dragging = true; compass.found = false; compass.deg = dialAngle(e, dial); compassUpdate(); });
+    dial.addEventListener('keydown', (e) => {
+      if (compass.sensor === 'on') return;
+      const step = { ArrowRight: 15, ArrowUp: 15, ArrowLeft: -15, ArrowDown: -15 }[e.key];
+      if (step == null && e.key !== 'Home') return;
+      e.preventDefault();
+      compass.deg = e.key === 'Home' ? 0 : norm(compass.deg + step);
+      const was = compass.found; compass.found = Math.abs(norm(compass.deg)) < 18; if (compass.found) { compass.deg = 0; compass.nudge = false; if (!was) foundSignal(); }
+      compassUpdate();
+    });
     dial.addEventListener('pointermove', (e) => { if (!compass.dragging) return; compass.deg = dialAngle(e, dial); compassUpdate(); });
-    const up = () => { if (!compass.dragging) return; const d = norm(compass.deg); compass.dragging = false; compass.found = Math.abs(d) < 18; compass.manualFound = compass.found; compass.deg = compass.found ? 0 : d; if (compass.found) foundSignal(); if (canSense && compass.granted && !compass.onOrient) { compass.sensor = 'idle'; startSensor(); } compassUpdate(); };
+    const up = () => { if (!compass.dragging) return; const d = norm(compass.deg); compass.dragging = false; compass.found = Math.abs(d) < 18; compass.deg = compass.found ? 0 : d; if (compass.found) { compass.nudge = false; foundSignal(); } if (canSense && compass.granted && !compass.onOrient) { compass.sensor = 'idle'; startSensor(); } compassUpdate(); };
     dial.addEventListener('pointerup', up); dial.addEventListener('pointercancel', up);
     compassUpdate();
     if (canSense && compass.granted && compass.sensor === 'idle' && !compass.onOrient) startSensor();
@@ -1764,14 +1824,15 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
         <div class="compass-block" id="compass-block">
           <div class="north-mark" aria-hidden="true"><svg viewBox="0 0 14 9"><path d="M0 0 L14 0 L7 9 Z"/></svg></div>
           <div class="compass">
-            <div class="dial" id="dial" aria-hidden="true">
-              <svg class="dial-face" viewBox="0 0 300 300"><circle class="ring" cx="150" cy="150" r="148"/><circle class="ring-thin" cx="150" cy="150" r="143"/><circle class="tick-minor" cx="150" cy="150" r="139.5"/><circle class="tick-major" cx="150" cy="150" r="137"/><circle class="ring-inner" cx="150" cy="150" r="128"/>${ROSE_BIG}${s.compassPoints.map((p, i) => { const a = i * Math.PI / 2; return `<text class="pt${i === 0 ? ' pt-n' : ''}" x="${(150 + 114 * Math.sin(a)).toFixed(1)}" y="${(150 - 114 * Math.cos(a)).toFixed(1)}">${esc(p)}</text>`; }).join('')}</svg>
-              <div class="needle" id="needle"><div class="needle-wob"><svg viewBox="0 0 300 300"><path class="nd-s1" d="M150 226 L150 150 L141 190 Z"/><path class="nd-s2" d="M150 226 L159 190 L150 150 Z"/><path class="nd-n1" d="M150 52 L150 150 L138 102 Z"/><path class="nd-n2" d="M150 52 L162 102 L150 150 Z"/></svg></div></div>
+            <div class="dial" id="dial" role="slider" tabindex="0" aria-label="${esc(s.compassDialLabel)}" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0">
+              <svg class="dial-face" aria-hidden="true" viewBox="0 0 300 300"><circle class="ring" cx="150" cy="150" r="148"/><circle class="ring-thin" cx="150" cy="150" r="143"/><circle class="tick-minor" cx="150" cy="150" r="139.5"/><circle class="tick-major" cx="150" cy="150" r="137"/><circle class="ring-inner" cx="150" cy="150" r="128"/>${ROSE_BIG}${s.compassPoints.map((p, i) => { const a = i * Math.PI / 2; return `<text class="pt${i === 0 ? ' pt-n' : ''}" x="${(150 + 114 * Math.sin(a)).toFixed(1)}" y="${(150 - 114 * Math.cos(a)).toFixed(1)}">${esc(p)}</text>`; }).join('')}</svg>
+              <div class="needle" id="needle" aria-hidden="true"><div class="needle-wob"><svg viewBox="0 0 300 300"><path class="nd-s1" d="M150 226 L150 150 L141 190 Z"/><path class="nd-s2" d="M150 226 L159 190 L150 150 Z"/><path class="nd-n1" d="M150 52 L150 150 L138 102 Z"/><path class="nd-n2" d="M150 52 L162 102 L150 150 Z"/></svg></div></div>
             </div>
-            <button class="compass-go" data-act="start">${esc(s.start)}</button>
+            <button class="compass-go${compass.found ? '' : ' locked'}" data-act="start" aria-disabled="${!compass.found}" aria-describedby="compass-hint">${esc(s.start)}</button>
           </div>
         </div>
         <p class="compass-hint" id="compass-hint" aria-live="polite">${esc(s[compassHintKey()])}</p>
+        <button class="btn link" id="compass-manual" data-act="compass-manual"${['on', 'waiting'].includes(compass.sensor) && !compass.found ? '' : ' hidden'}>${esc(s.compassManual)}</button>
         <div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
         <p class="small center">${esc(s.disclaimer)}</p>
       </section>
@@ -1880,16 +1941,16 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       const notes = [];
       const skippable = SKIPPABLE.includes(card.area);
       if (m.first) notes.push(`<p class="note">${esc(s.generalIntro)}</p>`);
-      if (card.skipped) notes.push(`<p class="note">${esc(s.skippedTopic)}</p>`);
+      if (card.skipped) notes.push(`<p class="note">${esc(m.hideTopic ? s.skippedPart : s.skippedTopic)}</p>`);
       else if (card.area === 'memory') notes.push(`<p class="note sensitive">${esc(s.memoryNote)}</p>`);
-      else if (skippable) notes.push(`<p class="note sensitive">${esc(s.sensitiveTopic)}</p>`);
+      else if (skippable) notes.push(`<p class="note sensitive">${esc(m.hideTopic ? s.sensitivePart : s.sensitiveTopic)}</p>`);
       else if (m.sensitive || card.area === 'safety') notes.push(`<p class="note">${esc(s.sensitiveNote)}</p>`);
       if (m.provisional && !card.skipped) notes.push(`<p class="note prov">${esc(m.toImport ? s.toImportNote : s.provisionalNote)}</p>`);
       const mainBtns = card.skipped
         ? `<button class="btn" data-act="unskip" data-area="${card.area}">${esc(s.answerNow)}</button><button class="btn primary big" data-act="advance">${esc(s.continue)}</button>`
-        : `${skippable ? `<button class="btn" data-act="skip" data-area="${card.area}">${esc(s.skipTopic)}</button>` : ''}<button class="btn primary big" data-act="advance">${esc(s.letsGo)}</button>`;
+        : `${skippable ? `<button class="btn" data-act="skip" data-area="${card.area}">${esc(m.hideTopic ? s.skipPart : s.skipTopic)}</button>` : ''}<button class="btn primary big" data-act="advance">${esc(s.letsGo)}</button>`;
       body = `<section class="qcard chapter ${reduceMotion ? '' : 'enter'}">
-        <div class="ill-wrap">${DIAL_MINI}<span class="rim" aria-hidden="true">${NEEDLE_MINI}</span><span class="ill-core">${icon(card.area)}</span></div>
+        <div class="ill-wrap">${DIAL_MINI}<span class="rim" aria-hidden="true">${NEEDLE_MINI}</span><span class="ill-core">${icon(m.hideTopic ? 'round' : card.area)}</span></div>
         <p class="eyebrow">${esc(fmt(state.general && state.level === 1 ? s.partOf : s.chapterOf, { i: chIdx, n: chapters.length }))} · ${esc(card.count === 1 ? s.questions1 : fmt(s.questionsN, { n: card.count }))}</p>
         <h1 class="ch-title">${esc(chapterTitle(card))}${m.provisional ? ` <span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}</h1>
         <p class="ch-sub">${esc(m.subKey ? s[m.subKey] : tx(AREA_INTRO[card.area]))}</p>
@@ -1921,10 +1982,10 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       const canDecline = it.type === 'radio' && !OPT[it.opt].values.some((v) => typeof v === 'string');
       const declined = state.answers[it.id] === 'skip';
       const declineBtn = canDecline ? `<div class="decline-row"><button type="button" class="btn link decline${declined ? ' on' : ''}" data-act="decline" data-item="${it.id}" aria-pressed="${declined}">${esc(s.preferNot)}</button></div>` : '';
-      const needsNext = it.type === 'text' || it.type === 'warm' || SLIDER_OPTS.includes(it.opt) || answered || isLast;
+      const needsNext = true;
       const nextLabel = isLast ? (card.area === 'memory' ? s.memoryDone : fmt(s.finishLevel, { n: state.level })) : (it.type === 'warm' && state.answers[it.id] == null ? s.skipWarm : s.next);
       body = `<section class="qcard ${reduceMotion ? '' : 'enter'}">
-        <div class="q-area">${icon(card.area, 'mini-ill')}<span>${esc(chapterTitle(card))}</span>${m.provisional ? `<span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}${it.type === 'warm' ? `<span class="chip chip-prov">${esc(s.warmChip)}</span>` : ''}</div>
+        <div class="q-area">${icon(m.hideTopic ? 'round' : card.area, 'mini-ill')}<span>${esc(chapterTitle(card))}</span>${m.provisional ? `<span class="chip chip-prov">${esc(s.provisionalChip)}</span>` : ''}${it.type === 'warm' ? `<span class="chip chip-prov">${esc(s.warmChip)}</span>` : ''}</div>
         ${ctx}
         <h1 class="q-text" id="q-text">${esc(tx(it.text))}</h1>
         ${control}
@@ -2033,7 +2094,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       if (state.answers['l3.better']) L.push(`• ${s.betterQ} ${state.answers['l3.better']}`);
     }
     const sk = Object.keys(state.skipped).filter((k) => state.skipped[k]).map((k) => k.split(':')[1]);
-    if (sk.length) { L.push(''); L.push(`${s.reportSkipped}: ${Array.from(new Set(sk)).map(areaName).join(', ')}`); }
+    if (sk.length) { L.push(''); L.push(`${s.reportSkipped}: ${Array.from(new Set(sk)).map((k) => (k === 'sens' ? SENS_AREAS.map(areaName).join(', ') : areaName(k))).join(', ')}`); }
     const dec = declinedByArea(state);
     if (Object.keys(dec).length) { L.push(''); L.push(`${s.reportDeclined}:`); Object.keys(dec).forEach((k) => L.push(`• ${areaName(k) || s.ctrlTitle}: ${dec[k]}`)); }
     L.push(''); L.push(`${s.reportFlags}:`);
@@ -2087,6 +2148,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     else if (state.view === 'handback') v = viewHandback();
     const sheet = !state.crisisOpen && sensorSheetOpen();
     EXP_KEYS.forEach((k) => document.documentElement.classList.toggle('exp-' + k, exp[k]));
+    document.documentElement.dataset.font = font;
     root.innerHTML = header() + v + `<footer class="foot">${esc(S().footer)}<br><button class="exp-fab" data-act="exp-open">${esc(S().expButton)}</button></footer>` + (state.crisisOpen ? crisisOverlay() : '') + (sheet ? sensorSheet() : '') + (state.crisisOpen || sheet ? '' : expPanel()) + (state.toast ? toastHtml(state.toast) : '');
     if (state.expOpen) { const d = document.getElementById('exp-dialog'); if (d && !d.contains(document.activeElement)) d.focus(); }
     if (state.toast) { clearTimeout(toastTimer); toastTimer = setTimeout(() => { const el = document.getElementById('toast'); if (el) el.classList.add('out'); setTimeout(() => { const e2 = document.getElementById('toast'); if (e2) e2.remove(); }, 400); }, reduceMotion ? 2600 : 1800); state.toast = null; }
@@ -2106,6 +2168,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     return `<div class="overlay" id="exp-sheet"><div class="dialog sheet exp-dialog" role="dialog" aria-modal="true" aria-labelledby="exp-h" tabindex="-1" id="exp-dialog">
       <h2 id="exp-h">${esc(s.expTitle)}</h2><p class="small">${esc(s.expText)}</p>
       ${EXP_KEYS.map((k) => `<label class="exp-row" for="exp-${k}"><input type="checkbox" id="exp-${k}" data-exp="${k}"${exp[k] ? ' checked' : ''}><span><strong>${esc(s['exp_' + k])}</strong><span class="small">${esc(s['expd_' + k])}</span></span></label>`).join('')}
+      <fieldset class="exp-row exp-font"><legend><strong>${esc(s.expFont)}</strong></legend>${FONTS.map((f) => `<label class="font-opt" for="font-${f}"><input type="radio" name="font" id="font-${f}" data-font="${f}"${font === f ? ' checked' : ''}><span style="font-family:${FONT_FAMILY[f]}">${esc(s.fontNames[f])}</span></label>`).join('')}</fieldset>
       <button class="btn primary big" data-act="exp-close">${esc(s.expClose)}</button></div></div>`;
   }
   const live = document.createElement('div'); live.className = 'sr'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); document.body.appendChild(live);
@@ -2149,7 +2212,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
         state.justDone = ch.key;
         if (exp.interact && ch.area !== 'safety') {
           const calm = SKIPPABLE.includes(ch.area) || ch.area === 'safety' || !!ch.mod.sensitive;
-          state.toast = { area: ch.area, calm, title: ch.area === 'round' ? S().roundDone : fmt(S().topicDone, { area: chapterTitle(ch) }), more: calm ? S().topicDoneCalm : S().topicDoneMore };
+          state.toast = { area: ch.area, calm, title: ch.mod.hideTopic ? S().roundDone : fmt(S().topicDone, { area: chapterTitle(ch) }), more: calm ? S().topicDoneCalm : S().topicDoneMore };
         }
       }
     }
@@ -2186,12 +2249,13 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
   }
 
   function choose(id, optKey, idx) {
-    const v = OPT[optKey].values[idx];
+    const v = OPT[optKey].values[idx]; const prev = state.answers[id];
     recordAnswer(id, v); state.error = null;
-    if (id === 'phq.9' && typeof v === 'number' && v > 0) { state.crisisOpen = true; state.crisisThenAdvance = true; render(true); return; }
+    // Choosing never moves on by itself: the person picks, then taps "Next".
+    // The crisis notice opens when the safety answer goes above 0 (not again if it already was).
+    if (id === 'phq.9' && typeof v === 'number' && v > 0 && !(typeof prev === 'number' && prev > 0)) { state.crisisOpen = true; state.crisisThenAdvance = false; }
     render(true);
-    const cards = currentCards(); const i = currentIndex(cards);
-    if (i < cards.length - 1) advanceTimer = setTimeout(advance, reduceMotion ? 0 : 280);
+    if (!state.crisisOpen) { const again = root.querySelector(`[data-item="${id}"][data-choose="${idx}"]`); if (again) again.focus({ preventScroll: true }); }
   }
   // swipe-to-answer for yes/no (experiment)
   let swipeDrag = null;
@@ -2228,6 +2292,7 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
       return;
     }
     if (t.dataset.slider) commitSlider(t);
+    if (t.dataset.font && FONTS.includes(t.dataset.font)) { font = t.dataset.font; store('nort.font', font); render(true); const again = document.getElementById('font-' + font); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
   });
   root.addEventListener('input', (e) => {
@@ -2254,12 +2319,18 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     const stop = e.target.closest('[data-stop]');
     if (stop) { const id = stop.dataset.item; const wrap = root.querySelector(`[data-slider-wrap="${id}"]`); const input = wrap.querySelector('input'); input.value = stop.dataset.stop; commitSlider(input); input.focus(); return; }
     const wb = e.target.closest('[data-warm]');
-    if (wb) { recordAnswer(wb.dataset.item, Number(wb.dataset.warm)); state.error = null; render(true); advanceTimer = setTimeout(advance, reduceMotion ? 0 : 380); return; }
+    if (wb) { recordAnswer(wb.dataset.item, Number(wb.dataset.warm)); state.error = null; render(true); const again = root.querySelector(`[data-item="${wb.dataset.item}"][data-warm="${wb.dataset.warm}"]`); if (again) again.focus({ preventScroll: true }); return; }
     const ch = e.target.closest('[data-choose]');
     if (ch) { choose(ch.dataset.item, ch.dataset.opt, Number(ch.dataset.choose)); return; }
     const b = e.target.closest('[data-act]'); if (!b) return;
     const act = b.dataset.act; const s = S();
+    if (act === 'start' && !compass.found) {
+      compass.nudge = true; compassUpdate();
+      const go = root.querySelector('.compass-go'); if (go && !reduceMotion) { go.classList.remove('shake'); void go.offsetWidth; go.classList.add('shake'); }
+      return;
+    }
     if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.view = 'setup'; state.error = null; render(); }
+    else if (act === 'compass-manual') manualMode();
     else if (act === 'exp-open') { state.expOpen = true; render(true); }
     else if (act === 'exp-close') { state.expOpen = false; render(true); const f = root.querySelector('.exp-fab'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
@@ -2287,8 +2358,8 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
     else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
     else if (act === 'back-results') { state.view = 'results'; render(); }
     else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
-    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, manualFound: false }); render(); }
-    else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else render(true); }
+    else if (act === 'restart') { const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
+    else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else { render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn'); if (f) f.focus({ preventScroll: true }); } }
     else if (act === 'copy') {
       const txt = reportText();
       const done = (ok) => { state.copyMsg = ok ? s.copied : s.copyFail; render(true); };
