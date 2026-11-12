@@ -87,6 +87,7 @@ p { margin: 0; }
 .star { color: var(--coral-text); }
 @media (max-width: 420px) { .points-l { display: none; } }
 .lang select { font: inherit; font-size: .88rem; font-weight: 700; min-height: 44px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--soft); color: var(--ink); max-width: 44vw; }
+.proto, .foot { position: relative; z-index: 1; }
 .proto { text-align: center; font-size: .78rem; padding: 6px 16px; background: var(--soft); color: var(--ink-2); }
 
 .wrap { max-width: 640px; margin: 0 auto; padding: 22px 16px 40px; display: grid; gap: 20px; }
@@ -541,11 +542,83 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .find .hero-head, .find .compass-block, .find .compass-hint, .find #compass-manual { position: relative; z-index: 1; }
 .find .find-ui { position: relative; z-index: 1; display: grid; justify-items: center; gap: 10px; }
 .find .find-ui.waiting { visibility: hidden; }
-.find .find-ui.show { animation: showcompass .7s cubic-bezier(.2, 1.3, .4, 1); }
-@keyframes showcompass { from { opacity: 0; transform: translateY(40px) scale(.6); } to { opacity: 1; transform: none; } }
 .find .hero-head { text-shadow: 0 1px 0 var(--bg); }
-.find .spacer3d { height: 30vh; }
+.find .spacer3d { height: clamp(180px, 32vh, 300px); }
 .find .compass { width: min(260px, 70vw); }
+
+/* Talk and indicators: one full-screen scene like the find screen — the character lives on the screen,
+   speaks in a cartoon speech bubble, and the answer card sits below him */
+.scene3d { position: relative; }
+.scene3d .stage3d { position: fixed; inset: 0; width: auto; height: auto; z-index: 0; pointer-events: none; border-radius: 0; background: linear-gradient(180deg, var(--bg) 0%, var(--soft) 100%); }
+.scene3d > :not(.stage3d) { position: relative; z-index: 1; }
+.talk-scene { display: flex; flex-direction: column; gap: 10px; max-width: 560px; margin: 0 auto; padding: 12px 16px 16px; }
+.scene-top { background: color-mix(in srgb, var(--surface) 80%, transparent); border-radius: 16px; padding: 8px 12px; }
+.scene-gap { flex: none; height: clamp(150px, 24vh, 260px); }
+.comic { position: relative; align-self: center; width: min(100%, 440px); margin-top: 6px; background: #FFFFFF; color: #17241C; border: 3px solid #17241C; border-radius: 30px; padding: 14px 18px 16px; box-shadow: 4px 5px 0 rgba(23, 36, 28, .85); }
+.comic::after { content: ''; position: absolute; left: calc(50% - 22px); bottom: -22px; width: 30px; height: 24px; background: #FFFFFF; border-right: 3px solid #17241C; border-bottom: 3px solid #17241C; border-bottom-right-radius: 26px 22px; transform: skewX(28deg); }
+.comic::before { content: ''; position: absolute; left: calc(50% - 26px); bottom: -2px; width: 34px; height: 6px; background: #FFFFFF; z-index: 1; }
+.comic .q-text { font-size: clamp(1.1rem, 4.6vw, 1.3rem); line-height: 1.35; margin: 0; color: inherit; }
+.comic .talk-who { margin: 0 0 4px; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: #2E6B45; }
+.comic .react-line { background: none; border: 0; padding: 0 0 6px; text-align: left; color: #2E6B45; }
+.comic .comic-replay { margin-top: 6px; padding: 0; color: #2E6B45; }
+.comic.pop { animation: comicpop .45s cubic-bezier(.2, 1.4, .4, 1); transform-origin: 50% 100%; }
+@keyframes comicpop { from { opacity: 0; transform: scale(.5) translateY(30px); } to { opacity: 1; transform: none; } }
+.answer-card { background: var(--surface); border-radius: 24px; padding: 14px 16px; box-shadow: 0 -2px 24px rgba(0, 0, 0, .08); display: grid; gap: 10px; }
+.answer-card .talk-answer { min-height: 72px; }
+.answer-card .note { font-size: .9rem; }
+.answer-card .note { margin: 0; }
+.indicators.scene3d .comic { margin-bottom: 4px; }
+.indicators.scene3d .scene-gap { flex: none; height: clamp(150px, 27vh, 240px); }
+.indicators.scene3d > .lead, .indicators.scene3d > .note { background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: 16px; padding: 10px 14px; }
+.find .find-ui.show { animation: showcompass .8s cubic-bezier(.2, 1.15, .4, 1); }
+@keyframes showcompass { from { opacity: 0; transform: translate(var(--fx, 0), var(--fy, 40px)) scale(.12) rotate(-25deg); } 60% { opacity: 1; } to { opacity: 1; transform: none; } }
+.answer-card { gap: 8px; }
+.answer-card .talk-partial:empty { display: none; }
+.answer-card { grid-template-columns: minmax(0, 1fr); }
+.scene-nav { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 6px; }
+.scene-nav .btn.link { padding: 6px 4px; font-size: .9rem; text-align: center; white-space: normal; line-height: 1.2; }
+/* character builder: options as pictures (name underneath, small) */
+.av-opt.ic { display: inline-grid; justify-items: center; align-content: start; gap: 4px; width: 92px; min-height: 84px; padding: 6px 4px; border-radius: 16px; font-size: .74rem; line-height: 1.15; text-align: center; white-space: normal; }
+.av-opt.ic svg { width: 56px; height: 56px; display: block; background: #F4F8F5; border-radius: 14px; }
+.av-opt.ic span { hyphens: manual; overflow-wrap: normal; }
+/* voice: your own voice highlighted, other voices in a list */
+.own-voice-card { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; padding: 14px; border-radius: 20px; background: var(--soft); border: 2px solid transparent; margin-bottom: 12px; }
+.own-voice-card.on { border-color: var(--accent, #2E6B45); }
+.own-voice-card > svg { width: 40px; height: 40px; padding: 8px; border-radius: 50%; background: var(--surface); color: var(--ink); fill: currentColor; }
+.own-voice-t { margin: 0 0 2px; font-weight: 800; }
+.own-voice-card .small { margin: 0 0 8px; }
+.own-voice-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#voice-pick { width: 100%; margin: 4px 0 10px; }
+.comic :focus-visible { outline-color: #17241C; }
+.find .hero-head { background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: 18px; padding: 10px 14px; }
+/* Sign-in: a frosted card over a deep green scene with the compass ring (text sits on a near-opaque card: 4.5:1+) */
+.login-screen { position: relative; overflow: hidden; min-height: calc(100vh - 110px); min-height: calc(100dvh - 110px); display: grid; place-items: center; padding: 28px 16px 40px; background: radial-gradient(120% 70% at 15% 10%, #2F8F5B 0%, transparent 55%), radial-gradient(90% 60% at 95% 85%, #5FC48C 0%, transparent 50%), linear-gradient(160deg, #0B3B2A 0%, #0E4A33 45%, #06261A 100%); }
+.login-bg { position: absolute; inset: 0; pointer-events: none; }
+.login-ring { position: absolute; width: min(150vw, 760px); left: 50%; top: 50%; transform: translate(-50%, -50%); fill: none; stroke: rgba(255, 255, 255, .09); stroke-width: 1.2; }
+.login-card { position: relative; width: min(100%, 380px); display: grid; gap: 8px; padding: 26px 22px 22px; border-radius: 28px; color: #FFFFFF; background: rgba(6, 34, 23, .72); border: 1px solid rgba(255, 255, 255, .18); box-shadow: 0 24px 60px rgba(0, 0, 0, .35); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .login-card { background: #0A2E20; } }
+@media (prefers-reduced-transparency: reduce) { .login-card { background: #0A2E20; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+.login-logo { justify-self: center; width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; background: #FFFFFF; color: #0E4A33; --ink: #0E4A33; --accent: #1E7A4C; box-shadow: 0 0 0 6px rgba(255, 255, 255, .12); margin-bottom: 6px; }
+.login-logo svg { width: 58px; height: 58px; }
+.login-card h1 { margin: 0; text-align: center; font-size: 1.55rem; color: #FFFFFF; }
+.login-lead { margin: 0 0 10px; text-align: center; color: #CFE9DA; }
+.login-l { font-size: .85rem; font-weight: 700; color: #E3F3EA; margin-top: 8px; margin-bottom: -6px; }
+.login-field { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid rgba(255, 255, 255, .55); padding: 2px 2px 4px; }
+.login-field:focus-within { border-bottom-color: #8FE3B4; border-bottom-width: 3px; padding-bottom: 3px; }
+.login-field svg { width: 22px; height: 22px; color: #CFE9DA; flex: none; }
+.login-field input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: #FFFFFF; font: inherit; font-size: 1.05rem; outline: none; }
+.login-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.login-check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9rem; color: #E3F3EA; }
+.login-check input { width: 20px; height: 20px; accent-color: #5FC48C; }
+.login-link { background: none; border: 0; padding: 0 2px; min-height: 44px; font: inherit; font-size: .9rem; color: #BDF0D3; text-decoration: underline; cursor: pointer; }
+.login-link.strong { font-weight: 800; font-size: 1rem; color: #FFFFFF; }
+.login-btn { margin-top: 8px; min-height: 52px; border: 0; border-radius: 999px; font: inherit; font-weight: 800; font-size: 1.1rem; letter-spacing: .02em; color: #06261A; background: linear-gradient(90deg, #8FE3B4, #5FC48C); box-shadow: 0 8px 22px rgba(95, 196, 140, .35); cursor: pointer; }
+.login-btn:active { transform: translateY(1px); }
+.login-msg { margin: 4px 0 0; padding: 10px 12px; border-radius: 14px; background: #FFF4E5; color: #5A2E00; font-weight: 700; font-size: .92rem; }
+.login-proto { margin: 6px 0 0; text-align: center; font-size: .8rem; color: #CFE9DA; }
+.login-new { margin: 0; text-align: center; color: #E3F3EA; }
+.login-card :focus-visible { outline: 3px solid #FFFFFF; outline-offset: 3px; }
+.login-field input:focus-visible { outline: none; }
 
 </style>
 </head>
@@ -878,6 +951,11 @@ const PROVISIONAL_SCALE = { bipolar: 'bipolar', panic: 'panic', social: 'social'
 const HELP = {
   AU: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '000' }, { name: { pt: 'Lifeline (24 h)', en: 'Lifeline (24/7)' }, num: '13 11 14' }],
   BR: [{ name: { pt: 'SAMU', en: 'SAMU (ambulance)' }, num: '192' }, { name: { pt: 'CVV (24 h)', en: 'CVV (24/7)' }, num: '188' }],
+  US: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '911' }, { name: { pt: '988 Suicide & Crisis Lifeline (24 h)', en: '988 Suicide & Crisis Lifeline (24/7)' }, num: '988' }],
+  CA: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '911' }, { name: { pt: '988 Suicide Crisis Helpline (24 h)', en: '988 Suicide Crisis Helpline (24/7)' }, num: '988' }],
+  GB: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '999' }, { name: { pt: 'Samaritans (24 h)', en: 'Samaritans (24/7)' }, num: '116 123' }],
+  IE: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '112' }, { name: { pt: 'Samaritans (24 h)', en: 'Samaritans (24/7)' }, num: '116 123' }],
+  NZ: [{ name: { pt: 'Emergência', en: 'Emergency' }, num: '111' }, { name: { pt: 'Need to talk? (24 h)', en: 'Need to talk? (24/7)' }, num: '1737' }],
   OTHER: []
 };
 
@@ -962,7 +1040,7 @@ const UI = {
     finishLevel: 'Ver resultado do nível {n}',
     crisisTitle: 'Você não precisa passar por isso sozinho/a',
     crisisText: 'Você contou que teve pensamentos de morte ou de se machucar. Se você corre perigo agora, ligue para a emergência. Se quiser conversar com alguém agora, estes serviços atendem a qualquer hora:',
-    crisisOther: 'Ligue para o número de emergência do seu país. Para achar uma linha de apoio perto de você:',
+    crisisOther: 'Ligue para o número de emergência do seu país. Para achar uma linha de apoio perto de você:', helplineSpoken: 'find a helpline ponto com',
     crisisOtherCountries: 'Em outros países:',
     crisisNote: 'O Nort não é um serviço de crise e não acompanha ninguém em tempo real.',
     crisisContinue: 'Estou em segurança agora, continuar',
@@ -1029,22 +1107,23 @@ const UI = {
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Este navegador não tem voz. O personagem vai aparecer só em texto.', voiceHello: 'Oi! Eu sou você. Vamos conversar um pouco?', voiceHelloName: 'Oi! Eu sou {name}. Vamos conversar um pouco?',
     talkPrivacyAI: 'Como funciona: se você usar o microfone, sua voz vira texto num serviço da Anthropic. O texto da resposta é lido por uma IA (Claude, da Anthropic) só para encontrar indicadores nas áreas da saúde mental. A IA não dá diagnóstico. Neste protótipo, nenhuma resposta fica guardada depois que você fecha a página. Se você usa leitor de tela, pode escolher "Sem voz".',
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
-    signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
+    loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas ainda não são guardadas. Para testar, crie uma conta.', loginNotFound: 'Não encontramos essa conta. No protótipo as contas não ficam guardadas: toque em "Criar uma conta".', loginForgotMsg: 'No protótipo ainda não dá para recuperar a senha. Na versão final, vamos mandar um link para o seu e-mail.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
+    countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Ela só vale enquanto esta página estiver aberta; nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Vire o celular até a seta apontar para o N, ou arraste a seta, e toque em Começar.', birthHint: 'Toque para escolher a data (ano, mês e dia).', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
     reactSad: 'Obrigado por dividir isso comigo. Parece pesado, e faz sentido se sentir assim.', reactAnxious: 'Entendi. Vamos com calma, uma coisa de cada vez.', reactHappy: 'Que bom ouvir isso!', reactExcited: 'Que demais! Fico feliz por você.', reactNeutral: 'Obrigado por contar.', reactSkip: 'Tudo bem, vamos para a próxima.',
     talkHello: 'Oi! Eu sou {name}, a sua versão. Vou te fazer algumas perguntas. Responda do seu jeito, sem pressa.', avDrag: 'Arraste o personagem para girar.',
-    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓',
+    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'O personagem fala com a sua voz. Você lê algumas frases curtas e, antes de gravar, pedimos sua permissão (voz é um dado sensível: vai para a ElevenLabs, nos EUA, e é apagada ao sair).', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com uma voz natural, o que o personagem fala vai para o serviço de voz (ElevenLabs, nos EUA) para virar áudio. As suas respostas não são enviadas. O resumo dos resultados é lido pela voz do aparelho.', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
     cloneTitle: 'Sua voz no seu personagem', cloneLead: 'Leia em voz alta as frases abaixo, uma de cada vez, num lugar silencioso. Com uns 30 segundos de gravação, o seu personagem passa a falar com a sua voz.',
     cloneNote: 'Se ouvir a sua própria voz te deixar desconfortável, escolha uma voz pronta. Você pode trocar quando quiser.',
     cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs (empresa dos Estados Unidos) só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Sei que voz é dado biométrico, um dado sensível pela LGPD. As frases que o personagem fala, inclusive o nome dele, também vão para a ElevenLabs para virar áudio. A voz é apagada quando eu recomeçar ou fechar a página e, no máximo, em 2 horas; registros técnicos seguem a política de privacidade da ElevenLabs.',
     cloneShort: 'Essa gravação ficou curta demais. Leia a frase inteira e depois toque em Parar.', cloneBusyServer: 'Muitas tentativas agora. Espere um minuto e tente de novo.', cloneDone: 'gravada', ownVoiceOff: 'Voltei para uma voz pronta nesta conversa. A sua voz foi apagada.',
     cloneHow: 'Leia cada frase e toque em Parar', cloneRecord: 'Gravar a frase {n}', cloneStop: 'Parar', cloneTotal: 'Gravado: {n} s (mínimo 30 s)', cloneGo: 'Criar minha voz', cloneBusy: 'Criando a sua voz…', cloneBack: 'Voltar sem gravar',
     cloneMicDenied: 'Sem acesso ao microfone. Permita o microfone nas configurações do navegador ou escolha uma voz pronta.', cloneFail: 'Não deu para criar a sua voz agora. Tente de novo ou escolha uma voz pronta.', cloneVerify: 'A ElevenLabs pediu uma verificação extra para esta voz. Por enquanto, escolha uma voz pronta.',
-    cloneLines: ['Oi, este é o meu personagem e esta é a minha voz.', 'Hoje eu quero conversar comigo com calma, sem pressa nenhuma.', 'Às vezes o dia é leve, às vezes é pesado, e tudo bem sentir as duas coisas.', 'Eu gosto de ouvir música, caminhar e estar perto de quem eu gosto.', 'Quando algo me preocupa, eu respiro fundo e penso no próximo passo.', 'Vou responder do meu jeito, com sinceridade, e cuidar de mim no caminho.'],
+    cloneLines: ['Oi, esta é a minha voz, e hoje eu escolhi cuidar de mim.', 'Eu não preciso ter todas as respostas para dar o próximo passo.', 'Mesmo nos dias difíceis, eu sigo tentando, do meu jeito.', 'Pedir ajuda não é fraqueza: é a coragem de quem quer ficar bem.', 'Eu mereço a mesma gentileza que ofereço às pessoas que amo.', 'Será que hoje eu posso ser um pouco mais leve comigo?', 'Às sete da manhã eu abro a janela, respiro fundo e conto até quatro.', 'Um passo de cada vez, uma respiração de cada vez. Eu estou aqui.'],
     indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
     talkStart: 'Começar a conversa', quickQuiz: 'Prefiro responder perguntas rápidas',
-    talkFirst: 'Fique à vontade: fale o que tiver vontade, do jeito que você sente. Se não quiser responder alguma pergunta, é só pular.',
+    talkFirst: 'Fique à vontade: fale do jeito que você sente. Se não quiser responder alguma pergunta, é só pular.',
     talkPlaceholder: 'Fale ou escreva do seu jeito. Não existe resposta certa.', talkAnswerLabel: 'Sua resposta', talkReplay: 'Ouvir de novo', talkSkip: 'Pular esta pergunta', talkNeed: 'Responda do seu jeito ou toque em "Pular esta pergunta".',
     micStart: 'Falar', micStop: 'Parar de gravar', micDenied: 'Sem permissão para o microfone. Você pode escrever a resposta.', gentleNote: 'Responda só o que quiser. Aqui não tem julgamento.', talkDone: 'Ver o que apareceu',
     indWait: 'Lendo o que você contou…', indTitle: 'O que apareceu na conversa', indLead: 'Isto não é diagnóstico. São indicadores para escolher quais questionários oficiais fazer agora, os mesmos que psicólogos e psiquiatras usam. Você decide.',
@@ -1166,7 +1245,7 @@ const UI = {
     finishLevel: 'See level {n} result',
     crisisTitle: 'You don’t have to go through this alone',
     crisisText: 'You told us you have had thoughts of death or of hurting yourself. If you are in danger right now, call emergency services. If you want to talk to someone now, these services answer at any hour:',
-    crisisOther: 'Call your country’s emergency number. To find a support line near you:',
+    crisisOther: 'Call your country’s emergency number. To find a support line near you:', helplineSpoken: 'find a helpline dot com',
     crisisOtherCountries: 'In other countries:',
     crisisNote: 'Nort is not a crisis service and does not monitor anyone in real time.',
     crisisContinue: 'I’m safe right now, continue',
@@ -1233,19 +1312,20 @@ const UI = {
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'This browser has no voice. The character will show as text only.', voiceHello: 'Hi! I am you. Shall we talk for a bit?', voiceHelloName: 'Hi! I am {name}. Shall we talk for a bit?',
     talkPrivacyAI: 'How it works: if you use the microphone, your voice becomes text in an Anthropic service. The text of your answer is read by an AI (Claude, by Anthropic) only to find indicators across areas of mental health. The AI does not diagnose. In this prototype, no answer is kept after you close the page. If you use a screen reader, you can choose "No voice".',
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
-    signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. Nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
+    loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored yet. To try it, create an account.', loginNotFound: 'We couldn’t find that account. In the prototype accounts are not stored: tap "Create an account".', loginForgotMsg: 'Password recovery is not available in the prototype yet. In the final version we will send a link to your email.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
+    countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. It only works while this page is open; nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Turn your phone until the arrow points to N, or drag the arrow, and tap Start.', birthHint: 'Tap to pick the date (year, month and day).', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
     reactSad: 'Thank you for sharing that with me. It sounds heavy, and it makes sense to feel that way.', reactAnxious: 'I hear you. Let’s take it slowly, one thing at a time.', reactHappy: 'So good to hear that!', reactExcited: 'That’s wonderful! I’m happy for you.', reactNeutral: 'Thanks for telling me.', reactSkip: 'That’s fine, let’s go to the next one.',
     talkHello: 'Hi! I’m {name}, your own self. I’ll ask you a few questions. Answer in your own way, no rush.', avDrag: 'Drag the character to turn it.',
-    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓',
+    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Your character speaks in your voice. You read a few short sentences, and we ask your permission before recording (your voice is sensitive data: it goes to ElevenLabs, in the US, and is deleted when you leave).', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, what the character says goes to the voice service (ElevenLabs, in the US) to become audio. Your answers are not sent. The results summary is read by the device voice.', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
     cloneTitle: 'Your voice in your character', cloneLead: 'Read the sentences below out loud, one at a time, somewhere quiet. With about 30 seconds of recording, your character will speak with your voice.',
     cloneNote: 'If hearing your own voice makes you uncomfortable, choose a ready-made voice. You can switch whenever you like.',
     cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs (a United States company) only to create my character’s voice in this session. It is my own voice. I understand a voice is biometric data, which is sensitive personal information. The sentences the character says, including its name, are also sent to ElevenLabs to become audio. The voice is deleted when I start over or close the page, and at most within 2 hours; technical logs follow ElevenLabs’ privacy policy.',
     cloneShort: 'That recording was too short. Read the whole sentence, then tap Stop.', cloneBusyServer: 'Too many attempts right now. Wait a minute and try again.', cloneDone: 'recorded', ownVoiceOff: 'I switched back to a ready-made voice for this conversation. Your voice was deleted.',
     cloneHow: 'Read each sentence and tap Stop', cloneRecord: 'Record sentence {n}', cloneStop: 'Stop', cloneTotal: 'Recorded: {n} s (minimum 30 s)', cloneGo: 'Create my voice', cloneBusy: 'Creating your voice…', cloneBack: 'Go back without recording',
     cloneMicDenied: 'No microphone access. Allow the microphone in your browser settings or choose a ready-made voice.', cloneFail: 'Your voice couldn’t be created right now. Try again or choose a ready-made voice.', cloneVerify: 'ElevenLabs asked for an extra check for this voice. For now, choose a ready-made voice.',
-    cloneLines: ['Hi, this is my character and this is my voice.', 'Today I want to talk with myself calmly, with no rush at all.', 'Some days are light, some days are heavy, and it is okay to feel both.', 'I like listening to music, going for walks and being near the people I love.', 'When something worries me, I take a deep breath and think about the next step.', 'I will answer in my own way, honestly, and take care of myself along the way.'],
+    cloneLines: ['Hi, this is my voice, and today I chose to take care of myself.', 'I don’t need to have every answer to take the next step.', 'Even on hard days, I keep trying, in my own way.', 'Asking for help is not weakness: it is the courage of someone who wants to be well.', 'I deserve the same kindness I give to the people I love.', 'Could I be a little gentler with myself today?', 'At seven in the morning I open the window, breathe in deeply and count to four.', 'One step at a time, one breath at a time. I am here.'],
     indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
     talkStart: 'Start the conversation', quickQuiz: 'I’d rather answer quick questions',
     talkFirst: 'Take your time: say whatever you feel like, the way you feel it. If you don’t want to answer a question, just skip it.',
@@ -1803,34 +1883,35 @@ if (typeof module !== 'undefined') module.exports = { computeAreas, computeFlags
 // Address of the Nort voice server (Cloudflare Worker, see server/). Empty = own voice off.
 const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) || 'https://nort-voz.nortvoz.workers.dev';
 
+// Few open questions, each built to bring at least 3 things (what happens, how often, how much it weighs),
+// from methods with research behind them: the Day Reconstruction Method (Kahneman et al., 2004),
+// metaphor-based elicitation, the "miracle question" of solution-focused therapy (de Shazer) and
+// open questions from motivational interviewing (Miller & Rollnick). Not official text; to be validated.
 const TALK_QS = [
-  { id: 'mood', areas: ['wellbeing', 'depression', 'bipolar'],
-    q: { pt: 'Como você tem se sentido nas últimas semanas? Pode falar do seu humor, da sua energia, do que ainda te dá prazer, e se teve fases muito para cima ou muito para baixo.',
-         en: 'How have you been feeling over the last few weeks? You can talk about your mood, your energy, what still gives you pleasure, and whether you have had phases of feeling very up or very down.' } },
+  { id: 'day', areas: ['sleep', 'depression', 'wellbeing', 'adhd', 'alcohol', 'substances', 'eating'],
+    q: { pt: 'Me conta um dia comum seu da última semana, do acordar até dormir: como foi a noite antes, o que fez e comeu, com quem esteve, quando foi difícil se concentrar e em que momento se sentiu melhor e pior.',
+         en: 'Walk me through an ordinary day from last week, from waking up to going to sleep: how the night before was, what you did and ate, who you were with, when it was hard to focus, and when you felt best and worst.' } },
+  { id: 'weather', areas: ['wellbeing', 'depression', 'bipolar', 'anxiety', 'distress'],
+    q: { pt: 'Se as suas duas últimas semanas fossem uma previsão do tempo, como estaria o céu? Quantos dias de sol, de nublado e de tempestade, e o que fez o tempo mudar? (Ou conte do seu jeito.)',
+         en: 'If your last two weeks were a weather forecast, what would the sky look like? How many sunny, cloudy and stormy days, and what made the weather change? (Or just tell me in your own words.)' } },
   { id: 'safety', type: 'safety' },
-  { id: 'worry', areas: ['anxiety', 'panic', 'social', 'ocd'],
-    q: { pt: 'O que tem te preocupado ou deixado com tensão? Conte se o medo aparece de repente, perto de outras pessoas, ou em pensamentos que voltam e não saem da cabeça.',
-         en: 'What has been worrying you or making you tense? Tell me if the fear comes on suddenly, around other people, or in thoughts that keep coming back.' } },
-  { id: 'body', areas: ['sleep', 'eating'],
-    q: { pt: 'Como andam o seu sono e a sua relação com a comida e com o seu corpo?',
-         en: 'How are your sleep and your relationship with food and with your body?' } },
-  { id: 'day', areas: ['adhd', 'autism'],
-    q: { pt: 'Como é o seu dia a dia para se concentrar, se organizar e terminar as coisas? E como você lida com mudanças de rotina, barulho, luz forte ou muita gente?',
-         en: 'How is your day-to-day when it comes to focusing, getting organised and finishing things? And how do you deal with changes in routine, noise, bright light or crowds?' } },
-  { id: 'habits', areas: ['alcohol', 'substances', 'gambling'], gentle: true,
-    q: { pt: 'Fale um pouco dos seus hábitos: bebida, outras substâncias, apostas ou jogos. Quanto isso faz parte da sua rotina, e já te trouxe algum problema?',
-         en: 'Tell me a bit about your habits: drinking, other substances, betting or gambling. How much is it part of your routine, and has it ever caused you problems?' } },
-  { id: 'bonds', areas: ['borderline', 'social'],
-    q: { pt: 'Como estão as suas relações e as suas emoções? Às vezes elas ficam intensas demais, mudam rápido ou são difíceis de controlar?',
-         en: 'How are your relationships and your emotions? Do they sometimes get too intense, change quickly or feel hard to control?' } },
+  { id: 'mind', areas: ['anxiety', 'panic', 'ocd', 'gambling', 'alcohol', 'substances'],
+    q: { pt: 'O que tem ocupado a sua cabeça mais do que você gostaria? Quando isso aparece, o que acontece no seu corpo e o que você costuma fazer para aliviar?',
+         en: 'What has been taking up more of your mind than you would like? When it shows up, what happens in your body and what do you usually do to ease it?' } },
+  { id: 'people', areas: ['social', 'borderline', 'autism'],
+    q: { pt: 'Pense nas pessoas da sua vida: quando foi a última vez que você se sentiu muito bem com alguém, e a última vez que estar com gente, ou uma relação, te deixou mal? Depois de passar tempo com pessoas, você costuma ficar com mais energia ou esgotado(a)?',
+         en: 'Think about the people in your life: when was the last time you felt really good with someone, and the last time being around people, or a relationship, left you feeling bad? After time with people, do you usually feel energised or drained?' } },
   { id: 'hard', areas: ['trauma', 'psychosis'], sensitive: true,
     q: { pt: 'Se você quiser, conte se passou por alguma experiência muito difícil que ainda volta na sua cabeça, ou se tem percebido coisas que as outras pessoas parecem não perceber.',
          en: 'If you want, tell me whether you have been through a very hard experience that still comes back to you, or whether you have noticed things other people do not seem to notice.' } },
+  { id: 'miracle', areas: ['distress', 'depression', 'anxiety', 'wellbeing'],
+    q: { pt: 'Imagina que amanhã você acorda e, durante a noite, uma coisa que hoje pesa na sua vida simplesmente sumiu. Qual seria o primeiro sinal de que algo mudou, o que você faria diferente e quem perceberia?',
+         en: 'Imagine you wake up tomorrow and, overnight, one thing that weighs on your life today has simply gone. What would be the first sign that something changed, what would you do differently, and who would notice?' } },
   { id: 'baby', areas: ['postpartum'], onlyBaby: true,
-    q: { pt: 'Como você está desde a chegada do bebê?', en: 'How have you been since the baby arrived?' } },
+    q: { pt: 'Como você está desde a chegada do bebê? O que mudou no seu sono, no seu humor e no seu jeito de cuidar de você?', en: 'How have you been since the baby arrived? What has changed in your sleep, your mood and the way you look after yourself?' } },
   { id: 'memory', areas: ['memory'],
-    q: { pt: 'Você ou pessoas próximas têm notado mudanças na sua memória ou no seu raciocínio nos últimos anos?',
-         en: 'Have you or people close to you noticed changes in your memory or thinking over the last few years?' } }
+    q: { pt: 'Você ou pessoas próximas têm notado mudanças na sua memória ou no seu raciocínio nos últimos anos? Se sim, conte o que mudou, desde quando, e se isso atrapalha o dia a dia (compromissos, contas, conversas).',
+         en: 'Have you or people close to you noticed changes in your memory or thinking over the last few years? If so, tell me what changed, since when, and whether it gets in the way of daily life (appointments, bills, conversations).' } }
 ];
 function talkQuestions(state) { return TALK_QS.filter((q) => !q.onlyBaby || state.setup.baby === 1); }
 
@@ -1990,6 +2071,96 @@ function avatarSVG(c, cls) {
 
 if (typeof module !== 'undefined') module.exports = Object.assign(module.exports || {}, { TALK_QS, talkLevel2Modules, localAnalyze, riskWords, cleanAI });
 
+// Small pictures for the character builder options (drawn with the person's own skin and hair colors)
+function avIcon(key, v, look) {
+  const skin = AV.skin[look.skin] || '#C98F68', hair = AV.hairColor[look.hairColor] || '#5A3A22', shirt = AV.shirt[look.shirt] || '#E8684A', pants = AV.pantsColor[look.pantsColor] || '#2B3550';
+  const ink = '#1F2A44', sw = 'stroke="' + ink + '" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"';
+  const eyes = '<circle cx="19.5" cy="24" r="1.7" fill="' + ink + '"/><circle cx="28.5" cy="24" r="1.7" fill="' + ink + '"/>';
+  const mouth = '<path d="M20.5 32 Q24 34.5 27.5 32" fill="none" ' + sw + '/>';
+  const head = (extra) => '<circle cx="24" cy="25" r="12" fill="' + skin + '" ' + sw + '/>' + eyes + mouth + (extra || '');
+  const wrap = (inner) => '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">' + inner + '</svg>';
+  const hairOn = (shape) => head() + shape;
+  switch (key) {
+    case 'face': {
+      const f = { round: '<circle cx="24" cy="24" r="14"/>', oval: '<ellipse cx="24" cy="24" rx="11" ry="16"/>', square: '<rect x="11" y="10" width="26" height="28" rx="6"/>', heart: '<path d="M10 16 Q10 9 17 9 Q24 9 24 14 Q24 9 31 9 Q38 9 38 16 Q38 28 24 40 Q10 28 10 16 Z"/>' }[v];
+      return wrap('<g fill="' + skin + '" ' + sw + '>' + f + '</g>' + eyes + mouth);
+    }
+    case 'nose': {
+      const n = { small: '<path d="M24 27 q-1.5 1.5 0 2" fill="none" ' + sw + '/>', round: '<circle cx="24" cy="28" r="2.6" fill="none" ' + sw + '/>', long: '<path d="M24 23 L22.5 30 Q24 31 25.5 30" fill="none" ' + sw + '/>', wide: '<path d="M20.5 29 Q22 27 24 29 Q26 27 27.5 29" fill="none" ' + sw + '/>' }[v];
+      return wrap('<circle cx="24" cy="25" r="12" fill="' + skin + '" ' + sw + '/>' + eyes + '<path d="M21 33 Q24 34.5 27 33" fill="none" ' + sw + '/>' + n);
+    }
+    case 'brows': {
+      const w = { thin: 1, medium: 2, thick: 3.4, arched: 2 }[v];
+      const b = v === 'arched' ? '<path d="M16.5 20 Q19.5 16.5 22.5 20 M25.5 20 Q28.5 16.5 31.5 20"/>' : '<path d="M16.5 19.5 L22.5 19 M25.5 19 L31.5 19.5"/>';
+      return wrap(head('<g fill="none" stroke="' + hair + '" stroke-width="' + w + '" stroke-linecap="round">' + b + '</g>'));
+    }
+    case 'beard': {
+      const b = {
+        none: '',
+        stubble: '<g fill="' + hair + '" opacity=".7">' + [[17, 31], [20, 34], [24, 35], [28, 34], [31, 31], [19, 29], [29, 29], [24, 32.5]].map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r=".9"/>').join('') + '</g>',
+        short: '<path d="M13 26 Q14 37 24 37.5 Q34 37 35 26 Q32 33 24 33.5 Q16 33 13 26 Z" fill="' + hair + '"/>',
+        full: '<path d="M12.5 24 Q12 42 24 42 Q36 42 35.5 24 Q33 34 24 34 Q15 34 12.5 24 Z" fill="' + hair + '"/>',
+        mustache: '<path d="M19 30.5 Q21.5 28 24 29.5 Q26.5 28 29 30.5 Q26.5 31 24 30.2 Q21.5 31 19 30.5 Z" fill="' + hair + '"/>',
+        goatee: '<path d="M21.5 33.5 Q24 39 26.5 33.5 Q24 34.5 21.5 33.5 Z M20 30.5 Q24 28.5 28 30.5" fill="' + hair + '" stroke="' + hair + '" stroke-width="1.4"/>'
+      }[v];
+      return wrap(head(b));
+    }
+    case 'hair': {
+      const h = '" fill="' + hair + '" ' + sw + '/>';
+      const s = {
+        short: '<path d="M12 24 Q11 11 24 11 Q37 11 36 24 Q32 16 24 16 Q16 16 12 24 Z' + h,
+        long: '<path d="M12 24 Q11 11 24 11 Q37 11 36 24 L37 40 L32 40 L33 22 Q28 16 24 16 Q20 16 15 22 L16 40 L11 40 Z' + h,
+        curly: '<g fill="' + hair + '" ' + sw + '>' + [[14, 18], [18, 13], [24, 11], [30, 13], [34, 18], [13, 24], [35, 24]].map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="4.2"/>').join('') + '</g>',
+        bun: '<circle cx="24" cy="8.5" r="4.5' + h + '<path d="M12 24 Q11 12 24 12 Q37 12 36 24 Q32 17 24 17 Q16 17 12 24 Z' + h,
+        none: '',
+        buzz: '<path d="M12.5 22 Q13 13 24 13 Q35 13 35.5 22 Q31 18 24 18 Q17 18 12.5 22 Z" fill="' + hair + '" opacity=".75"/>',
+        side: '<path d="M12 25 Q10 11 24 11 Q37 11 36 22 Q30 14 20 19 Q15 21 12 25 Z' + h,
+        afro: '<circle cx="24" cy="20" r="15.5' + h + '<circle cx="24" cy="26.5" r="11" fill="' + skin + '" ' + sw + '/>' + '<circle cx="19.5" cy="26" r="1.6" fill="' + ink + '"/><circle cx="28.5" cy="26" r="1.6" fill="' + ink + '"/><path d="M20.5 32.5 Q24 35 27.5 32.5" fill="none" ' + sw + '/>',
+        ponytail: '<path d="M34 18 Q43 22 39 34 Q37 26 33 24 Z' + h + '<path d="M12 24 Q11 11 24 11 Q37 11 36 24 Q32 16 24 16 Q16 16 12 24 Z' + h,
+        braids: '<path d="M12 24 Q11 11 24 11 Q37 11 36 24 Q32 16 24 16 Q16 16 12 24 Z' + h + '<g fill="' + hair + '" ' + sw + '>' + [28, 32, 36, 40].map((y) => '<ellipse cx="12" cy="' + y + '" rx="2.6" ry="2.3"/><ellipse cx="36" cy="' + y + '" rx="2.6" ry="2.3"/>').join('') + '</g>'
+      }[v];
+      return wrap(v === 'afro' ? s : hairOn(s));
+    }
+    case 'height': case 'build': {
+      const hh = key === 'height' ? { short: 0.72, medium: 0.86, tall: 1 }[v] : 0.9, ww = key === 'build' ? { slim: 0.75, medium: 1, broad: 1.3 }[v] : 1;
+      const top = 46 - 40 * hh, bodyH = 40 * hh, hr = 4.6, cx = 24;
+      return wrap('<line x1="6" y1="46" x2="42" y2="46" stroke="' + ink + '" stroke-width="1.2" opacity=".35"/>' +
+        '<circle cx="' + cx + '" cy="' + (top + hr) + '" r="' + hr + '" fill="' + skin + '" ' + sw + '/>' +
+        '<rect x="' + (cx - 7 * ww) + '" y="' + (top + 2 * hr + 1) + '" width="' + (14 * ww) + '" height="' + (bodyH * 0.42) + '" rx="' + (3 * ww) + '" fill="' + shirt + '" ' + sw + '/>' +
+        '<rect x="' + (cx - 5.5 * ww) + '" y="' + (top + 2 * hr + 1 + bodyH * 0.42) + '" width="' + (11 * ww) + '" height="' + (46 - (top + 2 * hr + 1 + bodyH * 0.42)) + '" rx="2" fill="' + pants + '" ' + sw + '/>');
+    }
+    case 'top': {
+      const f = 'fill="' + shirt + '" ' + sw;
+      const t = {
+        tshirt: '<path d="M16 10 L10 15 L13 21 L16 19 L16 40 L32 40 L32 19 L35 21 L38 15 L32 10 Q24 15 16 10 Z" ' + f + '/>',
+        hoodie: '<path d="M15 11 L9 18 L12 38 L16 37 L16 40 L32 40 L32 37 L36 38 L39 18 L33 11 Z" ' + f + '/><path d="M17 11 Q24 22 31 11" fill="none" ' + sw + '/><rect x="19" y="29" width="10" height="6" rx="2" fill="none" ' + sw + '/>',
+        shirt: '<path d="M16 10 L10 15 L12 40 L36 40 L38 15 L32 10 L24 16 Z" ' + f + '/><path d="M16 10 L20 18 L24 16 L28 18 L32 10" fill="#FFFFFF" ' + sw + '/><g fill="' + ink + '">' + [22, 27, 32, 37].map((y) => '<circle cx="24" cy="' + y + '" r=".9"/>').join('') + '</g>',
+        jacket: '<path d="M16 10 L10 15 L12 40 L36 40 L38 15 L32 10 L24 15 Z" ' + f + '/><path d="M24 15 L24 40 M20 10 L24 22 L28 10" fill="none" ' + sw + '/>',
+        sweater: '<path d="M16 10 L10 16 L12 40 L36 40 L38 16 L32 10 Q24 14 16 10 Z" ' + f + '/><path d="M12 36 L36 36" ' + sw + ' opacity=".6"/><path d="M18 10.6 Q24 15 30 10.6" fill="none" ' + sw + '/>',
+        dress: '<path d="M19 9 L17 20 L10 41 L38 41 L31 20 L29 9 Q24 13 19 9 Z" ' + f + '/><path d="M17 20 L31 20" ' + sw + ' opacity=".6"/>'
+      }[v];
+      return wrap(t);
+    }
+    case 'bottom': {
+      const f = 'fill="' + pants + '" ' + sw;
+      const b = { pants: '<path d="M15 8 L33 8 L35 42 L27 42 L24 18 L21 42 L13 42 Z" ' + f + '/>', shorts: '<path d="M14 12 L34 12 L36 30 L26.5 30 L24 20 L21.5 30 L12 30 Z" ' + f + '/>', skirt: '<path d="M16 12 L32 12 L38 34 L10 34 Z" ' + f + '/>' }[v];
+      return wrap(b);
+    }
+    case 'extra': {
+      const x = {
+        none: '<circle cx="38" cy="10" r="6" fill="#FFFFFF" ' + sw + '/><path d="M34 14 L42 6" ' + sw + '/>',
+        glasses: '<g fill="none" ' + sw + '><circle cx="19.5" cy="24" r="4.2"/><circle cx="28.5" cy="24" r="4.2"/><path d="M23.7 24 L24.3 24 M15.3 23 L12.5 22 M32.7 23 L35.5 22"/></g>',
+        cap: '<path d="M12 22 Q12 11 24 11 Q36 11 36 22 Z" fill="' + shirt + '" ' + sw + '/><path d="M24 21.5 L42 21.5 Q42 24 36 24 L24 24 Z" fill="' + shirt + '" ' + sw + '/>',
+        sunglasses: '<g fill="' + ink + '" ' + sw + '><rect x="14.5" y="21" width="9" height="6" rx="2.5"/><rect x="24.5" y="21" width="9" height="6" rx="2.5"/></g>',
+        earrings: '<circle cx="12" cy="30" r="2.2" fill="#D9A441" ' + sw + '/><circle cx="36" cy="30" r="2.2" fill="#D9A441" ' + sw + '/>',
+        headphones: '<path d="M11 26 Q11 9 24 9 Q37 9 37 26" fill="none" stroke="' + ink + '" stroke-width="2.6"/><rect x="8" y="22" width="6" height="10" rx="2.5" fill="#E8E3D8" ' + sw + '/><rect x="34" y="22" width="6" height="10" rx="2.5" fill="#E8E3D8" ' + sw + '/>'
+      }[v];
+      return wrap(head(x));
+    }
+    default: return '';
+  }
+}
+
 // ---------- 3D character (three.js, loaded on demand; falls back to the 2D drawing) ----------
 // A cartoon character built from simple rounded shapes. Face drawn on a canvas so it can show
 // emotions (eyes, brows, mouth). It walks along a path, talks (mouth moves while the voice plays)
@@ -2014,7 +2185,7 @@ const N3D = (() => {
   const cur = Object.assign({}, EMO.neutral);
   const ARMS = { // [left shoulder x-rot, z-rot, elbow], [right ...]
     down: [[0, 0.12], [0, -0.12]], slump: [[0.05, 0.05], [0.05, -0.05]], up: [[0, 2.6], [0, -2.6]],
-    chest: [[0, 0.12], [-1.2, 0.9]], open: [[-0.5, 0.6], [-0.5, -0.6]], chin: [[0, 0.12], [-2.0, 0.55]], wave: [[0, 0.12], [0, -2.5]], hold: [[0, 0.12], [-1.15, -0.15]], reach: [[0, 0.12], [-0.6, -0.1]]
+    chest: [[0, 0.12], [-1.2, 0.9]], open: [[-0.5, 0.6], [-0.5, -0.6]], chin: [[0, 0.12], [-2.0, 0.55]], wave: [[0, 0.12], [0, -2.5]], hold: [[0, 0.12], [-1.15, -0.15]], show: [[0, 0.12], [-1.72, -0.08]], reach: [[0, 0.12], [-0.6, -0.1]]
   };
   const arm = { l: [0, 0.12], r: [0, -0.12] };
 
@@ -2036,14 +2207,18 @@ const N3D = (() => {
     renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = T.SRGBColorSpace;
+    // filmic light and soft real shadows: the closest step to realism without a new 3D model
+    renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+    renderer.shadowMap.enabled = !((navigator.deviceMemory && navigator.deviceMemory <= 2)); renderer.shadowMap.type = T.PCFSoftShadowMap;
     scene = new T.Scene();
     scene.fog = new T.Fog(0xE9F4EC, 10, 26);
     camera = new T.PerspectiveCamera(35, 1, 0.1, 100);
-    scene.add(new T.HemisphereLight(0xffffff, 0xB9C7D3, 1.6));
-    const sun = new T.DirectionalLight(0xffffff, 1.6); sun.position.set(3, 6, 5); scene.add(sun);
+    scene.add(new T.HemisphereLight(0xFFF8EE, 0x9FB7A6, 1.5));
+    const sun = new T.DirectionalLight(0xFFF1DC, 2.2); sun.position.set(3, 7, 5); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024); sun.shadow.bias = -0.0005; Object.assign(sun.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 20 }); scene.add(sun); scene.add(sun.target); parts.sun = sun;
+    const rimL = new T.DirectionalLight(0xD8F0FF, 0.9); rimL.position.set(-4, 4, -5); scene.add(rimL);
     // world: ground, stone path to the compass, trees
     world = new T.Group(); scene.add(world);
-    const ground = new T.Mesh(new T.CircleGeometry(60, 64), mat(0xD5EADB, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; world.add(ground);
+    const ground = new T.Mesh(new T.CircleGeometry(60, 64), mat(0xD5EADB, { roughness: 1 })); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; world.add(ground);
     const path = new T.Group(); world.add(path); parts.path = path;
     const compass = new T.Group(); world.add(compass); parts.compass = compass;
     const plate = new T.Mesh(new T.CylinderGeometry(1.1, 1.2, 0.12, 48), mat(0xFFFFFF)); plate.position.y = 0.06; compass.add(plate);
@@ -2166,10 +2341,12 @@ const N3D = (() => {
     if (extra === 'cap') { const c = new T.Mesh(new T.SphereGeometry(H === 'afro' ? 0.66 : H === 'curly' ? 0.6 : 0.55, 40, 20, 0, Math.PI * 2, 0, Math.PI * 0.42), shirtM); c.rotation.x = -0.18; head.add(c); const brim = new T.Mesh(new T.CylinderGeometry(0.34, 0.34, 0.03, 32, 1, false, -Math.PI / 2, Math.PI), shirtM); brim.position.set(0, 0.24, 0.32); brim.rotation.x = 0.12; head.add(brim); }
     if (extra === 'earrings') { [-1, 1].forEach((sx) => { const e = new T.Mesh(new T.SphereGeometry(0.035, 12, 10), mat(0xD9A441, { metalness: 0.6, roughness: 0.3 })); e.position.set(sx * 0.5 * fs[0], -0.12, 0.02); head.add(e); }); }
     if (extra === 'headphones') { const band = new T.Mesh(new T.TorusGeometry(0.53, 0.035, 10, 40, Math.PI), darkM); band.position.y = 0.02; head.add(band); [-1, 1].forEach((sx) => { const cup = new T.Mesh(new T.CylinderGeometry(0.13, 0.13, 0.08, 24), mat(0xE8684A)); cup.rotation.z = Math.PI / 2; cup.position.set(sx * 0.53 * fs[0], 0, 0); head.add(cup); }); }
-    const shadow = new T.Mesh(new T.CircleGeometry(0.55 * wide, 32), new T.MeshBasicMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.16, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.005; char.add(shadow);
+    const shadow = new T.Mesh(new T.CircleGeometry(0.55 * wide, 32), new T.MeshBasicMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.08, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.005; char.add(shadow);
     if (st.holding) holdCompass();
     st.look = L; st.face = { skin: skinHex, iris: pick('eyeColor'), brows: pick('brows'), beard, hair: hairHex };
     char.position.set(st.x, 0, st.z);
+    char.traverse((o) => { if (o.isMesh && o.material && !o.material.transparent) o.castShadow = true; });
+    st.charH = Math.max(1.6, new T.Box3().setFromObject(char).max.y);
   }
   function holdCompass() { const hc = parts.hc; hc.position.set(0, -0.6, 0.12); hc.rotation.set(Math.PI / 2 - 0.35, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = false; parts.arms[1].add(hc); }
   function drawFace(e, blink, mouthOpen) {
@@ -2229,7 +2406,7 @@ const N3D = (() => {
     const target = EMO[st.emo] || EMO.neutral;
     const k = Math.min(1, dt * 5);
     ['brow', 'browIn', 'mouth', 'eye', 'tilt', 'pitch', 'bounce', 'cheek'].forEach((p) => { cur[p] = lerp(cur[p], target[p], k); });
-    const pose = st.wave > 0 ? ARMS.wave : st.reach ? ARMS.reach : st.holding ? ARMS.hold : (ARMS[target.arms] || ARMS.down);
+    const pose = st.wave > 0 ? ARMS.wave : st.reach ? ARMS.reach : st.present && st.holding ? ARMS.show : st.holding ? ARMS.hold : (ARMS[target.arms] || ARMS.down);
     arm.l[0] = lerp(arm.l[0], pose[0][0], k); arm.l[1] = lerp(arm.l[1], pose[0][1], k); arm.r[0] = lerp(arm.r[0], pose[1][0], k); arm.r[1] = lerp(arm.r[1], pose[1][1], k);
     // blink
     st.nextBlink -= dt; if (st.nextBlink <= 0) { st.blink = 1; st.nextBlink = 2.5 + Math.random() * 3; }
@@ -2249,6 +2426,7 @@ const N3D = (() => {
     st.yaw = lerp(st.yaw, st.wantYaw, Math.min(1, dt * 6));
     if (!char) return;
     char.position.x = st.x; char.rotation.y = st.yaw;
+    if (parts.sun) { parts.sun.position.set(st.x + 3, 7, 5); parts.sun.target.position.set(st.x, 0, 0); }
     const sw = moving ? Math.sin(st.t * 9) : 0;
     parts.legs[0].rotation.x = sw * 0.6; parts.legs[1].rotation.x = -sw * 0.6;
     parts.arms[0].rotation.set(moving ? -sw * 0.5 : arm.l[0], 0, arm.l[1]);
@@ -2258,6 +2436,7 @@ const N3D = (() => {
     const bob = st.reduce ? 0 : (moving ? Math.abs(Math.sin(st.t * 9)) * 0.06 : Math.abs(Math.sin(st.t * 3)) * cur.bounce + (st.jump > 0 ? Math.sin((1 - st.jump / 0.6) * Math.PI) * 0.35 : 0));
     st.crouchV = lerp(st.crouchV || 0, st.crouch || 0, Math.min(1, dt * 8));
     parts.body.position.y = bob - 0.32 * st.crouchV;
+    if (st.holding && parts.hc && parts.hc.parent === parts.arms[1]) { const want = st.present ? 3.0 : Math.PI / 2 - 0.35; parts.hc.rotation.x = st.reduce ? want : lerp(parts.hc.rotation.x, want, Math.min(1, dt * 5)); }
     if (parts.hcGlow && parts.hcGlow.visible) parts.hcGlow.material.opacity = 0.2 + Math.abs(Math.sin(st.t * 3)) * 0.3;
     parts.body.scale.y = 1 + (st.reduce ? 0 : Math.sin(st.t * 2) * 0.008);
     st.nod = Math.max(0, st.nod - dt);
@@ -2267,8 +2446,18 @@ const N3D = (() => {
     const cx = st.mode === 'builder' ? 0 : st.x;
     // close up while talking (so the face reads), wider while walking
     // find: full-screen scene, the character framed in the upper middle of the screen (the big compass comes below)
-    const camPos = st.mode === 'find' ? [cx, 1.2, 12.5] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.9, 5.8] : [cx, 1.85, 3.9];
-    const look = st.mode === 'find' ? [cx, 0.96, 0] : st.mode === 'builder' ? [cx, 1.45, 0] : [cx, moving ? 1.4 : 1.6, 0];
+    const camPos = st.mode === 'find' ? [cx, 1.2, 12.5] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.3, 16] : [cx, 1.3, 15];
+    const look = st.mode === 'find' ? [cx, 0.96, 0] : st.mode === 'builder' ? [cx, 1.45, 0] : [cx, 1.6, 0];
+    // talk/indicators: the page tells where on the screen he should stand (the gap between the speech bubble and the answer card)
+    const bandOn = (st.mode === 'talk' || st.mode === 'find') && st.band;
+    if (bandOn) {
+      const b = st.band, hgt = st.charH || 2.3, frac = Math.max(0.12, (b.bottom - b.top) * 0.9);
+      const d = Math.min(26, Math.max(6, hgt / (frac * 2 * Math.tan(camera.fov * Math.PI / 360)))) + (moving ? 1 : 0);
+      camPos[1] = hgt * 0.5; camPos[2] = d; look[1] = hgt * 0.5;
+      const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
+      camera.setViewOffset(w, h, 0, (0.5 - (b.top + b.bottom) / 2) * h, w, h);
+      scene.fog.near = d + 3; scene.fog.far = d + 22;
+    } else { if (camera.view && camera.view.enabled) camera.clearViewOffset(); scene.fog.near = 10; scene.fog.far = 26; }
     const ck = st.reduce ? 1 : Math.min(1, dt * 3);
     camera.position.set(lerp(camera.position.x, camPos[0], ck), lerp(camera.position.y, camPos[1], ck), lerp(camera.position.z, camPos[2], ck * 0.8));
     camera.lookAt(look[0] + (camera.position.x - camPos[0]), look[1], look[2]);
@@ -2288,11 +2477,12 @@ const N3D = (() => {
     attach(el) { if (!api.ok || !el) return; if (canvas.parentNode !== el) { el.innerHTML = ''; el.appendChild(canvas); } if (!raf) raf = requestAnimationFrame(loop); },
     setLook(look) { if (!api.ok) return; const key = JSON.stringify(Object.assign({}, look, { name: '' })); if (key !== st.lookKey) { st.lookKey = key; buildChar(look); } },
     setReduce(r) { st.reduce = !!r; },
-    builder() { if (!api.ok) return; if (st.mode !== 'builder' || !st.builderSeen) { st.userYaw = 0.35; st.builderSeen = true; } st.mode = 'builder'; st.x = 0; st.walking = false; world.visible = false; st.emo = 'happy'; },
+    band(top, bottom) { st.band = top == null ? null : { top, bottom }; },
+    builder() { if (!api.ok) return; st.present = false; if (st.mode !== 'builder' || !st.builderSeen) { st.userYaw = 0.35; st.builderSeen = true; } st.mode = 'builder'; st.x = 0; st.walking = false; world.visible = false; st.emo = 'happy'; },
     // "talk" scene: the character arrives from the left and stops at stop i
     scene(total, i, arrive) {
       if (!api.ok) return Promise.resolve();
-      st.mode = 'talk'; world.visible = true; parts.path.visible = true; parts.compass.visible = true;
+      st.mode = 'talk'; st.present = false; if (parts.hc) parts.hc.visible = true; world.visible = true; parts.path.visible = true; parts.compass.visible = true;
       if (parts.total !== total) setPath(total);
       if (arrive) { st.x = i * st.step - 4; st.emo = 'happy'; return api.walkTo(i).then(() => { st.wave = 1.4; }); }
       return Promise.resolve();
@@ -2316,9 +2506,13 @@ const N3D = (() => {
         .then(() => { st.searching = false; st.emo = 'excited'; st.jump = 0.6; return wait(700); })
         .then(() => { st.crouch = 1; st.reach = true; return wait(600); })
         .then(() => { st.holding = true; st.reach = false; holdCompass(); st.crouch = 0; return wait(500); })
-        .then(() => { st.emo = 'happy'; });
+        .then(() => { st.emo = 'happy'; st.present = true; return wait(650); });
     },
-    resetFind() { st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; st.walking = false; st.walkDone = null; st.emo = 'neutral'; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
+    resetFind() { st.present = false; if (parts.hc) parts.hc.visible = true; st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; st.walking = false; st.walkDone = null; st.emo = 'neutral'; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
+    // where the held compass is on screen (0..1), so the big compass can come out of his hands
+    handScreen() { if (!api.ok || !parts.hc || !parts.hc.parent) return null; const v = new T.Vector3(); parts.hc.getWorldPosition(v); v.project(camera); return { x: (v.x + 1) / 2, y: (1 - v.y) / 2 }; },
+    // the big compass on the screen comes out of his hand: the small one leaves his hand and he lowers the arm
+    giveCompass() { if (!api.ok || !parts.hc) return; st.present = false; parts.hc.visible = false; st.emo = 'happy'; },
     heldNeedle(deg) { if (parts.hcNeedle) parts.hcNeedle.rotation.y = -deg * Math.PI / 180; },
   });
   Object.defineProperty(api, 'holding', { get: () => !!st.holding });
@@ -2362,11 +2556,19 @@ function toneOf(text) {
   const BR_TZ = ['Sao_Paulo', 'Bahia', 'Fortaleza', 'Recife', 'Belem', 'Manaus', 'Cuiaba', 'Campo_Grande', 'Porto_Velho', 'Boa_Vista', 'Rio_Branco', 'Araguaina', 'Maceio', 'Santarem', 'Noronha', 'Eirunepe'];
   const PT_TZ = ['Europe/Lisbon', 'Atlantic/Azores', 'Atlantic/Madeira', 'Africa/Luanda', 'Africa/Maputo', 'Atlantic/Cape_Verde', 'Africa/Bissau', 'Africa/Sao_Tome', 'Asia/Dili'];
   function deviceTz() { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; } }
+  // Country from the device's time zone (no permission needed); the person can change it in the list
+  const TZ_COUNTRY = { 'Europe/Lisbon': 'PT', 'Atlantic/Azores': 'PT', 'Atlantic/Madeira': 'PT', 'Europe/London': 'GB', 'Europe/Dublin': 'IE', 'Europe/Paris': 'FR', 'Europe/Madrid': 'ES', 'Europe/Berlin': 'DE', 'Europe/Rome': 'IT', 'Europe/Amsterdam': 'NL', 'Europe/Brussels': 'BE', 'Europe/Zurich': 'CH', 'Europe/Vienna': 'AT', 'Pacific/Auckland': 'NZ', 'Asia/Tokyo': 'JP', 'America/Toronto': 'CA', 'America/Vancouver': 'CA', 'America/Mexico_City': 'MX', 'America/Argentina/Buenos_Aires': 'AR', 'America/Santiago': 'CL', 'America/Bogota': 'CO', 'America/Lima': 'PE', 'America/Montevideo': 'UY', 'America/Asuncion': 'PY', 'Africa/Luanda': 'AO', 'Africa/Maputo': 'MZ', 'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US', 'America/Los_Angeles': 'US', 'America/Phoenix': 'US', 'America/Anchorage': 'US', 'Pacific/Honolulu': 'US' };
   function guessCountry() {
     const tz = deviceTz();
     if (tz.startsWith('Australia/')) return 'AU';
     if (tz.startsWith('America/') && BR_TZ.includes(tz.slice(8))) return 'BR';
-    return null;
+    return TZ_COUNTRY[tz] || null;
+  }
+  const COUNTRY_CODES = ["AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI", "AG", "AR", "AM", "AW", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "BI", "CV", "KH", "CM", "CA", "KY", "CF", "TD", "CL", "CN", "CO", "KM", "CG", "CD", "CK", "CR", "CI", "HR", "CU", "CW", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "GQ", "ER", "EE", "SZ", "ET", "FK", "FO", "FJ", "FI", "FR", "GF", "PF", "GA", "GM", "GE", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GG", "GN", "GW", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IR", "IQ", "IE", "IM", "IL", "IT", "JM", "JP", "JE", "JO", "KZ", "KE", "KI", "KP", "KR", "XK", "KW", "KG", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "ME", "MS", "MA", "MZ", "MM", "NA", "NR", "NP", "NL", "NC", "NZ", "NI", "NE", "NG", "NU", "MK", "NO", "OM", "PK", "PW", "PS", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "WS", "SM", "ST", "SA", "SN", "RS", "SC", "SL", "SG", "SX", "SK", "SI", "SB", "SO", "ZA", "SS", "ES", "LK", "SD", "SR", "SE", "CH", "SY", "TW", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TR", "TM", "TC", "TV", "UG", "UA", "AE", "GB", "US", "UY", "UZ", "VU", "VA", "VE", "VN", "VG", "VI", "YE", "ZM", "ZW"];
+  function countryOptions(cur) {
+    let dn = null; try { dn = new Intl.DisplayNames([LOCALES[state.lang].htmlLang], { type: 'region' }); } catch (e) { dn = null; }
+    const list = COUNTRY_CODES.map((c) => ({ c, n: (dn && dn.of(c)) || c })).sort((a, b) => a.n.localeCompare(b.n, LOCALES[state.lang].htmlLang));
+    return list.map((x) => `<option value="${x.c}"${x.c === cur ? ' selected' : ''}>${esc(x.n)}</option>`).join('');
   }
   const placeCountry = guessCountry();
   // Language follows where the person is (time zone), always: Brazil -> pt, Australia -> en, France -> fr, and so on.
@@ -2392,7 +2594,7 @@ function toneOf(text) {
   }
 
   const fresh = () => ({
-    view: 'signup', setup: { age: null, country: placeCountry, baby: null, consent: false }, afterFind: 'talk', findStarted: false,
+    view: 'login', setup: { age: null, country: placeCountry, baby: null, consent: false }, afterFind: 'talk', findStarted: false,
     answers: {}, gaps: [], lastAt: null, level: 1, pages: [], cardKey: null, levelsDone: {},
     error: null, account: { email: '', birth: '' }, skipped: {}, optIn: {}, talk: { i: 0, answers: {}, an: {}, jobs: {}, skipped: {}, said: null, analyzing: false, selTouched: false }, talkSel: {}, talkRisk: false, talkMode: false, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
   });
@@ -2457,10 +2659,10 @@ function toneOf(text) {
     <p class="proto" role="note">${esc(S().prototype)}</p>`;
   }
 
-  function helpBlock(country) {
-    const s = S();
+  function helpBlock(country0) {
+    const s = S(); const country = HELP[country0] && HELP[country0].length ? country0 : 'OTHER';
     const line = (h) => `<li><span class="help-name">${esc(tx(h.name))}</span> <a class="help-num" href="tel:${h.num.replace(/\s/g, '')}">${esc(h.num)}</a></li>`;
-    const main = (country === 'AU' || country === 'BR') ? `<ul class="help">${HELP[country].map(line).join('')}</ul>` : `<p>${esc(s.crisisOther)} <a href="https://findahelpline.com">findahelpline.com</a></p>`;
+    const main = country !== 'OTHER' ? `<ul class="help">${HELP[country].map(line).join('')}</ul>` : `<p>${esc(s.crisisOther)} <a href="https://findahelpline.com">findahelpline.com</a></p>`;
     const others = ['AU', 'BR'].filter((c) => c !== country).map((c) => `${esc(s.countries[c])}: ${HELP[c].map((h) => `${esc(tx(h.name))} ${esc(h.num)}`).join(' · ')}`).join(' — ');
     return `${main}<p class="help-other">${esc(s.crisisOtherCountries)} ${others}${country !== 'OTHER' ? ` — <a href="https://findahelpline.com">findahelpline.com</a>` : ''}</p>`;
   }
@@ -2609,6 +2811,30 @@ function toneOf(text) {
     return a;
   }
   // ---------- account (first screen) ----------
+  // First screen: sign in (frosted card over the green scene); no account -> create one
+  function viewLogin() {
+    const s = S(); const a = state.account;
+    const ico = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    return `<main class="login-screen">
+      <div class="login-bg" aria-hidden="true"><svg class="login-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="70"/><path d="M100 8 V30 M100 170 V192 M8 100 H30 M170 100 H192"/></svg></div>
+      <form class="login-card" id="login-form" novalidate>
+        <div class="login-logo">${NORTH}</div>
+        <h1>${esc(s.compassTitle)}</h1>
+        <p class="login-lead">${esc(s.loginTitle)}</p>
+        <label class="login-l" for="li-email">${esc(s.loginEmail)}</label>
+        <div class="login-field">${ico('M3 6h18v12H3z M3 7l9 6 9-6')}<input id="li-email" type="email" autocomplete="email" inputmode="email" value="${esc(a.email || '')}"></div>
+        <label class="login-l" for="li-pass">${esc(s.loginPass)}</label>
+        <div class="login-field">${ico('M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 0 1 7 0v3')}<input id="li-pass" type="${state.loginShow ? 'text' : 'password'}" autocomplete="current-password"></div>
+        <div class="login-row"><label class="login-check" for="li-show"><input type="checkbox" id="li-show"${state.loginShow ? ' checked' : ''}><span>${esc(s.loginShow)}</span></label><button type="button" class="login-link" data-act="login-forgot">${esc(s.loginForgot)}</button></div>
+        ${state.error ? `<p class="login-msg" id="li-error" role="alert">${esc(state.error)}</p>` : state.loginNote ? `<p class="login-msg" role="status">${esc(state.loginNote)}</p>` : ''}
+        <button class="login-btn" type="submit" data-act="login-go">${esc(s.loginBtn)}</button>
+        <p class="login-proto">${esc(s.loginProto)}</p>
+        <p class="login-new">${esc(s.loginNoAccount)} <button type="button" class="login-link strong" data-act="go-signup">${esc(s.loginCreate)}</button></p>
+      </form>
+    </main>`;
+  }
+  // in-memory check only (the prototype stores nothing): a simple fingerprint, never the password itself
+  function passKey(email, pass) { let h = 5381; const t = email.toLowerCase() + '\u0000' + pass; for (let k = 0; k < t.length; k++) h = ((h << 5) + h + t.charCodeAt(k)) | 0; return String(h); }
   function viewSignup() {
     const s = S(); const st = state.setup; const a = state.account;
     const lvl = s.levels.map((l, i) => `<li><span class="lvl-n">${i + 1}</span><div><strong>${esc(l[0])}</strong><p>${esc(l[1])}</p></div></li>`).join('');
@@ -2616,11 +2842,12 @@ function toneOf(text) {
       <section class="hero-head"><h1 class="compass-title">${esc(s.compassTitle)}</h1><p class="lead">${esc(s.signupLead)}</p></section>
       <form class="soft-card" id="signup-form" novalidate>
         <h2>${esc(s.signupTitle)}</h2>
+        <p><button type="button" class="btn link" data-act="go-login">${esc(s.signupHave)}</button></p>
         <p class="note prov">${esc(s.signupProto)}</p>
         <label class="field-l" for="su-email">${esc(s.emailL)}</label><input id="su-email" class="text-in" type="email" autocomplete="email" inputmode="email" value="${esc(a.email)}">
         <label class="field-l" for="su-pass">${esc(s.passL)}</label><input id="su-pass" class="text-in" type="password" autocomplete="new-password" minlength="8">
         <label class="field-l" for="su-birth">${esc(s.birthL)}</label><input id="su-birth" class="text-in" type="date" autocomplete="bday" value="${esc(a.birth)}" placeholder="AAAA-MM-DD" aria-describedby="su-birth-hint"><p class="hint" id="su-birth-hint">${esc(s.birthHint)}</p>
-        <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}${placeCountry && st.country === placeCountry ? ` ${esc(s.countryGuessed)}` : ''}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
+        <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}${placeCountry && st.country === placeCountry ? ` ${esc(s.countryGuessed)}` : ''}</p><label class="sr" for="su-country">${esc(s.countryQ)}</label><select id="su-country" class="text-in" data-setup="country" autocomplete="country"><option value="">${esc(s.countryPick)}</option>${countryOptions(st.country)}</select></fieldset>
         <fieldset class="field"><legend>${esc(s.babyQ)}</legend>${choice('baby', [1, 0, 'skip'], [s.yes, s.no, s.preferNot], st.baby)}</fieldset>
         <section class="consent"><h2>${esc(s.consentTitle)}</h2><p>${esc(exp.talk ? s.consentTalk : s.consentText)}</p>
           <label class="check" for="consent"><input type="checkbox" id="consent" data-setup="consent"${st.consent ? ' checked' : ''}><span>${esc(s.consentCheck)}</span></label></section>
@@ -3018,16 +3245,19 @@ function toneOf(text) {
   function voiceScore(v) { const n = v.name.toLowerCase(); let s = 0; if (/natural|neural|premium|enhanced|aprimorad|melhorad|siri/.test(n)) s += 5; if (/google/.test(n)) s += 3; if (!v.localService) s += 1; if (state.lang === 'pt' && /pt-br|pt_br/i.test(v.lang)) s += 2; if (state.lang === 'en' && /en-au/i.test(v.lang)) s += 1; return s; }
   function browserVoices() { try { if (!window.speechSynthesis) return []; const pre = state.lang === 'pt' ? 'pt' : 'en'; return window.speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith(pre) && !NOVELTY.test(v.name)).sort((a, b) => voiceScore(b) - voiceScore(a)).slice(0, 6); } catch (e) { return []; } }
   if (window.speechSynthesis) { try { window.speechSynthesis.onvoiceschanged = () => { if (state.view === 'avatar' && !caps.tts) render(true); }; } catch (e) { /* ignore */ } }
+  const EL_VOICES = ['EXAVITQu4vr4xnSDxMaL', 'XB0fDUnXU5powFXDhCwa', 'pFZP5JQG7iQjIQuC4Bku', 'onwK4e9ZLuTAKqWW03F9', 'nPczCjzI2devNBz1zQrb', 'JBFqnCBsd6RMkjVDRZzb', 'SAz9YHcvj6GT2YYXdXww'];
   function voiceOptions() {
     const s = S(); const o = [];
-    if (caps.tts) CLAUDE_VOICES.forEach((v) => o.push({ id: 'c:' + v, label: s.voiceNames[v] }));
-    else browserVoices().forEach((v) => o.push({ id: 'b:' + v.name, label: v.name.replace(/\s*\(.*\)\s*/, '').replace(/^(Microsoft|Google)\s+/, '') }));
-    if (ownVoicePossible()) o.push({ id: 'own', label: ownVoice.id ? s.voiceOwnReady : s.voiceOwn });
-    o.push({ id: 'off', label: s.voiceOff });
+    if (naturalVoices()) EL_VOICES.forEach((v, i) => o.push({ id: 'e:' + v, label: s.voiceNatural[i], group: 'natural' }));
+    if (caps.tts) CLAUDE_VOICES.forEach((v) => o.push({ id: 'c:' + v, label: s.voiceNames[v], group: 'claude' }));
+    else browserVoices().forEach((v) => o.push({ id: 'b:' + v.name, label: v.name.replace(/\s*\(.*\)\s*/, '').replace(/^(Microsoft|Google)\s+/, ''), group: 'device' }));
+    if (ownVoicePossible()) o.unshift({ id: 'own', label: ownVoice.id ? s.voiceOwnReady : s.voiceOwn, group: 'own' });
+    o.push({ id: 'off', label: s.voiceOff, group: 'other' });
     return o;
   }
-  function voiceId() { const o = voiceOptions(); if (voiceCfg.id === 'own' && !ownVoice.id) return o[0].id === 'own' ? (o[1] || o[0]).id : o[0].id; return o.some((x) => x.id === voiceCfg.id) ? voiceCfg.id : (o[0].id === 'own' && !ownVoice.id ? (o[1] || o[0]).id : o[0].id); }
-  let speakTok = 0;
+  function voiceId() { const o = voiceOptions(); const def = (o.find((x) => x.group !== 'own' && x.group !== 'natural') || o[o.length - 1]).id; if (voiceCfg.id === 'own' && !ownVoice.id) return def; return o.some((x) => x.id === voiceCfg.id) ? voiceCfg.id : def; }
+  const remoteVoice = () => { const id = voiceId(); return id === 'own' || id.startsWith('e:'); };
+  let speakTok = 0; let helloTimer = null;
   function setSpeaking(on) { document.querySelectorAll('.avatar.live').forEach((el) => el.classList.toggle('talking', on && !reduceMotion)); N3D.talking(on); }
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   // One step of the conversation: react to the last answer, walk to the next stop, then ask
@@ -3074,7 +3304,8 @@ function toneOf(text) {
   async function say(text) {
     const id = voiceId(); if (id === 'off' || !text) return;
     const tok = ++speakTok;
-    if (id === 'own' && ownVoice.id) return speakRemote(text, tok);
+    if (id === 'own' && ownVoice.id) return speakRemote(text, tok, { voice: ownVoice.id });
+    if (id.startsWith('e:')) return speakRemote(text, tok, { preset: id.slice(2) });
     if (id.startsWith('c:') && caps.tts) {
       try { setSpeaking(true); await Promise.race([caps.tts.speak(text, { voice: id.slice(2), rate: voiceCfg.rate, language: state.lang === 'pt' ? 'pt-BR' : 'en' }), wait((4000 + text.length * 110) / (voiceCfg.rate || 1))]); } catch (e) { /* stopped, busy or not allowed */ }
       if (tok === speakTok) setSpeaking(false); return;
@@ -3133,10 +3364,10 @@ function toneOf(text) {
   function micUI() { const b = document.getElementById('mic-btn'); if (!b) return; b.classList.toggle('on', mic.on); b.setAttribute('aria-pressed', String(mic.on)); const l = b.querySelector('.mic-l'); if (l) l.textContent = mic.on ? S().micStop : S().micStart; }
   function crisisSpeech() {
     const s = S(); const c = state.setup.country;
-    const nums = (c === 'AU' || c === 'BR') ? HELP[c].map((h) => `${tx(h.name)}: ${h.num}`).join('. ') : `${s.crisisOther} find a helpline ponto com.`;
+    const nums = HELP[c] && HELP[c].length ? HELP[c].map((h) => `${tx(h.name)}: ${h.num}`).join('. ') : `${s.crisisOther} ${s.helplineSpoken}.`;
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
-  function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own') { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
+  function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own' || id.startsWith('e:')) { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
   function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && ['happy', 'excited', 'neutral'].includes(state.talk.react.emo1)) state.talk.react = reactFor('sad'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
@@ -3184,7 +3415,9 @@ function toneOf(text) {
   }
   function avOpt(key, i, label, color) {
     const on = avatar[key] === i;
-    return `<button type="button" class="av-opt${color ? ' sw' : ''}${on ? ' on' : ''}" data-av="${key}" data-i="${i}" aria-pressed="${on}"${color ? ` aria-label="${esc(label)}" style="--sw:${color}"` : ''}>${color ? '' : esc(label)}</button>`;
+    if (color) return `<button type="button" class="av-opt sw${on ? ' on' : ''}" data-av="${key}" data-i="${i}" aria-pressed="${on}" aria-label="${esc(label)}" style="--sw:${color}"></button>`;
+    const ic = avIcon(key, AV[key][i], avatar);
+    return `<button type="button" class="av-opt${ic ? ' ic' : ''}${on ? ' on' : ''}" data-av="${key}" data-i="${i}" aria-pressed="${on}">${ic}<span>${esc(label)}</span></button>`;
   }
   function viewAvatar() {
     const s = S(); const n = s.avNames;
@@ -3192,7 +3425,7 @@ function toneOf(text) {
     const tab = state.avTab || 'face';
     const tabs = `<div class="av-tabs" role="group" aria-label="${esc(s.avTitle)}">${Object.keys(AV_TABS).map((k) => `<button type="button" class="av-tab${k === tab ? ' on' : ''}" aria-pressed="${k === tab}" data-act="av-tab" data-tab="${k}">${esc(s.avTabs[k])}</button>`).join('')}</div>`;
     const vid = voiceId();
-    const hasVoice = !!caps.tts || browserVoices().length > 0;
+    const hasVoice = !!caps.tts || browserVoices().length > 0 || naturalVoices();
     return `<main class="wrap narrow avatar-view">
       <h1 class="h-page">${esc(s.avTitle)}</h1>
       <p class="lead">${esc(s.avLead)}</p>
@@ -3201,8 +3434,11 @@ function toneOf(text) {
       ${tabs}
       <div class="av-panel">${AV_TABS[tab].map(row).join('')}</div>
       <p><button type="button" class="btn" data-act="av-random">${esc(s.avRandom)}</button></p>
-      <fieldset class="av-row"><legend>${esc(s.voiceTitle)}</legend>
-        <div class="av-opts">${voiceOptions().map((o) => `<button type="button" class="av-opt${o.id === vid ? ' on' : ''}" data-voice="${esc(o.id)}" aria-pressed="${o.id === vid}">${esc(o.label)}</button>`).join('')}</div>
+      <fieldset class="av-row"><legend id="voice-legend">${esc(s.voiceTitle)}</legend>
+        ${ownVoicePossible() ? `<div class="own-voice-card${vid === 'own' ? ' on' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><div><p class="own-voice-t">${esc(ownVoice.id ? s.voiceOwnReady : s.voiceOwn)}</p><p class="small">${esc(s.voiceOwnLead)}</p><div class="own-voice-btns"><button type="button" class="btn${vid === 'own' ? '' : ' primary'}" data-voice="own" aria-pressed="${vid === 'own'}">${esc(s.voiceOwnUse)}</button>${ownVoice.id ? `<button type="button" class="btn link" data-act="voice-redo">${esc(s.voiceOwnRedo)}</button>` : ''}</div></div></div>` : ''}
+        ${ownVoicePossible() ? `<label class="av-label" for="voice-pick">${esc(s.voicePick)}</label>` : ''}
+        <select id="voice-pick" class="text-in"${ownVoicePossible() ? '' : ' aria-labelledby="voice-legend"'}>${['natural', 'claude', 'device', 'other'].map((g) => { const os = voiceOptions().filter((o) => o.group === g); return os.length ? `<optgroup label="${esc(s.voiceGroups[g])}">${os.map((o) => `<option value="${esc(o.id)}"${o.id === vid ? ' selected' : ''}>${esc(o.label)}</option>`).join('')}</optgroup>` : ''; }).join('')}${vid === 'own' ? `<optgroup label="${esc(s.voiceOwn)}"><option value="own" selected>${esc(s.voiceOwnReady)}</option></optgroup>` : ''}</select>
+        ${vid.startsWith('e:') ? `<p class="note">${esc(s.voiceNaturalNote)}</p>` : ''}
         ${hasVoice ? `<div class="voice-tools"><label class="av-label" for="voice-rate">${esc(s.voiceRate)}</label><select id="voice-rate" class="text-in short">${[0.85, 1, 1.2].map((r, i) => `<option value="${r}"${voiceCfg.rate === r ? ' selected' : ''}>${esc(s.voiceRates[i])}</option>`).join('')}</select><button type="button" class="btn" data-act="voice-test"${vid === 'off' ? ' disabled' : ''}>${esc(s.voiceTest)}</button></div>` : `<p class="small">${esc(s.voiceNone)}</p>`}
       </fieldset>
       <p class="note">${esc(caps.sample ? s.talkPrivacyAI : s.talkPrivacyLocal)}</p>
@@ -3224,10 +3460,21 @@ function toneOf(text) {
     const answer = state.talk.answers[q.id] || '';
     const control = isSafety
       ? choiceControl(item('phq.9', PHQ_ITEMS[8], 'phqSafety'))
-      : `<label class="sr" for="talk-answer">${esc(s.talkAnswerLabel)}</label><textarea id="talk-answer" class="talk-answer" rows="5" placeholder="${esc(s.talkPlaceholder)}">${esc(answer)}</textarea>
+      : `<label class="sr" for="talk-answer">${esc(s.talkAnswerLabel)}</label><textarea id="talk-answer" class="talk-answer" rows="3" placeholder="${esc(s.talkPlaceholder)}">${esc(answer)}</textarea>
         ${canMic() ? `<div class="mic-row"><button type="button" id="mic-btn" class="mic-btn${mic.on ? ' on' : ''}" data-act="mic" aria-pressed="${mic.on}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="mic-l">${esc(mic.on ? s.micStop : s.micStart)}</span></button></div><p id="talk-partial" class="small talk-partial" aria-live="polite"></p>` : (mic.denied ? `<p class="small">${esc(s.micDenied)}</p>` : '')}`;
     const answered = isSafety ? state.answers['phq.9'] != null : !!answer.trim() || !!state.talk.skipped[q.id];
     const last = i === qs.length - 1;
+    if (N3D.ok) return `<main class="scene3d talk-scene">
+      <div class="stage3d" id="stage3d" aria-hidden="true"></div>
+      <div class="scene-top"><div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
+      <div class="comic${reduceMotion ? '' : ' pop'}" id="comic"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><h1 class="q-text" id="q-text">${esc(text)}</h1>${voiceId() !== 'off' ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
+      <div class="scene-gap" aria-hidden="true"></div>
+      <section class="answer-card">
+        ${notes.join('')}
+        ${control}
+        ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
+        <div class="scene-nav"><button class="btn link" data-act="talk-back">← ${esc(s.back)}</button>${isSafety ? '<span></span>' : `<button class="btn link" data-act="talk-skip">${esc(s.talkSkip)}</button>`}<button class="btn primary" data-act="talk-next" id="next-btn"${answered ? '' : ' disabled'}>${esc(last ? s.talkDone : s.next)}</button></div>
+      </section></main>`;
     return `<main class="stage tint-sky"><div class="stage-inner">
       <div class="quiz-top"><div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
       <section class="qcard talk-card ${reduceMotion ? '' : 'enter'}">
@@ -3241,8 +3488,8 @@ function toneOf(text) {
   }
   function viewIndicators() {
     const s = S();
-    const head = (title) => N3D.ok ? `<div class="stage3d talk" id="stage3d"></div><div class="bubble-talk up"><h1 class="q-text" id="q-text">${esc(title)}</h1></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
-    if (state.talk.analyzing) return `<main class="wrap narrow">${head(s.indWait)}<div class="actions"><button class="btn" data-act="ind-nowait">${esc(s.indNoWait)}</button></div></main>`;
+    const head = (title) => N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="comic"><p class="talk-who">${esc(avatar.name || s.avNameDefault)}</p><h1 class="q-text" id="q-text">${esc(title)}</h1></div><div class="scene-gap" aria-hidden="true"></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
+    if (state.talk.analyzing) return `<main class="wrap narrow${N3D.ok ? ' scene3d' : ''}">${head(s.indWait)}<div class="actions"><button class="btn" data-act="ind-nowait">${esc(s.indNoWait)}</button></div></main>`;
     const ind = collectIndicators();
     const shown = AREAS.filter((a) => a.id !== 'postpartum' || state.setup.baby === 1);
     const strong = shown.filter((a) => ind[a.id] && ind[a.id].level === 'strong');
@@ -3251,7 +3498,7 @@ function toneOf(text) {
     const chip = (a) => { const on = !!state.talkSel[a.id]; const ev = ind[a.id] ? ind[a.id].evidence.filter(Boolean) : []; return `<li class="ind-item"><button type="button" class="calm-chip opt-chip${on ? ' on' : ''}" data-act="tsel" data-area="${a.id}" aria-pressed="${on}"><span aria-hidden="true">${on ? '✓ ' : '+ '}</span>${esc(tx(a.name))}</button>${ev.length ? `<p class="small ind-ev">${esc(ev.join(' · '))}</p>` : ''}</li>`; };
     const n = shown.filter((a) => state.talkSel[a.id]).length;
     const flags = computeFlags(state);
-    return `<main class="wrap narrow indicators">
+    return `<main class="wrap narrow indicators${N3D.ok ? ' scene3d' : ''}">
       ${head(s.indTitle)}
       <p class="lead">${esc(s.indLead)}</p>
       ${flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : ''}
@@ -3271,15 +3518,18 @@ function toneOf(text) {
   const ownVoice = { id: null, recs: [], rec: null, stream: null, startedAt: 0, k: 0, busy: false, err: null, consent: false, timer: null, starting: false, discard: false, blocked: false, notice: null };
   // The option only shows once the server says the ElevenLabs key is in place (GET /health -> ready)
   function checkVoiceServer() { if (!VOICE_API || inFrame || ownVoice.checked) return Promise.resolve(); ownVoice.checked = true; return fetch(`${VOICE_API}/health`).then((r) => r.json()).then((d) => { ownVoice.ready = !!(d && d.ready); }).catch(() => { ownVoice.ready = false; }); }
+  // natural voices only where the voice server is reachable and has its key (the test link, not inside the Claude link)
+  function naturalVoices() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !!audioElOk; }
   function ownVoicePossible() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !ownVoice.blocked && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof window.MediaRecorder !== 'undefined'; }
   const audioEl = typeof window.Audio === 'function' ? new window.Audio() : null;
+  const audioElOk = !!audioEl;
   const SILENT = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
   function unlockAudio() { if (!audioEl || audioEl.dataset.unlocked) return; try { audioEl.src = SILENT; const p = audioEl.play(); if (p) p.then(() => { audioEl.dataset.unlocked = '1'; }).catch(() => {}); } catch (e) { /* ignore */ } }
-  function speakRemote(text, tok) {
+  function speakRemote(text, tok, who) {
     return new Promise((resolve) => {
       let done = false; const finish = () => { if (done) return; done = true; if (tok === speakTok) setSpeaking(false); resolve(); };
       setTimeout(finish, (8000 + text.length * 120) / (voiceCfg.rate || 1));
-      fetch(`${VOICE_API}/speak`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text, voice: ownVoice.id, lang: state.lang }) })
+      fetch(`${VOICE_API}/speak`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.assign({ text, lang: state.lang }, who)) })
         .then((r) => (r.ok ? r.blob() : Promise.reject(new Error('speak'))))
         .then((blob) => {
           if (tok !== speakTok || !audioEl) { finish(); return; }
@@ -3396,6 +3646,7 @@ function toneOf(text) {
     if (state.view === 'signup') v = viewSignup();
     else if (state.view === 'find') v = viewFind();
     else if (state.view === 'setup') v = viewSetup();
+    else if (state.view === 'login') v = viewLogin();
     else if (state.view === 'under18') v = viewUnder18();
     else if (state.view === 'quiz') v = viewQuiz();
     else if (state.view === 'results') v = viewResults();
@@ -3420,18 +3671,31 @@ function toneOf(text) {
     if (state.view !== 'talk') { stopMic(); stepTok++; }
     const st3 = document.getElementById('stage3d');
     if (st3 && N3D.ok) { N3D.setLook(avatar); N3D.attach(st3); if (state.view === 'avatar') N3D.builder(); }
+    sceneBand();
     if (state.view === 'talk' && !state.crisisOpen) { const q = curTalkQ(); const key = `${state.talk.i}:${state.lang}`; if (state.talk.said !== key) { state.talk.said = key; runStep(q, state.talk.i); } }
     if (state.view === 'indicators' && N3D.ok) { const total = talkQuestions(state).length; N3D.scene(total, total, false).then(() => N3D.walkTo(total)); if (state.talk.analyzing) N3D.emote('thinking'); else { const ind = Object.values(collectIndicators()); N3D.emote(state.talkRisk || ind.some((x) => x.level === 'strong') ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy'); } }
     if (state.view === 'indicators' && !state.talk.analyzing && state.talk.said !== 'ind') {
       state.talk.said = 'ind'; const ind = collectIndicators(); const nm = (lv) => AREAS.filter((a) => ind[a.id] && ind[a.id].level === lv).map((a) => tx(a.name)).join(', ');
       const st = nm('strong'), so = nm('some');
-      say(`${S().indTitle}. ${S().indLead} ${st ? `${S().indStrong}: ${st}.` : S().indNone} ${so ? `${S().indSome}: ${so}.` : ''}`);
+      const sum = `${S().indTitle}. ${S().indLead} ${st ? `${S().indStrong}: ${st}.` : S().indNone} ${so ? `${S().indSome}: ${so}.` : ''}`;
+      if (remoteVoice()) sayDevice(sum, '', ++speakTok); else say(sum);
     }
-    if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; const reveal = () => { if (state.view !== 'find' || state.findShown) return; state.findShown = true; const ui = document.getElementById('find-ui'); if (ui) { ui.classList.remove('waiting'); if (!reduceMotion) ui.classList.add('show'); } compassUpdate(); }; N3D.findScene().then(reveal); setTimeout(reveal, 8000); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
+    if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; const reveal = () => { if (state.view !== 'find' || state.findShown) return; state.findShown = true; const ui = document.getElementById('find-ui'); if (ui) { const h = N3D.handScreen && N3D.handScreen(); const cb = document.getElementById('compass-block'); if (h && cb) { const r = cb.getBoundingClientRect(); ui.style.setProperty('--fx', `${Math.round(h.x * innerWidth - (r.left + r.width / 2))}px`); ui.style.setProperty('--fy', `${Math.round(h.y * innerHeight - (r.top + r.height / 2))}px`); } ui.classList.remove('waiting'); if (!reduceMotion) ui.classList.add('show'); } setTimeout(() => { if (state.view === 'find') N3D.giveCompass(); }, reduceMotion ? 0 : 250); compassUpdate(); }; N3D.findScene().then(reveal); setTimeout(reveal, 8000); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
     const word = document.getElementById('breath-word');
     if (word && !reduceMotion) { let inhale = true; breathTimer = setInterval(() => { inhale = !inhale; word.textContent = inhale ? S().breathIn : S().breathOut; }, 4000); }
   }
 
+  // the character stands in the gap between the speech bubble and the answer card (and scrolls with it)
+  function sceneBand() { if (!N3D.ok) return; const g = document.querySelector('.scene3d .scene-gap, .find .spacer3d'); if (!g) { N3D.band(null); return; } const r = g.getBoundingClientRect(); N3D.band(r.top / innerHeight, r.bottom / innerHeight); const c = document.querySelector('.scene3d .comic'); if (bandRO && c && !c.dataset.ro) { c.dataset.ro = '1'; bandRO.disconnect(); bandRO.observe(c); } }
+  addEventListener('scroll', sceneBand, { passive: true }); addEventListener('resize', sceneBand);
+  const bandRO = typeof ResizeObserver === 'function' ? new ResizeObserver(() => sceneBand()) : null;
+  // after signing up or signing in: build the character (conversation) or go straight to the compass (quick quiz)
+  function enterApp() {
+    state.error = null; N3D.setReduce(reduceMotion);
+    if (!exp.talk) { state.afterFind = 'quiz'; state.view = 'find'; render(); N3D.load().then(() => { if (state.view === 'find') render(true); }); return; }
+    if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load(), checkVoiceServer()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
+    startLevel(1);
+  }
   function expPanel() {
     const s = S();
     if (!state.expOpen) return '';
@@ -3561,17 +3825,20 @@ function toneOf(text) {
     if (t.dataset.setup) {
       const k = t.dataset.setup;
       if (k === 'consent') state.setup.consent = t.checked;
+      else if (t.tagName === 'SELECT') state.setup[k] = t.value || null;
       else { const v = t.dataset.val; state.setup[k] = (v === '1' || v === '0') ? Number(v) : v; }
       return;
     }
     if (t.dataset.slider) commitSlider(t);
     if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) { stopRecording(true); ownVoice.recs = []; ownVoice.k = 0; } render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
+    if (t.id === 'li-show') { state.loginShow = t.checked; const pi = document.getElementById('li-pass'); if (pi) pi.type = t.checked ? 'text' : 'password'; return; }
     if (t.id === 'voice-rate') { voiceCfg.rate = Number(t.value) || 1; saveAvatar(); return; }
+    if (t.id === 'voice-pick') { const v = t.value; if (v === 'own' && !ownVoice.id) { stopSay(); state.view = 'voiceclone'; render(); return; } voiceCfg.id = v; saveAvatar(); render(true); const again = document.getElementById('voice-pick'); if (again) again.focus({ preventScroll: true }); clearTimeout(helloTimer); if (v !== 'off') helloTimer = setTimeout(() => say(S().voiceHello), 700); return; }
     if (t.dataset.palette && PALETTES.includes(t.dataset.palette)) { palette = t.dataset.palette; store('nort.palette', palette); render(true); const again = document.getElementById('pal-' + palette); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.font && FONTS.includes(t.dataset.font)) { font = t.dataset.font; store('nort.font', font); render(true); const again = document.getElementById('font-' + font); if (again) again.focus({ preventScroll: true }); return; }
     if (t.dataset.exp && EXP_KEYS.includes(t.dataset.exp)) { exp[t.dataset.exp] = t.checked; store('nort.exp', JSON.stringify(exp)); render(true); const again = document.getElementById('exp-' + t.dataset.exp); if (again) again.focus({ preventScroll: true }); }
   });
-  root.addEventListener('submit', (e) => { if (e.target && e.target.id === 'signup-form') { e.preventDefault(); const btn = e.target.querySelector('[data-act="signup-done"]'); if (btn) btn.click(); } });
+  root.addEventListener('submit', (e) => { if (e.target && e.target.id === 'login-form') { e.preventDefault(); const btn = e.target.querySelector('[data-act="login-go"]'); if (btn) btn.click(); return; } if (e.target && e.target.id === 'signup-form') { e.preventDefault(); const btn = e.target.querySelector('[data-act="signup-done"]'); if (btn) btn.click(); } });
   root.addEventListener('input', (e) => {
     const t = e.target;
     if (t.dataset.text) state.answers[t.dataset.text] = t.value.trim() ? t.value : null;
@@ -3603,6 +3870,7 @@ function toneOf(text) {
     if (wb) { recordAnswer(wb.dataset.item, Number(wb.dataset.warm)); state.error = null; render(true); const again = root.querySelector(`[data-item="${wb.dataset.item}"][data-warm="${wb.dataset.warm}"]`); if (again) again.focus({ preventScroll: true }); return; }
     const avb = e.target.closest('[data-av]');
     if (avb) { avatar[avb.dataset.av] = Number(avb.dataset.i); saveAvatar(); render(true); const again = root.querySelector(`[data-av="${avb.dataset.av}"][data-i="${avb.dataset.i}"]`); if (again) again.focus({ preventScroll: true }); return; }
+    if (e.target.closest('[data-act=voice-redo]')) { stopSay(); deleteOwnVoice(); ownVoice.recs = []; ownVoice.k = 0; ownVoice.consent = false; state.view = 'voiceclone'; render(); return; }
     const vb = e.target.closest('[data-voice]');
     if (vb && vb.dataset.voice === 'own' && !ownVoice.id) { stopSay(); state.view = 'voiceclone'; render(); return; }
     if (vb) { voiceCfg.id = vb.dataset.voice; saveAvatar(); render(true); const again = root.querySelector(`[data-voice="${CSS.escape(vb.dataset.voice)}"]`); if (again) again.focus({ preventScroll: true }); if (voiceCfg.id !== 'off') say(S().voiceHello); return; }
@@ -3640,7 +3908,7 @@ function toneOf(text) {
     else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
     else if (act === 'sensor-no') { compass.asked = true; closeSensorSheet(); }
     else if (act === 'find-back') { stopSensor(); state.view = exp.talk && state.afterFind === 'talk' ? 'avatar' : 'signup'; render(); }
-    else if (act === 'home') { state.view = 'signup'; state.error = null; render(); }
+    else if (act === 'home') { state.view = 'login'; state.error = null; render(); }
     else if (act === 'signup-done') {
       const st = state.setup; const email = (document.getElementById('su-email') || {}).value || ''; const pass = (document.getElementById('su-pass') || {}).value || ''; const birth = (document.getElementById('su-birth') || {}).value || '';
       state.account.email = email; state.account.birth = birth;
@@ -3649,15 +3917,25 @@ function toneOf(text) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fail(s.errEmail, 'su-email'); return; }
       if (pass.length < 8) { fail(s.errPass, 'su-pass'); return; }
       if (age == null) { fail(s.errBirth, 'su-birth'); return; }
-      if (age < 18) { st.age = 0; state.view = 'under18'; render(); return; }
+      if (age < 18) { st.age = 0; state.account.key = passKey(email, pass); state.view = 'under18'; render(); return; }
       st.age = 1;
-      if (!st.country) { fail(s.needCountry, 'country-0'); return; }
+      if (!st.country) { fail(s.needCountry, 'su-country'); return; }
       if (st.baby == null) { fail(s.needBaby, 'baby-0'); return; }
       if (!st.consent) { fail(s.needConsent, 'consent'); return; }
-      state.error = null; N3D.setReduce(reduceMotion);
-      if (!exp.talk) { state.afterFind = 'quiz'; state.view = 'find'; render(); N3D.load().then(() => { if (state.view === 'find') render(true); }); return; }
-      if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load(), checkVoiceServer()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
-      startLevel(1);
+      state.account.key = passKey(email, pass);
+      enterApp(); return;
+    }
+    else if (act === 'go-signup' || act === 'go-login') { state.error = null; state.loginNote = null; state.view = act === 'go-signup' ? 'signup' : 'login'; render(); const f = document.getElementById(act === 'go-signup' ? 'su-email' : 'li-email'); if (f) f.focus(); }
+    else if (act === 'login-forgot') { state.error = null; state.loginNote = s.loginForgotMsg; render(true); }
+    else if (act === 'login-go') {
+      const email = ((document.getElementById('li-email') || {}).value || '').trim(); const pass = (document.getElementById('li-pass') || {}).value || '';
+      state.account.email = email; state.loginNote = null;
+      const fail = (msg, id) => { state.error = msg; render(true); const el = document.getElementById(id); if (el) { el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', 'li-error'); el.focus(); } };
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fail(s.errEmail, 'li-email'); return; }
+      if (!pass) { fail(s.errLoginPass, 'li-pass'); return; }
+      if (state.account.key && state.account.key === passKey(email, pass) && state.setup.age === 0) { state.error = null; state.view = 'under18'; render(); return; }
+      if (!state.account.key || state.account.key !== passKey(email, pass) || state.setup.age !== 1 || !state.setup.consent) { fail(s.loginNotFound, 'li-email'); return; }
+      state.error = null; enterApp(); return;
     }
     else if (act === 'advance') advance();
     else if (act === 'decline') { recordAnswer(b.dataset.item, 'skip'); state.error = null; advance(); }
