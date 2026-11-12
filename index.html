@@ -507,6 +507,10 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .clone-lines li.now { background: var(--soft); outline: 2px solid var(--ink); }
 .clone-lines li.done { color: var(--ink-2); }
 
+.field-l { display: block; font-weight: 700; margin: 8px 0 4px; }
+.signup .soft-card { gap: 10px; }
+.find .stage3d { height: 260px; }
+
 </style>
 </head>
 <body>
@@ -989,6 +993,9 @@ const UI = {
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Este navegador não tem voz. O personagem vai aparecer só em texto.', voiceHello: 'Oi! Eu sou você. Vamos conversar um pouco?', voiceHelloName: 'Oi! Eu sou {name}. Vamos conversar um pouco?',
     talkPrivacyAI: 'Como funciona: se você usar o microfone, sua voz vira texto num serviço da Anthropic. O texto da resposta é lido por uma IA (Claude, da Anthropic) só para encontrar indicadores nas áreas da saúde mental. A IA não dá diagnóstico. Neste protótipo, nenhuma resposta fica guardada depois que você fecha a página. Se você usa leitor de tela, pode escolher "Sem voz".',
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
+    signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
+    errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
+    findTitle: 'Ajude {name} a achar o norte', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
     reactSad: 'Obrigado por dividir isso comigo. Parece pesado, e faz sentido se sentir assim.', reactAnxious: 'Entendi. Vamos com calma, uma coisa de cada vez.', reactHappy: 'Que bom ouvir isso!', reactExcited: 'Que demais! Fico feliz por você.', reactNeutral: 'Obrigado por contar.', reactSkip: 'Tudo bem, vamos para a próxima.',
     talkHello: 'Oi! Eu sou {name}, a sua versão. Vou te fazer algumas perguntas. Responda do seu jeito, sem pressa.', avDrag: 'Arraste o personagem para girar.',
     voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓',
@@ -1189,6 +1196,9 @@ const UI = {
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'This browser has no voice. The character will show as text only.', voiceHello: 'Hi! I am you. Shall we talk for a bit?', voiceHelloName: 'Hi! I am {name}. Shall we talk for a bit?',
     talkPrivacyAI: 'How it works: if you use the microphone, your voice becomes text in an Anthropic service. The text of your answer is read by an AI (Claude, by Anthropic) only to find indicators across areas of mental health. The AI does not diagnose. In this prototype, no answer is kept after you close the page. If you use a screen reader, you can choose "No voice".',
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
+    signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. Nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
+    errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
+    findTitle: 'Help {name} find north', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
     reactSad: 'Thank you for sharing that with me. It sounds heavy, and it makes sense to feel that way.', reactAnxious: 'I hear you. Let’s take it slowly, one thing at a time.', reactHappy: 'So good to hear that!', reactExcited: 'That’s wonderful! I’m happy for you.', reactNeutral: 'Thanks for telling me.', reactSkip: 'That’s fine, let’s go to the next one.',
     talkHello: 'Hi! I’m {name}, your own self. I’ll ask you a few questions. Answer in your own way, no rush.', avDrag: 'Drag the character to turn it.',
     voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓',
@@ -1966,7 +1976,7 @@ const N3D = (() => {
   const cur = Object.assign({}, EMO.neutral);
   const ARMS = { // [left shoulder x-rot, z-rot, elbow], [right ...]
     down: [[0, 0.12], [0, -0.12]], slump: [[0.05, 0.05], [0.05, -0.05]], up: [[0, 2.6], [0, -2.6]],
-    chest: [[0, 0.12], [-1.2, 0.9]], open: [[-0.5, 0.6], [-0.5, -0.6]], chin: [[0, 0.12], [-2.0, 0.55]], wave: [[0, 0.12], [0, -2.5]]
+    chest: [[0, 0.12], [-1.2, 0.9]], open: [[-0.5, 0.6], [-0.5, -0.6]], chin: [[0, 0.12], [-2.0, 0.55]], wave: [[0, 0.12], [0, -2.5]], hold: [[0, 0.12], [-1.15, -0.15]], reach: [[0, 0.12], [-0.6, -0.1]]
   };
   const arm = { l: [0, 0.12], r: [0, -0.12] };
 
@@ -2013,6 +2023,14 @@ const N3D = (() => {
       else { const tr = new T.Mesh(new T.CylinderGeometry(0.08, 0.1, 0.6, 8), trunkM); tr.position.y = 0.3; g.add(tr); const top = new T.Mesh(new T.ConeGeometry(0.55 + (i % 3) * 0.15, 1.4 + (i % 4) * 0.25, 10), treeM); top.position.y = 1.2 + (i % 4) * 0.12; g.add(top); }
       world.add(g);
     }
+    // handheld compass (found on the ground, then carried)
+    const hc = new T.Group(); parts.hc = hc;
+    const rim = new T.Mesh(new T.CylinderGeometry(0.17, 0.17, 0.06, 32), mat(0xD9A441, { metalness: 0.5, roughness: 0.35 })); hc.add(rim);
+    const face = new T.Mesh(new T.CylinderGeometry(0.145, 0.145, 0.065, 32), mat(0xFFFFFF)); hc.add(face);
+    const nd2 = new T.Group(); parts.hcNeedle = nd2; nd2.position.y = 0.04; hc.add(nd2);
+    const nN = new T.Mesh(new T.ConeGeometry(0.035, 0.13, 4), mat(0xE8684A)); nN.rotation.x = -Math.PI / 2; nN.position.z = -0.06; nd2.add(nN);
+    const nS = new T.Mesh(new T.ConeGeometry(0.035, 0.13, 4), mat(0x1F2A44)); nS.rotation.x = Math.PI / 2; nS.position.z = 0.06; nd2.add(nS);
+    const glow = new T.Mesh(new T.RingGeometry(0.22, 0.32, 32), new T.MeshBasicMaterial({ color: 0xE8684A, transparent: true, opacity: 0.35, side: T.DoubleSide })); glow.rotation.x = -Math.PI / 2; glow.position.y = -0.02; parts.hcGlow = glow; hc.add(glow);
     // face canvas
     const fc = document.createElement('canvas'); fc.width = 512; fc.height = 512; faceCtx = fc.getContext('2d');
     faceTex = new T.CanvasTexture(fc); faceTex.colorSpace = T.SRGBColorSpace;
@@ -2037,6 +2055,7 @@ const N3D = (() => {
   function dispose(obj) { obj.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); }
   // ---- the character: base body + interchangeable parts (face shape, nose, hair, beard, clothes, body) ----
   function buildChar(look) {
+    if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc);
     if (char) { scene.remove(char); dispose(char); }
     const L = Object.assign({}, AV_DEFAULT, look || {});
     const pick = (k) => AV[k][L[k]] !== undefined ? AV[k][L[k]] : AV[k][AV_DEFAULT[k]];
@@ -2110,9 +2129,11 @@ const N3D = (() => {
     if (extra === 'earrings') { [-1, 1].forEach((sx) => { const e = new T.Mesh(new T.SphereGeometry(0.035, 12, 10), mat(0xD9A441, { metalness: 0.6, roughness: 0.3 })); e.position.set(sx * 0.5 * fs[0], -0.12, 0.02); head.add(e); }); }
     if (extra === 'headphones') { const band = new T.Mesh(new T.TorusGeometry(0.53, 0.035, 10, 40, Math.PI), darkM); band.position.y = 0.02; head.add(band); [-1, 1].forEach((sx) => { const cup = new T.Mesh(new T.CylinderGeometry(0.13, 0.13, 0.08, 24), mat(0xE8684A)); cup.rotation.z = Math.PI / 2; cup.position.set(sx * 0.53 * fs[0], 0, 0); head.add(cup); }); }
     const shadow = new T.Mesh(new T.CircleGeometry(0.55 * wide, 32), new T.MeshBasicMaterial({ color: 0x1F2A44, transparent: true, opacity: 0.16, depthWrite: false })); shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.005; char.add(shadow);
+    if (st.holding) holdCompass();
     st.look = L; st.face = { skin: skinHex, iris: pick('eyeColor'), brows: pick('brows'), beard, hair: hairHex };
     char.position.set(st.x, 0, st.z);
   }
+  function holdCompass() { const hc = parts.hc; hc.position.set(0, -0.6, 0.12); hc.rotation.set(Math.PI / 2 - 0.35, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = false; parts.arms[1].add(hc); }
   function drawFace(e, blink, mouthOpen) {
     const c = faceCtx, W = 512; c.clearRect(0, 0, W, W);
     const ink = '#1F2A44', F = st.face || { skin: '#C98F68', iris: '#5A3A22', brows: 'medium' };
@@ -2170,7 +2191,7 @@ const N3D = (() => {
     const target = EMO[st.emo] || EMO.neutral;
     const k = Math.min(1, dt * 5);
     ['brow', 'browIn', 'mouth', 'eye', 'tilt', 'pitch', 'bounce', 'cheek'].forEach((p) => { cur[p] = lerp(cur[p], target[p], k); });
-    const pose = st.wave > 0 ? ARMS.wave : (ARMS[target.arms] || ARMS.down);
+    const pose = st.wave > 0 ? ARMS.wave : st.reach ? ARMS.reach : st.holding ? ARMS.hold : (ARMS[target.arms] || ARMS.down);
     arm.l[0] = lerp(arm.l[0], pose[0][0], k); arm.l[1] = lerp(arm.l[1], pose[0][1], k); arm.r[0] = lerp(arm.r[0], pose[1][0], k); arm.r[1] = lerp(arm.r[1], pose[1][1], k);
     // blink
     st.nextBlink -= dt; if (st.nextBlink <= 0) { st.blink = 1; st.nextBlink = 2.5 + Math.random() * 3; }
@@ -2197,15 +2218,18 @@ const N3D = (() => {
     st.wave = Math.max(0, st.wave - dt);
     st.jump = Math.max(0, st.jump - dt);
     const bob = st.reduce ? 0 : (moving ? Math.abs(Math.sin(st.t * 9)) * 0.06 : Math.abs(Math.sin(st.t * 3)) * cur.bounce + (st.jump > 0 ? Math.sin((1 - st.jump / 0.6) * Math.PI) * 0.35 : 0));
-    parts.body.position.y = bob;
+    st.crouchV = lerp(st.crouchV || 0, st.crouch || 0, Math.min(1, dt * 8));
+    parts.body.position.y = bob - 0.32 * st.crouchV;
+    if (parts.hcGlow && parts.hcGlow.visible) parts.hcGlow.material.opacity = 0.2 + Math.abs(Math.sin(st.t * 3)) * 0.3;
     parts.body.scale.y = 1 + (st.reduce ? 0 : Math.sin(st.t * 2) * 0.008);
     st.nod = Math.max(0, st.nod - dt);
-    parts.head.rotation.set(cur.pitch + (st.nod > 0 && !st.reduce ? Math.sin(st.nod * 12) * 0.12 : 0) + (st.talking && !st.reduce ? Math.sin(st.t * 4) * 0.03 : 0), 0, cur.tilt);
+    const lookAround = st.searching && !st.reduce ? Math.sin(st.t * 2.2) * 0.6 : 0;
+    parts.head.rotation.set(cur.pitch + (st.crouch ? 0.35 : 0) + (st.nod > 0 && !st.reduce ? Math.sin(st.nod * 12) * 0.12 : 0) + (st.talking && !st.reduce ? Math.sin(st.t * 4) * 0.03 : 0), lookAround, cur.tilt);
     // camera
     const cx = st.mode === 'builder' ? 0 : st.x;
     // close up while talking (so the face reads), wider while walking
-    const camPos = st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.9, 5.8] : [cx, 1.85, 3.9];
-    const look = st.mode === 'builder' ? [cx, 1.45, 0] : [cx, moving ? 1.4 : 1.6, 0];
+    const camPos = st.mode === 'find' && st.holding && !moving ? [cx + 0.15, 1.5, 3.7] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.9, 5.8] : [cx, 1.85, 3.9];
+    const look = st.mode === 'builder' ? [cx, 1.45, 0] : st.mode === 'find' && st.holding && !moving ? [cx + 0.15, 1.3, 0] : [cx, moving ? 1.4 : 1.6, 0];
     const ck = st.reduce ? 1 : Math.min(1, dt * 3);
     camera.position.set(lerp(camera.position.x, camPos[0], ck), lerp(camera.position.y, camPos[1], ck), lerp(camera.position.z, camPos[2], ck * 0.8));
     camera.lookAt(look[0] + (camera.position.x - camPos[0]), look[1], look[2]);
@@ -2229,7 +2253,7 @@ const N3D = (() => {
     // "talk" scene: the character arrives from the left and stops at stop i
     scene(total, i, arrive) {
       if (!api.ok) return Promise.resolve();
-      st.mode = 'talk'; world.visible = true;
+      st.mode = 'talk'; world.visible = true; parts.path.visible = true; parts.compass.visible = true;
       if (parts.total !== total) setPath(total);
       if (arrive) { st.x = i * st.step - 4; st.emo = 'happy'; return api.walkTo(i).then(() => { st.wave = 1.4; }); }
       return Promise.resolve();
@@ -2238,8 +2262,27 @@ const N3D = (() => {
     emote(name) { if (EMO[name]) st.emo = name; if (name === 'excited') st.jump = 0.6; },
     nod() { st.nod = 0.8; },
     wave() { st.wave = 1.4; },
-    talking(on) { st.talking = !!on; }
+    talking(on) { st.talking = !!on; },
+    // Find the compass: walk in looking around, crouch, pick it up, hold it (resolves when held)
+    findScene() {
+      if (!api.ok) return Promise.resolve();
+      st.mode = 'find'; world.visible = true; parts.path.visible = false; parts.compass.visible = false;
+      if (st.holding) return Promise.resolve();
+      const hc = parts.hc; if (hc.parent) hc.parent.remove(hc);
+      hc.position.set(1.7, 0.04, 0.55); hc.rotation.set(0, 0, 0); parts.hcGlow.visible = true; scene.add(hc);
+      st.x = -3.2; st.emo = 'thinking'; st.searching = true;
+      const wait = (ms) => new Promise((r) => setTimeout(r, st.reduce ? 0 : ms));
+      st.targetX = 1.2; st.walking = true;
+      return new Promise((res) => { st.walkDone = res; })
+        .then(() => { st.searching = false; st.emo = 'excited'; st.jump = 0.6; return wait(700); })
+        .then(() => { st.crouch = 1; st.reach = true; return wait(600); })
+        .then(() => { st.holding = true; st.reach = false; holdCompass(); st.crouch = 0; return wait(500); })
+        .then(() => { st.emo = 'happy'; });
+    },
+    resetFind() { st.holding = false; st.searching = false; st.crouch = 0; st.reach = false; if (parts.hc && parts.hc.parent) parts.hc.parent.remove(parts.hc); },
+    heldNeedle(deg) { if (parts.hcNeedle) parts.hcNeedle.rotation.y = -deg * Math.PI / 180; },
   });
+  Object.defineProperty(api, 'holding', { get: () => !!st.holding });
   Object.defineProperty(api, 'emotion', { get: () => st.emo });
   return api;
 })();
@@ -2310,9 +2353,9 @@ function toneOf(text) {
   }
 
   const fresh = () => ({
-    view: 'welcome', setup: { age: null, country: placeCountry, baby: null, consent: false },
+    view: 'signup', setup: { age: null, country: placeCountry, baby: null, consent: false }, afterFind: 'talk', findStarted: false,
     answers: {}, gaps: [], lastAt: null, level: 1, pages: [], cardKey: null, levelsDone: {},
-    error: null, skipped: {}, optIn: {}, talk: { i: 0, answers: {}, an: {}, jobs: {}, skipped: {}, said: null, analyzing: false, selTouched: false }, talkSel: {}, talkRisk: false, talkMode: false, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
+    error: null, account: { email: '', birth: '' }, skipped: {}, optIn: {}, talk: { i: 0, answers: {}, an: {}, jobs: {}, skipped: {}, said: null, analyzing: false, selTouched: false }, talkSel: {}, talkRisk: false, talkMode: false, crisisOpen: false, crisisThenAdvance: false, basisRead: {}, resultsLevel: 1, copyMsg: null, justEarned: 0
   });
   const state = Object.assign(fresh(), { lang: initialLang(), points: parseInt(store('norte.points') || '0', 10) || 0 });
   let advanceTimer = null, breathTimer = null, toastTimer = null;
@@ -2406,7 +2449,7 @@ function toneOf(text) {
   // Inside the claude.ai viewer the page runs in a sandboxed frame that blocks motion sensors, so only offer the sensor on the app's own address.
   const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
   const canSense = hasSensor && !inFrame;
-  function sensorSheetOpen() { return state.view === 'welcome' && canSense && !compass.asked && compass.sensor === 'idle' && !compass.found; }
+  function sensorSheetOpen() { return state.view === 'find' && canSense && !compass.asked && compass.sensor === 'idle' && !compass.found; }
   function sensorSheet() {
     const s = S();
     return `<div class="overlay" id="sensor-sheet"><div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="sensor-h" aria-describedby="sensor-p" tabindex="-1" id="sensor-dialog">
@@ -2434,6 +2477,7 @@ function toneOf(text) {
     needle.classList.toggle('drag', compass.dragging || reduceMotion);
     needle.classList.toggle('live', compass.sensor === 'on');
     block.classList.toggle('found', compass.found);
+    if (N3D.ok) { N3D.heldNeedle(compass.deg); if (N3D.holding && compass.lastEmo !== compass.found) { compass.lastEmo = compass.found; N3D.emote(compass.found ? 'excited' : 'happy'); } }
     // "Start" only works once the arrow points to N
     const go = block.querySelector('.compass-go');
     if (go) { go.classList.toggle('locked', !compass.found); go.setAttribute('aria-disabled', String(!compass.found)); }
@@ -2486,8 +2530,8 @@ function toneOf(text) {
     const DOE = window.DeviceOrientationEvent;
     compass.sensor = 'asking'; compassUpdate();
     if (DOE && typeof DOE.requestPermission === 'function') {
-      DOE.requestPermission().then((r) => { if (compass.sensor !== 'asking' || state.view !== 'welcome') return; if (r === 'granted') startSensor(); else { compass.sensor = 'denied'; compassUpdate(); } })
-        .catch(() => { if (compass.sensor !== 'asking' || state.view !== 'welcome') return; compass.sensor = 'denied'; compassUpdate(); });
+      DOE.requestPermission().then((r) => { if (compass.sensor !== 'asking' || state.view !== 'find') return; if (r === 'granted') startSensor(); else { compass.sensor = 'denied'; compassUpdate(); } })
+        .catch(() => { if (compass.sensor !== 'asking' || state.view !== 'find') return; compass.sensor = 'denied'; compassUpdate(); });
     } else if (DOE) startSensor();
     else { compass.sensor = 'off'; compassUpdate(); }
   }
@@ -2515,6 +2559,52 @@ function toneOf(text) {
     if (canSense && compass.granted && compass.sensor === 'idle' && !compass.onOrient) startSensor();
   }
 
+  function ageFrom(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); if (!m) return null;
+    const b = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])); const now = new Date();
+    if (isNaN(b) || b > now || Number(m[1]) < 1900) return null;
+    let a = now.getFullYear() - b.getFullYear(); if (now.getMonth() < b.getMonth() || (now.getMonth() === b.getMonth() && now.getDate() < b.getDate())) a--;
+    return a;
+  }
+  // ---------- account (first screen) ----------
+  function viewSignup() {
+    const s = S(); const st = state.setup; const a = state.account;
+    const lvl = s.levels.map((l, i) => `<li><span class="lvl-n">${i + 1}</span><div><strong>${esc(l[0])}</strong><p>${esc(l[1])}</p></div></li>`).join('');
+    return `<main class="wrap narrow signup">
+      <section class="hero-head"><h1 class="compass-title">${esc(s.compassTitle)}</h1><p class="lead">${esc(s.signupLead)}</p></section>
+      <section class="soft-card">
+        <h2>${esc(s.signupTitle)}</h2>
+        <p class="note prov">${esc(s.signupProto)}</p>
+        <label class="field-l" for="su-email">${esc(s.emailL)}</label><input id="su-email" class="text-in" type="email" autocomplete="email" inputmode="email" value="${esc(a.email)}">
+        <label class="field-l" for="su-pass">${esc(s.passL)}</label><input id="su-pass" class="text-in" type="password" autocomplete="new-password" minlength="8">
+        <label class="field-l" for="su-birth">${esc(s.birthL)}</label><input id="su-birth" class="text-in" type="date" autocomplete="bday" value="${esc(a.birth)}">
+        <fieldset class="field"><legend>${esc(s.countryQ)}</legend><p class="hint">${esc(s.countryHint)}${placeCountry && st.country === placeCountry ? ` ${esc(s.countryGuessed)}` : ''}</p>${choice('country', ['AU', 'BR', 'OTHER'], [s.countries.AU, s.countries.BR, s.countries.OTHER], st.country)}</fieldset>
+        <fieldset class="field"><legend>${esc(s.babyQ)}</legend>${choice('baby', [1, 0, 'skip'], [s.yes, s.no, s.preferNot], st.baby)}</fieldset>
+        <section class="consent"><h2>${esc(s.consentTitle)}</h2><p>${esc(exp.talk ? s.consentTalk : s.consentText)}</p>
+          <label class="check" for="consent"><input type="checkbox" id="consent" data-setup="consent"${st.consent ? ' checked' : ''}><span>${esc(s.consentCheck)}</span></label></section>
+        ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
+        <button class="btn primary big" data-act="signup-done">${esc(s.signupBtn)}</button>
+      </section>
+      <div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
+      <p class="small center">${esc(s.disclaimer)}</p>
+      <section class="two">
+        <div class="soft-card tint-mint"><h2>${esc(s.isTitle)}</h2><ul class="ticks">${s.isList.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div class="soft-card tint-sand"><h2>${esc(s.isntTitle)}</h2><ul class="crosses">${s.isntList.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      </section>
+      <section class="soft-card tint-sky"><h2>${esc(s.howTitle)}</h2><ol class="levels">${lvl}</ol></section>
+    </main>`;
+  }
+  // ---------- find the compass (after the character): the character finds it, the person points north ----------
+  function viewFind() {
+    const s = S(); const name = (avatar.name || '').trim() || s.avNameDefault;
+    return `<main class="wrap narrow welcome find">
+      <section class="compass-hero">
+        <div class="hero-head"><h1 class="h-page">${esc(fmt(s.findTitle, { name }))}</h1><p class="lead">${esc(s.findLead)}</p></div>
+        ${N3D.ok ? `<div class="stage3d talk" id="stage3d"></div>` : ''}
+        ${compassBlockHtml(s)}
+      </section>
+    </main>`;
+  }
   function viewWelcome() {
     const s = S();
     const lvl = s.levels.map((l, i) => `<li><span class="lvl-n">${i + 1}</span><div><strong>${esc(l[0])}</strong><p>${esc(l[1])}</p></div></li>`).join('');
@@ -2523,7 +2613,12 @@ function toneOf(text) {
         <div class="hero-head">
           <h1 class="compass-title">${esc(s.compassTitle)}</h1>
         </div>
-        <div class="compass-block" id="compass-block">
+        ${compassBlockHtml(s)}
+      </section>
+    </main>`;
+  }
+  function compassBlockHtml(s) {
+    return `<div class="compass-block" id="compass-block">
           <p class="compass-goal" id="compass-goal">${esc(s[compassGoalKey()])}</p>
           <div class="north-mark" aria-hidden="true"><svg viewBox="0 0 14 9"><path d="M0 0 L14 0 L7 9 Z"/></svg></div>
           <div class="compass">
@@ -2535,8 +2630,10 @@ function toneOf(text) {
           </div>
         </div>
         <p class="compass-hint" id="compass-hint" aria-live="polite">${esc(s[compassHintKey()])}</p>
-        <button class="btn link" id="compass-manual" data-act="compass-manual"${['on', 'waiting'].includes(compass.sensor) && !compass.found ? '' : ' hidden'}>${esc(s.compassManual)}</button>
-        <div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
+        <button class="btn link" id="compass-manual" data-act="compass-manual"${['on', 'waiting'].includes(compass.sensor) && !compass.found ? '' : ' hidden'}>${esc(s.compassManual)}</button>`;
+  }
+  function unusedWelcomeTail(s, lvl) {
+    return `<div class="facts"><span>${esc(s.minutes)}</span><span>${esc(s.areasN)}</span><span>${esc(s.levelsN)}</span></div>
         <p class="small center">${esc(s.disclaimer)}</p>
       </section>
       <section class="hero-more">
@@ -3067,7 +3164,7 @@ function toneOf(text) {
         ${hasVoice ? `<div class="voice-tools"><label class="av-label" for="voice-rate">${esc(s.voiceRate)}</label><select id="voice-rate" class="text-in short">${[0.85, 1, 1.2].map((r, i) => `<option value="${r}"${voiceCfg.rate === r ? ' selected' : ''}>${esc(s.voiceRates[i])}</option>`).join('')}</select><button type="button" class="btn" data-act="voice-test"${vid === 'off' ? ' disabled' : ''}>${esc(s.voiceTest)}</button></div>` : `<p class="small">${esc(s.voiceNone)}</p>`}
       </fieldset>
       <p class="note">${esc(caps.sample ? s.talkPrivacyAI : s.talkPrivacyLocal)}</p>
-      <div class="actions"><button class="btn primary big" data-act="talk-start">${esc(s.talkStart)}</button></div>
+      <div class="actions"><button class="btn primary big" data-act="talk-start">${esc(s.avNext)}</button></div>
       <p><button class="btn link" data-act="quick-quiz">${esc(s.quickQuiz)}</button></p>
     </main>`;
   }
@@ -3204,10 +3301,10 @@ function toneOf(text) {
       const d = await res.json().catch(() => ({}));
       if (res.status === 409) { ownVoice.err = S().cloneVerify; ownVoice.busy = false; render(true); return; }
       if (res.status === 429) { ownVoice.err = S().cloneBusyServer; ownVoice.busy = false; render(true); return; }
-      if (!res.ok || !d.voice) throw new Error('clone');
+      if (!res.ok || !d.voice) { const e = new Error('clone'); e.why = [res.status, d.error, d.status, d.code].filter(Boolean).join(' · '); throw e; }
       ownVoice.id = d.voice; ownVoice.recs = []; voiceCfg.id = 'own'; ownVoice.busy = false;
       state.view = 'avatar'; render(); say(fmt(S().voiceHelloName, { name: (avatar.name || '').trim() || S().avNameDefault }));
-    } catch (e) { ownVoice.busy = false; ownVoice.err = S().cloneFail; render(true); }
+    } catch (e) { ownVoice.busy = false; ownVoice.err = S().cloneFail + (e && e.why ? ` (${e.why})` : ''); render(true); }
   }
   function viewVoiceClone() {
     const s = S(); const lines = s.cloneLines;
@@ -3233,7 +3330,8 @@ function toneOf(text) {
     document.documentElement.lang = LOCALES[state.lang].htmlLang;
     document.documentElement.dir = LOCALES[state.lang].dir;
     let v = '';
-    if (state.view === 'welcome') v = viewWelcome();
+    if (state.view === 'signup') v = viewSignup();
+    else if (state.view === 'find') v = viewFind();
     else if (state.view === 'setup') v = viewSetup();
     else if (state.view === 'under18') v = viewUnder18();
     else if (state.view === 'quiz') v = viewQuiz();
@@ -3265,7 +3363,7 @@ function toneOf(text) {
       const st = nm('strong'), so = nm('some');
       say(`${S().indTitle}. ${S().indLead} ${st ? `${S().indStrong}: ${st}.` : S().indNone} ${so ? `${S().indSome}: ${so}.` : ''}`);
     }
-    if (state.view === 'welcome') initCompass(); else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
+    if (state.view === 'find') { initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; N3D.findScene().then(() => { if (state.view === 'find') compassUpdate(); }); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
     const word = document.getElementById('breath-word');
     if (word && !reduceMotion) { let inhale = true; breathTimer = setInterval(() => { inhale = !inhale; word.textContent = inhale ? S().breathIn : S().breathOut; }, 4000); }
   }
@@ -3330,7 +3428,7 @@ function toneOf(text) {
     const cards = currentCards(); const i = currentIndex(cards); state.error = null;
     if (i > 0) { state.cardKey = cards[i - 1].key; render(); return; }
     if (state.talkMode && state.level === 2) { state.view = 'indicators'; render(); }
-    else if (state.level === 1) { state.view = 'setup'; render(); }
+    else if (state.level === 1) { state.view = 'find'; render(); }
     else { state.view = 'results'; state.resultsLevel = state.level - 1; render(); }
   }
   function recordAnswer(id, v) {
@@ -3448,21 +3546,21 @@ function toneOf(text) {
       const go = root.querySelector('.compass-go'); if (go && !reduceMotion) { go.classList.remove('shake'); void go.offsetWidth; go.classList.add('shake'); }
       return;
     }
-    if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.view = 'setup'; state.error = null; render(); }
+    if (act === 'start') { stopSensor(); compass.found = true; compass.deg = toNorth(compass.deg); compass.sensor = 'idle'; state.error = null; if (state.afterFind === 'quiz') { state.talkMode = false; startLevel(1); } else { unlockAudio(); saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.view = 'talk'; render(); } }
     else if (act === 'compass-manual') manualMode();
     else if (act === 'av-tab') { state.avTab = b.dataset.tab; render(true); const again = root.querySelector(`[data-act="av-tab"][data-tab="${b.dataset.tab}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'av-random') { Object.keys(AV).forEach((k) => { if (k !== 'eyes') avatar[k] = Math.floor(Math.random() * AV[k].length); }); saveAvatar(); render(true); const again = root.querySelector('[data-act="av-random"]'); if (again) again.focus({ preventScroll: true }); const st0 = root.querySelector('.av-stage'); if (st0) live.textContent = st0.getAttribute('aria-label') || ''; }
     else if (act === 'rec') recToggle();
     else if (act === 'clone-go') { unlockAudio(); cloneSend(); }
     else if (act === 'clone-back') { stopRecording(false); state.view = 'avatar'; render(); }
-    else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); startLevel(1); }
-    else if (act === 'talk-start') { unlockAudio(); saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.error = null; state.view = 'talk'; render(); }
+    else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); state.afterFind = 'quiz'; state.view = 'find'; render(); }
+    else if (act === 'talk-start') { saveAvatar(); state.afterFind = 'talk'; state.error = null; state.view = 'find'; render(); }
     else if (act === 'voice-test') { const nm = (avatar.name || '').trim(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     else if (act === 'talk-replay') say(talkSpeech(curTalkQ()));
     else if (act === 'mic') micToggle();
     else if (act === 'talk-next') talkNext();
     else if (act === 'talk-skip') { const q = curTalkQ(); state.talk.skipped[q.id] = true; delete state.talk.answers[q.id]; delete state.talk.an[q.id]; delete state.talk.jobs[q.id]; talkNext(); }
-    else if (act === 'talk-back') { stopMic(); stopSay(); state.error = null; if (state.talk.i > 0) { state.talk.i--; render(); } else { state.view = 'avatar'; render(); } }
+    else if (act === 'talk-back') { stopMic(); stopSay(); state.error = null; if (state.talk.i > 0) { state.talk.i--; render(); } else { state.view = 'find'; render(); } }
     else if (act === 'tsel') { const ar = b.dataset.area; state.talk.selTouched = true; state.talkSel[ar] = !state.talkSel[ar]; render(true); const again = root.querySelector(`[data-act="tsel"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'ind-nowait') { if (state.talk.finishWait) state.talk.finishWait(); }
     else if (act === 'ind-back') { stopSay(); state.view = 'talk'; state.talk.i = talkQuestions(state).length - 1; render(); }
@@ -3472,11 +3570,19 @@ function toneOf(text) {
     else if (act === 'exp-close') { state.expOpen = false; render(true); const f = root.querySelector('.exp-fab'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'sensor-yes') { compass.asked = true; enableSensor(); closeSensorSheet(); }
     else if (act === 'sensor-no') { compass.asked = true; closeSensorSheet(); }
-    else if (act === 'home') { state.view = 'welcome'; state.error = null; render(); }
-    else if (act === 'setup-done') {
-      const st = state.setup;
-      if (st.age === 0) { state.view = 'under18'; render(); return; }
-      if (st.age !== 1 || !st.country || st.baby == null || !st.consent) { state.error = s.needSetup; render(true); return; }
+    else if (act === 'home') { state.view = 'signup'; state.error = null; render(); }
+    else if (act === 'signup-done') {
+      const st = state.setup; const email = (document.getElementById('su-email') || {}).value || ''; const pass = (document.getElementById('su-pass') || {}).value || ''; const birth = (document.getElementById('su-birth') || {}).value || '';
+      state.account.email = email; state.account.birth = birth;
+      const age = ageFrom(birth);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { state.error = s.errEmail; render(true); return; }
+      if (pass.length < 8) { state.error = s.errPass; render(true); return; }
+      if (age == null) { state.error = s.errBirth; render(true); return; }
+      if (age < 18) { st.age = 0; state.view = 'under18'; render(); return; }
+      st.age = 1;
+      if (!st.country || st.baby == null || !st.consent) { state.error = s.needSignup; render(true); return; }
+      state.error = null; N3D.setReduce(reduceMotion);
+      if (!exp.talk) { state.afterFind = 'quiz'; state.view = 'find'; render(); N3D.load().then(() => { if (state.view === 'find') render(true); }); return; }
       if (exp.talk) { state.error = null; state.view = 'avatar'; render(); N3D.setReduce(reduceMotion); Promise.all([loadCaps(), N3D.load(), checkVoiceServer()]).then(() => { if (state.view === 'avatar') render(true); }); return; }
       startLevel(1);
     }
@@ -3496,7 +3602,7 @@ function toneOf(text) {
     else if (act === 'report') { state.copyMsg = null; state.view = 'report'; render(); }
     else if (act === 'back-results') { state.view = state.talkMode && !state.levelsDone[2] ? 'indicators' : 'results'; render(); }
     else if (act === 'goto') { const el = document.getElementById('area-' + b.dataset.area); if (el) { el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); el.focus({ preventScroll: true }); } }
-    else if (act === 'restart') { stopRecording(true); deleteOwnVoice(); Object.assign(ownVoice, { recs: [], consent: false, k: 0, err: null, blocked: false, notice: null }); const keep = { lang: state.lang, points: state.points }; Object.assign(state, fresh(), keep); Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false }); render(); }
+    else if (act === 'restart') { stopRecording(true); deleteOwnVoice(); Object.assign(ownVoice, { recs: [], consent: false, k: 0, err: null, blocked: false, notice: null }); const keep = { lang: state.lang, points: state.points, account: state.account, setup: Object.assign({}, state.setup) }; Object.assign(state, fresh(), keep); state.view = exp.talk ? 'avatar' : 'find'; state.afterFind = exp.talk ? 'talk' : 'quiz'; Object.assign(compass, { deg: -140, found: false, dragging: false, sensor: 'idle', buzzed: false, nudge: false, lastEmo: null }); N3D.resetFind(); render(); }
     else if (act === 'crisis-ok' && state.view === 'talk') { state.crisisOpen = false; state.talk.said = null; render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn') || document.getElementById('q-text'); if (f) f.focus({ preventScroll: true }); }
     else if (act === 'crisis-ok') { state.crisisOpen = false; if (state.crisisThenAdvance) { state.crisisThenAdvance = false; advance(); } else { render(true); const f = root.querySelector('.choice-btn.on') || document.getElementById('next-btn'); if (f) f.focus({ preventScroll: true }); } }
     else if (act === 'copy') {
