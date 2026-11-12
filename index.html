@@ -1191,6 +1191,7 @@ const UI = {
     talkPrivacyLocal: 'Como funciona: o app procura, aqui no seu aparelho, palavras ligadas a cada área para sugerir quais questionários fazer. Escrevendo, nada sai do aparelho. Se usar o microfone, o navegador pode enviar sua voz ao serviço de reconhecimento de fala dele (por exemplo, o Google) para virar texto. A leitura por IA, por enquanto, só funciona dentro do link do Claude. Se você usa leitor de tela, pode escolher "Sem voz".',
     loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas ainda não são guardadas. Para testar, crie uma conta.', loginNotFound: 'Não encontramos essa conta. No protótipo as contas não ficam guardadas: toque em "Criar uma conta".', loginForgotMsg: 'No protótipo ainda não dá para recuperar a senha. Na versão final, vamos mandar um link para o seu e-mail.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
     lostTitle: '{name} está sem direção', lostTitleNoName: 'Seu personagem está sem direção', lostLead: 'Procurando um caminho, seu personagem acha uma bússola, mas ela está quebrada e sem cores.', brokenAlt: 'Bússola quebrada, cinza, com pedaços faltando e a agulha girando sem rumo.', brokenHint: 'Tente achar a direção: experimente a localização da bússola ou gire a bússola com o dedo (ou com as setas do teclado).', brokenNoSignal: 'Sem sinal… é parte da história: a bússola está quebrada (nenhuma localização sua é usada). Gire a bússola com o dedo.', brokenReady: 'Ela ainda não aponta o norte, mas já dá para procurar o caminho. Cada resposta sua dá cor a um pedaço da bússola.', brokenLoc: 'Usar a localização da bússola', brokenLocFail: 'Sem sinal', brokenDialLabel: 'Bússola quebrada. Gire com o dedo ou com as setas do teclado.', brokenGo: 'Procurar o caminho', hudAlt: 'Bússola: {n} de {total} pedaços com cor.', wholeTitle: 'A bússola está inteira!', wholeLead: 'Agora leve a seta até o N, e {name} segue para o norte com você.', wholeLeadNoName: 'Agora leve a seta até o N, e seu personagem segue para o norte com você.', northSay: 'Achamos o norte. Vamos lá!', northSayCare: 'Vamos seguir juntos, no seu ritmo.', wholeTitleCare: 'A bússola está pronta',
+    voiceTestExpr: 'Oi, {name}! [laughs softly] Que bom te ouvir. [whispers] E eu também sei falar baixinho, ó. [warmly] Vamos conversar um pouco?',
     hintLabel: 'Você pode falar sobre', indLevels: { strong: 'Vale olhar com calma', some: 'Se você quiser', none: 'Nada apareceu na conversa' }, indCame: 'áreas apareceram na conversa', indCame1: 'área apareceu na conversa', indRingLegend: 'Cada pedaço é uma área, com a sua cor. Os mais grossos são os que apareceram na conversa. Toque numa área abaixo para escolher.', indSayScreen: 'Na tela, a sua bússola mostra as áreas que apareceram na conversa.', countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Ela só vale enquanto esta página estiver aberta; nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Vire o celular até a seta apontar para o N, ou arraste a seta, e toque em Começar.', birthHint: 'Toque para escolher a data (ano, mês e dia).', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
@@ -1444,6 +1445,7 @@ const UI = {
     talkPrivacyLocal: 'How it works: the app looks, here on your device, for words linked to each area to suggest which questionnaires to take. When you type, nothing leaves your device. If you use the microphone, your browser may send your voice to its speech recognition service (for example, Google) to turn it into text. For now, the AI reading only works inside the Claude link. If you use a screen reader, you can choose "No voice".',
     loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored yet. To try it, create an account.', loginNotFound: 'We couldn’t find that account. In the prototype accounts are not stored: tap "Create an account".', loginForgotMsg: 'Password recovery is not available in the prototype yet. In the final version we will send a link to your email.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
     lostTitle: '{name} has lost their way', lostTitleNoName: 'Your character has lost their way', lostLead: 'Looking for a way, your character finds a compass, but it is broken and has no colours.', brokenAlt: 'Broken grey compass, with missing pieces and the needle spinning aimlessly.', brokenHint: 'Try to find the way: try the compass’s location or turn the compass with your finger (or the arrow keys).', brokenNoSignal: 'No signal… it’s part of the story: the compass is broken (your location is not used). Turn the compass with your finger.', brokenReady: 'It still doesn’t point north, but you can start looking for the way. Each answer adds colour to a piece of the compass.', brokenLoc: 'Use the compass’s location', brokenLocFail: 'No signal', brokenDialLabel: 'Broken compass. Turn it with your finger or the arrow keys.', brokenGo: 'Look for the way', hudAlt: 'Compass: {n} of {total} pieces coloured.', wholeTitle: 'The compass is whole!', wholeLead: 'Now bring the arrow to N, and {name} will head north with you.', wholeLeadNoName: 'Now bring the arrow to N, and your character will head north with you.', northSay: 'We found north. Let’s go!', northSayCare: 'Let’s keep going together, at your pace.', wholeTitleCare: 'The compass is ready',
+    voiceTestExpr: 'Hi, {name}! [laughs softly] So good to hear you. [whispers] And I can talk quietly too, see? [warmly] Shall we have a little chat?',
     hintLabel: 'You could talk about', indLevels: { strong: 'Worth a closer look', some: 'If you like', none: 'Nothing came up in the chat' }, indCame: 'areas came up in the chat', indCame1: 'area came up in the chat', indRingLegend: 'Each piece is an area, with its own colour. Thicker pieces came up in the conversation. Tap an area below to choose it.', indSayScreen: 'On the screen, your compass shows the areas that came up in our chat.', countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. It only works while this page is open; nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Turn your phone until the arrow points to N, or drag the arrow, and tap Start.', birthHint: 'Tap to pick the date (year, month and day).', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
@@ -3886,33 +3888,36 @@ function toneOf(text) {
     const greet = i === 0 && !state.talk.greeted;
     if (greet) state.talk.greeted = true;
     if (N3D.ok) {
-      if (!state.talk.arrived) { state.talk.arrived = true; await N3D.scene(total, i, true); if (greet && tok === stepTok) await showReact(helloLine()); }
+      if (!state.talk.arrived) { state.talk.arrived = true; await N3D.scene(total, i, true); if (greet && tok === stepTok) await showReact(helloLine(), 'happy'); }
       else {
         await N3D.scene(total, i, false);
         const react = await finishReact(react0, q);
         if (tok !== stepTok) return;
         if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; }
-        if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line); if (state.crisisOpen) return; if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
+        if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line, react.tone); if (state.crisisOpen) return; if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
         if (tok !== stepTok) return;
         N3D.emote('neutral'); await N3D.walkTo(i);
       }
       if (tok !== stepTok) return;
       N3D.emote('listening');
-    } else if (greet) await showReact(helloLine());
-    else { const react = await finishReact(react0, q); if (tok !== stepTok) return; if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; } if (react && react.line) await showReact(react.line); }
+    } else if (greet) await showReact(helloLine(), 'happy');
+    else { const react = await finishReact(react0, q); if (tok !== stepTok) return; if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; } if (react && react.line) await showReact(react.line, react.tone); }
     if (tok !== stepTok) return;
     showReact(null);
     if (state.view !== 'talk' || state.crisisOpen || mic.on) return;
     say(talkSpeech(q));
   }
   // The character's words: on screen (#react-line, read by screen readers) and, with a voice on, spoken
-  async function showReact(line) {
+  // Eleven v3 cues by mood: a soft laugh for good news, a gentle low voice for hard things; never after a risk sign
+  const TONE_CUE = { happy: '[warmly]', excited: '[laughs softly]', sad: '[gently]', anxious: '[calmly]', care: '[softly]', neutral: '[warmly]', skip: '[warmly]' };
+  function cue(tone) { if (!remoteVoice() || !tone) return ''; if ((state.talkRisk || computeFlags(state).safety === 'yes') && !['care', 'sad', 'anxious'].includes(tone)) return '[softly]'; return TONE_CUE[tone] || ''; }
+  async function showReact(line, tone) {
     const el = document.getElementById('react-line'); if (el) { el.textContent = line || ''; el.hidden = !line; }
     if (!line || state.crisisOpen) return;
-    if (voiceId() === 'off' || mic.on) await wait(Math.min(4500, 1200 + line.length * 30)); else await say(speakable(line));
+    if (voiceId() === 'off' || mic.on) await wait(Math.min(4500, 1200 + line.length * 30)); else await say(speakable(line), cue(tone));
   }
   // A greeting that sounds like a person: the name only if the person gave one, never "I am you"
-  function helloName() { const n = (avatar.name || '').trim(); return n && n.length <= 30 && !['eu', 'me', 'voce', 'you', 'i'].includes(norm0(n)) ? n : ''; }
+  function helloName() { const n = (avatar.name || '').replace(/[\[\]]/g, '').trim(); return n && n.length <= 30 && !['eu', 'me', 'voce', 'you', 'i'].includes(norm0(n)) ? n : ''; }
   function helloLine() { const s = S(); const n = helloName(); return `${n ? fmt(pickLine(s.talkHellos), { name: n }) : pickLine(s.talkHellosNoName)} ${pickLine(s.talkHelloHow)}`; }
   // Never the same line twice in a row (the last few lines are kept out while there are others to pick)
   const recentLines = [];
@@ -4001,16 +4006,17 @@ function toneOf(text) {
     else if (next && !hard) { const lead = s.qLeads && s.qLeads[next.id]; if (lead) parts.push(pickLine(lead)); else if (!out.ai && Math.random() < 0.5) parts.push(pickLine(s.reactBridges)); }
     return parts.length ? Object.assign({}, out, { line: `${out.line} ${parts.join(' ')}` }) : out;
   }
-  async function say(text) {
+  async function say(text, cueTag) {
     const id = voiceId(); if (id === 'off' || !text) return;
     const tok = ++speakTok;
-    if (id === 'own' && ownVoice.id) return speakRemote(text, tok, { voice: ownVoice.id });
-    if (id.startsWith('e:')) return speakRemote(text, tok, { preset: id.slice(2) });
+    const exprText = cueTag ? `${cueTag} ${text}` : text; const plainText = String(text).replace(/\[[^\]]{1,30}\]\s*/g, '');
+    if (id === 'own' && ownVoice.id) return speakRemote(exprText, tok, { voice: ownVoice.id, expressive: true }, plainText);
+    if (id.startsWith('e:')) return speakRemote(exprText, tok, { preset: id.slice(2), expressive: true }, plainText);
     if (id.startsWith('c:') && caps.tts) {
-      try { setSpeaking(true); await Promise.race([caps.tts.speak(text, { voice: id.slice(2), rate: voiceCfg.rate, language: state.lang === 'pt' ? 'pt-BR' : 'en' }), wait((4000 + text.length * 110) / (voiceCfg.rate || 1))]); } catch (e) { /* stopped, busy or not allowed */ }
+      try { setSpeaking(true); await Promise.race([caps.tts.speak(plainText, { voice: id.slice(2), rate: voiceCfg.rate, language: state.lang === 'pt' ? 'pt-BR' : 'en' }), wait((4000 + text.length * 110) / (voiceCfg.rate || 1))]); } catch (e) { /* stopped, busy or not allowed */ }
       if (tok === speakTok) setSpeaking(false); return;
     }
-    return sayDevice(text, id, tok);
+    return sayDevice(plainText, id, tok);
   }
   function sayDevice(text, id, tok) {
     return new Promise((resolve) => {
@@ -4252,7 +4258,7 @@ function toneOf(text) {
   const audioElOk = !!audioEl;
   const SILENT = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQxAADB8AhSmxhIIEVCSiJrDCQBTcu3UrAIwUdkRgQbFAZC1CQEwTJ9mjRvBA4UOLD8nKVOWfh+UlK3z/177OXrfOdKl7pyn3Xf//WreyTRUoAWgBgkOAGbZHBgG1OF6zM82DWbZaUmMBptgQhGjsyYqc9ae9XFz280948NMBWInljyzsNRFLPWdnZGWrddDsjK1unuSrVN9jJsK8KuQtQCtMBjCEtImISdNKJOopIpBFpNSMbIHCSRpRR5iakjTiyzLhchUUBwCgyKiweBv/7UsQbg8isVNoMPMjAAAA0gAAABEVFGmgqK////9bP/6XCykxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq';
   function unlockAudio() { if (!audioEl || audioEl.dataset.unlocked) return; try { audioEl.src = SILENT; const p = audioEl.play(); if (p) p.then(() => { audioEl.dataset.unlocked = '1'; }).catch(() => {}); } catch (e) { /* ignore */ } }
-  function speakRemote(text, tok, who) {
+  function speakRemote(text, tok, who, plain) {
     return new Promise((resolve) => {
       let done = false; const finish = () => { if (done) return; done = true; if (tok === speakTok) setSpeaking(false); resolve(); };
       setTimeout(finish, (8000 + text.length * 120) / (voiceCfg.rate || 1));
@@ -4265,9 +4271,9 @@ function toneOf(text) {
           audioEl.src = url; audioEl.playbackRate = voiceCfg.rate || 1;
           audioEl.onplay = () => setSpeaking(true);
           audioEl.onended = audioEl.onerror = audioEl.onpause = end;
-          audioEl.play().catch(() => { audioEl.onplay = audioEl.onended = audioEl.onerror = audioEl.onpause = null; URL.revokeObjectURL(url); if (tok === speakTok) sayDevice(text, '', tok).then(finish); else finish(); });
+          audioEl.play().catch(() => { audioEl.onplay = audioEl.onended = audioEl.onerror = audioEl.onpause = null; URL.revokeObjectURL(url); if (tok === speakTok) sayDevice(plain || text, '', tok).then(finish); else finish(); });
         })
-        .catch(() => { if (tok === speakTok) sayDevice(text, '', tok).then(finish); else finish(); });
+        .catch(() => { if (tok === speakTok) sayDevice(plain || text, '', tok).then(finish); else finish(); });
     });
   }
   function deleteOwnVoice() {
@@ -4627,7 +4633,7 @@ function toneOf(text) {
     else if (act === 'clone-back') { stopRecording(false); state.view = 'avatar'; render(); }
     else if (act === 'quick-quiz') { state.talkMode = false; stopSay(); state.afterFind = 'quiz'; state.view = 'find'; render(); }
     else if (act === 'talk-start') { saveAvatar(); state.afterFind = 'talk'; state.error = null; state.view = 'find'; render(); }
-    else if (act === 'voice-test') { const nm = helloName(); say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
+    else if (act === 'voice-test') { const nm = helloName(); if (remoteVoice()) say(fmt(S().voiceTestExpr, { name: nm || '' }).replace(/,\s*!/, '!').replace(/\s+,/g, ','), '[warmly]'); else say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     else if (act === 'talk-replay') say(talkSpeech(curTalkQ()));
     else if (act === 'mic') micToggle();
     else if (act === 'talk-next') talkNext();
