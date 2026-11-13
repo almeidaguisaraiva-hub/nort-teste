@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="pt-BR" data-palette="floresta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Nort Comunidade — protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Floresta palette (same tokens as src/styles.css) */
+:root {
+  --bg: #EAF5EE; --surface: #FFFFFF; --soft: #D2EADB; --ink: #0D3B2A; --ink-2: #1E5240; --muted: #3C5F50; --line: #B6D7C3;
+  --accent: #0E7A4D; --accent-ink: #FFFFFF; --accent-soft: #D2EADB; --coral: #E8684A;
+  --disabled-bg: #C3DDCC; --disabled-ink: #1E5240;
+  --warn: #8F2E1A; --warn-soft: #F9E4DE;
+  --banner-bg: #0D3B2A; --banner-ink: #FFFFFF;
+  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --r: 18px;
+  --shadow: 0 1px 2px rgba(13, 59, 42, .06), 0 12px 26px -18px rgba(13, 59, 42, .4);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A2018; --surface: #102C21; --soft: #173B2D; --ink: #E3F3EA; --ink-2: #BEE0CD; --muted: #9CC4AF; --line: #24503E;
+    --accent: #4FCB91; --accent-ink: #072117; --accent-soft: #173B2D;
+    --disabled-bg: #24503E; --disabled-ink: #9CC4AF;
+    --warn: #F8D3C8; --warn-soft: #45221B;
+    --banner-bg: #E3F3EA; --banner-ink: #0A2018;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 26px -18px rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--font); }
+a { color: var(--accent); }
+h1, h2, h3 { line-height: 1.2; margin: 0 0 8px; }
+h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 20px; font-weight: 800; }
+h3 { font-size: 17px; font-weight: 800; }
+p { margin: 0 0 10px; }
+ul { margin: 0; padding-left: 20px; }
+li { margin: 4px 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+[tabindex="-1"]:focus { outline: none; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.banner { position: sticky; top: 0; z-index: 30; background: var(--banner-bg); color: var(--banner-ink); display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 4px 4px 16px; font-size: 14px; font-weight: 700; }
+.lang { min-height: 44px; min-width: 64px; border: 2px solid currentColor; background: transparent; color: inherit; border-radius: 999px; font: 800 14px var(--font); cursor: pointer; }
+.top { position: sticky; top: 52px; z-index: 20; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 16px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink); font-weight: 800; font-size: 19px; min-height: 44px; }
+.brand svg { width: 30px; height: 30px; color: var(--accent); }
+.brand > span { display: grid; line-height: 1.05; }
+.brand small { font-weight: 700; color: var(--muted); font-size: 13px; }
+
+main { max-width: 480px; margin: 0 auto; padding: 18px 16px 110px; }
+main.room-main { padding-bottom: 170px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; box-shadow: var(--shadow); margin: 0 0 14px; }
+.soft { background: var(--soft); border-radius: var(--r); padding: 14px 16px; margin: 0 0 14px; }
+.lead { color: var(--ink-2); font-size: 17px; }
+.muted { color: var(--muted); }
+.small { font-size: 15px; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--ink); }
+.tag.example { background: transparent; border: 1.5px dashed var(--muted); color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 18px; border-radius: 999px; border: 2px solid var(--accent); background: var(--accent); color: var(--accent-ink); font: 800 16px var(--font); cursor: pointer; text-decoration: none; text-align: center; }
+.btn.wide { width: 100%; }
+.btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn.line { background: transparent; color: var(--accent); }
+.btn[aria-disabled="true"], .btn:disabled { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-ink); cursor: not-allowed; }
+.btn.help { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.btn.sm { min-height: 44px; padding: 8px 14px; font-size: 15px; }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.isnot { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.isnot > div { border-radius: 14px; padding: 12px 14px; }
+.is { background: var(--accent-soft); }
+.not { background: var(--surface); border: 1px solid var(--line); }
+.rules { counter-reset: r; list-style: none; padding: 0; margin: 0; }
+.rules li { counter-increment: r; display: grid; grid-template-columns: 30px 1fr; gap: 8px; margin: 8px 0; }
+.rules li::before { content: counter(r); width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--ink); font-weight: 800; font-size: 14px; display: grid; place-items: center; }
+
+.check { display: flex; gap: 12px; align-items: flex-start; min-height: 44px; padding: 8px 0; cursor: pointer; }
+.check input { width: 26px; height: 26px; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+label.field { display: block; font-weight: 800; margin: 6px 0 4px; }
+input[type="text"], textarea { width: 100%; min-height: 48px; border: 2px solid var(--line); border-radius: 14px; padding: 10px 14px; font: 400 17px var(--font); color: var(--ink); background: var(--surface); }
+input[type="text"]:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+.err { color: var(--warn); background: var(--warn-soft); border-radius: 12px; padding: 10px 12px; font-weight: 700; margin: 10px 0 0; }
+.err:empty { display: none; }
+
+.avatars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 0; }
+.av-opt { position: relative; }
+.av-opt input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
+.av-opt label { display: grid; justify-items: center; gap: 4px; padding: 8px 4px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); cursor: pointer; min-height: 44px; font-size: 14px; font-weight: 700; text-align: center; }
+.av-opt input:checked + label { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.av-opt input:focus-visible + label { outline: 3px solid var(--accent); outline-offset: 2px; }
+.av { width: 56px; height: 56px; flex: none; }
+.av.s { width: 40px; height: 40px; }
+.av.xs { width: 32px; height: 32px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
+.chip label { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; font-size: 15px; }
+.chip input:checked + label { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chip input:checked + label::before { content: "✓ "; white-space: pre; }
+.chip input:focus-visible + label { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.group { position: relative; }
+.group .meta { display: grid; gap: 4px; margin: 8px 0 12px; font-size: 15px; color: var(--ink-2); }
+.group .meta b { color: var(--ink); }
+.spots { display: flex; gap: 4px; margin: 2px 0; }
+.spots i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); }
+.spots i.f { background: var(--accent); }
+.psy { display: flex; gap: 10px; align-items: center; background: var(--bg); border-radius: 14px; padding: 10px; margin: 0 0 12px; }
+.psy .who { font-size: 15px; line-height: 1.35; }
+.badge { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 13px; font-weight: 800; color: var(--ink); background: var(--accent-soft); border-radius: 999px; padding: 2px 9px; }
+.badge svg { width: 14px; height: 14px; color: var(--accent); }
+.badge em { font-style: normal; font-weight: 700; color: var(--muted); }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--accent); }
+.live::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.joined-note { font-weight: 700; color: var(--ink-2); margin: 10px 0 0; font-size: 15px; }
+
+/* room */
+.room-head { display: flex; gap: 10px; align-items: center; margin: 0 0 6px; }
+.back { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; gap: 4px; font-weight: 800; text-decoration: none; }
+.people { display: flex; align-items: center; margin: 4px 0 10px; }
+.people .av { margin-right: -8px; border: 2px solid var(--bg); border-radius: 50%; }
+.people span { margin-left: 16px; font-size: 14px; color: var(--muted); font-weight: 700; }
+.safety { position: sticky; top: 109px; z-index: 15; background: var(--bg); padding: 8px 0 10px; margin: 0 0 8px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+.safety .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.safety .three .btn { padding: 6px 4px; font-size: 14px; min-height: 44px; }
+.pinned { border-left: 5px solid var(--accent); }
+.pinned summary { cursor: pointer; font-weight: 800; min-height: 44px; display: flex; align-items: center; gap: 8px; list-style: none; }
+.pinned summary::-webkit-details-marker { display: none; }
+.pinned summary::after { content: "▾"; margin-left: auto; }
+.pinned[open] summary::after { content: "▴"; }
+.msgs > li { scroll-margin: 200px 0 150px; }
+.msgs { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.msg { display: grid; grid-template-columns: 40px 1fr; gap: 10px; }
+.msg > .av { align-self: start; }
+.msg .bubble { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 16px 16px 16px; padding: 10px 12px; }
+.msg.mine { grid-template-columns: 1fr 40px; }
+.msg.mine .av { order: 2; }
+.msg.mine .bubble { background: var(--accent-soft); border-color: transparent; border-radius: 16px 4px 16px 16px; }
+.msg.psy .bubble { border: 2px solid var(--accent); }
+.msg .name { font-weight: 800; font-size: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.msg .name .role { font-weight: 700; color: var(--accent); }
+.msg p { margin: 2px 0 0; }
+.reacts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.react { min-height: 44px; padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); font: 700 14px var(--font); cursor: pointer; }
+.react[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.sys { text-align: center; font-size: 14px; color: var(--muted); font-weight: 700; background: var(--soft); border-radius: 12px; padding: 8px 12px; }
+.pending { font-size: 13px; font-weight: 800; color: var(--muted); margin-top: 6px; }
+.composer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+.composer form { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
+.composer textarea { min-height: 52px; max-height: 120px; resize: none; }
+.composer .hint { grid-column: 1 / -1; font-size: 13px; color: var(--muted); margin: 0; }
+
+/* bottom nav */
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+nav.tabs ul { max-width: 480px; margin: 0 auto; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); }
+nav.tabs li { margin: 0; }
+nav.tabs a { display: grid; justify-items: center; gap: 2px; min-height: 60px; padding: 8px 2px; text-decoration: none; color: var(--muted); font-size: 13px; font-weight: 800; }
+nav.tabs a svg { width: 24px; height: 24px; }
+nav.tabs a[aria-current="page"] { color: var(--accent); }
+nav.tabs a[aria-current="page"] span { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+
+/* phase 2 */
+.soon { display: inline-flex; font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 999px; border: 2px solid var(--ink); }
+.post { border-top: 1px solid var(--line); padding: 10px 0 0; margin: 10px 0 0; display: grid; grid-template-columns: 32px 1fr; gap: 10px; font-size: 15px; }
+.post .name { font-weight: 800; font-size: 14px; }
+.locked { font-size: 14px; color: var(--muted); font-weight: 700; border: 2px dashed var(--line); border-radius: 14px; padding: 10px 12px; margin-top: 12px; }
+
+/* privacy */
+.yes-no li { list-style: none; margin: 8px 0; padding-left: 0; display: grid; grid-template-columns: 26px 1fr; gap: 6px; }
+.yes-no { padding: 0; }
+.ok-i { color: var(--accent); font-weight: 800; }
+.no-i { color: var(--warn); font-weight: 800; }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; cursor: pointer; }
+.switch input { appearance: none; -webkit-appearance: none; width: 52px; height: 32px; border-radius: 999px; background: var(--disabled-bg); position: relative; flex: none; cursor: pointer; border: 2px solid var(--muted); }
+.switch input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); border: 1px solid var(--muted); transition: transform .2s; }
+.switch input:checked { background: var(--accent); border-color: var(--accent); }
+.switch input:checked::after { transform: translateX(20px); }
+.switch input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.profile { display: flex; gap: 12px; align-items: center; }
+
+/* dialogs */
+dialog { width: min(440px, calc(100vw - 24px)); max-height: calc(100vh - 32px); border: none; border-radius: 22px; padding: 20px 18px; background: var(--surface); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(6, 25, 18, .6); }
+dialog h2 { font-size: 22px; }
+.lines { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 8px; }
+.lines li { margin: 0; }
+.lines a { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 52px; padding: 8px 14px; border-radius: 14px; background: var(--bg); border: 1.5px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 700; }
+.lines a b { font-size: 20px; color: var(--accent); white-space: nowrap; }
+.country { font-size: 14px; font-weight: 800; color: var(--muted); margin: 12px 0 0; text-transform: uppercase; letter-spacing: .04em; }
+.radios { display: grid; gap: 4px; border: none; padding: 0; margin: 8px 0; }
+.radios legend { font-weight: 800; padding: 0; margin-bottom: 4px; }
+.radios label { display: flex; gap: 10px; align-items: center; min-height: 44px; cursor: pointer; }
+.radios input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.dlg-actions { display: grid; gap: 8px; margin-top: 14px; }
+.demo-note { font-size: 13px; color: var(--muted); font-weight: 700; border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="banner" role="note">
+  <span id="banner-text">Protótipo — pessoas e mensagens de exemplo</span>
+  <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
+</div>
+<header class="top">
+  <a class="brand" href="#entrada" id="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16 1.2 L19 6.4 L13 6.4 Z" style="fill: var(--coral)"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M29.2 16h-2.4M5.2 16H2.8M16 29.2v-2.4"/></g><path d="M11.2 21.6V10.4h1.6l6 8.2v-8.2h1.9v11.2h-1.6l-6-8.2v8.2z" fill="currentColor"/></svg><span>nort <small id="brand-sub">comunidade</small></span></a>
+  <button class="btn help sm" type="button" id="help-top" data-help></button>
+</header>
+<main id="main" tabindex="-1"></main>
+<div id="bottom"></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<dialog id="dlg" aria-labelledby="dlg-title"></dialog>
+
+<script>
+(function () {
+  'use strict';
+  const S = {
+    lang: 'pt', entered: false, nick: '', avatar: 'nort', themes: [], age: false, rules: false,
+    joined: { trabalho: true }, mine: {}, reacted: {}, blocked: {}, showThemes: true, shareNort: false, left: {},
+  };
+  try { const l = localStorage.getItem('nort-com-lang'); if (l === 'en' || l === 'pt') S.lang = l; } catch (e) { /* ignore */ }
+  const $ = (q, el) => (el || document).querySelector(q);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const T = (pt, en) => (S.lang === 'en' ? en : pt);
+  const t = (o) => (o && typeof o === 'object' ? (o[S.lang] || o.en) : o);
+  const live = (msg) => { const el = $('#live'); el.textContent = ''; setTimeout(() => { el.textContent = msg; }, 30); };
+
+  /* ---------- simple 2D characters ---------- */
+  const LOOKS = {
+    nort: { bg: '#A6DDBD', skin: '#C98B5E', hair: '#2B1B12', style: 'curly', shirt: '#0E7A4D' },
+    sol: { bg: '#F3D9A8', skin: '#F1C7A3', hair: '#B5651D', style: 'long', shirt: '#4B6FB3' },
+    mar: { bg: '#B9D3E3', skin: '#8D5A3B', hair: '#1A1310', style: 'short', shirt: '#7A4FA3' },
+    lua: { bg: '#D3CEEA', skin: '#E7B892', hair: '#3A2A20', style: 'bun', shirt: '#B34F6B' },
+    rio: { bg: '#B5DCCB', skin: '#6B4128', hair: '#0F0B09', style: 'afro', shirt: '#2F6F8F' },
+    ceu: { bg: '#F3C2B3', skin: '#F5D3B8', hair: '#D9C27A', style: 'short', shirt: '#3C5F50' },
+    psyA: { bg: '#ADD9C1', skin: '#D6A37E', hair: '#5A3A28', style: 'long', shirt: '#0D3B2A' },
+    psyB: { bg: '#B9D3E3', skin: '#9C6644', hair: '#222', style: 'short', shirt: '#0D3B2A' },
+  };
+  function hair(style, c) {
+    switch (style) {
+      case 'curly': return `<g fill="${c}"><circle cx="19" cy="20" r="7"/><circle cx="27" cy="16" r="7"/><circle cx="36" cy="16" r="7"/><circle cx="44" cy="20" r="7"/><circle cx="17" cy="28" r="5"/><circle cx="46" cy="28" r="5"/></g>`;
+      case 'long': return `<path fill="${c}" d="M14 30c0-12 8-19 18-19s18 7 18 19v16h-6V30c-4-2-9-6-12-10-3 5-9 9-12 10v16h-6z"/>`;
+      case 'bun': return `<g fill="${c}"><circle cx="32" cy="9" r="6"/><path d="M15 29c0-11 7-17 17-17s17 6 17 17c-6-1-13-5-17-9-4 4-11 8-17 9z"/></g>`;
+      case 'afro': return `<circle cx="32" cy="24" r="19" fill="${c}"/>`;
+      default: return `<path fill="${c}" d="M15 28c0-11 7-16 17-16s17 5 17 16c-3-4-9-6-17-6s-14 2-17 6z"/>`;
+    }
+  }
+  function avatar(key, cls, label) {
+    const k = LOOKS[key] || LOOKS.nort;
+    const lab = label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"';
+    return `<svg class="av ${cls || ''}" viewBox="0 0 64 64"${lab}><circle cx="32" cy="32" r="32" fill="${k.bg}"/><path d="M12 64c2-12 10-17 20-17s18 5 20 17z" fill="${k.shirt}"/><rect x="28" y="38" width="8" height="10" rx="3" fill="${k.skin}"/>${k.style === 'afro' ? hair('afro', k.hair) : ''}<ellipse cx="32" cy="29" rx="13" ry="14" fill="${k.skin}"/>${k.style !== 'afro' ? hair(k.style, k.hair) : ''}<circle cx="27" cy="30" r="1.8" fill="#1A1310"/><circle cx="37" cy="30" r="1.8" fill="#1A1310"/><path d="M27.5 35.5c2.6 2.2 6.4 2.2 9 0" stroke="#1A1310" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`;
+  }
+
+  /* ---------- icons ---------- */
+  const IC = {
+    life: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg>',
+    check: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12.5l5 5L20 6.5"/></svg>',
+    home: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z"/></svg>',
+    group: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5M10.5 19c.8-3 3-4.5 5.5-4.5s4.7 1.5 5.5 4.5"/></svg>',
+    rooms: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+    lock: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  };
+
+  /* ---------- example data ---------- */
+  const THEMES = [
+    { id: 'ans', pt: 'Ansiedade', en: 'Anxiety' }, { id: 'trab', pt: 'Trabalho', en: 'Work' },
+    { id: 'bebe', pt: 'Depois do bebê', en: 'After the baby' }, { id: 'tdah', pt: 'TDAH', en: 'ADHD' },
+    { id: 'sono', pt: 'Sono', en: 'Sleep' }, { id: 'longe', pt: 'Longe de casa', en: 'Far from home' },
+    { id: 'luto', pt: 'Luto', en: 'Grief' }, { id: 'solidao', pt: 'Solidão', en: 'Loneliness' },
+  ];
+  const PSY = {
+    helena: { name: 'Helena Prado', look: 'psyA', reg: 'CRP', pt: 'Psicóloga', en: 'Psychologist' },
+    marina: { name: 'Marina Costa', look: 'lua', reg: 'CRP', pt: 'Psicóloga perinatal', en: 'Perinatal psychologist' },
+    andre: { name: 'André Lima', look: 'psyB', reg: 'CRP', pt: 'Psicólogo', en: 'Psychologist' },
+    sam: { name: 'Sam Taylor', look: 'ceu', reg: 'AHPRA', pt: 'Psicóloga', en: 'Psychologist' },
+    ana: { name: 'Ana Ribeiro', look: 'sol', reg: 'CRP', pt: 'Psicóloga', en: 'Psychologist' },
+  };
+  const GROUPS = [
+    { id: 'trabalho', psy: 'helena', taken: 7, total: 10, now: true,
+      name: { pt: 'Ansiedade no trabalho', en: 'Anxiety at work' },
+      desc: { pt: 'Reuniões, prazos, o domingo à noite. Trocar o que tem ajudado cada um.', en: 'Meetings, deadlines, Sunday night dread. Sharing what has helped each of us.' },
+      when: { pt: 'Terças, 19h–20h (Brasília)', en: 'Tuesdays, 7–8 pm (Brasília time)' } },
+    { id: 'bebe', psy: 'marina', taken: 5, total: 8,
+      name: { pt: 'Depois do bebê', en: 'After the baby' },
+      desc: { pt: 'Para mães, pais e quem cuida, no primeiro ano do bebê. Pode vir com o bebê no colo.', en: 'For mums, dads and carers in the baby’s first year. Baby on your lap is fine.' },
+      when: { pt: 'Quintas, 10h–10h45 (Brasília)', en: 'Thursdays, 10–10:45 am (Brasília time)' } },
+    { id: 'tdah', psy: 'andre', taken: 9, total: 10,
+      name: { pt: 'TDAH adulto', en: 'Adult ADHD' },
+      desc: { pt: 'Rotina, foco, esquecimentos e o que fazer com a culpa. Com ou sem diagnóstico.', en: 'Routines, focus, forgetting things and what to do with the guilt. With or without a diagnosis.' },
+      when: { pt: 'Quartas, 20h–21h (Brasília)', en: 'Wednesdays, 8–9 pm (Brasília time)' } },
+    { id: 'longe', psy: 'sam', taken: 6, total: 8,
+      name: { pt: 'Longe de casa', en: 'Far from home' },
+      desc: { pt: 'Para quem mora em outro país ou cidade e sente falta de gente por perto.', en: 'For anyone living in another country or city and missing people nearby.' },
+      when: { pt: 'Sábados, 11h–12h (Sydney)', en: 'Saturdays, 11 am–12 pm (Sydney time)' } },
+    { id: 'luto', psy: 'ana', taken: 8, total: 8,
+      name: { pt: 'Luto', en: 'Grief' },
+      desc: { pt: 'Para quem perdeu alguém. Um espaço calmo para lembrar e conversar.', en: 'For anyone who has lost someone. A calm space to remember and talk.' },
+      when: { pt: 'Segundas, 18h–19h (Brasília)', en: 'Mondays, 6–7 pm (Brasília time)' } },
+  ];
+  const PEOPLE = { rio: { nick: 'Rio', look: 'rio' }, bia: { nick: 'Bia', look: 'sol' }, teo: { nick: 'Teo', look: 'mar' }, nanda: { nick: 'Nanda', look: 'lua' } };
+  const ROOM = [
+    { who: 'helena', psy: true, text: { pt: 'Boa noite! Para começar: numa palavra, como chegou a semana de vocês?', en: 'Good evening! To start: in one word, how has your week been?' } },
+    { who: 'rio', text: { pt: 'Cansado. No domingo à noite eu já começo a pensar na segunda.', en: 'Tired. On Sunday night I’m already thinking about Monday.' } },
+    { who: 'bia', text: { pt: 'Ansiosa. Tive uma reunião difícil e fiquei repassando a conversa na cabeça o dia todo.', en: 'Anxious. I had a hard meeting and kept replaying it in my head all day.' } },
+    { who: 'teo', text: { pt: 'Parecido com você, Rio. Comecei a deixar o celular do trabalho em outro cômodo depois das 19h. Tem ajudado um pouco.', en: 'Same as you, Rio. I started leaving my work phone in another room after 7 pm. It’s helped a bit.' } },
+    { sys: true, text: { pt: 'Uma mensagem foi escondida pela moderação (regra 2: sem conselho sobre remédios).', en: 'A message was hidden by moderation (rule 2: no advice about medication).' } },
+    { who: 'bia', text: { pt: 'Alguém mais sente o coração acelerar antes de falar em reunião?', en: 'Does anyone else feel their heart race before speaking in a meeting?' } },
+    { who: 'nanda', text: { pt: 'Eu sinto, Bia. Você não está sozinha nisso. Comigo, respirar devagar antes de entrar ajuda, mas cada um descobre o seu jeito.', en: 'I do, Bia. You’re not alone in this. Breathing slowly before I go in helps me, but everyone finds their own way.' } },
+    { who: 'helena', psy: true, text: { pt: 'Obrigada por dividirem. O que o Teo e a Nanda contaram funcionou para eles; não é receita para todo mundo. Se a ansiedade está atrapalhando muito o dia, vale conversar com um psicólogo ou psiquiatra sobre isso, e eu posso indicar caminhos no fim do encontro.', en: 'Thank you for sharing. What Teo and Nanda described worked for them; it isn’t a prescription for everyone. If anxiety is getting in the way of your day a lot, it’s worth talking to a psychologist or psychiatrist about it, and I can suggest options at the end.' } },
+  ];
+  const REACTS = [
+    { id: 'entendo', pt: 'Te entendo', en: 'I get it' },
+    { id: 'forca', pt: 'Força', en: 'Sending strength' },
+    { id: 'obrigado', pt: 'Obrigado por dividir', en: 'Thanks for sharing' },
+  ];
+  const RULES = {
+    pt: ['Respeito: sem ataques, sem julgamento, sem discriminação.', 'Sem conselho médico: ninguém diz para outra pessoa tomar, parar ou trocar remédio.', 'Sem detalhes de métodos de autolesão ou suicídio, sem fotos de ferimentos, sem números de peso ou caloria.', 'Sem venda, propaganda ou pedido de dinheiro.', 'Sem expor dados de ninguém (nem os seus, como endereço e telefone).', 'Se alguém estiver em perigo: use o botão “Preciso de ajuda agora” ou denuncie com “Alguém está em perigo”.'],
+    en: ['Respect: no attacks, no judgement, no discrimination.', 'No medical advice: nobody tells anyone to start, stop or change medication.', 'No details of self-harm or suicide methods, no photos of injuries, no weight or calorie numbers.', 'No selling, ads or asking for money.', 'Don’t share anyone’s personal details (not even your own, like address or phone).', 'If someone is in danger: use the “I need help now” button or report with “Someone is in danger”.'],
+  };
+
+  /* ---------- on-device message check (first layer only) ---------- */
+  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’']/g, '');
+  const RISK = ['quero morrer', 'queria morrer', 'vontade de morrer', 'me matar', 'suicid', 'tirar minha vida', 'tirar a minha vida', 'acabar com a minha vida', 'acabar com minha vida', 'acabar com tudo', 'nao quero mais viver', 'nao aguento mais viver', 'me cortar', 'me machucar', 'want to die', 'wanna die', 'kill myself', 'end my life', 'end it all', 'dont want to live', 'hurt myself', 'cut myself', 'better off dead', 'melhor morto', 'melhor morta'];
+  const FLAGS = [
+    { rule: 2, re: /\b(remedio|remedios|medicamento|medicacao|dose|\d+\s?mg|parar de tomar|pare de tomar|para de tomar|rivotril|clonazepam|sertralina|fluoxetina|escitalopram|ritalina|venvanse|medication|meds|stop taking|sertraline|xanax|adderall)\b/ },
+    { rule: 3, re: /\b\d+\s?(kg|quilos|kcal|calorias|calories)\b/ },
+    { rule: 4, re: /\b(pix|compre|vendo|promocao|desconto|buy now|for sale|discount)\b/ },
+    { rule: 5, re: /([\w.+-]+@[\w-]+\.[\w.]+)|(\+?\d[\d\s().-]{7,}\d)/ },
+  ];
+  function checkText(text) {
+    const n = norm(text);
+    if (RISK.some((w) => n.includes(w))) return { risk: true };
+    const f = FLAGS.find((x) => x.re.test(n));
+    return f ? { rule: f.rule } : {};
+  }
+
+  /* ---------- shell ---------- */
+  function route() {
+    const h = (location.hash || '#entrada').slice(1);
+    const [name, arg] = h.split('/');
+    return { name: name || 'entrada', arg };
+  }
+  function tabs(active) {
+    const items = [
+      ['entrada', IC.home, T('Início', 'Start')],
+      ['grupos', IC.group, T('Grupos', 'Groups')],
+      ['salas', IC.rooms, T('Salas', 'Rooms')],
+      ['privacidade', IC.lock, T('Privacidade', 'Privacy')],
+    ];
+    return `<nav class="tabs" aria-label="${T('Comunidade', 'Community')}"><ul>${items.map(([id, ic, label]) => `<li><a href="#${id}"${active === id ? ' aria-current="page"' : ''}>${ic}<span>${label}</span></a></li>`).join('')}</ul></nav>`;
+  }
+  function psyBlock(p) {
+    const P = PSY[p];
+    return `<div class="psy">${avatar(P.look, 's')}<div class="who"><b>${esc(P.name)}</b> <span class="muted">(${T('exemplo', 'example')})</span><br>${t(P)} · ${T('modera o grupo', 'moderates the group')}<br><span class="badge">${IC.check}${P.reg} ${T('verificado', 'verified')} <em>· ${T('exemplo', 'example')}</em></span></div></div>`;
+  }
+  function chrome() {
+    document.documentElement.lang = S.lang === 'en' ? 'en' : 'pt-BR';
+    $('#banner-text').textContent = T('Protótipo — pessoas e mensagens de exemplo', 'Prototype — example people and messages');
+    const lb = $('#lang');
+    lb.textContent = S.lang === 'en' ? 'PT' : 'EN';
+    lb.setAttribute('aria-label', S.lang === 'en' ? 'Mudar para português' : 'Switch to English');
+    lb.setAttribute('lang', S.lang === 'en' ? 'pt-BR' : 'en');
+    $('#brand-sub').textContent = T('comunidade', 'community');
+    $('#brand').setAttribute('aria-label', T('nort comunidade, início', 'nort community, start'));
+    $('#help-top').innerHTML = IC.life + T('Preciso de ajuda agora', 'I need help now');
+  }
+
+  /* ---------- screens ---------- */
+  function scrEntrada() {
+    const opts = ['nort', 'sol', 'mar', 'lua', 'rio', 'ceu'];
+    const names = { nort: T('Meu personagem do Nort', 'My Nort character'), sol: 'Sol', mar: 'Mar', lua: 'Lua', rio: 'Rio', ceu: T('Céu', 'Sky') };
+    const done = S.entered;
+    return `
+      <h1>${T('Comunidade do Nort', 'Nort community')}</h1>
+      <p class="lead">${T('Encontre pessoas que passam por coisas parecidas, em grupos pequenos com um psicólogo junto.', 'Meet people going through similar things, in small groups with a psychologist present.')}</p>
+      ${done ? `<div class="soft" role="status"><b>${T('Você já entrou como', 'You joined as')} ${esc(S.nick)}.</b> <a href="#grupos">${T('Ver os grupos', 'See the groups')}</a></div>` : ''}
+      <section class="card" aria-labelledby="h-what">
+        <h2 id="h-what">${T('O que é, e o que não é', 'What it is, and what it isn’t')}</h2>
+        <div class="isnot">
+          <div class="is"><h3>${T('É', 'It is')}</h3><ul>
+            <li>${T('Apoio entre pessoas que passam por coisas parecidas', 'Support between people going through similar things')}</li>
+            <li>${T('Troca de experiências, para se sentir menos só', 'Sharing experiences, to feel less alone')}</li>
+            <li>${T('Um caminho fácil até um psicólogo ou psiquiatra', 'An easy path to a psychologist or psychiatrist')}</li></ul></div>
+          <div class="not"><h3>${T('Não é', 'It isn’t')}</h3><ul>
+            <li>${T('Diagnóstico nem tratamento', 'Diagnosis or treatment')}</li>
+            <li>${T('Conselho médico entre participantes', 'Medical advice between members')}</li>
+            <li>${T('Atendimento de crise: para isso, use “Preciso de ajuda agora”', 'Crisis care: for that, use “I need help now”')}</li></ul></div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="h-rules">
+        <h2 id="h-rules">${T('Regras da comunidade', 'Community rules')}</h2>
+        <ol class="rules">${RULES[S.lang].map((r) => `<li><span>${esc(r)}</span></li>`).join('')}</ol>
+      </section>
+      <form class="card" id="entry" novalidate aria-labelledby="h-you">
+        <h2 id="h-you">${T('Como você aparece', 'How you appear')}</h2>
+        <p class="small muted">${T('Sem foto e sem nome real. Os outros veem só o apelido, o personagem e os temas que você escolher.', 'No photo, no real name. Others only see your nickname, character and the themes you choose.')}</p>
+        <label class="field" for="nick">${T('Apelido', 'Nickname')}</label>
+        <input type="text" id="nick" maxlength="20" autocomplete="off" value="${esc(S.nick)}" aria-describedby="nick-h">
+        <p class="small muted" id="nick-h">${T('Evite seu nome completo. Até 20 letras.', 'Avoid your full name. Up to 20 letters.')}</p>
+        <fieldset style="border:none;padding:0;margin:8px 0 0"><legend class="field">${T('Personagem', 'Character')}</legend>
+        <p class="small muted" style="margin:0">${T('No app de verdade, entra o personagem que você criou no Nort. Aqui, um desenho simples.', 'In the real app, the character you created in Nort comes along. Here, a simple drawing.')}</p>
+        <div class="avatars">${opts.map((k) => `<div class="av-opt"><input type="radio" name="av" id="av-${k}" value="${k}"${S.avatar === k ? ' checked' : ''}><label for="av-${k}">${avatar(k)}<span>${esc(names[k])}</span></label></div>`).join('')}</div></fieldset>
+        <fieldset style="border:none;padding:0;margin:14px 0 0"><legend class="field">${T('Temas que quer conversar (opcional)', 'Themes you’d like to talk about (optional)')}</legend>
+        <p class="small muted" style="margin:0 0 8px">${T('Você escolhe. Nada vem das suas respostas no Nort.', 'You choose. Nothing comes from your Nort answers.')}</p>
+        <div class="chips">${THEMES.map((th) => `<div class="chip"><input type="checkbox" id="th-${th.id}" value="${th.id}"${S.themes.includes(th.id) ? ' checked' : ''}><label for="th-${th.id}">${t(th)}</label></div>`).join('')}</div></fieldset>
+        <div style="margin-top:14px">
+          <label class="check"><input type="checkbox" id="age"${S.age ? ' checked' : ''}><span>${T('Tenho 18 anos ou mais.', 'I am 18 or older.')}</span></label>
+          <label class="check"><input type="checkbox" id="ok-rules"${S.rules ? ' checked' : ''}><span>${T('Li e aceito as regras. Sei que aqui é apoio entre pares, não terapia nem atendimento de crise.', 'I have read and accept the rules. I know this is peer support, not therapy or crisis care.')}</span></label>
+        </div>
+        <p class="small muted">${T('Menor de 18? A comunidade não é para você ainda, mas o botão “Preciso de ajuda agora” funciona para todo mundo.', 'Under 18? The community isn’t for you yet, but the “I need help now” button works for everyone.')}</p>
+        <button class="btn wide" type="submit">${done ? T('Salvar e ver os grupos', 'Save and see the groups') : T('Entrar na comunidade', 'Join the community')}</button>
+        <p class="err" id="entry-err" role="alert"></p>
+        <p class="small muted" style="margin-top:10px">${T('Protótipo: nada é enviado nem guardado.', 'Prototype: nothing is sent or stored.')} <a href="#privacidade">${T('Como cuidamos da privacidade', 'How we handle privacy')}</a></p>
+      </form>`;
+  }
+  function bindEntrada() {
+    const f = $('#entry');
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      S.nick = $('#nick').value.trim();
+      S.avatar = (f.querySelector('input[name=av]:checked') || {}).value || 'nort';
+      S.themes = [...f.querySelectorAll('.chip input:checked')].map((i) => i.value);
+      S.age = $('#age').checked; S.rules = $('#ok-rules').checked;
+      const miss = [];
+      if (!S.nick) miss.push([T('escolha um apelido', 'choose a nickname'), '#nick']);
+      if (!S.age) miss.push([T('confirme que tem 18 anos ou mais', 'confirm you are 18 or older'), '#age']);
+      if (!S.rules) miss.push([T('aceite as regras', 'accept the rules'), '#ok-rules']);
+      if (miss.length) {
+        $('#entry-err').textContent = T('Falta: ', 'Still needed: ') + miss.map((m) => m[0]).join(', ') + '.';
+        $(miss[0][1]).focus();
+        return;
+      }
+      S.entered = true;
+      location.hash = '#grupos';
+    });
+  }
+
+  function scrGrupos() {
+    const gate = !S.entered ? `<div class="soft"><b>${T('Para participar, entre primeiro.', 'To take part, join first.')}</b> <a href="#entrada">${T('Ir para a entrada', 'Go to sign-up')}</a></div>` : '';
+    return `
+      <h1>${T('Grupos', 'Groups')}</h1>
+      <p class="lead">${T('Grupos pequenos, com hora marcada, um tema e um psicólogo moderando. Encontros por texto, de 45 a 60 minutos. As regras são lidas no começo.', 'Small scheduled groups, one theme, a psychologist moderating. Text meetings of 45 to 60 minutes. Rules are read at the start.')}</p>
+      ${gate}
+      ${GROUPS.map((g) => {
+        const full = g.taken >= g.total;
+        const joined = !!S.joined[g.id] && !S.left[g.id];
+        const free = g.total - g.taken;
+        let action;
+        if (joined) {
+          action = `<a class="btn wide" href="#sala/${g.id}">${g.now ? T('Entrar na sala agora', 'Enter the room now') : T('Ver a sala', 'See the room')}</a>
+            <p class="joined-note">${IC.check.replace('<svg', '<svg style="width:16px;height:16px;vertical-align:-2px;color:var(--accent)"')} ${T('Você está no grupo. Lembrete 1 hora antes.', 'You’re in the group. Reminder 1 hour before.')}</p>`;
+        } else if (full) {
+          action = `<button class="btn ghost wide" type="button" data-wait="${g.id}">${T('Entrar na lista de espera', 'Join the waiting list')}</button>`;
+        } else {
+          action = `<button class="btn wide" type="button" data-join="${g.id}">${T('Quero participar', 'I want to join')}</button>`;
+        }
+        return `<article class="card group" aria-labelledby="g-${g.id}">
+          ${g.now ? `<p class="live" style="margin:0 0 4px">${T('Acontecendo agora (demonstração)', 'Happening now (demo)')}</p>` : ''}
+          <h2 id="g-${g.id}">${t(g.name)}</h2>
+          <p class="small">${t(g.desc)}</p>
+          <div class="meta">
+            <span><b>${t(g.when)}</b> · ${T('8 encontros', '8 meetings')}</span>
+            <span class="spots" aria-hidden="true">${Array.from({ length: g.total }, (_, i) => `<i class="${i < g.taken ? 'f' : ''}"></i>`).join('')}</span>
+            <span>${full ? T(`Grupo cheio (${g.total} pessoas)`, `Group full (${g.total} people)`) : T(`${g.taken} de ${g.total} vagas preenchidas · ${free} livre${free > 1 ? 's' : ''}`, `${g.taken} of ${g.total} spots taken · ${free} left`)}</span>
+          </div>
+          ${psyBlock(g.psy)}
+          ${action}
+        </article>`;
+      }).join('')}
+      <p class="small muted">${T('Fuso horário: no app de verdade, o horário aparece no fuso do seu celular.', 'Time zone: in the real app, times show in your phone’s time zone.')}</p>`;
+  }
+  function bindGrupos() {
+    $('#main').addEventListener('click', (e) => {
+      const j = e.target.closest('[data-join]');
+      const w = e.target.closest('[data-wait]');
+      if (j) {
+        if (!S.entered) { location.hash = '#entrada'; return; }
+        const g = GROUPS.find((x) => x.id === j.dataset.join);
+        S.joined[g.id] = true; S.left[g.id] = false; g.taken += 1;
+        render(); live(T(`Você entrou no grupo ${t(g.name)}.`, `You joined ${t(g.name)}.`));
+        const btn = document.querySelector(`a[href="#sala/${g.id}"]`); if (btn) btn.focus();
+      } else if (w) {
+        if (!S.entered) { location.hash = '#entrada'; return; }
+        w.outerHTML = `<p class="joined-note" tabindex="-1" id="wait-ok">${T('Você está na lista de espera. Avisamos quando abrir vaga ou um grupo novo.', 'You’re on the waiting list. We’ll let you know when a spot or a new group opens.')}</p>`;
+        $('#wait-ok').focus();
+      }
+    });
+  }
+
+  function msgHtml(m, i, gid) {
+    if (m.sys) return `<li class="sys">${t(m.text)}</li>`;
+    if (m.mine) {
+      return `<li class="msg mine">${avatar(S.avatar, 's')}<div class="bubble"><div class="name">${esc(S.nick || T('Você', 'You'))} <span class="muted">(${T('você', 'you')})</span></div><p>${esc(m.text)}</p>${m.pending ? `<p class="pending">${T('Aguardando a moderação revisar · só você vê', 'Waiting for moderator review · only you can see it')}</p>` : `<p class="pending">${T('Apoio recebido aparece só para você', 'Support you receive is shown only to you')}${m.support ? ` · ${T(`${m.support} pessoas mandaram apoio`, `${m.support} people sent support`)}` : ''}</p>`}</div></li>`;
+    }
+    const isPsy = !!m.psy;
+    const p = isPsy ? PSY[m.who] : PEOPLE[m.who];
+    const nick = isPsy ? p.name : p.nick;
+    if (!isPsy && S.blocked[m.who]) return `<li class="sys">${T(`Você bloqueou ${esc(nick)}. As mensagens dessa pessoa ficam escondidas para você.`, `You blocked ${esc(nick)}. Their messages are hidden for you.`)}</li>`;
+    const key = `${gid}:${i}`;
+    const mine = S.reacted[key];
+    return `<li class="msg${isPsy ? ' psy' : ''}">${avatar(p.look, 's')}<div class="bubble"><div class="name">${esc(nick)}${isPsy ? ` <span class="role">${t(p)} · ${p.reg} ${T('verificado', 'verified')} (${T('exemplo', 'example')})</span>` : ''}</div><p>${esc(t(m.text))}</p>
+      ${isPsy ? '' : `<div class="reacts" role="group" aria-label="${T(`Mandar apoio para ${esc(nick)} (só ${esc(nick)} vê)`, `Send support to ${esc(nick)} (only ${esc(nick)} sees it)`)}">${REACTS.map((r) => `<button class="react" type="button" data-react="${key}" data-r="${r.id}" aria-pressed="${mine === r.id}">${t(r)}</button>`).join('')}</div>`}</div></li>`;
+  }
+  function scrSala(gid) {
+    const g = GROUPS.find((x) => x.id === gid) || GROUPS[0];
+    const P = PSY[g.psy];
+    const open = !!g.now;
+    const list = open ? ROOM.concat(S.mine[g.id] || []) : [];
+    const who = open ? ['psyA', 'rio', 'sol', 'mar', 'lua', S.avatar] : [P.look];
+    return `
+      <div class="room-head"><a class="back" href="#grupos">‹ ${T('Grupos', 'Groups')}</a></div>
+      <h1>${t(g.name)}</h1>
+      <p class="small muted" style="margin:0">${open ? T('Encontro 2 de 8 · acontecendo agora · 60 min', 'Meeting 2 of 8 · happening now · 60 min') : `${t(g.when)} · ${T('a sala abre 10 min antes', 'the room opens 10 min before')}`}</p>
+      <div class="people">${who.map((k) => avatar(k, 'xs')).join('')}<span>${open ? T('6 pessoas na sala', '6 people in the room') : T('Sala fechada até o encontro', 'Room closed until the meeting')}</span></div>
+      <div class="safety" role="toolbar" aria-label="${T('Segurança', 'Safety')}">
+        <button class="btn help wide" type="button" data-help>${IC.life}${T('Preciso de ajuda agora', 'I need help now')}</button>
+        <div class="three">
+          <button class="btn ghost" type="button" data-report>${T('Denunciar', 'Report')}</button>
+          <button class="btn ghost" type="button" data-block>${T('Bloquear', 'Block')}</button>
+          <button class="btn ghost" type="button" data-leave="${g.id}">${T('Sair do grupo', 'Leave group')}</button>
+        </div>
+      </div>
+      <details class="card pinned" open>
+        <summary>${avatar(P.look, 'xs')}<span>${T('Fixado', 'Pinned')} · ${esc(P.name)}</span></summary>
+        <p>${T(`Boas-vindas! Eu sou ${P.name.split(' ')[0]}, ${t(P).toLowerCase()} (${P.reg} verificado, exemplo) e vou moderar este grupo.`, `Welcome! I’m ${P.name.split(' ')[0]}, a ${t(P).toLowerCase()} (${P.reg} verified, example), and I’ll moderate this group.`)}</p>
+        <p>${T('Aqui é apoio entre pares, não é terapia nem atendimento de crise. Cada um fala só se quiser, e o que é dito aqui fica aqui.', 'This is peer support, not therapy or crisis care. Everyone speaks only if they want to, and what’s said here stays here.')}</p>
+        <ol class="rules small">${RULES[S.lang].map((r) => `<li><span>${esc(r)}</span></li>`).join('')}</ol>
+      </details>
+      ${open ? `<ol class="msgs" id="msgs" aria-label="${T('Mensagens', 'Messages')}">${list.map((m, i) => msgHtml(m, i, g.id)).join('')}</ol>`
+        : `<div class="soft">${T(`Encontros: ${t(g.when)}. Fora desse horário a sala fica fechada, para ninguém ficar sozinho aqui sem moderação.`, `Meetings: ${t(g.when)}. Outside that time the room is closed, so nobody is here alone without moderation.`)}</div>`}`;
+  }
+  function composer(g) {
+    if (!g.now) return '';
+    return `<div class="composer"><form id="send" novalidate>
+      <label class="sr" for="txt">${T('Escreva para o grupo', 'Write to the group')}</label>
+      <textarea id="txt" rows="1" placeholder="${T('Escreva para o grupo…', 'Write to the group…')}" aria-describedby="hint"></textarea>
+      <button class="btn" type="submit">${T('Enviar', 'Send')}</button>
+      <p class="hint" id="hint">${T('Antes de enviar, o celular confere a mensagem. Teste do protótipo: escreva “quero morrer”.', 'Your phone checks the message before sending. Prototype test: type “I want to die”.')}</p>
+    </form></div>`;
+  }
+  function bindSala(gid) {
+    const g = GROUPS.find((x) => x.id === gid) || GROUPS[0];
+    $('#main').addEventListener('click', (e) => {
+      const r = e.target.closest('[data-react]');
+      if (r) {
+        const k = r.dataset.react;
+        S.reacted[k] = S.reacted[k] === r.dataset.r ? null : r.dataset.r;
+        r.parentElement.querySelectorAll('.react').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.r === S.reacted[k])));
+        live(S.reacted[k] ? T('Apoio enviado. Só a pessoa vê.', 'Support sent. Only that person sees it.') : T('Apoio retirado.', 'Support removed.'));
+      }
+      if (e.target.closest('[data-report]')) reportDlg();
+      if (e.target.closest('[data-block]')) blockDlg();
+      const l = e.target.closest('[data-leave]');
+      if (l) leaveDlg(l.dataset.leave);
+    });
+    const f = $('#send');
+    if (!f) return;
+    const ta = $('#txt');
+    ta.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); f.requestSubmit(); } });
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = ta.value.trim();
+      if (!text) { ta.focus(); return; }
+      if (!S.entered) { location.hash = '#entrada'; return; }
+      const c = checkText(text);
+      if (c.risk) { ta.value = ''; helpDlg(true); return; }
+      if (c.rule) { flagDlg(c.rule, text, g); return; }
+      post(g, { mine: true, text, support: 0 });
+    });
+  }
+  function post(g, m) {
+    (S.mine[g.id] = S.mine[g.id] || []).push(m);
+    const list = $('#msgs');
+    list.insertAdjacentHTML('beforeend', msgHtml(m, ROOM.length + S.mine[g.id].length - 1, g.id));
+    $('#txt').value = '';
+    list.lastElementChild.scrollIntoView({ block: 'end' });
+    live(m.pending ? T('Mensagem enviada para a moderação revisar.', 'Message sent for moderator review.') : T('Mensagem enviada.', 'Message sent.'));
+    const li = list.lastElementChild;
+    if (!m.pending) setTimeout(() => { m.support = 2; if (document.contains(li)) li.outerHTML = msgHtml(m, 0, g.id); }, 2500);
+  }
+
+  function scrSalas() {
+    const rooms = [
+      { name: T('Ansiedade', 'Anxiety'), posts: [
+        ['bia', T('Hoje consegui ir ao mercado sozinha. Parece pouco, mas para mim foi grande.', 'Today I managed to go to the supermarket on my own. Seems small, but it was big for me.')],
+        ['teo', T('Não é pouco não. Obrigado por contar, me deu ânimo.', 'It’s not small at all. Thanks for sharing, it lifted me up.')]] },
+      { name: T('Sono', 'Sleep'), posts: [
+        ['rio', T('Alguém mais acorda às 4h e não volta a dormir? Estou tentando sair da cama em vez de ficar no celular.', 'Anyone else wake at 4 am and can’t get back to sleep? I’m trying to get up instead of scrolling.')]] },
+      { name: T('Pais e mães', 'Parents'), posts: [
+        ['nanda', T('Primeira noite em que o bebê dormiu 5 horas seguidas. Eu, claro, acordei de 1 em 1 hora para ver se ele respirava.', 'First night the baby slept 5 hours straight. I, of course, woke every hour to check he was breathing.')]] },
+    ];
+    return `
+      <h1>${T('Salas por tema', 'Theme rooms')} <span class="soon">${T('Em breve · Fase 2', 'Coming soon · Phase 2')}</span></h1>
+      <p class="lead">${T('Salas sempre abertas, uma por tema, com moderação humana e ajuda de IA. Só abrem depois do piloto dos grupos.', 'Always-open rooms, one per theme, with human moderators helped by AI. They only open after the groups pilot.')}</p>
+      <div class="soft small">${T('Prévia só para ler: não dá para postar. Reações de apoio sem curtidas públicas (nada de placar).', 'Read-only preview: you can’t post. Support reactions without public likes (no scoreboards).')}</div>
+      ${rooms.map((r) => `<section class="card" aria-label="${esc(r.name)}"><h2>${esc(r.name)}</h2>
+        ${r.posts.map(([w, txt]) => `<div class="post">${avatar(PEOPLE[w].look, 'xs')}<div><div class="name">${PEOPLE[w].nick} <span class="muted">(${T('exemplo', 'example')})</span></div>${esc(txt)}</div></div>`).join('')}
+        <p class="locked">${IC.lock.replace('<svg', '<svg style="width:16px;height:16px;vertical-align:-3px"')} ${T('Postar fica para a Fase 2', 'Posting comes in Phase 2')}</p></section>`).join('')}
+      <section class="card"><h2>${T('Histórias de quem já passou', 'Stories from people who’ve been there')}</h2>
+        <p class="small">${T('Textos curtos escritos por voluntários treinados, revisados pela equipe. Exemplo:', 'Short pieces by trained volunteers, reviewed by the team. Example:')}</p>
+        <blockquote class="soft small" style="margin:0">${T('“Levei dois anos para marcar a primeira consulta. O que me fez ir foi uma amiga dizer: você não precisa estar no fundo do poço para pedir ajuda.” — Céu, voluntária (exemplo)', '“It took me two years to book my first appointment. What got me there was a friend saying: you don’t need to hit rock bottom to ask for help.” — Sky, volunteer (example)')}</blockquote>
+      </section>
+      <section class="card"><h2>${T('Depois: conversa 1 a 1', 'Later: one-to-one chat')} <span class="soon">${T('Fase 3', 'Phase 3')}</span></h2>
+        <p class="small" style="margin:0">${T('Só entre pessoas que se escolheram nos grupos ou salas, com bloquear e denunciar sempre à vista.', 'Only between people who chose each other in groups or rooms, with block and report always in view.')}</p></section>`;
+  }
+
+  function scrPriv() {
+    const nick = S.nick || T('Seu apelido', 'Your nickname');
+    const chosen = S.themes.map((id) => t(THEMES.find((x) => x.id === id)));
+    return `
+      <h1>${T('Privacidade', 'Privacy')}</h1>
+      <p class="lead">${T('Você decide o que aparece. Pode apagar tudo e sair quando quiser.', 'You decide what shows. You can delete everything and leave whenever you want.')}</p>
+      <section class="card" aria-labelledby="h-see"><h2 id="h-see">${T('Como os outros veem você', 'How others see you')}</h2>
+        <div class="profile">${avatar(S.avatar, '')}<div><b>${esc(nick)}</b><br><span class="small muted">${S.showThemes ? (chosen.length ? esc(chosen.join(' · ')) : T('Nenhum tema escolhido', 'No themes chosen')) : T('Temas escondidos', 'Themes hidden')}</span></div></div>
+      </section>
+      <section class="card" aria-labelledby="h-share"><h2 id="h-share">${T('O que é compartilhado', 'What is shared')}</h2>
+        <ul class="yes-no">
+          <li><span class="ok-i" aria-hidden="true">✓</span><span>${T('Apelido', 'Nickname')}</span></li>
+          <li><span class="ok-i" aria-hidden="true">✓</span><span>${T('Seu personagem', 'Your character')}</span></li>
+          <li><span class="ok-i" aria-hidden="true">✓</span><span>${T('Os temas que você escolheu (se quiser mostrar)', 'The themes you chose (if you want to show them)')}</span></li>
+          <li><span class="ok-i" aria-hidden="true">✓</span><span>${T('O que você escreve no grupo, só para quem está no grupo', 'What you write in a group, only to people in that group')}</span></li>
+        </ul>
+        <h3 style="margin-top:12px">${T('O que nunca aparece sem você escolher', 'What never shows unless you choose')}</h3>
+        <ul class="yes-no">
+          <li><span class="no-i" aria-hidden="true">✕</span><span>${T('Suas respostas no Nort, seus sinais e seu relatório', 'Your Nort answers, your signals and your report')}</span></li>
+          <li><span class="no-i" aria-hidden="true">✕</span><span>${T('E-mail, data de nascimento, cidade, voz', 'Email, date of birth, city, voice')}</span></li>
+          <li><span class="no-i" aria-hidden="true">✕</span><span>${T('Quem denunciou quem', 'Who reported whom')}</span></li>
+        </ul>
+        <label class="switch" for="sw-themes"><span>${T('Mostrar meus temas no perfil', 'Show my themes on my profile')}</span><input type="checkbox" role="switch" id="sw-themes"${S.showThemes ? ' checked' : ''}></label>
+        <label class="switch" for="sw-nort"><span>${T('Compartilhar algo do meu resultado do Nort (você escolhe o quê, antes de cada vez)', 'Share something from my Nort result (you pick what, every time)')}</span><input type="checkbox" role="switch" id="sw-nort"${S.shareNort ? ' checked' : ''}></label>
+        <p class="small muted" id="sw-nort-note">${S.shareNort ? T('Ligado: no app de verdade, antes de mostrar qualquer coisa, aparece uma prévia para você aprovar.', 'On: in the real app, before anything is shown you get a preview to approve.') : T('Desligado (padrão).', 'Off (default).')}</p>
+      </section>
+      <section class="card" aria-labelledby="h-care"><h2 id="h-care">${T('Como cuidamos', 'How we take care')}</h2>
+        <ul class="small">
+          <li>${T('Mensagens protegidas no envio e guardadas com acesso restrito.', 'Messages protected in transit and stored with restricted access.')}</li>
+          <li>${T('A moderação e o psicólogo do grupo leem as mensagens do grupo para cuidar da segurança.', 'Moderators and the group’s psychologist read group messages to keep people safe.')}</li>
+          <li>${T('Sem anúncios. Nada de anúncio baseado em saúde mental, nunca.', 'No ads. Never any ads based on mental health.')}</li>
+          <li>${T('Regras de guarda de dados definidas com advogado (LGPD no Brasil, Privacy Act na Austrália) antes de abrir.', 'Data retention rules set with a lawyer (LGPD in Brazil, Privacy Act in Australia) before launch.')}</li>
+        </ul>
+      </section>
+      <section class="card" aria-labelledby="h-del"><h2 id="h-del">${T('Apagar e sair', 'Delete and leave')}</h2>
+        <div class="dlg-actions">
+          <button class="btn ghost wide" type="button" id="del-all">${T('Apagar tudo o que escrevi', 'Delete everything I wrote')}</button>
+          <button class="btn ghost wide" type="button" id="quit">${T('Sair da comunidade', 'Leave the community')}</button>
+        </div>
+      </section>`;
+  }
+  function bindPriv() {
+    $('#sw-themes').addEventListener('change', (e) => { S.showThemes = e.target.checked; render(true); $('#sw-themes').focus(); });
+    $('#sw-nort').addEventListener('change', (e) => { S.shareNort = e.target.checked; render(true); $('#sw-nort').focus(); });
+    $('#del-all').addEventListener('click', () => confirmDlg(
+      T('Apagar tudo o que você escreveu?', 'Delete everything you wrote?'),
+      T('Suas mensagens somem de todos os grupos. Não dá para desfazer.', 'Your messages disappear from every group. This can’t be undone.'),
+      T('Apagar tudo', 'Delete everything'),
+      () => { S.mine = {}; live(T('Pronto: tudo o que você escreveu foi apagado (demonstração).', 'Done: everything you wrote was deleted (demo).')); }));
+    $('#quit').addEventListener('click', () => confirmDlg(
+      T('Sair da comunidade?', 'Leave the community?'),
+      T('Seu perfil e suas mensagens são apagados. Você pode voltar quando quiser, começando do zero.', 'Your profile and messages are deleted. You can come back any time, starting fresh.'),
+      T('Sair e apagar', 'Leave and delete'),
+      () => { Object.assign(S, { entered: false, nick: '', avatar: 'nort', themes: [], age: false, rules: false, mine: {}, reacted: {}, blocked: {}, joined: { trabalho: true }, left: {} }); location.hash = '#entrada'; }));
+  }
+
+  /* ---------- dialogs ---------- */
+  const dlg = $('#dlg');
+  let lastFocus = null;
+  function openDlg(html, onBind) {
+    lastFocus = document.activeElement;
+    dlg.innerHTML = html;
+    if (!dlg.open) dlg.showModal();
+    if (onBind) onBind();
+    const first = dlg.querySelector('[autofocus]') || dlg.querySelector('h2');
+    if (first) { if (first.tagName === 'H2') first.setAttribute('tabindex', '-1'); first.focus(); }
+  }
+  function closeDlg() { if (dlg.open) dlg.close(); }
+  dlg.addEventListener('close', () => { if (lastFocus && document.contains(lastFocus)) lastFocus.focus(); });
+  dlg.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeDlg(); });
+
+  function lines() {
+    const br = `<p class="country">${T('Brasil', 'Brazil')}</p><ul class="lines">
+      <li><a href="tel:192">SAMU · ${T('emergência', 'emergency')} <b>192</b></a></li>
+      <li><a href="tel:188">CVV · ${T('conversa, 24 h, grátis', 'talk, 24 h, free')} <b>188</b></a></li></ul>`;
+    const au = `<p class="country">${T('Austrália', 'Australia')}</p><ul class="lines">
+      <li><a href="tel:000">${T('Emergência', 'Emergency')} <b>000</b></a></li>
+      <li><a href="tel:131114">Lifeline · 24 h <b>13 11 14</b></a></li></ul>`;
+    const other = `<p class="country">${T('Outros países', 'Other countries')}</p><ul class="lines"><li><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com <b aria-hidden="true">↗</b></a></li></ul>`;
+    return (S.lang === 'en' ? au + br : br + au) + other;
+  }
+  function helpDlg(fromMessage) {
+    openDlg(`
+      <h2 id="dlg-title">${fromMessage ? T('Sua mensagem não foi publicada', 'Your message wasn’t posted') : T('Preciso de ajuda agora', 'I need help now')}</h2>
+      ${fromMessage ? `<p>${T('Parece que você está passando por algo muito pesado. A gente se importa com você, e isso merece mais cuidado do que um grupo pode dar.', 'It sounds like you’re going through something really heavy. We care about you, and this deserves more care than a group can give.')}</p>
+        <p class="small">${T('A mensagem ficou só com você. A psicóloga da equipe foi avisada para falar com você em particular.', 'The message stayed with you only. The team psychologist has been told so she can reach you privately.')}</p>`
+        : `<p>${T('Você não está só nisso. Se estiver em perigo ou pensando em se machucar, ligue agora:', 'You’re not alone in this. If you’re in danger or thinking about hurting yourself, call now:')}</p>`}
+      ${lines()}
+      <div class="dlg-actions">
+        <button class="btn wide" type="button" data-psy>${T('Falar com a psicóloga em particular', 'Talk to the psychologist privately')}</button>
+        <button class="btn ghost wide" type="button" data-close autofocus>${T('Voltar', 'Back')}</button>
+      </div>
+      <p class="demo-note">${T('Demonstração: ninguém foi avisado de verdade e nada foi enviado.', 'Demo: nobody was actually notified and nothing was sent.')}</p>`, () => {
+      dlg.querySelector('[data-psy]').addEventListener('click', (e) => {
+        e.target.outerHTML = `<p class="soft small" tabindex="-1" id="psy-ok">${T('Pedido enviado (demonstração). No app de verdade, a psicóloga de plantão responde em até 15 minutos; enquanto isso, os números acima funcionam 24 horas.', 'Request sent (demo). In the real app, the on-call psychologist replies within 15 minutes; meanwhile, the numbers above work 24 hours.')}</p>`;
+        $('#psy-ok').focus();
+      });
+    });
+    live(fromMessage ? T('Sua mensagem não foi publicada. Números de ajuda abertos.', 'Your message was not posted. Help numbers open.') : '');
+  }
+  const ruleName = (n) => RULES[S.lang][n - 1];
+  function flagDlg(rule, text, g) {
+    openDlg(`
+      <h2 id="dlg-title">${T('Quer revisar a mensagem?', 'Want to review your message?')}</h2>
+      <p>${T('Ela pode ir contra uma regra do grupo:', 'It may go against a group rule:')}</p>
+      <p class="soft small"><b>${T('Regra', 'Rule')} ${rule}.</b> ${esc(ruleName(rule))}</p>
+      <div class="dlg-actions">
+        <button class="btn wide" type="button" data-close autofocus>${T('Editar a mensagem', 'Edit the message')}</button>
+        <button class="btn ghost wide" type="button" data-mod>${T('Mandar para a moderação revisar', 'Send for moderator review')}</button>
+      </div>
+      <p class="demo-note">${T('Conferido no celular, antes de enviar. Depois vêm a IA e a moderação humana.', 'Checked on the phone, before sending. Then AI and human moderators.')}</p>`, () => {
+      dlg.querySelector('[data-mod]').addEventListener('click', () => { lastFocus = $('#txt'); closeDlg(); post(g, { mine: true, text, pending: true }); });
+    });
+  }
+  function peopleRadios(name, withPsy) {
+    const ps = Object.entries(PEOPLE).map(([k, p]) => [k, p.nick]);
+    if (withPsy) ps.push(['helena', 'Helena Prado (' + T('psicóloga', 'psychologist') + ')']);
+    return `<fieldset class="radios"><legend>${T('Quem?', 'Who?')}</legend>${ps.map(([k, n], i) => `<label><input type="radio" name="${name}" value="${k}"${i === 0 ? ' checked' : ''}>${esc(n)}</label>`).join('')}</fieldset>`;
+  }
+  function reportDlg() {
+    const reasons = [
+      ['perigo', T('Acho que alguém está em perigo', 'I think someone is in danger')],
+      ['desrespeito', T('Desrespeito ou ataque', 'Disrespect or attack')],
+      ['medico', T('Conselho sobre remédio', 'Medication advice')],
+      ['gatilho', T('Detalhes de autolesão, peso ou caloria', 'Self-harm details, weight or calories')],
+      ['venda', T('Venda ou propaganda', 'Selling or ads')],
+      ['dados', T('Expôs dados de alguém', 'Shared someone’s personal details')],
+    ];
+    openDlg(`
+      <h2 id="dlg-title">${T('Denunciar', 'Report')}</h2>
+      <p class="small">${T('A pessoa denunciada não fica sabendo quem denunciou.', 'The person reported won’t know who reported them.')}</p>
+      <form id="rep">${peopleRadios('rp', true)}
+        <fieldset class="radios"><legend>${T('O que aconteceu?', 'What happened?')}</legend>${reasons.map(([k, n], i) => `<label><input type="radio" name="why" value="${k}"${i === 0 ? ' checked' : ''}>${n}</label>`).join('')}</fieldset>
+        <div class="dlg-actions"><button class="btn wide" type="submit">${T('Enviar denúncia', 'Send report')}</button><button class="btn ghost wide" type="button" data-close>${T('Cancelar', 'Cancel')}</button></div>
+      </form>`, () => {
+      $('#rep').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const danger = $('#rep').querySelector('input[name=why]:checked').value === 'perigo';
+        openDlg(`<h2 id="dlg-title">${T('Obrigado por avisar', 'Thanks for letting us know')}</h2>
+          <p>${danger ? T('A psicóloga do grupo e a equipe de plantão foram avisadas agora. Você não precisa resolver isso sozinho: a equipe cuida daqui.', 'The group’s psychologist and the on-call team were alerted now. You don’t have to handle this alone: the team takes it from here.') : T('A moderação vai olhar. Se a regra foi quebrada, a mensagem sai e a pessoa recebe um aviso.', 'Moderators will take a look. If a rule was broken, the message is removed and the person gets a warning.')}</p>
+          ${danger ? `<p class="small">${T('Se você também estiver se sentindo mal, toque em “Preciso de ajuda agora”.', 'If you’re also feeling unwell, tap “I need help now”.')}</p>` : ''}
+          <div class="dlg-actions"><button class="btn wide" type="button" data-close autofocus>${T('Fechar', 'Close')}</button></div>
+          <p class="demo-note">${T('Demonstração: nada foi enviado.', 'Demo: nothing was sent.')}</p>`);
+      });
+    });
+  }
+  function blockDlg() {
+    openDlg(`
+      <h2 id="dlg-title">${T('Bloquear', 'Block')}</h2>
+      <p class="small">${T('Você deixa de ver as mensagens da pessoa, e ela não pode falar com você. Ela não é avisada. A psicóloga moderadora não pode ser bloqueada; se algo der errado com ela, use Denunciar.', 'You stop seeing their messages and they can’t contact you. They aren’t notified. The moderating psychologist can’t be blocked; if something goes wrong with her, use Report.')}</p>
+      <form id="blk">${peopleRadios('bk', false)}
+        <div class="dlg-actions"><button class="btn wide" type="submit">${T('Bloquear', 'Block')}</button><button class="btn ghost wide" type="button" data-close>${T('Cancelar', 'Cancel')}</button></div>
+      </form>`, () => {
+      $('#blk').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const k = $('#blk').querySelector('input[name=bk]:checked').value;
+        S.blocked[k] = true; closeDlg(); render(true);
+        live(T(`${PEOPLE[k].nick} foi bloqueado.`, `${PEOPLE[k].nick} was blocked.`));
+        const b = document.querySelector('[data-block]'); if (b) b.focus();
+      });
+    });
+  }
+  function leaveDlg(gid) {
+    confirmDlg(T('Sair do grupo?', 'Leave the group?'),
+      T('Tudo bem sair, sem explicar nada. Você pode voltar se ainda houver vaga.', 'It’s fine to leave, no explanation needed. You can come back if there’s still a spot.'),
+      T('Sair do grupo', 'Leave group'),
+      () => { S.left[gid] = true; location.hash = '#grupos'; live(T('Você saiu do grupo.', 'You left the group.')); });
+  }
+  function confirmDlg(title, body, okLabel, onOk) {
+    openDlg(`<h2 id="dlg-title">${title}</h2><p>${body}</p>
+      <div class="dlg-actions"><button class="btn wide" type="button" data-ok>${okLabel}</button><button class="btn ghost wide" type="button" data-close autofocus>${T('Cancelar', 'Cancel')}</button></div>
+      <p class="demo-note">${T('Demonstração: nada foi enviado.', 'Demo: nothing was sent.')}</p>`, () => {
+      dlg.querySelector('[data-ok]').addEventListener('click', () => { lastFocus = null; closeDlg(); onOk(); });
+    });
+  }
+
+  /* ---------- render ---------- */
+  function render(keepScroll) {
+    const r = route();
+    const main = $('#main');
+    const fresh = main.cloneNode(false);
+    main.replaceWith(fresh);
+    chrome();
+    let html = ''; let bottom = ''; let bind = null;
+    const inRoom = r.name === 'sala';
+    $('#help-top').hidden = inRoom;
+    fresh.className = inRoom ? 'room-main' : '';
+    if (r.name === 'grupos') { html = scrGrupos(); bind = bindGrupos; bottom = tabs('grupos'); }
+    else if (inRoom) { const g = GROUPS.find((x) => x.id === r.arg) || GROUPS[0]; html = scrSala(g.id); bind = () => bindSala(g.id); bottom = composer(g); }
+    else if (r.name === 'salas') { html = scrSalas(); bottom = tabs('salas'); }
+    else if (r.name === 'privacidade') { html = scrPriv(); bind = bindPriv; bottom = tabs('privacidade'); }
+    else { html = scrEntrada(); bind = bindEntrada; bottom = tabs('entrada'); }
+    fresh.innerHTML = html;
+    $('#bottom').innerHTML = bottom;
+    if (bind) bind();
+    const titles = { grupos: T('Grupos', 'Groups'), sala: T('Sala do grupo', 'Group room'), salas: T('Salas por tema', 'Theme rooms'), privacidade: T('Privacidade', 'Privacy') };
+    document.title = `${titles[r.name] || T('Entrada', 'Welcome')} · Nort ${T('Comunidade', 'Community')}`;
+    if (!keepScroll) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      const h1 = fresh.querySelector('h1');
+      if (h1 && document.activeElement !== $('#lang')) { h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); }
+    }
+  }
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-help]')) helpDlg(false); });
+  $('#lang').addEventListener('click', () => {
+    S.lang = S.lang === 'en' ? 'pt' : 'en';
+    try { localStorage.setItem('nort-com-lang', S.lang); } catch (e) { /* ignore */ }
+    if (location.hash.startsWith('#entrada') || !location.hash) {
+      const n = $('#nick'); if (n) S.nick = n.value.trim();
+    }
+    render(true);
+    $('#lang').focus();
+  });
+  window.addEventListener('hashchange', () => { closeDlg(); render(false); });
+  render(true);
+})();
+</script>
+</body>
+</html>

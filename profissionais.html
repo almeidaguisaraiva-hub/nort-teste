@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="pt-BR" data-palette="floresta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Fale com um profissional · Nort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Protótipo da página "Fale com um profissional" — paleta Floresta e fonte Nunito, iguais ao app (src/styles.css). */
+:root {
+  --bg: #EAF5EE; --surface: #FFFFFF; --soft: #D2EADB; --ink: #0D3B2A; --ink-2: #1E5240; --muted: #3C5F50; --line: #B6D7C3;
+  --accent: #0E7A4D; --accent-ink: #FFFFFF; --accent-soft: #D2EADB;
+  --coral: #E8684A; --coral-text: #B5432A; --coral-soft: #FBE3DC;
+  --font-display: 'Nunito', system-ui, sans-serif; --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --r: 22px;
+  --shadow: 0 1px 2px rgba(13, 59, 42, .06), 0 14px 30px -18px rgba(13, 59, 42, .35);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A2018; --surface: #102C21; --soft: #173B2D; --ink: #E3F3EA; --ink-2: #BEE0CD; --muted: #9CC4AF; --line: #24503E;
+    --accent: #4FCB91; --accent-ink: #072117; --accent-soft: #173B2D;
+    --coral: #F07F63; --coral-text: #F59A82; --coral-soft: #3A2019;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 30px -18px rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A2018; --surface: #102C21; --soft: #173B2D; --ink: #E3F3EA; --ink-2: #BEE0CD; --muted: #9CC4AF; --line: #24503E;
+  --accent: #4FCB91; --accent-ink: #072117; --accent-soft: #173B2D;
+  --coral: #F07F63; --coral-text: #F59A82; --coral-soft: #3A2019;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5; -webkit-text-size-adjust: 100%; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--font-display); }
+h1 { font-weight: 800; font-size: clamp(1.9rem, 8vw, 2.4rem); line-height: 1.08; letter-spacing: -0.03em; }
+h2 { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.02rem; font-weight: 800; }
+p { margin: 0; }
+a { color: var(--ink); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.proto { text-align: center; font-size: .8rem; padding: 6px 16px; background: var(--soft); color: var(--ink-2); }
+.top { position: sticky; top: 0; z-index: 5; background: var(--bg); display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 8px; color: var(--accent); }
+.brand svg { width: 28px; height: 28px; }
+.brand span { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.03em; color: var(--ink); }
+.top-right { display: flex; align-items: center; gap: 6px; }
+.seg { display: inline-flex; background: var(--soft); border-radius: 999px; padding: 3px; }
+.seg button { font: inherit; font-weight: 800; font-size: .85rem; min-width: 44px; min-height: 44px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); box-shadow: var(--shadow); }
+.help-now { font: inherit; font-weight: 800; font-size: .85rem; min-height: 44px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--coral-soft); color: var(--coral-text); text-decoration: none; white-space: nowrap; }
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 18px; }
+.back { font: inherit; font-weight: 700; justify-self: start; min-height: 44px; padding: 0 4px; border: 0; background: none; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.lead { font-size: 1.05rem; color: var(--ink-2); }
+.country { display: grid; gap: 4px; }
+.country label { font-weight: 800; font-size: .9rem; }
+.country select { font: inherit; font-weight: 700; min-height: 48px; padding: 0 14px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); width: 100%; }
+.country small { color: var(--muted); font-size: .85rem; }
+
+.card { background: var(--surface); border-radius: var(--r); padding: 18px; box-shadow: var(--shadow); display: grid; gap: 12px; }
+.card > p, .item p { color: var(--ink-2); }
+.crisis { border: 2px solid var(--coral); }
+.crisis h2 { color: var(--coral-text); display: flex; gap: 8px; align-items: center; }
+.crisis h2 svg { width: 22px; height: 22px; flex: none; }
+.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.line { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 16px; background: var(--bg); }
+.line-txt { display: grid; min-width: 0; }
+.line-txt strong { font-family: var(--font-display); font-size: 1.02rem; }
+.line-txt span { font-size: .88rem; color: var(--muted); }
+.call { flex: none; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 96px; padding: 0 16px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; text-decoration: none; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.call.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); font-size: .95rem; }
+.note { font-size: .88rem; color: var(--muted); }
+
+.items { display: grid; gap: 10px; }
+.item { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 4px; }
+.item:first-child { border-top: 0; padding-top: 0; }
+.tag { display: inline-block; font-size: .75rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; background: var(--soft); color: var(--ink); margin-left: 6px; vertical-align: 2px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.ext { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px; background: var(--soft); color: var(--ink); font-weight: 700; font-size: .92rem; text-decoration: none; }
+.ext svg { width: 14px; height: 14px; flex: none; }
+ol.steps, ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-2); }
+
+.btn { font: inherit; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; min-height: 52px; width: 100%; border-radius: 999px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+.btn.secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.maps { display: grid; gap: 8px; }
+.maps a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 52px; padding: 8px 16px; border-radius: 16px; background: var(--bg); color: var(--ink); font-weight: 700; text-decoration: none; }
+.maps a small { display: block; font-weight: 400; color: var(--muted); font-size: .82rem; }
+.maps a svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.privacy { display: flex; gap: 10px; align-items: flex-start; background: var(--soft); border-radius: 16px; padding: 12px; font-size: .9rem; color: var(--ink-2); }
+.privacy svg { width: 20px; height: 20px; flex: none; margin-top: 2px; color: var(--accent); }
+.live { font-size: .9rem; color: var(--ink-2); min-height: 1.2em; }
+
+.closing { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: end; padding: 8px 0; }
+.closing svg { width: 76px; height: 96px; }
+.bubble { position: relative; background: var(--surface); border-radius: 20px; padding: 14px 16px; box-shadow: var(--shadow); font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
+.bubble::before { content: ""; position: absolute; left: -8px; bottom: 18px; width: 16px; height: 16px; background: var(--surface); transform: rotate(45deg); border-radius: 3px; }
+.foot { font-size: .82rem; color: var(--muted); display: grid; gap: 6px; }
+
+.fade { animation: in .35s ease-out both; }
+@keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.wave { transform-origin: 58px 58px; animation: wave 2.6s ease-in-out 1 .4s; }
+@keyframes wave { 0%, 100% { transform: rotate(0); } 25%, 75% { transform: rotate(-14deg); } 50% { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade, .wave { animation: none; }
+}
+</style>
+</head>
+<body>
+<p class="proto" id="proto"></p>
+<header class="top">
+  <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16 1.2 L19 6.4 L13 6.4 Z" style="fill: var(--coral)"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M29.2 16h-2.4M5.2 16H2.8M16 29.2v-2.4"/></g><path d="M11.2 21.6V10.4h1.6l6 8.2v-8.2h1.9v11.2h-1.6l-6-8.2v8.2z" fill="currentColor"/></svg><span>nort</span></div>
+  <div class="top-right">
+    <a class="help-now" href="#crisis" id="helpNow"></a>
+    <div class="seg" role="group" id="langGroup">
+      <button type="button" data-lang="pt" lang="pt">PT</button>
+      <button type="button" data-lang="en" lang="en">EN</button>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+
+<script>
+(() => {
+  'use strict';
+  const EXT = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h4v4M13 3 7 9M11 9v4H3V5h4"/></svg>';
+  const PIN = '<svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 18s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="10" cy="8" r="2.2"/></svg>';
+  const LOCK = '<svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="12" height="9" rx="2"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg>';
+  const HEART = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.4 3 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.8 0 5.9 3.9 4.4 7.2C19.5 16.4 12 21 12 21z"/></svg>';
+
+  // ---------- textos da página ----------
+  const T = {
+    pt: {
+      proto: 'Protótipo para aprovação · nada é enviado ou guardado',
+      helpNow: 'Ajuda agora', back: '← Voltar para Sua bússola', backNote: 'No app, volta para "Sua bússola".',
+      title: 'Fale com um profissional',
+      lead: 'Você terminou. Se fizer sentido para você, o próximo passo é conversar com alguém que cuida disso. Aqui estão os caminhos, gratuitos e particulares.',
+      countryLabel: 'País', countryNote: 'Vem marcado pelo país da sua conta. Pode trocar.',
+      crisisTitle: 'Se você está em perigo agora',
+      crisisLead: 'Se você pensa em se machucar ou não está seguro, fale com alguém agora. Ligar é de graça.',
+      call: 'Ligar', text: 'SMS',
+      crisisOther: 'Ligue para o número de emergência do seu país. Para achar uma linha de apoio emocional gratuita perto de você:',
+      whoTitle: 'Quem pode ajudar', chooseTitle: 'Como escolher',
+      firstTitle: 'A primeira consulta',
+      first: ['Você conta o que te trouxe, no seu ritmo. Não precisa contar tudo de uma vez.', 'O profissional pergunta sobre sua rotina, sono, história e o que você já tentou.', 'Pode perguntar sobre valor, duração, frequência e sigilo. Tudo bem perguntar como ele trabalha.', 'Se não sentir confiança, você pode procurar outra pessoa. Combinar com o profissional faz diferença.'],
+      reportTitle: 'Leve seu relatório do Nort',
+      reportText: 'Ele mostra suas respostas e as pontuações das escalas, não um diagnóstico. Quem entende o que isso significa para você é o profissional.',
+      reportBtn: 'Ver relatório para a consulta', reportNote: 'No app, este botão abre o seu relatório (o mesmo que já existe no resultado).',
+      freeTitle: 'Gratuito ou público', privTitle: 'Particular e online',
+      nearTitle: 'Encontrar perto de mim',
+      nearLead: 'Os botões abrem uma busca no mapa ou o buscador oficial, em outra aba. Não mostramos endereços: o mapa mostra o que está aberto e perto de você.',
+      privacy: 'O Nort não recebe nem guarda a sua localização. Se o mapa pedir sua localização, quem recebe é o mapa (por exemplo, o Google), não o Nort.',
+      mapsVia: 'Busca no Google Maps', official: 'Site oficial',
+      closing: 'Você chegou até aqui, e isso já conta. Não precisa ser hoje. Quando fizer sentido, alguém pode caminhar junto com você.',
+      foot1: 'O Nort não é serviço de emergência, não faz diagnóstico e não indica profissionais. Os links levam a sites oficiais ou a uma busca no mapa.',
+      foot2: 'Informações conferidas em 13/11/2026. Telefones e regras podem mudar: confira no site oficial.',
+      opens: '(abre em outra aba)'
+    },
+    en: {
+      proto: 'Prototype for approval · nothing is sent or stored',
+      helpNow: 'Help now', back: '← Back to Your compass', backNote: 'In the app, this goes back to "Your compass".',
+      title: 'Talk to a professional',
+      lead: 'You finished. If it feels right for you, the next step is talking with someone who looks after this. Here are the ways in, free and private.',
+      countryLabel: 'Country', countryNote: 'Set from your account country. You can change it.',
+      crisisTitle: 'If you are in danger right now',
+      crisisLead: 'If you are thinking about hurting yourself or you are not safe, talk to someone now. Calls are free.',
+      call: 'Call', text: 'Text',
+      crisisOther: 'Call your country’s emergency number. To find a free emotional support line near you:',
+      whoTitle: 'Who can help', chooseTitle: 'How to choose',
+      firstTitle: 'Your first appointment',
+      first: ['You share what brought you there, at your own pace. You don’t have to say everything at once.', 'The professional asks about your routine, sleep, history and what you have already tried.', 'You can ask about cost, length, how often and confidentiality. It’s fine to ask how they work.', 'If it doesn’t feel right, you can look for someone else. A good fit makes a difference.'],
+      reportTitle: 'Bring your Nort report',
+      reportText: 'It shows your answers and the scale scores, not a diagnosis. The professional is the one who works out what it means for you.',
+      reportBtn: 'See report for your appointment', reportNote: 'In the app, this button opens your report (the same one already on the results).',
+      freeTitle: 'Free or public', privTitle: 'Private and online',
+      nearTitle: 'Find near me',
+      nearLead: 'The buttons open a map search or the official finder in a new tab. We don’t list addresses: the map shows what is open and near you.',
+      privacy: 'Nort does not receive or store your location. If the map asks for your location, it goes to the map (for example, Google), not to Nort.',
+      mapsVia: 'Google Maps search', official: 'Official site',
+      closing: 'You made it this far, and that counts. It doesn’t have to be today. When it feels right, someone can walk this with you.',
+      foot1: 'Nort is not an emergency service, does not diagnose and does not recommend specific professionals. Links go to official sites or to a map search.',
+      foot2: 'Information checked on 13 Nov 2026. Numbers and rules can change: check the official site.',
+      opens: '(opens in a new tab)'
+    }
+  };
+
+  const COUNTRIES = { BR: { pt: 'Brasil', en: 'Brazil' }, AU: { pt: 'Austrália', en: 'Australia' }, CA: { pt: 'Canadá', en: 'Canada' }, US: { pt: 'Estados Unidos', en: 'United States' }, IE: { pt: 'Irlanda', en: 'Ireland' }, NZ: { pt: 'Nova Zelândia', en: 'New Zealand' }, GB: { pt: 'Reino Unido', en: 'United Kingdom' }, OTHER: { pt: 'Outro país', en: 'Another country' } };
+
+  // Linhas de crise: BR e AU iguais ao protocolo travado; US/CA/GB/IE/NZ = HELP em src/data.js.
+  const CRISIS = {
+    BR: { lines: [
+      { name: 'SAMU', d: { pt: 'Emergência médica, 24 h', en: 'Medical emergency, 24/7' }, tel: '192' },
+      { name: 'CVV', d: { pt: 'Apoio emocional e prevenção do suicídio, 24 h, gratuito. Também por chat no site.', en: 'Emotional support and suicide prevention, 24/7, free. Also chat on the website.' }, tel: '188', link: 'https://cvv.org.br/' }],
+      note: { pt: 'Também dá para ir direto ao pronto-socorro ou à UPA 24h mais próxima.', en: 'You can also go straight to the nearest emergency department or UPA 24h.' } },
+    AU: { lines: [
+      { name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: 'Polícia, ambulância, bombeiros, 24 h', en: 'Police, ambulance, fire, 24/7' }, tel: '000' },
+      { name: 'Lifeline', d: { pt: 'Apoio em crise, 24 h. SMS também 24 h: 0477 13 11 14.', en: 'Crisis support, 24/7. Text also 24/7: 0477 13 11 14.' }, tel: '13 11 14', sms: '0477 13 11 14', link: 'https://www.lifeline.org.au/' }],
+      note: { pt: 'Também dá para ir direto ao pronto-socorro (emergency department) mais próximo.', en: 'You can also go straight to the nearest emergency department.' } },
+    US: { lines: [{ name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: '24 h', en: '24/7' }, tel: '911' }, { name: '988 Suicide & Crisis Lifeline', d: { pt: '24 h', en: '24/7' }, tel: '988' }] },
+    CA: { lines: [{ name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: '24 h', en: '24/7' }, tel: '911' }, { name: '988 Suicide Crisis Helpline', d: { pt: '24 h', en: '24/7' }, tel: '988' }] },
+    GB: { lines: [{ name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: '24 h', en: '24/7' }, tel: '999' }, { name: 'Samaritans', d: { pt: '24 h', en: '24/7' }, tel: '116 123' }] },
+    IE: { lines: [{ name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: '24 h', en: '24/7' }, tel: '112' }, { name: 'Samaritans', d: { pt: '24 h', en: '24/7' }, tel: '116 123' }] },
+    NZ: { lines: [{ name: { pt: 'Emergência', en: 'Emergency' }, d: { pt: '24 h', en: '24/7' }, tel: '111' }, { name: 'Need to talk?', d: { pt: '24 h, ligação ou SMS', en: '24/7, call or text' }, tel: '1737', sms: '1737' }] },
+    OTHER: { lines: [] }
+  };
+
+  const L = (url, label) => ({ url, label });
+  const GENERIC_WHO = [
+    { h: { pt: 'Psicólogo(a)', en: 'Psychologist' }, p: { pt: 'Faz terapia pela conversa. Ajuda a entender o que você sente e a mudar o que pesa. Não receita remédio.', en: 'Provides talking therapy. Helps you understand what you feel and change what weighs on you. Does not prescribe medication.' } },
+    { h: { pt: 'Psiquiatra', en: 'Psychiatrist' }, p: { pt: 'Médico(a) especialista em saúde mental. Avalia, faz o diagnóstico e pode receitar remédio quando precisa. Muita gente faz os dois juntos.', en: 'A medical doctor who specialises in mental health. Assesses, diagnoses and can prescribe medication when needed. Many people see both.' } },
+    { h: { pt: 'Médico(a) de família ou clínico geral', en: 'Family doctor or GP' }, p: { pt: 'Costuma ser um bom primeiro passo: escuta, examina a saúde do corpo e encaminha.', en: 'Often a good first step: listens, checks your physical health and refers you on.' } }
+  ];
+  const GENERIC_CHOOSE = { pt: 'Não sabe por onde começar? Um psicólogo ou o seu médico de família são bons primeiros passos. Se os sinais forem fortes, se o sono ou o dia a dia estiverem muito afetados, ou se você já usa remédio, um psiquiatra também ajuda. Para memória e raciocínio, procure um médico (clínico geral, geriatra ou neurologista).', en: 'Not sure where to start? A psychologist or your family doctor are good first steps. If the signs are strong, if sleep or daily life are badly affected, or if you already take medication, a psychiatrist can help too. For memory and thinking, see a doctor (GP, geriatrician or neurologist).' };
+
+  const C = {
+    BR: {
+      who: [
+        GENERIC_WHO[0], GENERIC_WHO[1],
+        { h: { pt: 'Médico(a) da UBS', en: 'Doctor at the UBS (public clinic)' }, p: { pt: 'No SUS, costuma ser o primeiro passo: escuta, cuida e encaminha para psicólogo, psiquiatra ou CAPS quando precisa.', en: 'In the public system (SUS) this is usually the first step: listens, cares for you and refers you to a psychologist, psychiatrist or CAPS when needed.' } }
+      ],
+      choose: { pt: 'Não sabe por onde começar? Comece por um psicólogo ou pela UBS. Se os sinais forem fortes, se o sono ou o dia a dia estiverem muito afetados, ou se você já usa remédio, um psiquiatra também ajuda. Para memória e raciocínio, procure um médico (clínico geral, geriatra ou neurologista).', en: GENERIC_CHOOSE.en },
+      free: [
+        { h: { pt: 'UBS (posto de saúde)', en: 'UBS (local public health clinic)' }, tag: { pt: 'SUS', en: 'SUS' }, p: { pt: 'É a porta de entrada do SUS. Leve um documento e o cartão do SUS (ou CPF). A equipe escuta, cuida e encaminha quando precisa.', en: 'The front door of Brazil’s public health system (SUS). Bring ID and your SUS card (or CPF). The team listens, cares for you and refers you on.' }, links: [L('https://www.gov.br/saude/raps', 'gov.br/saude')] },
+        { h: { pt: 'CAPS', en: 'CAPS (psychosocial care centre)' }, tag: { pt: 'SUS', en: 'SUS' }, p: { pt: 'Para sofrimento intenso, crise, ou quando a vida está muito afetada. É de porta aberta: dá para ir direto, sem marcar, ou ser encaminhado pela UBS.', en: 'For intense distress, crisis, or when life is badly affected. Open door: you can walk in without an appointment, or be referred by the UBS.' }, links: [L('https://www.gov.br/saude/pt-br/caps', 'gov.br/saude/caps')] },
+        { h: { pt: 'Clínicas-escola de psicologia', en: 'University psychology clinics' }, tag: { pt: 'grátis ou barato', en: 'free or low cost' }, p: { pt: 'Faculdades de Psicologia atendem de graça ou por valor baixo, com estudantes supervisionados por professores. Costuma ter fila: ligue e pergunte.', en: 'Psychology schools offer free or low-cost care by students supervised by lecturers. There is often a waiting list: call and ask.' }, links: [] },
+        { h: { pt: 'CVV', en: 'CVV' }, tag: { pt: '24 h', en: '24/7' }, p: { pt: 'Conversa com voluntários, gratuita e sigilosa, pelo 188 ou por chat. Não é tratamento, mas ajuda muito na hora difícil.', en: 'Free, confidential conversation with volunteers, on 188 or by chat. It is not treatment, but it helps a lot in hard moments.' }, links: [L('https://cvv.org.br/', 'cvv.org.br')] }
+      ],
+      priv: [
+        { h: { pt: 'Confira o registro antes de marcar', en: 'Check registration before booking' }, p: { pt: 'Psicólogo: procure o nome ou o número do CRP no Cadastro Nacional de Psicólogos do CFP. Psiquiatra: procure o nome ou o CRM na busca de médicos do CFM e veja se o CRM está ativo e se tem RQE em Psiquiatria (é o registro da especialidade).', en: 'Psychologist: search the name or CRP number in the CFP’s National Register of Psychologists. Psychiatrist: search the name or CRM in the CFM doctor search and check the CRM is active and has an RQE in Psychiatry (the specialty registration).' }, links: [L('https://cadastro.cfp.org.br/', 'cadastro.cfp.org.br'), L('https://portal.cfm.org.br/busca-medicos/', 'portal.cfm.org.br')] },
+        { h: { pt: 'Terapia online vale', en: 'Online therapy is allowed' }, p: { pt: 'No Brasil, psicólogos podem atender online. Pela Resolução CFP nº 9/2024, basta o registro ativo no CRP (o antigo cadastro e-Psi deixou de ser exigido). O profissional avalia se o online serve para o seu caso.', en: 'In Brazil, psychologists can see clients online. Under CFP Resolution 9/2024, an active CRP registration is enough (the old e-Psi register is no longer required). The professional checks whether online care suits your situation.' }, links: [L('https://site.cfp.org.br/', 'site.cfp.org.br')] },
+        { h: { pt: 'Plano de saúde', en: 'Health insurance' }, p: { pt: 'Se você tem plano de saúde, pergunte quais psicólogos e psiquiatras atendem pelo seu plano.', en: 'If you have private health insurance, ask which psychologists and psychiatrists your plan covers.' }, links: [] }
+      ],
+      near: [
+        { q: 'UBS perto de mim', l: { pt: 'UBS perto de mim', en: 'UBS near me' } },
+        { q: 'CAPS perto de mim', l: { pt: 'CAPS perto de mim', en: 'CAPS near me' } },
+        { q: 'clínica-escola de psicologia perto de mim', l: { pt: 'Clínica-escola de psicologia', en: 'University psychology clinic' } },
+        { q: 'psicólogo perto de mim', l: { pt: 'Psicólogo perto de mim', en: 'Psychologist near me' } }
+      ]
+    },
+    AU: {
+      who: [
+        { h: { pt: 'GP (clínico geral)', en: 'GP (general practitioner)' }, p: { pt: 'Costuma ser o primeiro passo. O GP olha a saúde do corpo, conversa sobre as opções e pode fazer um Mental Health Treatment Plan com encaminhamento, para o Medicare pagar parte das sessões.', en: 'Usually the first step. Your GP checks your physical health, talks through options and can write a Mental Health Treatment Plan and referral so Medicare covers part of your sessions.' } },
+        { h: GENERIC_WHO[0].h, p: { pt: 'Faz terapia pela conversa. Não receita remédio. Não precisa de encaminhamento para marcar, mas precisa dele para ter desconto do Medicare.', en: 'Provides talking therapy and does not prescribe. You don’t need a referral to book, but you need one to claim a Medicare rebate.' } },
+        { h: GENERIC_WHO[1].h, p: { pt: 'Médico(a) especialista em saúde mental. Avalia e pode receitar remédio. Normalmente com encaminhamento do GP.', en: 'A medical doctor who specialises in mental health. Assesses and can prescribe medication. Usually with a GP referral.' } }
+      ],
+      choose: { pt: 'Não sabe por onde começar? Marque com um GP e leve o relatório. Se os sinais forem fortes, se o sono ou o dia a dia estiverem muito afetados, ou se você já usa remédio, peça também encaminhamento para um psiquiatra. Para memória e raciocínio, procure um médico (GP, geriatra ou neurologista).', en: 'Not sure where to start? Book a GP and bring your report. If the signs are strong, if sleep or daily life are badly affected, or if you already take medication, ask about a psychiatrist too. For memory and thinking, see a doctor (GP, geriatrician or neurologist).' },
+      free: [
+        { h: { pt: 'GP + Mental Health Treatment Plan', en: 'GP + Mental Health Treatment Plan' }, tag: { pt: 'Medicare', en: 'Medicare' }, p: { pt: 'Peça ao GP um Mental Health Treatment Plan. Com ele e o encaminhamento, o Medicare paga parte (às vezes tudo) de até 10 sessões individuais por ano com psicólogo (programa Better Access). Pergunte se a clínica faz bulk billing (sem custo para você).', en: 'Ask your GP for a Mental Health Treatment Plan. With it and a referral, Medicare covers part (sometimes all) of up to 10 individual sessions per calendar year with a psychologist (Better Access). Ask if the clinic bulk-bills.' }, links: [L('https://www.health.gov.au/our-work/better-access-initiative', 'health.gov.au')] },
+        { h: { pt: 'Medicare Mental Health (antes Head to Health)', en: 'Medicare Mental Health (formerly Head to Health)' }, tag: { pt: 'grátis', en: 'free' }, p: { pt: 'Telefone gratuito 1800 595 212 (dias úteis, 8h30 às 17h; não é linha de crise) para achar serviços perto de você. E centros gratuitos para adultos: dá para ir direto, sem encaminhamento nem cartão do Medicare.', en: 'Free phone line 1800 595 212 (weekdays 8.30am to 5pm; not a crisis line) to find services near you. Plus free centres for adults: walk in, no referral or Medicare card needed.' }, tel: '1800 595 212', links: [L('https://www.medicarementalhealth.gov.au/', 'medicarementalhealth.gov.au')] },
+        { h: { pt: 'headspace', en: 'headspace' }, tag: { pt: '12–25 anos', en: 'ages 12–25' }, p: { pt: 'Para jovens de 12 a 25 anos. Centros em todo o país (grátis ou baratos) e eheadspace por chat ou telefone (1800 650 890, das 15h às 22h).', en: 'For young people aged 12 to 25. Centres around Australia (free or low cost) and eheadspace by chat or phone (1800 650 890, 3pm to 10pm local time).' }, tel: '1800 650 890', links: [L('https://headspace.org.au/', 'headspace.org.au')] },
+        { h: { pt: 'Beyond Blue', en: 'Beyond Blue' }, tag: { pt: '24 h', en: '24/7' }, p: { pt: 'Conversa gratuita com um conselheiro, por telefone 24 h (1300 22 4636) ou chat.', en: 'Free counselling by phone 24/7 (1300 22 4636) or webchat.' }, tel: '1300 22 4636', links: [L('https://www.beyondblue.org.au/', 'beyondblue.org.au')] },
+        { h: { pt: 'Lifeline', en: 'Lifeline' }, tag: { pt: '24 h', en: '24/7' }, p: { pt: 'Apoio em crise, 24 h, por telefone 13 11 14 ou SMS 0477 13 11 14.', en: 'Crisis support, 24/7, by phone 13 11 14 or text 0477 13 11 14.' }, links: [L('https://www.lifeline.org.au/', 'lifeline.org.au')] }
+      ],
+      priv: [
+        { h: { pt: 'Confira o registro antes de marcar', en: 'Check registration before booking' }, p: { pt: '"Psychologist" é título protegido: só quem tem registro no Psychology Board of Australia pode usar. Psicólogos e psiquiatras aparecem no registro público da Ahpra, com nome, tipo de registro e restrições.', en: '"Psychologist" is a protected title: only people registered with the Psychology Board of Australia can use it. Psychologists and psychiatrists are on Ahpra’s public register, with registration type and any conditions.' }, links: [L('https://www.ahpra.gov.au/Registration/Registers-of-Practitioners.aspx', 'ahpra.gov.au'), L('https://www.psychologyboard.gov.au/', 'psychologyboard.gov.au')] },
+        { h: { pt: 'Online e por telefone', en: 'Online and by phone' }, p: { pt: 'As sessões do Better Access também podem ser por vídeo ou telefone (telehealth).', en: 'Better Access sessions can also be by video or phone (telehealth).' }, links: [L('https://www.health.gov.au/our-work/better-access-initiative', 'health.gov.au')] },
+        { h: { pt: 'Buscadores de profissionais', en: 'Professional directories' }, p: { pt: 'A Australian Psychological Society tem um buscador de psicólogos e o RANZCP, de psiquiatras. Seu GP também pode indicar alguém.', en: 'The Australian Psychological Society has a psychologist finder and RANZCP a psychiatrist finder. Your GP can also suggest someone.' }, links: [L('https://psychology.org.au/', 'psychology.org.au'), L('https://www.yourhealthinmind.org/', 'yourhealthinmind.org')] }
+      ],
+      finders: [
+        { url: 'https://www.healthdirect.gov.au/australian-health-services', l: { pt: 'healthdirect Service Finder', en: 'healthdirect Service Finder' }, s: { pt: 'GPs, psicólogos e serviços de saúde mental', en: 'GPs, psychologists and mental health services' } },
+        { url: 'https://www.medicarementalhealth.gov.au/', l: { pt: 'Medicare Mental Health', en: 'Medicare Mental Health' }, s: { pt: 'Centros gratuitos e serviços locais', en: 'Free centres and local services' } },
+        { url: 'https://headspace.org.au/', l: { pt: 'headspace (12–25 anos)', en: 'headspace (ages 12–25)' }, s: { pt: 'Centro mais próximo', en: 'Nearest centre' } }
+      ],
+      near: [
+        { q: 'GP near me', l: { pt: 'GP perto de mim', en: 'GP near me' } },
+        { q: 'Medicare Mental Health Centre near me', l: { pt: 'Medicare Mental Health Centre', en: 'Medicare Mental Health Centre' } }
+      ]
+    },
+    GENERIC: {
+      who: GENERIC_WHO, choose: GENERIC_CHOOSE,
+      free: [
+        { h: { pt: 'Serviço público ou médico de família', en: 'Public health service or family doctor' }, p: { pt: 'Na maioria dos países, o serviço público de saúde ou o médico de família é a porta de entrada, e pode encaminhar para psicólogo ou psiquiatra.', en: 'In most countries, the public health service or your family doctor is the way in, and can refer you to a psychologist or psychiatrist.' }, links: [] },
+        { h: { pt: 'Linhas de apoio gratuitas', en: 'Free support lines' }, p: { pt: 'O Find A Helpline lista linhas de apoio emocional gratuitas e confidenciais em mais de 130 países.', en: 'Find A Helpline lists free, confidential emotional support lines in more than 130 countries.' }, links: [L('https://findahelpline.com/', 'findahelpline.com')] },
+        { h: { pt: 'Clínicas de universidades', en: 'University clinics' }, p: { pt: 'Faculdades de Psicologia muitas vezes atendem de graça ou por valor baixo, com estudantes supervisionados.', en: 'Psychology schools often offer free or low-cost care by supervised students.' }, links: [] }
+      ],
+      priv: [
+        { h: { pt: 'Confira o registro antes de marcar', en: 'Check registration before booking' }, p: { pt: 'Psicólogos e psiquiatras precisam de registro no conselho ou órgão oficial do país. Peça o número e confira no site oficial.', en: 'Psychologists and psychiatrists must be registered with the official board in your country. Ask for the number and check it on the official site.' }, links: [] }
+      ],
+      near: [
+        { q: 'mental health service near me', l: { pt: 'Serviço de saúde mental perto de mim', en: 'Mental health service near me' } },
+        { q: 'psychologist near me', l: { pt: 'Psicólogo perto de mim', en: 'Psychologist near me' } }
+      ]
+    }
+  };
+
+  // ---------- estado ----------
+  const tzCountry = () => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (/^Australia\//.test(tz)) return 'AU';
+      if (/^America\/(Sao_Paulo|Bahia|Fortaleza|Recife|Maceio|Belem|Manaus|Cuiaba|Campo_Grande|Porto_Velho|Boa_Vista|Rio_Branco|Araguaina|Santarem|Noronha|Eirunepe)$/.test(tz)) return 'BR';
+      if (/^Pacific\/Auckland$/.test(tz)) return 'NZ';
+      if (/^Europe\/London$/.test(tz)) return 'GB';
+      if (/^Europe\/Dublin$/.test(tz)) return 'IE';
+    } catch (e) { /* sem fuso: segue o padrão */ }
+    return 'BR';
+  };
+  const params = new URLSearchParams(location.search);
+  let country = COUNTRIES[params.get('c')] ? params.get('c') : tzCountry();
+  let lang = params.get('lang') === 'en' || params.get('lang') === 'pt' ? params.get('lang') : (country === 'BR' ? 'pt' : 'en');
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const tx = (o) => (typeof o === 'string' ? o : (o[lang] || o.en));
+  const telHref = (n) => 'tel:' + n.replace(/\s/g, '');
+  const ext = (l) => `<a class="ext" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}${EXT}<span class="sr"> ${esc(T[lang].opens)}</span></a>`;
+  const mapsUrl = (q) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+
+  function crisisHtml(s) {
+    const c = CRISIS[country];
+    let body;
+    if (c.lines.length) {
+      body = `<ul class="lines">${c.lines.map((h) => `<li class="line"><div class="line-txt"><strong>${esc(tx(h.name))}</strong><span>${esc(tx(h.d))}</span></div><div class="links" style="margin:0"><a class="call" href="${telHref(h.tel)}" aria-label="${esc(s.call)} ${esc(tx(h.name))}: ${esc(h.tel)}">${esc(h.tel)}</a>${h.sms && h.sms !== h.tel ? `<a class="call ghost" href="sms:${h.sms.replace(/\s/g, '')}" aria-label="${esc(s.text)} ${esc(tx(h.name))}: ${esc(h.sms)}">${esc(s.text)}</a>` : ''}</div></li>`).join('')}</ul>`;
+      if (c.note) body += `<p class="note">${esc(tx(c.note))}</p>`;
+    } else {
+      body = `<p>${esc(s.crisisOther)}</p><div class="links">${ext(L('https://findahelpline.com/', 'findahelpline.com'))}</div>`;
+    }
+    return `<section class="card crisis" id="crisis" aria-labelledby="crisisH" tabindex="-1"><h2 id="crisisH">${HEART}${esc(s.crisisTitle)}</h2><p>${esc(s.crisisLead)}</p>${body}</section>`;
+  }
+
+  const itemHtml = (it) => `<div class="item"><h3>${esc(tx(it.h))}${it.tag ? `<span class="tag">${esc(tx(it.tag))}</span>` : ''}</h3><p>${esc(tx(it.p))}</p>${(it.links && it.links.length) || it.tel ? `<div class="links">${it.tel ? `<a class="ext" href="${telHref(it.tel)}">${esc(T[lang].call)} ${esc(it.tel)}</a>` : ''}${(it.links || []).map(ext).join('')}</div>` : ''}</div>`;
+
+  function render() {
+    const s = T[lang];
+    const d = C[country] || C.GENERIC;
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.title = `${s.title} · Nort`;
+    document.getElementById('proto').textContent = s.proto;
+    document.getElementById('helpNow').textContent = s.helpNow;
+    document.getElementById('langGroup').setAttribute('aria-label', lang === 'pt' ? 'Idioma' : 'Language');
+    document.querySelectorAll('#langGroup button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+
+    const finders = (d.finders || []).map((f) => `<a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer"><span>${esc(tx(f.l))}<small>${esc(s.official)} · ${esc(tx(f.s))}</small></span>${EXT}<span class="sr"> ${esc(s.opens)}</span></a>`).join('');
+    const maps = d.near.map((n) => `<a href="${esc(mapsUrl(n.q))}" target="_blank" rel="noopener noreferrer"><span>${esc(tx(n.l))}<small>${esc(s.mapsVia)}</small></span>${PIN}<span class="sr"> ${esc(s.opens)}</span></a>`).join('');
+
+    document.getElementById('main').innerHTML = `
+      <div><button type="button" class="back" id="back">${esc(s.back)}</button><p class="live" id="backLive" aria-live="polite"></p></div>
+      <div class="fade" style="display:grid;gap:10px"><h1 id="title" tabindex="-1">${esc(s.title)}</h1><p class="lead">${esc(s.lead)}</p></div>
+      <div class="country"><label for="country">${esc(s.countryLabel)}</label><select id="country">${Object.keys(COUNTRIES).map((k) => `<option value="${k}"${k === country ? ' selected' : ''}>${esc(tx(COUNTRIES[k]))}</option>`).join('')}</select><small>${esc(s.countryNote)}</small></div>
+      ${crisisHtml(s)}
+      <section class="card" aria-labelledby="whoH"><h2 id="whoH">${esc(s.whoTitle)}</h2><div class="items">${d.who.map(itemHtml).join('')}</div>
+        <div class="item"><h3>${esc(s.chooseTitle)}</h3><p>${esc(tx(d.choose))}</p></div></section>
+      <section class="card" aria-labelledby="firstH"><h2 id="firstH">${esc(s.firstTitle)}</h2><ul class="plain">${s.first.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+        <div class="item"><h3>${esc(s.reportTitle)}</h3><p>${esc(s.reportText)}</p></div>
+        <button type="button" class="btn" id="report">${esc(s.reportBtn)}</button><p class="live" id="reportLive" aria-live="polite"></p></section>
+      <section class="card" aria-labelledby="freeH"><h2 id="freeH">${esc(s.freeTitle)}</h2><div class="items">${d.free.map(itemHtml).join('')}</div></section>
+      <section class="card" aria-labelledby="privH"><h2 id="privH">${esc(s.privTitle)}</h2><div class="items">${d.priv.map(itemHtml).join('')}</div></section>
+      <section class="card" aria-labelledby="nearH" id="near"><h2 id="nearH">${esc(s.nearTitle)}</h2><p>${esc(s.nearLead)}</p><div class="maps">${finders}${maps}</div>
+        <p class="privacy">${LOCK}<span>${esc(s.privacy)}</span></p></section>
+      <div class="closing" aria-label="${lang === 'pt' ? 'Mensagem do seu personagem' : 'A message from your character'}">
+        <svg viewBox="0 0 76 96" aria-hidden="true"><ellipse cx="38" cy="92" rx="22" ry="3.5" fill="var(--line)"/><path d="M18 90 C18 66 24 58 38 58 C52 58 58 66 58 90 Z" fill="var(--accent)"/><circle cx="38" cy="36" r="17" fill="#E9B48F"/><path d="M21 33 C21 19 31 15 38 15 C47 15 56 20 55 33 C50 26 43 24 36 24 C29 24 24 28 21 33 Z" fill="#3B2A20"/><circle cx="32" cy="37" r="1.9" fill="#1D1D1D"/><circle cx="44" cy="37" r="1.9" fill="#1D1D1D"/><path d="M32.5 44 Q38 48 43.5 44" fill="none" stroke="#7A3B2A" stroke-width="1.8" stroke-linecap="round"/><g class="wave"><path d="M56 68 L66 54" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/><circle cx="67" cy="52" r="4.2" fill="#E9B48F"/></g></svg>
+        <p class="bubble">${esc(s.closing)}</p>
+      </div>
+      <footer class="foot"><p>${esc(s.foot1)}</p><p>${esc(s.foot2)}</p></footer>`;
+
+    document.getElementById('country').addEventListener('change', (e) => { country = e.target.value; render(); document.getElementById('country').focus(); });
+    document.getElementById('report').addEventListener('click', () => { document.getElementById('reportLive').textContent = s.reportNote; });
+    document.getElementById('back').addEventListener('click', () => { document.getElementById('backLive').textContent = s.backNote; });
+  }
+
+  document.querySelectorAll('#langGroup button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; render(); b.focus(); }));
+  document.getElementById('helpNow').addEventListener('click', (e) => { e.preventDefault(); const c = document.getElementById('crisis'); c.scrollIntoView({ block: 'start' }); c.focus({ preventScroll: true }); });
+  render();
+})();
+</script>
+</body>
+</html>
