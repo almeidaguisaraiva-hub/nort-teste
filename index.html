@@ -677,6 +677,17 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .broken-actions .btn[aria-disabled="true"] { opacity: .75; text-decoration: line-through; }
 .compass-hint.nosignal { color: var(--high); font-weight: 700; }
 .find .broken-actions, .find #broken-hint { position: relative; z-index: 1; }
+/* live voice conversation */
+.live-go { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; border-color: var(--accent); font-weight: 800; }
+.live-dot { width: 12px; height: 12px; border-radius: 50%; background: #E8684A; flex: none; box-shadow: 0 0 0 0 rgba(232, 104, 74, .5); }
+.live-card { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 6px 0; }
+.live-card .live-dot { width: 22px; height: 22px; animation: livepulse 1.6s ease-out infinite; }
+.live-card[data-mode="speaking"] .live-dot { background: var(--accent); }
+.live-card[data-mode="connecting"] .live-dot { background: var(--muted); }
+@keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(232, 104, 74, .5); } 100% { box-shadow: 0 0 0 18px rgba(232, 104, 74, 0); } }
+.live-status { font-weight: 800; font-size: 1.1rem; margin: 0; }
+.live-you { margin: 0; font-style: italic; max-width: 36ch; }
+.live-actions { display: grid; gap: 4px; width: 100%; }
 
 </style>
 </head>
@@ -1192,6 +1203,7 @@ const UI = {
     loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas ainda não são guardadas. Para testar, crie uma conta.', loginNotFound: 'Não encontramos essa conta. No protótipo as contas não ficam guardadas: toque em "Criar uma conta".', loginForgotMsg: 'No protótipo ainda não dá para recuperar a senha. Na versão final, vamos mandar um link para o seu e-mail.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
     lostTitle: '{name} está sem direção', lostTitleNoName: 'Seu personagem está sem direção', lostLead: 'Procurando um caminho, seu personagem acha uma bússola, mas ela está quebrada e sem cores.', brokenAlt: 'Bússola quebrada, cinza, com pedaços faltando e a agulha girando sem rumo.', brokenHint: 'Tente achar a direção: experimente a localização da bússola ou gire a bússola com o dedo (ou com as setas do teclado).', brokenNoSignal: 'Sem sinal… é parte da história: a bússola está quebrada (nenhuma localização sua é usada). Gire a bússola com o dedo.', brokenReady: 'Ela ainda não aponta o norte, mas já dá para procurar o caminho. Cada resposta sua dá cor a um pedaço da bússola.', brokenLoc: 'Usar a localização da bússola', brokenLocFail: 'Sem sinal', brokenDialLabel: 'Bússola quebrada. Gire com o dedo ou com as setas do teclado.', brokenGo: 'Procurar o caminho', hudAlt: 'Bússola: {n} de {total} pedaços com cor.', wholeTitle: 'A bússola está inteira!', wholeLead: 'Agora leve a seta até o N, e {name} segue para o norte com você.', wholeLeadNoName: 'Agora leve a seta até o N, e seu personagem segue para o norte com você.', northSay: 'Achamos o norte. Vamos lá!', northSayCare: 'Vamos seguir juntos, no seu ritmo.', wholeTitleCare: 'A bússola está pronta',
     voiceTestExpr: 'Oi, {name}! [laughs softly] Que bom te ouvir. [whispers] E eu também sei falar baixinho, ó. [warmly] Vamos conversar um pouco?',
+    liveGo: 'Conversar ao vivo', liveGoName: 'Conversar ao vivo com {name}', liveHello: 'Oi! Que bom ter você aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveHelloName: 'Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveStatus: { connecting: 'Conectando…', connected: 'Conectado', listening: 'Ouvindo você…', speaking: 'Falando…', idle: '', disconnecting: 'Encerrando…', disconnected: '' }, liveYou: 'Você:', liveEnd: 'Encerrar a conversa', liveToText: 'Prefiro escrever', liveError: 'Não deu para começar a conversa ao vivo agora. Você pode continuar escrevendo ou falando pelo microfone.', liveEnded: 'A conversa ao vivo caiu. Você pode continuar por aqui.', liveConsentTitle: 'Conversa ao vivo', liveConsentText: 'No modo ao vivo, você conversa por voz em tempo real, como numa ligação. Para isso, o que você fala vai para a ElevenLabs (empresa dos EUA), que transforma em texto e em voz, e para um modelo de IA (Claude, da Anthropic) que conduz a conversa; também vão o nome do personagem e se você teve bebê no último ano. Pedimos que as gravações não sejam guardadas e que as transcrições sejam apagadas em até 1 dia. O personagem não dá diagnóstico. Se você falar de algo que indique risco, a conversa para e os números de ajuda aparecem na hora. Dá para voltar a escrever quando quiser.', liveConsentCheck: 'Entendi e quero conversar ao vivo.', liveOwnNote: 'No modo ao vivo, o personagem usa uma voz natural pronta, não a sua.', liveSafetyLead: 'Esta pergunta importante aparece aqui na tela. Toque na sua resposta (ou responda falando).', liveStart: 'Começar a conversa', liveCancel: 'Agora não',
     hintLabel: 'Você pode falar sobre', indLevels: { strong: 'Vale olhar com calma', some: 'Se você quiser', none: 'Nada apareceu na conversa' }, indCame: 'áreas apareceram na conversa', indCame1: 'área apareceu na conversa', indRingLegend: 'Cada pedaço é uma área, com a sua cor. Os mais grossos são os que apareceram na conversa. Toque numa área abaixo para escolher.', indSayScreen: 'Na tela, a sua bússola mostra as áreas que apareceram na conversa.', countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Um norte sobre a sua saúde mental: sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta ainda não é criada de verdade. Ela só vale enquanto esta página estiver aberta; nada é enviado nem guardado.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Vire o celular até a seta apontar para o N, ou arraste a seta, e toque em Começar.', birthHint: 'Toque para escolher a data (ano, mês e dia).', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Seu personagem vai procurar a bússola. Depois, vire o celular até a seta apontar para o N e toque em Começar.', avNext: 'Continuar',
@@ -1446,6 +1458,7 @@ const UI = {
     loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored yet. To try it, create an account.', loginNotFound: 'We couldn’t find that account. In the prototype accounts are not stored: tap "Create an account".', loginForgotMsg: 'Password recovery is not available in the prototype yet. In the final version we will send a link to your email.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
     lostTitle: '{name} has lost their way', lostTitleNoName: 'Your character has lost their way', lostLead: 'Looking for a way, your character finds a compass, but it is broken and has no colours.', brokenAlt: 'Broken grey compass, with missing pieces and the needle spinning aimlessly.', brokenHint: 'Try to find the way: try the compass’s location or turn the compass with your finger (or the arrow keys).', brokenNoSignal: 'No signal… it’s part of the story: the compass is broken (your location is not used). Turn the compass with your finger.', brokenReady: 'It still doesn’t point north, but you can start looking for the way. Each answer adds colour to a piece of the compass.', brokenLoc: 'Use the compass’s location', brokenLocFail: 'No signal', brokenDialLabel: 'Broken compass. Turn it with your finger or the arrow keys.', brokenGo: 'Look for the way', hudAlt: 'Compass: {n} of {total} pieces coloured.', wholeTitle: 'The compass is whole!', wholeLead: 'Now bring the arrow to N, and {name} will head north with you.', wholeLeadNoName: 'Now bring the arrow to N, and your character will head north with you.', northSay: 'We found north. Let’s go!', northSayCare: 'Let’s keep going together, at your pace.', wholeTitleCare: 'The compass is ready',
     voiceTestExpr: 'Hi, {name}! [laughs softly] So good to hear you. [whispers] And I can talk quietly too, see? [warmly] Shall we have a little chat?',
+    liveGo: 'Talk live', liveGoName: 'Talk live with {name}', liveHello: 'Hi! So good to have you here. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveHelloName: 'Hi, {name}! So good to see you. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveStatus: { connecting: 'Connecting…', connected: 'Connected', listening: 'Listening to you…', speaking: 'Speaking…', idle: '', disconnecting: 'Ending…', disconnected: '' }, liveYou: 'You:', liveEnd: 'End the conversation', liveToText: 'I’d rather type', liveError: 'The live conversation couldn’t start right now. You can keep typing or use the microphone.', liveEnded: 'The live conversation dropped. You can carry on here.', liveConsentTitle: 'Live conversation', liveConsentText: 'In live mode you talk by voice in real time, like a phone call. For this, what you say goes to ElevenLabs (a US company), which turns it into text and voice, and to an AI model (Claude, by Anthropic) that guides the conversation; your character’s name and whether you had a baby in the last year are sent too. We ask that recordings are not kept and that transcripts are deleted within 1 day. The character does not give a diagnosis. If you say something that suggests risk, the conversation stops and the help numbers appear right away. You can go back to typing any time.', liveConsentCheck: 'I understand and want to talk live.', liveOwnNote: 'In live mode the character uses a ready-made natural voice, not yours.', liveSafetyLead: 'This important question appears here on the screen. Tap your answer (or say it).', liveStart: 'Start the conversation', liveCancel: 'Not now',
     hintLabel: 'You could talk about', indLevels: { strong: 'Worth a closer look', some: 'If you like', none: 'Nothing came up in the chat' }, indCame: 'areas came up in the chat', indCame1: 'area came up in the chat', indRingLegend: 'Each piece is an area, with its own colour. Thicker pieces came up in the conversation. Tap an area below to choose it.', indSayScreen: 'On the screen, your compass shows the areas that came up in our chat.', countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'A sense of direction for your mental health: signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account is not really created yet. It only works while this page is open; nothing is sent or stored.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Turn your phone until the arrow points to N, or drag the arrow, and tap Start.', birthHint: 'Tap to pick the date (year, month and day).', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'Your character will look for the compass. Then turn your phone until the arrow points to N and tap Start.', avNext: 'Continue',
@@ -2060,41 +2073,92 @@ const NORT_VOICE_API = (typeof window !== 'undefined' && window.NORT_VOICE_API_T
 // solution-focused brief therapy (de Shazer, 1988). The "weather" item is a plain mood question with a
 // familiar image (sun/rain), anchored by the word "humor/mood". Not official text; to be validated.
 // `areas` = what each answer is read for (AREA_HINT / AREA_WORDS below); the cues aim at those words.
+// Questions are also SPOKEN, so they are written to be said out loud (≤ ~14 words, plain words).
+// For the live voice agent (and an optional text-mode follow-up), each item except `safety` also has:
+//   `goal`      — one sentence for the agent only (never shown or spoken): what the answer should cover.
+//   `probes`    — 1–2 short, gentle, non-leading follow-up questions, used only if the answer missed
+//                 something important for the goal; never about self-harm methods, never diagnostic words,
+//                 never a "why" that blames. In `hard` they are optional-toned and one lets the person stop.
+//   `listenFor` — accent-free, lowercase word stems (like AREA_WORDS) showing the goal was covered.
+// goal/probes/listenFor are written by Nort, NOT official scale text, and must be validated with
+// professionals. The `safety` item is always the official PHQ-9 item 9 with the crisis protocol: no probes.
 const TALK_QS = [
   { id: 'day', areas: ['sleep', 'depression', 'wellbeing', 'adhd', 'alcohol', 'substances', 'eating'],
     q: { pt: 'Me conta como foi um dia comum seu na última semana.',
          en: 'Tell me about an ordinary day you had last week.' },
-    hint: { pt: ['como você dormiu', 'o que comeu e bebeu', 'foco e ânimo'], en: ['how you slept', 'what you ate and drank', 'focus and mood'] } },
+    hint: { pt: ['como você dormiu', 'o que comeu e bebeu', 'foco e ânimo'], en: ['how you slept', 'what you ate and drank', 'focus and mood'] },
+    goal: { pt: 'Saber como estão sono, alimentação, bebida ou outras substâncias, foco/organização e ânimo/energia no dia a dia.',
+            en: 'Learn how sleep, eating, drinking or other substances, focus/organising and energy/interest are going day to day.' },
+    probes: { pt: ['E como você tem dormido?', 'E como andam a comida, a bebida e o foco?'],
+              en: ['And how have you been sleeping?', 'And how are eating, drinking and focus going?'] },
+    listenFor: ['dormi', 'sono', 'acord', 'comi', 'bebi', 'foco', 'animo', 'cansad'] },
   { id: 'weather', areas: ['wellbeing', 'depression', 'bipolar', 'anxiety', 'distress'],
-    q: { pt: 'Como andou seu humor nas últimas duas semanas: mais sol, nuvem ou chuva?',
-         en: 'How has your mood been over the last two weeks: more sun, clouds or rain?' },
-    hint: { pt: ['dias bons e ruins', 'sua energia', 'o que fez mudar'], en: ['good and bad days', 'your energy', 'what made it change'] } },
+    q: { pt: 'Nas últimas duas semanas, seu humor foi mais sol, nuvem ou chuva?',
+         en: 'Over the last two weeks, has your mood been more sun, clouds or rain?' },
+    hint: { pt: ['dias bons e ruins', 'sua energia', 'vontade de fazer as coisas'], en: ['good and bad days', 'your energy', 'wanting to do things'] },
+    goal: { pt: 'Saber o humor geral, o interesse ou prazer nas coisas, a energia e se houve dias de agitação ou energia fora do normal.',
+            en: 'Learn overall mood, interest or pleasure in things, energy, and whether there were unusually high or restless days.' },
+    probes: { pt: ['E as coisas de que você gosta ainda têm graça?', 'Teve dias com energia bem acima do normal?'],
+              en: ['Do the things you like still feel enjoyable?', 'Were there days with much more energy than usual?'] },
+    listenFor: ['humor', 'sol', 'chuva', 'nuvem', 'energia', 'vontade', 'graca', 'agitad'] },
   { id: 'safety', type: 'safety' },
   { id: 'mind', areas: ['anxiety', 'panic', 'ocd', 'gambling', 'alcohol', 'substances'],
     q: { pt: 'O que tem ocupado sua cabeça mais do que você gostaria?',
          en: 'What has been on your mind more than you would like?' },
-    hint: { pt: ['o que te preocupa', 'o que sente no corpo', 'o que faz para aliviar'], en: ['what worries you', 'what your body feels', 'what you do to ease it'] } },
+    hint: { pt: ['o que te preocupa', 'o que sente no corpo', 'o que faz para aliviar'], en: ['what worries you', 'what your body feels', 'what you do to ease it'] },
+    goal: { pt: 'Saber o que preocupa, se é difícil de controlar, se vem com sensações fortes no corpo e o que a pessoa faz para aliviar (rituais, apostas, bebida, outras substâncias).',
+            en: 'Learn what worries the person, whether it is hard to control, whether it brings strong body sensations, and what they do to ease it (rituals, betting, drinking, other substances).' },
+    probes: { pt: ['Isso aparece no corpo de algum jeito?', 'E o que você costuma fazer quando isso aperta?'],
+              en: ['Does it show up in your body in any way?', 'And what do you usually do when it gets strong?'] },
+    listenFor: ['preocup', 'pensamento', 'coracao', 'respir', 'corpo', 'alivi', 'aposta', 'bebo'] },
   { id: 'people', areas: ['social', 'borderline', 'autism'],
     q: { pt: 'Como você tem se sentido com as pessoas da sua vida?',
          en: 'How have you been feeling with the people in your life?' },
-    hint: { pt: ['quem te faz bem', 'o que te deixa mal', 'energia depois de encontros'], en: ['who is good for you', 'what gets you down', 'energy after seeing people'] } },
+    hint: { pt: ['quem te faz bem', 'o que te deixa mal', 'energia depois de encontros'], en: ['who is good for you', 'what gets you down', 'energy after seeing people'] },
+    goal: { pt: 'Saber como são as relações próximas, como a pessoa se sente com gente nova ou em grupo e como reage a afastamentos ou conflitos.',
+            en: 'Learn how close relationships are, how the person feels with new people or in groups, and how they react to distance or conflict.' },
+    probes: { pt: ['E perto de gente nova ou em grupo, como é para você?', 'E quando alguém se afasta, como isso fica em você?'],
+              en: ['And around new people or in groups, how is it for you?', 'And when someone pulls away, how does that feel?'] },
+    listenFor: ['amig', 'famil', 'gente', 'grupo', 'vergonha', 'briga', 'raiva', 'cansa'] },
   { id: 'hard', areas: ['trauma', 'psychosis'], sensitive: true,
-    q: { pt: 'Se quiser, tem alguma experiência difícil ou fora do comum para contar?',
-         en: 'If you want, is there a hard or unusual experience you would like to share?' },
-    hint: { pt: ['lembranças que voltam', 'ficar sempre em alerta', 'coisas que outros não percebem'], en: ['memories that come back', 'always being on guard', "things others don't notice"] } },
+    q: { pt: 'Só se quiser: você já viveu algo muito difícil ou fora do comum?',
+         en: 'Only if you want: have you been through something very hard or unusual?' },
+    hint: { pt: ['lembranças que voltam', 'ficar sempre em alerta', 'coisas que outros não percebem'], en: ['memories that come back', 'always being on guard', "things others don't notice"] },
+    goal: { pt: 'Só se a pessoa quiser, sem pedir detalhes do que aconteceu: saber se viveu algo muito assustador e se isso ainda volta, ou se percebe coisas que os outros não percebem.',
+            en: 'Only if the person wants, without asking for details of what happened: learn whether they went through something very frightening that still comes back, or notice things others do not.' },
+    probes: { pt: ['Só se quiser, e sem detalhes: isso ainda volta à sua cabeça?', 'Quer contar algo fora do comum, ou prefere parar por aqui?'],
+              en: ['If you want, no details: does it still come back to you?', "Anything unusual you'd like to share, or would you rather stop here?"] },
+    listenFor: ['aconteceu', 'acidente', 'violencia', 'lembranc', 'pesadelo', 'alerta', 'vozes', 'estranh'] },
   { id: 'miracle', areas: ['distress', 'depression', 'anxiety', 'wellbeing'],
-    q: { pt: 'Se amanhã sumisse algo que hoje te pesa, o que mudaria primeiro?',
-         en: 'If something weighing on you disappeared tomorrow, what would change first?' },
-    hint: { pt: ['o que mais pesa hoje', 'o que você faria', 'quem perceberia'], en: ['what weighs most now', "what you'd do", 'who would notice'] } },
+    q: { pt: 'Imagina que amanhã sumiu algo que hoje te pesa. O que mudaria primeiro?',
+         en: 'Imagine something weighing on you is gone tomorrow. What would change first?' },
+    hint: { pt: ['o que mais pesa hoje', 'o que você faria', 'quem perceberia'], en: ['what weighs most now', "what you'd do", 'who would notice'] },
+    goal: { pt: 'Saber o que mais pesa hoje, o quanto isso atrapalha a vida e o que a pessoa faria ou recuperaria sem esse peso.',
+            en: 'Learn what weighs most right now, how much it gets in the way of life, and what the person would do or get back without it.' },
+    probes: { pt: ['E o que é que mais pesa para você hoje?', 'E quanto isso tem atrapalhado o seu dia a dia?'],
+              en: ['And what weighs on you most right now?', 'And how much is it getting in the way of daily life?'] },
+    listenFor: ['pesa', 'trabalh', 'dinheiro', 'famil', 'saude', 'faria', 'mudaria', 'atrapalh'] },
   { id: 'baby', areas: ['postpartum'], onlyBaby: true,
-    q: { pt: 'Como você está desde que o bebê chegou?', en: 'How have you been since the baby arrived?' },
-    hint: { pt: ['seu humor', 'medos ou culpa', 'sono e cansaço'], en: ['your mood', 'worries or guilt', 'sleep and tiredness'] } },
+    q: { pt: 'Como você tem estado desde que o bebê chegou?', en: 'How have you been since the baby arrived?' },
+    hint: { pt: ['seu humor', 'medos ou culpa', 'sono e cansaço'], en: ['your mood', 'worries or guilt', 'sleep and tiredness'] },
+    goal: { pt: 'Saber o humor desde o bebê, se ainda consegue rir e aproveitar momentos, e se há medo, culpa, choro ou sensação de não dar conta.',
+            en: 'Learn mood since the baby, whether the person can still laugh and enjoy moments, and whether there is fear, guilt, crying or feeling overwhelmed.' },
+    probes: { pt: ['Ainda tem momentos em que dá para rir e curtir?', 'Tem algum medo ou culpa que anda pesando?'],
+              en: ['Are there still moments you can laugh and enjoy?', 'Is there any worry or guilt weighing on you?'] },
+    listenFor: ['bebe', 'chor', 'culpa', 'medo', 'cansa', 'sono', 'sobrecarreg', 'rir'] },
   { id: 'memory', areas: ['memory'],
-    q: { pt: 'Como está sua memória comparada com alguns anos atrás?',
-         en: 'How is your memory compared with a few years ago?' },
-    hint: { pt: ['esquecer recados ou datas', 'contas e decisões', 'desde quando'], en: ['forgetting messages or dates', 'bills and decisions', 'since when'] } }
+    q: { pt: 'Comparando com uns dez anos atrás, como está sua memória?',
+         en: 'Compared with about ten years ago, how is your memory?' },
+    hint: { pt: ['esquecer recados ou datas', 'contas e decisões', 'desde quando'], en: ['forgetting messages or dates', 'bills and decisions', 'since when'] },
+    goal: { pt: 'Saber se a memória ou o raciocínio mudaram em relação a uns dez anos atrás, desde quando e se isso atrapalha contas, decisões ou o dia a dia.',
+            en: 'Learn whether memory or thinking has changed compared with about ten years ago, since when, and whether it affects bills, decisions or daily life.' },
+    probes: { pt: ['Isso tem atrapalhado contas, compras ou decisões?', 'Alguém próximo já comentou alguma mudança?'],
+              en: ['Has it got in the way of bills, shopping or decisions?', 'Has anyone close to you noticed a change?'] },
+    listenFor: ['esquec', 'memoria', 'lembr', 'conta', 'decis', 'confus', 'recado', 'anos'] }
 ];
-function talkQuestions(state) { return TALK_QS.filter((q) => !q.onlyBaby || state.setup.baby === 1); }
+// memory changes are asked from 50 on (IQCODE compares with ~10 years ago); unknown age keeps the question
+function ageYears(birth) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(birth || '')); if (!m) return null; const b = new Date(+m[1], +m[2] - 1, +m[3]); const n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a; }
+function talkQuestions(state) { const age = ageYears(state.account && state.account.birth); return TALK_QS.filter((q) => (!q.onlyBaby || state.setup.baby === 1) && !(q.id === 'memory' && age != null && age < 50)); }
 
 // What each area's official screening looks at (context for the AI; English, not shown)
 const AREA_HINT = {
@@ -4085,7 +4149,7 @@ function toneOf(text) {
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
   function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own' || id.startsWith('e:')) { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
-  function flagRisk() { if (state.talkRisk) return; state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
+  function flagRisk() { if (liveCall.on) liveStop(); if (state.talkRisk) { if (state.crisisOpen) return; stopMic(); stopSay(); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); return; } state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
     state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
@@ -4194,14 +4258,14 @@ function toneOf(text) {
     if (N3D.ok) return `<main class="scene3d talk-scene">
       <div class="stage3d" id="stage3d" aria-hidden="true"></div>
       <div class="scene-top">${hudCompass(i)}<div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
-      <div class="comic${reduceMotion ? '' : ' pop'}" id="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><h1 class="q-text" id="q-text">${esc(text)}</h1>${hints}${voiceId() !== 'off' ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
+      <div class="comic${reduceMotion ? '' : ' pop'}" id="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p><h1 class="q-text" id="q-text">${esc(liveCall.on && liveCall.agentText ? liveCall.agentText : text)}</h1>${liveCall.on ? '' : hints}${voiceId() !== 'off' && !liveCall.on ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
       <div class="scene-gap" aria-hidden="true"></div>
       <section class="answer-card">
-        ${notes.join('')}
+        ${liveCall.on ? liveCardHtml(s) : `${liveOfferHtml(s)}${notes.join('')}
         ${control}
         ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
-        <div class="scene-nav"><button class="btn link" data-act="talk-back">← ${esc(s.back)}</button>${isSafety ? '<span></span>' : `<button class="btn link" data-act="talk-skip">${esc(s.talkSkip)}</button>`}<button class="btn primary" data-act="talk-next" id="next-btn"${answered ? '' : ' disabled'}>${esc(last ? s.talkDone : s.next)}</button></div>
-      </section></main>`;
+        <div class="scene-nav"><button class="btn link" data-act="talk-back">← ${esc(s.back)}</button>${isSafety ? '<span></span>' : `<button class="btn link" data-act="talk-skip">${esc(s.talkSkip)}</button>`}<button class="btn primary" data-act="talk-next" id="next-btn"${answered ? '' : ' disabled'}>${esc(last ? s.talkDone : s.next)}</button></div>`}
+      </section>${liveConsentHtml(s)}</main>`;
     return `<main class="stage tint-sky"><div class="stage-inner">
       <div class="quiz-top"><div class="quiz-meta"><span>${esc(s.talkTitle)}</span><span>${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div></div>
       <section class="qcard talk-card ${reduceMotion ? '' : 'enter'}">
@@ -4250,7 +4314,93 @@ function toneOf(text) {
   // ownVoice.id is the signed session token from the voice server (never the raw voice id)
   const ownVoice = { id: null, recs: [], rec: null, stream: null, startedAt: 0, k: 0, busy: false, err: null, consent: false, timer: null, starting: false, discard: false, blocked: false, notice: null };
   // The option only shows once the server says the ElevenLabs key is in place (GET /health -> ready)
-  function checkVoiceServer() { if (!VOICE_API || inFrame || ownVoice.checked) return Promise.resolve(); ownVoice.checked = true; return fetch(`${VOICE_API}/health`).then((r) => r.json()).then((d) => { ownVoice.ready = !!(d && d.ready); }).catch(() => { ownVoice.ready = false; }); }
+  function checkVoiceServer() { if (!VOICE_API || inFrame || ownVoice.checked) return Promise.resolve(); ownVoice.checked = true; return fetch(`${VOICE_API}/health`).then((r) => r.json()).then((d) => { ownVoice.ready = !!(d && d.ready); ownVoice.live = !!(d && d.live); }).catch(() => { ownVoice.ready = false; }); }
+
+  // ---------- live voice conversation (like a call): ElevenLabs Agents through the Nort voice server ----------
+  // The agent follows the same questions; its answers come back through "client tools" and go into the same
+  // indicators. Risk words in anything the person says end the call and open the crisis notice at once.
+  const LIVE_LIB = 'https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.32.1/+esm';
+  const liveCall = { on: false, status: 'idle', mode: '', conv: null, consent: false, ask: false, err: null, agentText: '', userText: '', ending: false, own: false };
+  function liveAvailable() { if (state.talkRisk || computeFlags(state).safety === 'yes') return false; return !!VOICE_API && !inFrame && ownVoice.live === true && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia); }
+  function liveNextIndex() { const qs = talkQuestions(state); const k = qs.findIndex((q) => (q.type === 'safety' ? state.answers['phq.9'] == null : !(state.talk.answers[q.id] || '').trim() && !state.talk.skipped[q.id])); return k < 0 ? qs.length - 1 : k; }
+  function liveRisk() { liveStop(); flagRisk(); }
+  function liveStop() { const c = liveCall.conv; liveCall.conv = null; liveCall.on = false; liveCall.mode = ''; liveCall.status = 'idle'; N3D.talking(false); setSpeaking(false); if (c) { try { c.endSession(); } catch (e) { /* ignore */ } } }
+  function liveFinish() {
+    if (liveCall.ending) return; liveCall.ending = true;
+    setTimeout(() => { liveCall.ending = false; liveStop(); if (state.view !== 'talk' || state.crisisOpen) { render(true); return; } if (state.answers['phq.9'] == null) { state.talk.i = talkQuestions(state).findIndex((q) => q.type === 'safety'); state.talk.said = null; render(); return; } state.view = 'indicators'; state.talk.analyzing = Object.keys(state.talk.jobs).length > 0; render(); waitIndicators(); }, reduceMotion ? 300 : 2500);
+  }
+  function liveUI() {
+    const st = document.getElementById('live-status'); if (st) st.textContent = S().liveStatus[liveCall.mode || liveCall.status] || '';
+    const q = document.getElementById('q-text'); if (q && liveCall.agentText) q.textContent = liveCall.agentText;
+    const u = document.getElementById('live-you'); if (u) { u.textContent = liveCall.userText ? `${S().liveYou} ${liveCall.userText}` : ''; u.hidden = !liveCall.userText; }
+    const card = document.querySelector('.live-card'); if (card) card.dataset.mode = liveCall.mode || liveCall.status;
+  }
+  const liveTools = {
+    registrar_resposta: (p) => {
+      const q = talkQuestions(state).find((x) => x.id === String((p && p.topico) || '')); if (!q || q.type === 'safety') return 'tema desconhecido';
+      const ans = String((p && p.resposta) || '').slice(0, 2000).trim();
+      if (ans) { state.talk.answers[q.id] = ans; delete state.talk.skipped[q.id]; analyze(q, ans); } else state.talk.skipped[q.id] = true;
+      if (state.crisisOpen) return 'pare';
+      if (liveCall.own && ownVoice.blocked) { liveStop(); render(true); return 'pare'; }
+      if (N3D.ok) { const r = reactFor(talkTone(q), ans); N3D.emote(r.emo1); if (r.nod) N3D.nod(); }
+      state.talk.i = liveNextIndex(); render(true); return 'ok';
+    },
+    registrar_seguranca: (p) => {
+      if (state.answers['phq.9'] != null) return 'ok';
+      const v = String((p && p.valor) || ''); state.answers['phq.9'] = v === 'prefiro_nao' ? 'skip' : Math.max(0, Math.min(3, Number(v) || 0));
+      if (typeof state.answers['phq.9'] === 'number' && state.answers['phq.9'] > 0) { liveRisk(); return 'pare'; }
+      state.talk.i = liveNextIndex(); render(true); return 'ok';
+    },
+    sinal_de_risco: () => { liveRisk(); },
+    encerrar: () => { liveFinish(); }
+  };
+  async function liveStart() {
+    if (liveCall.on || !liveAvailable()) return;
+    stopSay(); stopMic(); liveCall.err = null; liveCall.on = true; liveCall.status = 'connecting'; liveCall.agentText = ''; liveCall.userText = ''; render(true);
+    try {
+      const vid = voiceId(); liveCall.own = false;
+      const body = { lang: state.lang }; if (vid.startsWith('e:')) body.preset = vid.slice(2);
+      const [lib, res] = await Promise.all([import(LIVE_LIB), fetch(`${VOICE_API}/live`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then((r) => r.json())]);
+      if (!liveCall.on) return;
+      if (!res || !res.signed_url) throw new Error(res && res.error ? res.error : 'live');
+      const nm = helloName(); const s = S();
+      liveCall.conv = await lib.Conversation.startSession({
+        signedUrl: res.signed_url,
+        overrides: { agent: { firstMessage: nm ? fmt(s.liveHelloName, { name: nm }) : s.liveHello, language: state.lang }, tts: { voiceId: res.voice_id } },
+        dynamicVariables: { nome: nm, bebe: state.setup.baby === 1 ? 'sim' : 'nao', comecar: (talkQuestions(state)[liveNextIndex()] || {}).id || 'day' },
+        clientTools: liveTools,
+        onStatusChange: ({ status }) => { liveCall.status = status; liveUI(); if (status === 'connected' || status === 'connecting') live.textContent = S().liveStatus[status]; },
+        onModeChange: ({ mode }) => { liveCall.mode = mode; const sp = mode === 'speaking'; N3D.talking(sp); setSpeaking(sp); if (!sp && N3D.ok && !state.talkRisk) N3D.emote('listening'); liveUI(); },
+        onMessage: ({ message, source }) => {
+          const m = String(message || '');
+          if (source === 'user') { liveCall.userText = m; if (riskWords(m)) { liveRisk(); return; } const cur = talkQuestions(state)[liveNextIndex()]; if (cur && cur.type === 'safety' && state.answers['phq.9'] == null && /v[aá]rios dias|mais da metade|quase todos|several days|more than half|nearly every day/i.test(m)) { state.answers['phq.9'] = /quase todos|nearly every/i.test(m) ? 3 : /mais da metade|more than half/i.test(m) ? 2 : 1; liveRisk(); return; } }
+          else liveCall.agentText = m.replace(/\[[^\]]{1,30}\]\s*/g, '');
+          liveUI();
+        },
+        onError: () => { liveCall.err = S().liveError; },
+        onDisconnect: () => { if (liveCall.conv || liveCall.on) { liveCall.conv = null; liveCall.on = false; liveCall.mode = ''; N3D.talking(false); setSpeaking(false); if (!liveCall.ending && state.view === 'talk' && !state.crisisOpen) { liveCall.err = liveCall.err || S().liveEnded; render(true); } } }
+      });
+      if (!liveCall.on) { try { liveCall.conv.endSession(); } catch (e) { /* ignore */ } }
+    } catch (e) { liveCall.on = false; liveCall.conv = null; liveCall.status = 'idle'; liveCall.err = e && (e.name === 'NotAllowedError' || /permission|not allowed/i.test(String(e.message))) ? S().micDenied : S().liveError; render(true); }
+  }
+  function liveCardHtml(s) {
+    const q = talkQuestions(state)[liveNextIndex()];
+    const safety = q && q.type === 'safety' && state.answers['phq.9'] == null ? `<div class="live-safety"><p class="stem">${esc(s.liveSafetyLead)}</p><h2 class="q-text">${esc(`${tx(PHQ_STEM)} ${tx(PHQ_ITEMS[8])}`)}</h2>${choiceControl(item('phq.9', PHQ_ITEMS[8], 'phqSafety'))}</div>` : '';
+    return `${safety}<div class="live-card" data-mode="${esc(liveCall.mode || liveCall.status)}"><div class="live-dot" aria-hidden="true"></div><p class="live-status" id="live-status">${esc(s.liveStatus[liveCall.mode || liveCall.status] || '')}</p>
+      <p class="small live-you" id="live-you"${liveCall.userText ? '' : ' hidden'}>${esc(liveCall.userText ? `${s.liveYou} ${liveCall.userText}` : '')}</p>
+      <div class="live-actions"><button type="button" class="btn primary" data-act="live-end">${esc(s.liveEnd)}</button><button type="button" class="btn link" data-act="live-text">${esc(s.liveToText)}</button></div></div>`;
+  }
+  function liveOfferHtml(s) {
+    if (!liveAvailable() || liveCall.on) return '';
+    return `${voiceId() === 'own' ? `<p class="small">${esc(s.liveOwnNote)}</p>` : ''}<button type="button" class="btn live-go" data-act="live-ask"><span class="live-dot" aria-hidden="true"></span>${esc(helloName() ? fmt(s.liveGoName, { name: helloName() }) : s.liveGo)}</button>${liveCall.err ? `<p class="small" role="status">${esc(liveCall.err)}</p>` : ''}`;
+  }
+  function liveConsentHtml(s) {
+    if (!liveCall.ask) return '';
+    return `<div class="overlay" id="live-sheet"><div class="dialog sheet" role="dialog" aria-modal="true" aria-labelledby="live-h" tabindex="-1" id="live-dialog">
+      <h2 id="live-h">${esc(s.liveConsentTitle)}</h2><p class="small">${esc(s.liveConsentText)}</p>
+      <label class="check" for="live-ok"><input type="checkbox" id="live-ok"${liveCall.consent ? ' checked' : ''}><span>${esc(s.liveConsentCheck)}</span></label>
+      <div class="sheet-actions"><button class="btn primary big" data-act="live-start"${liveCall.consent ? '' : ' disabled'}>${esc(s.liveStart)}</button><button class="btn link" data-act="live-cancel">${esc(s.liveCancel)}</button></div></div></div>`;
+  }
   // natural voices only where the voice server is reachable and has its key (the test link, not inside the Claude link)
   function naturalVoices() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !!audioElOk; }
   function ownVoicePossible() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !ownVoice.blocked && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && typeof window.MediaRecorder !== 'undefined'; }
@@ -4401,14 +4551,15 @@ function toneOf(text) {
     if (state.crisisOpen) { const d = document.getElementById('crisis'); if (d) d.focus(); }
     else if (['quiz', 'handback', 'talk', 'indicators'].includes(state.view)) { const q = document.getElementById('q-text') || root.querySelector('.ch-title'); if (q && !keepScroll) { q.setAttribute('tabindex', '-1'); q.focus({ preventScroll: true }); } }
     if (keepScroll) window.scrollTo(0, y); else window.scrollTo(0, 0);
-    if (state.view !== 'talk') { stopMic(); stepTok++; }
+    if (state.view !== 'talk') { stopMic(); stepTok++; if (liveCall.on) liveStop(); }
     const st3 = document.getElementById('stage3d');
     if (st3 && N3D.ok) { N3D.setLook(avatar); N3D.attach(st3); if (state.view === 'avatar') N3D.builder(); }
     sceneBand();
     if (state.view === 'indicators' && document.querySelector('.ind-compass .your-compass.anim')) state.indAnimKey = 'ind';
     if (state.view === 'results' && N3D.ok && exp.ring && state.finaleKey !== `${state.resultsLevel}`) { state.finaleKey = `${state.resultsLevel}`; const mb = maxBand(computeAreas(state, state.resultsLevel)); N3D.finale(mb === 2 || computeFlags(state).safety === 'yes' ? 'compassion' : mb === 1 ? 'calm' : 'happy'); }
     if (state.view === 'results' && document.querySelector('.your-compass.anim')) state.ycAnimKey = `${state.resultsLevel}`;
-    if (state.view === 'talk' && !state.crisisOpen) { const q = curTalkQ(); const key = `${state.talk.i}:${state.lang}`; if (state.talk.said !== key) { state.talk.said = key; runStep(q, state.talk.i); } }
+    if (liveCall.ask) { const d = document.getElementById('live-dialog'); if (d && !d.contains(document.activeElement)) d.focus(); }
+    if (state.view === 'talk' && !state.crisisOpen && !liveCall.on) { const q = curTalkQ(); const key = `${state.talk.i}:${state.lang}`; if (state.talk.said !== key) { state.talk.said = key; runStep(q, state.talk.i); } }
     if (state.view === 'indicators' && N3D.ok) { const total = talkQuestions(state).length; N3D.scene(total, total, false).then(() => N3D.walkTo(total)); if (state.talk.analyzing) N3D.emote('thinking'); else { const ind = Object.values(collectIndicators()); N3D.emote(state.talkRisk || computeFlags(state).safety === 'yes' || ind.some((x) => x.level === 'strong') ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy'); } }
     if (state.view === 'indicators' && !state.talk.analyzing && state.talk.said !== 'ind') {
       state.talk.said = 'ind'; const ind = collectIndicators(); const nm = (lv) => AREAS.filter((a) => ind[a.id] && ind[a.id].level === lv).map((a) => tx(a.name)).join(', ');
@@ -4528,6 +4679,7 @@ function toneOf(text) {
   function choose(id, optKey, idx) {
     const v = OPT[optKey].values[idx]; const prev = state.answers[id];
     recordAnswer(id, v); state.error = null;
+    if (id === 'phq.9' && liveCall.on) { if (typeof v === 'number' && v > 0) liveStop(); else { try { liveCall.conv.sendContextualUpdate(state.lang === 'pt' ? 'A pessoa já respondeu a pergunta de segurança na tela. Siga para o próximo tema.' : 'The person already answered the safety question on the screen. Move on to the next topic.'); } catch (err) { /* ignore */ } } }
     // Choosing never moves on by itself: the person picks, then taps "Next".
     // The crisis notice opens when the safety answer goes above 0 (not again if it already was).
     if (id === 'phq.9' && typeof v === 'number' && v > 0 && !(typeof prev === 'number' && prev > 0)) { state.crisisOpen = true; state.crisisThenAdvance = false; }
@@ -4562,7 +4714,7 @@ function toneOf(text) {
   // ---------- events ----------
   root.addEventListener('change', (e) => {
     const t = e.target;
-    if (t.id === 'lang-select') { if (LOCALES[t.value]) { state.lang = t.value; store('norte.lang', t.value); state.error = null; render(true); } return; }
+    if (t.id === 'lang-select') { if (LOCALES[t.value]) { if (liveCall.on) liveStop(); state.lang = t.value; store('norte.lang', t.value); state.error = null; render(true); } return; }
     if (t.dataset.setup) {
       const k = t.dataset.setup;
       if (k === 'consent') state.setup.consent = t.checked;
@@ -4573,6 +4725,7 @@ function toneOf(text) {
     if (t.dataset.slider) commitSlider(t);
     if (t.id === 'clone-consent') { ownVoice.consent = t.checked; if (!t.checked) { stopRecording(true); ownVoice.recs = []; ownVoice.k = 0; } render(true); const again = document.getElementById('clone-consent'); if (again) again.focus({ preventScroll: true }); return; }
     if (t.id === 'li-show') { state.loginShow = t.checked; const pi = document.getElementById('li-pass'); if (pi) pi.type = t.checked ? 'text' : 'password'; return; }
+    if (t.id === 'live-ok') { liveCall.consent = t.checked; const go = document.querySelector('[data-act=live-start]'); if (go) go.disabled = !t.checked; return; }
     if (t.id === 'voice-rate') { voiceCfg.rate = Number(t.value) || 1; saveAvatar(); return; }
     if (t.id === 'voice-pick') { const v = t.value; if (v === 'own' && !ownVoice.id) { stopSay(); state.view = 'voiceclone'; render(); return; } voiceCfg.id = v; saveAvatar(); render(true); const again = document.getElementById('voice-pick'); if (again) again.focus({ preventScroll: true }); clearTimeout(helloTimer); if (v !== 'off') helloTimer = setTimeout(() => say(S().voiceHello), 700); return; }
     if (t.dataset.palette && PALETTES.includes(t.dataset.palette)) { palette = t.dataset.palette; store('nort.palette', palette); render(true); const again = document.getElementById('pal-' + palette); if (again) again.focus({ preventScroll: true }); return; }
@@ -4644,6 +4797,11 @@ function toneOf(text) {
     else if (act === 'ind-back') { stopSay(); state.view = 'talk'; state.talk.i = talkQuestions(state).length - 1; render(); }
     else if (act === 'talk-go2') { stopSay(); state.afterFind = 'level2'; state.findStarted = false; state.findShown = false; compass.found = false; state.view = 'find'; render(); }
     else if (act === 'broken-loc') { if (!state.broken.loc) { state.broken.loc = true; render(true); if (N3D.ok) N3D.emote('sad'); const h = document.getElementById('broken-hint'); if (h) live.textContent = h.textContent; say(S().brokenNoSignal); } }
+    else if (act === 'live-ask') { if (liveCall.consent) liveStart(); else { liveCall.ask = true; render(true); } }
+    else if (act === 'live-cancel') { liveCall.ask = false; render(true); const g = root.querySelector('[data-act=live-ask]'); if (g) g.focus(); }
+    else if (act === 'live-start') { if (!liveCall.consent) return; liveCall.ask = false; liveStart(); }
+    else if (act === 'live-end') { liveFinish(); }
+    else if (act === 'live-text') { liveStop(); state.talk.i = liveNextIndex(); state.talk.said = null; render(); }
     else if (act === 'fix-start') { if (state.broken.moved < 120) return; unlockAudio(); saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.view = 'talk'; render(); }
     else if (act === 'optin') { const ar = b.dataset.area; state.optIn[ar] = !state.optIn[ar]; render(true); const again = root.querySelector(`[data-act="optin"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'exp-open') { state.expOpen = true; render(true); }
@@ -4709,9 +4867,11 @@ function toneOf(text) {
     const sheetEl = document.getElementById('sensor-dialog');
     const expEl = document.getElementById('exp-dialog');
     if (sheetEl && e.key === 'Escape') { compass.asked = true; closeSensorSheet(); return; }
+    const liveEl = document.getElementById('live-dialog');
+    if (liveEl && e.key === 'Escape') { liveCall.ask = false; render(true); const g = root.querySelector('[data-act=live-ask]'); if (g) g.focus(); return; }
     if (expEl && e.key === 'Escape') { state.expOpen = false; render(true); const fb = root.querySelector('.exp-fab'); if (fb) fb.focus({ preventScroll: true }); return; }
     if (e.key !== 'Tab') return;
-    const d = state.crisisOpen ? document.getElementById('crisis') : (sheetEl || expEl); if (!d) return;
+    const d = state.crisisOpen ? document.getElementById('crisis') : (sheetEl || expEl || liveEl); if (!d) return;
     const f = Array.from(d.querySelectorAll('a[href], button, input'));
     if (!f.length) return;
     const first = f[0], last = f[f.length - 1];
