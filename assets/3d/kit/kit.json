@@ -1,7 +1,5 @@
 {
- "alias": {
-  "moletom": "sueter"
- },
+ "alias": {},
  "f": [
   "cabelo-curto",
   "cabelo-long",
@@ -12,12 +10,12 @@
   "cabelo-trancas",
   "cabelo-coque",
   "cabelo-raspado",
-  "cabelo-tranca-lateral",
   "camiseta",
   "camisa",
   "sueter",
   "jaqueta",
   "vestido",
+  "moletom",
   "calca",
   "short",
   "saia",
@@ -28,7 +26,10 @@
   "bigode",
   "cavanhaque",
   "oculos",
-  "oculos-sol"
+  "oculos-sol",
+  "bone",
+  "brincos",
+  "fone"
  ],
  "m": [
   "cabelo-curto",
@@ -40,12 +41,12 @@
   "cabelo-trancas",
   "cabelo-coque",
   "cabelo-raspado",
-  "cabelo-tranca-lateral",
   "camiseta",
   "camisa",
   "sueter",
   "jaqueta",
   "vestido",
+  "moletom",
   "calca",
   "short",
   "saia",
@@ -56,6 +57,9 @@
   "bigode",
   "cavanhaque",
   "oculos",
-  "oculos-sol"
+  "oculos-sol",
+  "bone",
+  "brincos",
+  "fone"
  ]
 }

@@ -1326,8 +1326,8 @@ const UI = {
     talkTitle: 'Conversa', avTitle: 'Crie a sua versão', avLead: 'Monte um personagem seu. É com ele que você vai conversar.',
     avNameLabel: 'Nome do seu personagem', avNamePlaceholder: 'Escreva um nome', avNameNeed: 'Dê um nome ao seu personagem para continuar.', avNameBad: 'Esse nome não pode ser usado. Escolha outro, sem palavrão.', avNameDefault: 'Eu', avTone: 'Tom {n}', avSkin: 'Tom de pele', avHair: 'Cabelo', avHairColor: 'Cor do cabelo', avEyes: 'Olhos', avShirt: 'Roupa', avExtra: 'Acessório',
     avTabs: { face: 'Rosto', hair: 'Cabelo', body: 'Corpo', clothes: 'Roupa', extras: 'Acessórios' }, avRandom: 'Surpreenda-me',
-    avLegend: { skin: 'Tom de pele', face: 'Formato do rosto', nose: 'Nariz', eyeColor: 'Cor dos olhos', brows: 'Sobrancelhas', beard: 'Barba e bigode', hair: 'Penteado', hairColor: 'Cor do cabelo', height: 'Altura', build: 'Tipo de corpo', top: 'Estilo da roupa', shirt: 'Cor da roupa', bottom: 'Parte de baixo', pantsColor: 'Cor da calça, short ou saia', shoes: 'Cor do tênis', extra: 'Acessório', form: 'Corpo', age: 'Idade' },
-    avNames: { form: ['Feminino', 'Masculino'], age: ['Jovem', 'Adulto', 'Mais velho'], skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
+    avLegend: { skin: 'Tom de pele', face: 'Formato do rosto', nose: 'Nariz', eyeColor: 'Cor dos olhos', brows: 'Sobrancelhas', beard: 'Barba e bigode', hair: 'Penteado', hairColor: 'Cor do cabelo', height: 'Altura', build: 'Tipo de corpo', top: 'Estilo da roupa', shirt: 'Cor da roupa', bottom: 'Parte de baixo', pantsColor: 'Cor da calça, short ou saia', shoes: 'Cor do tênis', extra: 'Acessório', form: 'Forma do corpo', age: 'Idade' },
+    avNames: { form: ['Mais curvas', 'Mais reta'], age: ['Jovem', 'Adulto', 'Mais velho'], skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
       hair: ['Curto', 'Comprido', 'Cacheado', 'Coque', 'Sem cabelo', 'Raspado', 'De lado', 'Black power', 'Rabo de cavalo', 'Tranças'], hairColor: ['Preto', 'Castanho', 'Acobreado', 'Loiro', 'Grisalho', 'Ruivo', 'Platinado', 'Azul', 'Roxo'], height: ['Baixa', 'Média', 'Alta'], build: ['Magro', 'Médio', 'Largo'],
       top: ['Camiseta', 'Moletom', 'Camisa', 'Jaqueta', 'Suéter', 'Vestido'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], bottom: ['Calça', 'Short', 'Saia'], pantsColor: ['Marinho', 'Jeans', 'Grafite', 'Bege', 'Preto', 'Off-white'], shoes: ['Branco', 'Marinho', 'Coral', 'Marrom', 'Verde'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], extra: ['Nenhum', 'Óculos', 'Boné', 'Óculos escuros', 'Brincos', 'Fones'] },
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Sem voz neste navegador: o personagem aparece só em texto.', voiceHello: 'Oi! É com essa voz que eu vou conversar com você. Gostou?', voiceHelloName: 'Oi, {name}! É com essa voz que eu vou conversar com você. Gostou?',
@@ -1397,7 +1397,7 @@ const UI = {
     cloneHow: 'Leia cada frase e toque em Parar', cloneRecord: 'Gravar a frase {n}', cloneStop: 'Parar', cloneTotal: 'Gravado: {n} s (mínimo 30 s)', cloneGo: 'Criar minha voz', cloneBusy: 'Criando a sua voz…', cloneBack: 'Voltar sem gravar',
     cloneMicDenied: 'Sem acesso ao microfone. Permita o microfone nas configurações do navegador ou escolha uma voz pronta.', cloneFail: 'Não deu para criar a sua voz agora. Tente de novo ou escolha uma voz pronta.', cloneVerify: 'A ElevenLabs pediu uma verificação extra para esta voz. Por enquanto, escolha uma voz pronta.',
     cloneLines: ['Oi, esta é a minha voz, e hoje eu escolhi cuidar de mim.', 'Eu não preciso ter todas as respostas para dar o próximo passo.', 'Mesmo nos dias difíceis, eu sigo tentando, do meu jeito.', 'Pedir ajuda não é fraqueza: é a coragem de quem quer ficar bem.', 'Eu mereço a mesma gentileza que ofereço às pessoas que amo.', 'Será que hoje eu posso ser um pouco mais leve comigo?', 'Às sete da manhã eu abro a janela, respiro fundo e conto até quatro.', 'Um passo de cada vez, uma respiração de cada vez. Eu estou aqui.'],
-    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
+    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribeBody: 'Forma do corpo: {form}, idade: {age}.', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
     talkStart: 'Começar a conversa', quickQuiz: 'Prefiro responder perguntas rápidas',
     talkFirst: 'Fale do seu jeito. Pode pular qualquer pergunta.',
     talkPlaceholder: 'Fale ou escreva. Não existe resposta certa.', talkAnswerLabel: 'Sua resposta', talkReplay: 'Ouvir de novo', talkSkip: 'Pular esta pergunta', talkNeed: 'Responda do seu jeito ou toque em "Pular esta pergunta".',
@@ -1582,8 +1582,8 @@ const UI = {
     talkTitle: 'Conversation', avTitle: 'Create your own self', avLead: 'Build your own character. You’ll talk with them next.',
     avNameLabel: 'Your character’s name', avNamePlaceholder: 'Type a name', avNameNeed: 'Give your character a name to continue.', avNameBad: 'That name can’t be used. Please choose another one, without swear words.', avNameDefault: 'Me', avTone: 'Tone {n}', avSkin: 'Skin tone', avHair: 'Hair', avHairColor: 'Hair colour', avEyes: 'Eyes', avShirt: 'Clothes', avExtra: 'Accessory',
     avTabs: { face: 'Face', hair: 'Hair', body: 'Body', clothes: 'Clothes', extras: 'Accessories' }, avRandom: 'Surprise me',
-    avLegend: { skin: 'Skin tone', face: 'Face shape', nose: 'Nose', eyeColor: 'Eye colour', brows: 'Eyebrows', beard: 'Beard and moustache', hair: 'Hairstyle', hairColor: 'Hair colour', height: 'Height', build: 'Body type', top: 'Clothing style', shirt: 'Clothes colour', bottom: 'Bottoms', pantsColor: 'Trousers, shorts or skirt colour', shoes: 'Shoe colour', extra: 'Accessory', form: 'Body', age: 'Age' },
-    avNames: { form: ['Female', 'Male'], age: ['Young', 'Adult', 'Older'], skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
+    avLegend: { skin: 'Skin tone', face: 'Face shape', nose: 'Nose', eyeColor: 'Eye colour', brows: 'Eyebrows', beard: 'Beard and moustache', hair: 'Hairstyle', hairColor: 'Hair colour', height: 'Height', build: 'Body type', top: 'Clothing style', shirt: 'Clothes colour', bottom: 'Bottoms', pantsColor: 'Trousers, shorts or skirt colour', shoes: 'Shoe colour', extra: 'Accessory', form: 'Body shape', age: 'Age' },
+    avNames: { form: ['Curvier', 'Less curvy'], age: ['Young', 'Adult', 'Older'], skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
       hair: ['Short', 'Long', 'Curly', 'Bun', 'No hair', 'Buzz cut', 'Side part', 'Afro', 'Ponytail', 'Braids'], hairColor: ['Black', 'Brown', 'Copper', 'Blond', 'Grey', 'Red', 'Platinum', 'Blue', 'Purple'], height: ['Short', 'Average', 'Tall'], build: ['Slim', 'Medium', 'Broad'],
       top: ['T-shirt', 'Hoodie', 'Shirt', 'Jacket', 'Sweater', 'Dress'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], bottom: ['Trousers', 'Shorts', 'Skirt'], pantsColor: ['Navy', 'Denim', 'Charcoal', 'Beige', 'Black', 'Off-white'], shoes: ['White', 'Navy', 'Coral', 'Brown', 'Green'], eyes: ['Open', 'Smiling', 'Calm'], extra: ['None', 'Glasses', 'Cap', 'Sunglasses', 'Earrings', 'Headphones'] },
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'No voice in this browser: the character shows as text only.', voiceHello: 'Hi! This is the voice I’ll use to talk with you. Do you like it?', voiceHelloName: 'Hi, {name}! This is the voice I’ll use to talk with you. Do you like it?',
@@ -1643,7 +1643,7 @@ const UI = {
     cloneHow: 'Read each sentence and tap Stop', cloneRecord: 'Record sentence {n}', cloneStop: 'Stop', cloneTotal: 'Recorded: {n} s (minimum 30 s)', cloneGo: 'Create my voice', cloneBusy: 'Creating your voice…', cloneBack: 'Go back without recording',
     cloneMicDenied: 'No microphone access. Allow the microphone in your browser settings or choose a ready-made voice.', cloneFail: 'Your voice couldn’t be created right now. Try again or choose a ready-made voice.', cloneVerify: 'ElevenLabs asked for an extra check for this voice. For now, choose a ready-made voice.',
     cloneLines: ['Hi, this is my voice, and today I chose to take care of myself.', 'I don’t need to have every answer to take the next step.', 'Even on hard days, I keep trying, in my own way.', 'Asking for help is not weakness: it is the courage of someone who wants to be well.', 'I deserve the same kindness I give to the people I love.', 'Could I be a little gentler with myself today?', 'At seven in the morning I open the window, breathe in deeply and count to four.', 'One step at a time, one breath at a time. I am here.'],
-    indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
+    indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribeBody: 'Body shape: {form}, age: {age}.', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
     talkStart: 'Start the conversation', quickQuiz: 'I’d rather answer quick questions',
     talkFirst: 'Say it your way. You can skip any question.',
     talkPlaceholder: 'Speak or type. There’s no right answer.', talkAnswerLabel: 'Your answer', talkReplay: 'Hear it again', talkSkip: 'Skip this question', talkNeed: 'Answer in your own way or tap "Skip this question".',
@@ -3272,7 +3272,7 @@ const N3D = (() => {
   function pickPerson(L) {
     if (L && L.__p) return L.__p;
     try { const n = +new URLSearchParams(location.search).get('pessoa'); if (PEOPLE[n]) return n; } catch (e) { /* ignore */ }
-    const skin = L.skin, hair = AV.hair[L.hair], male = (AV.beard[L.beard] || 'none') !== 'none';
+    const skin = L.skin, hair = AV.hair[L.hair], male = L.form === 1 || (AV.beard[L.beard] || 'none') !== 'none';
     const dark = [4, 5, 7].includes(skin), mid = [2, 3].includes(skin), coily = ['afro', 'curly', 'braids'].includes(hair);
     if (male) return dark || coily ? (coily ? 2 : 4) : 7;
     if (dark || coily) return 3;
@@ -3321,7 +3321,7 @@ const N3D = (() => {
   async function realStart() {
     real.lite = (navigator.deviceMemory && navigator.deviceMemory <= 3) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || /[?&]leve=1/.test(location.search);
     try { await preload(); realScene(); document.body.classList.add('real3d'); } catch (e) { /* faltou textura: a floresta de antes continua */ }
-    try { await loaders(); real.ready = true; if (st.look) realOnChar(st.look); } catch (e) { real.ready = false; }
+    try { await loaders(); real.ready = true; if (KIT_ON) kitNotify(); if (st.look) realOnChar(st.look); } catch (e) { real.ready = false; }
   }
   async function realLoadPerson(n) {
     const [file, g] = PEOPLE[n];
@@ -3357,7 +3357,7 @@ const N3D = (() => {
     if (KIT_ON && !kit.failed) { // o kit monta a pessoa com as escolhas do criador
       if (real.loading) { real.pendingKit = L; return; }
       real.loading = true; real.pendingKit = null;
-      kitBuild(L).catch(() => { kit.failed = true; real.loading = false; realOnChar(L); return 'fail'; })
+      kitBuild(L).catch(() => { kit.failed = true; real.loading = false; kitNotify(); realOnChar(real.pendingKit || st.look || L); return 'fail'; })
         .then((r) => { if (r === 'fail') return; real.loading = false; if (real.pendingKit) { const p = real.pendingKit; real.pendingKit = null; realOnChar(p); } });
       return;
     }
@@ -3383,7 +3383,7 @@ const N3D = (() => {
     top: { tshirt: 'camiseta', hoodie: 'moletom', shirt: 'camisa', jacket: 'jaqueta', sweater: 'sueter', dress: 'vestido' },
     bottom: { pants: 'calca', shorts: 'short', skirt: 'saia' },
     beard: { none: null, stubble: 'barba-rala', short: 'barba-curta', full: 'barba-cheia', mustache: 'bigode', goatee: 'cavanhaque' },
-    extra: { none: null, glasses: 'oculos', cap: 'bone', sunglasses: 'oculos-sol', earrings: null, headphones: null }
+    extra: { none: null, glasses: 'oculos', cap: 'bone', sunglasses: 'oculos-sol', earrings: 'brincos', headphones: 'fone' }
   };
   function kitSpec(L) {
     const g = AV.form && AV.form[L.form] === 'male' ? 'm' : 'f', has = (id) => id && kit.man && kit.man[g] && kit.man[g].includes(id) ? id : null;
@@ -3405,7 +3405,7 @@ const N3D = (() => {
       if (!o.isMesh) return;
       for (const m of [].concat(o.material)) {
         const e = m.userData, kind = e.nort;
-        if (kind === 'skin') { const c = kcol(sk, e.mean), l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b; m.color.copy(c.multiplyScalar(0.92 - 0.3 * Math.min(1.1, l))); } // tons claros sem estourar na luz
+        if (kind === 'skin') { const c = kcol(sk, e.mean), l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b, l2 = l < 0.3 ? l : 0.3 + (l - 0.3) * 0.32; c.multiplyScalar(0.95 * l2 / Math.max(l, 1e-4)); const g0 = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b, sat = l > 0.3 ? 1.35 : 1; m.color.setRGB(g0 + (c.r - g0) * sat, g0 + (c.g - g0) * sat, g0 + (c.b - g0) * sat); } // tons claros não estouram na luz
         else if (kind === 'hair' || kind === 'beard') m.color.copy(kcol(hc, e.mean));
         else if (kind === 'brow') m.color.copy(brow).multiplyScalar(1 / 0.6);
         else if (kind === 'lash') m.color.set('#1A1412').multiplyScalar(1 / 0.6);
@@ -3413,7 +3413,7 @@ const N3D = (() => {
         else if (kind === 'bottom') m.color.copy(kcol(AV.pantsColor[L.pantsColor], e.mean));
         else if (kind === 'shoes') m.color.copy(kcol(AV.shoes[L.shoes], e.mean));
         else if (kind === 'eye' && e.irisMask) kitIris(m, AV.eyeColor[L.eyeColor] || '#6B4423');
-        else if (kind === 'extra') m.color.copy(kcol(e.tint === 'shirt' ? AV.shirt[L.shirt] : '#1F1F22', e.mean));
+        else if (kind === 'extra' && !e.keep) m.color.copy(kcol(e.tint === 'shirt' ? AV.shirt[L.shirt] : '#1F1F22', e.mean));
       }
     });
     for (let i = 0; i < 8; i++) { const b = real.root.getObjectByName('sobrancelha-' + i); if (b) b.visible = i === (L.brows || 0); }
@@ -3423,7 +3423,7 @@ const N3D = (() => {
     try {
       const b = e.irisBase.image, mk = e.irisMask.image, w = b.width, h = b.height, c = document.createElement('canvas'); c.width = w; c.height = h;
       const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(mk, 0, 0, w, h); const md = x.getImageData(0, 0, w, h).data; x.drawImage(b, 0, 0, w, h);
-      const id = x.getImageData(0, 0, w, h), d = id.data, col = new T.Color(hex), lin = [col.r, col.g, col.b].map((v) => Math.min(1, v * 2.6));
+      const id = x.getImageData(0, 0, w, h), d = id.data, col = new T.Color(hex), mx = Math.max(col.r, col.g, col.b, 1e-4), lin = [col.r, col.g, col.b].map((v) => v / mx * (0.4 + 0.75 * Math.sqrt(mx))); // cor da íris forte (castanho não vira cinza)
       for (let i = 0; i < d.length; i += 4) { const a = md[i] / 255; if (a > 0.01) for (let k = 0; k < 3; k++) { const v = Math.pow(d[i + k] / 255, 2.2) * (1 - 0.3 * a) * (1 - a + a * lin[k]); d[i + k] = Math.round(255 * Math.pow(v, 1 / 2.2)); } }
       x.putImageData(id, 0, 0); const t = new T.CanvasTexture(c); t.flipY = false; t.colorSpace = T.SRGBColorSpace;
       if (m.map && m.map !== e.irisBase) m.map.dispose(); m.map = t; m.needsUpdate = true; e.irisHex = hex;
@@ -3435,7 +3435,8 @@ const N3D = (() => {
       o.castShadow = !real.lite; o.frustumCulled = false;
       for (const m of [].concat(o.material)) {
         const e = m.userData || {}; m.envMapIntensity = 0.7;
-        if (e.nort === 'hair' || e.nort === 'beard') { m.alphaToCoverage = true; m.transparent = false; }
+        if (real.lite) for (const k of ['map', 'normalMap']) if (m[k] && m[k].image && Math.max(m[k].image.width, m[k].image.height) > 512) { const n = shrink(m[k], 512); n.flipY = false; n.colorSpace = m[k].colorSpace; n.wrapS = n.wrapT = T.RepeatWrapping; m[k] = n; } // celular fraco
+        if (e.nort === 'hair' || e.nort === 'beard') { m.alphaToCoverage = true; m.transparent = false; if (m.alphaTest > 0.3) m.alphaTest = 0.18; } // bordas do cabelo mais suaves
         if (e.nort === 'brow' || e.nort === 'lash') { m.transparent = true; m.alphaTest = 0.04; m.depthWrite = false; o.renderOrder = 2; }
         if (e.nort === 'lens') { m.transparent = true; m.opacity = e.dark ? 0.82 : 0.12; m.depthWrite = false; m.roughness = 0.05; o.castShadow = false; o.renderOrder = 3; }
         if (e.nort === 'cornea') { m.transparent = true; m.opacity = 0.1; m.depthWrite = false; m.roughness = 0.04; o.castShadow = false; }
@@ -3446,7 +3447,7 @@ const N3D = (() => {
     });
     return gl;
   }
-  const kitGet = (name) => kit.gl[name] || (kit.gl[name] = real.loader.loadAsync(KIT + name + '.glb').then(kitPrep, (e) => { delete kit.gl[name]; throw e; }));
+  const kitGet = (name) => { if (kit.gl[name]) return kit.gl[name]; const pr = real.loader.loadAsync(KIT + name + '.glb').then(kitPrep).then((g) => { pr.__v = g; return g; }, (e) => { delete kit.gl[name]; throw e; }); return (kit.gl[name] = pr); };
   function kitHide() { // a pele que fica por baixo da roupa não é desenhada (sem pele atravessando o tecido)
     const b = kit.bodyMesh; if (!b) return; const g = b.geometry, idx = kit.idx0, n = g.attributes.position.count, hid = new Uint8Array(n);
     for (const k in kit.on) { const p = kit.on[k]; if (p && p.hide) for (const [a, z] of p.hide) hid.fill(1, a, Math.min(n, z + 1)); }
@@ -3467,11 +3468,23 @@ const N3D = (() => {
     }
     kit.on[slot] = { gl, meshes, hide: gl.scene.userData.hide || null };
   }
+  function kitNotify() { try { window.dispatchEvent(new Event('n3d-kit')); } catch (e) { /* ignore */ } }
+  function kitTrim() { // guarda no máximo ~8 peças fora de uso; as mais antigas são liberadas da memória
+    const used = new Set(Object.values(kit.on).filter(Boolean).map((p) => p.gl)); kit.age = kit.age || [];
+    for (const p of used) { kit.age = kit.age.filter((x) => x !== p); kit.age.push(p); }
+    const idle = kit.age.filter((g) => !used.has(g));
+    while (idle.length > 8) {
+      const g = idle.shift(); kit.age = kit.age.filter((x) => x !== g);
+      for (const n in kit.gl) if (kit.gl[n] && kit.gl[n].__v === g) delete kit.gl[n];
+      for (const m of (g.userData.kitMeshes || [])) { m.geometry.dispose(); for (const mt of [].concat(m.material)) { for (const k of MAPS) if (mt[k]) mt[k].dispose(); mt.dispose(); } }
+    }
+  }
   async function kitBuild(L) {
     if (!kit.man) kit.man = await (await fetch(KIT + 'kit.json')).json();
     const sp = kitSpec(L), anim = real.animSets && real.animSets[sp.g];
     const names = Object.values(sp.parts).filter(Boolean).map((p) => p + '-' + sp.g);
-    const [body, an, ...pcs] = await Promise.all([kitGet('corpo-' + sp.g), anim || real.loader.loadAsync(RB + 'anim-' + sp.g + '.glb'), ...names.map(kitGet)]);
+    // corpo e animações são obrigatórios; uma peça que falhar só fica de fora (a pessoa continua)
+    const [body, an, ...pcs] = await Promise.all([kitGet('corpo-' + sp.g), anim || real.loader.loadAsync(RB + 'anim-' + sp.g + '.glb'), ...names.map((n) => kitGet(n).catch(() => null))]);
     real.animSets = real.animSets || {}; real.animSets[sp.g] = an;
     if (kit.g !== sp.g) { // corpo novo (feminino/masculino): troca o esqueleto e as animações
       if (parts.hc && real.hand && real.root && isIn(parts.hc, real.root)) parts.hc.parent.remove(parts.hc);
@@ -3487,20 +3500,23 @@ const N3D = (() => {
       kit.g = sp.g;
     }
     const byName = {}; names.forEach((n, i) => { byName[n] = pcs[i]; });
-    for (const slot of ['hair', 'top', 'bottom', 'shoes', 'beard', 'extra']) { const id = sp.parts[slot]; kitAttach(slot, id ? byName[id + '-' + sp.g] : null); }
-    kitHide();
+    for (const slot of ['hair', 'top', 'bottom', 'shoes', 'beard', 'extra']) { const id = sp.parts[slot]; kitAttach(slot, id ? byName[id + '-' + sp.g] || null : null); }
+    kitHide(); kitTrim();
     // pele mais velha (rugas) só para "mais velho"
     const skin = kit.bodyMesh.material; skin.userData.map0 = skin.userData.map0 || skin.map; skin.userData.nmap0 = skin.userData.nmap0 || skin.normalMap;
     if (sp.old) {
-      const ld = (f) => kit.gl[f] || (kit.gl[f] = texL().loadAsync(KIT + f).then((t) => { t.flipY = false; t.colorSpace = f.endsWith('-n.webp') ? T.NoColorSpace : T.SRGBColorSpace; return t; }));
-      const [m, nm] = await Promise.all([ld('pele-velho-' + sp.g + '.webp'), ld('pele-velho-' + sp.g + '-n.webp')]);
-      skin.map = m; skin.normalMap = nm; skin.needsUpdate = true;
+      const ld = (f) => kit.gl[f] || (kit.gl[f] = texL().loadAsync(KIT + f).then((t0) => { const t = real.lite ? shrink(t0, 512) : t0; t.flipY = false; t.colorSpace = f.endsWith('-n.webp') ? T.NoColorSpace : T.SRGBColorSpace; return t; }));
+      try {
+        const [m, nm] = await Promise.all([ld('pele-velho-' + sp.g + '.webp'), ld('pele-velho-' + sp.g + '-n.webp')]);
+        skin.map = m; skin.normalMap = nm; skin.needsUpdate = true;
+      } catch (e) { delete kit.gl['pele-velho-' + sp.g + '.webp']; delete kit.gl['pele-velho-' + sp.g + '-n.webp']; } // sem rugas: fica a pele de sempre
     } else if (skin.map !== skin.userData.map0) { skin.map = skin.userData.map0; skin.normalMap = skin.userData.nmap0; skin.needsUpdate = true; }
-    real.kw = sp.w;
+    real.kw = sp.w; if (['cabelo-blackpower', 'cabelo-cacheado', 'cabelo-coque'].includes(sp.parts.hair)) real.kw.k_cap_alto = 1; // boné/fone por cima do cabelo volumoso
     real.morph = []; real.root.traverse((o) => { if (o.isMesh && o.morphTargetDictionary) real.morph.push(o); });
     real.scale = 2.05 / Math.max(1.2, kit.head + 0.14) * sp.h; real.root.scale.setScalar(real.scale);
     kitColors(L);
     real.person = 'kit'; real.on = true; st.charH = 2.05 * sp.h;
+    if (!kit.ready) { kit.ready = true; kitNotify(); }
     hideFigure();
     if (st.holding) holdCompass();
   }
@@ -3828,7 +3844,7 @@ const N3D = (() => {
   api.triCount = () => { let n = 0; if (char) char.traverse((o) => { if (o.isMesh && o.visible) { const g = o.geometry; n += (g.index ? g.index.count : g.attributes.position.count) / 3; } }); return Math.round(n); }; // test aid
   Object.defineProperty(api, 'holding', { get: () => !!st.holding });
   if (REAL) { api._real = real; api._kit = kit; } // teste
-  api.kit = KIT_ON; // o criador mostra corpo e idade só com o kit realista
+  Object.defineProperty(api, 'kit', { get: () => KIT_ON && !!real.ready && !kit.failed }); // corpo e idade só aparecem com o kit de fato ativo
   Object.defineProperty(api, 'emotion', { get: () => st.emo });
   return api;
 })();
@@ -4614,6 +4630,17 @@ function toneOf(text) {
   Object.keys(AV).forEach((k) => { if (!(Number.isInteger(avatar[k]) && avatar[k] >= 0 && avatar[k] < AV[k].length)) avatar[k] = AV_DEFAULT[k]; });
   let voiceCfg = (() => { try { const v = JSON.parse(store('nort.voice') || 'null'); if (v && typeof v === 'object') return Object.assign({ id: 'auto', rate: 1 }, v); } catch (e) { /* ignore */ } return { id: 'auto', rate: 1 }; })();
   // Only the look and the voice are remembered on this device; the name stays in this page's memory.
+  // o kit realista ficou pronto (ou falhou): a tela do personagem mostra ou esconde "Forma do corpo" e "Idade"
+  // the realistic kit became (un)available: redraw the creator only if what it shows changes, and keep focus and caret
+  window.addEventListener('n3d-kit', () => {
+    if (state.view !== 'avatar' || !!(N3D.kit && N3D.ok) === state.avKitShown) return;
+    const a = document.activeElement; const id = a && a.id; const act = a && a.dataset ? a.dataset.act : null; const key = a && a.dataset ? a.dataset.key : null; const val = a && a.dataset ? a.dataset.val : null;
+    const sel = a && typeof a.selectionStart === 'number' ? [a.selectionStart, a.selectionEnd] : null;
+    render(true);
+    let b = id ? document.getElementById(id) : null;
+    if (!b && act) b = root.querySelector(`[data-act="${act}"]${key != null ? `[data-key="${key}"]` : ''}${val != null ? `[data-val="${val}"]` : ''}`);
+    if (b) { b.focus({ preventScroll: true }); if (sel && b.setSelectionRange) { try { b.setSelectionRange(sel[0], sel[1]); } catch (e) { /* ignore */ } } }
+  });
   function saveAvatar() { const look = Object.assign({}, avatar); delete look.name; store('nort.avatar', JSON.stringify(look)); store('nort.voice', JSON.stringify(voiceCfg)); }
   const CLAUDE_VOICES = ['buttery', 'airy', 'glassy', 'rounded'];
   // The device's most natural voices first ("enhanced", "premium", "natural", Google…); novelty voices left out.
@@ -4899,6 +4926,7 @@ function toneOf(text) {
     return `<button type="button" class="av-opt${ic ? ' ic' : ''}${on ? ' on' : ''}" data-av="${key}" data-i="${i}" aria-pressed="${on}">${ic}<span>${esc(label)}</span></button>`;
   }
   function viewAvatar() {
+    state.avKitShown = !!(N3D.kit && N3D.ok);
     const s = S(); const n = s.avNames;
     const row = (key) => `<fieldset class="av-row"><legend>${esc(s.avLegend[key])}</legend><div class="av-opts">${AV[key].map((v, i) => avOpt(key, i, n[key][i], AV_COLORS.includes(key) ? v : null)).join('')}</div></fieldset>`;
     const tab = state.avTab || 'face';
@@ -4908,7 +4936,7 @@ function toneOf(text) {
     return `<main class="wrap narrow avatar-view">
       <h1 class="h-page">${esc(s.avTitle)}</h1>
       <p class="lead">${esc(s.avLead)}</p>
-      <div class="av-stage" role="img" aria-label="${esc(fmt(s.avDescribe, { hair: s.avNames.hair[avatar.hair], color: s.avNames.hairColor[avatar.hairColor], eyes: s.avNames.eyeColor[avatar.eyeColor], shirt: s.avNames.shirt[avatar.shirt], extra: s.avNames.extra[avatar.extra] }))}"><div class="stage3d builder" id="stage3d">${avatarSVG(avatar, 'big live')}</div>${N3D.ok ? `<p class="small center">${esc(s.avDrag)}</p>` : ''}<p class="av-name" id="av-name-show">${esc(avatar.name || s.avNameDefault)}</p></div>
+      <div class="av-stage" role="img" aria-label="${esc((N3D.kit && N3D.ok ? fmt(s.avDescribeBody, { form: s.avNames.form[avatar.form], age: s.avNames.age[avatar.age] }) + ' ' : '') + fmt(s.avDescribe, { hair: s.avNames.hair[avatar.hair], color: s.avNames.hairColor[avatar.hairColor], eyes: s.avNames.eyeColor[avatar.eyeColor], shirt: s.avNames.shirt[avatar.shirt], extra: s.avNames.extra[avatar.extra] }))}"><div class="stage3d builder" id="stage3d">${avatarSVG(avatar, 'big live')}</div>${N3D.ok ? `<p class="small center">${esc(s.avDrag)}</p>` : ''}<p class="av-name" id="av-name-show">${esc(avatar.name || s.avNameDefault)}</p></div>
       <div class="av-row"><label class="av-label" for="av-name">${esc(s.avNameLabel)}</label><input id="av-name" class="text-in" maxlength="24" autocomplete="off" required aria-required="true" value="${esc(avatar.name)}" placeholder="${esc(s.avNamePlaceholder)}"${state.error && state.errorField === 'av-name' ? ' aria-invalid="true" aria-describedby="av-name-err"' : ''}>${state.error && state.errorField === 'av-name' ? `<p class="error" id="av-name-err" role="alert">${esc(state.error)}</p>` : ''}</div>
       ${tabs}
       <div class="av-panel">${AV_TABS[tab].filter((k) => !AV_REAL_ONLY.includes(k) || (N3D.kit && N3D.ok)).map(row).join('')}</div>
