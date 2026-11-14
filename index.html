@@ -678,15 +678,20 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .compass-hint.nosignal { color: var(--high); font-weight: 700; }
 .find .broken-actions, .find #broken-hint { position: relative; z-index: 1; }
 /* voice conversation (call) */
-.live-dot { width: 12px; height: 12px; border-radius: 50%; background: #E8684A; flex: none; box-shadow: 0 0 0 0 rgba(232, 104, 74, .5); }
 .live-card { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 6px 0; }
-.live-card .live-dot { width: 22px; height: 22px; animation: livepulse 1.6s ease-out infinite; }
-.live-card[data-mode="speaking"] .live-dot { background: var(--accent); }
-.live-card[data-mode="connecting"] .live-dot { background: var(--muted); }
-@keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(232, 104, 74, .5); } 100% { box-shadow: 0 0 0 18px rgba(232, 104, 74, 0); } }
-.live-status { font-weight: 800; font-size: 1.1rem; margin: 0; }
-.live-you { margin: 0; font-style: italic; max-width: 36ch; }
+/* "Type" during the voice conversation: the same answer field as the written mode, the call goes on */
+.live-card.typing { justify-items: stretch; text-align: left; gap: 10px; }
+.live-card.typing .talk-answer { width: 100%; }
 .live-actions { display: grid; gap: 4px; width: 100%; }
+/* microphone on/off next to the field (only with the field open) */
+.live-type-row { display: flex; gap: 8px; align-items: flex-start; }
+.live-type-row .talk-answer { flex: 1; min-width: 0; }
+.live-mute { --mute-bg: var(--surface, #FFFFFF); flex: none; display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--ink); background: var(--mute-bg); color: var(--ink); cursor: pointer; padding: 0; }
+.live-mute svg { width: 22px; height: 22px; }
+.live-mute .gap { stroke: var(--mute-bg); }
+.live-mute.off { --mute-bg: var(--ink); color: var(--surface, #FFFFFF); }
+.live-mute:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.live-mute-wrap { display: flex; justify-content: center; margin: 4px 0; }
 /* own voice first; free talk recording */
 .voice-more { margin-top: 10px; }
 .voice-more summary { min-height: 44px; display: flex; align-items: center; font-weight: 700; text-decoration: underline; cursor: pointer; }
@@ -811,6 +816,10 @@ details summary { cursor: pointer; color: var(--ink); text-decoration: underline
 .find .broken-compass { width: min(230px, 60vw, 24vh); }
 .find .spacer3d { flex-basis: clamp(80px, 12vh, 300px); }
 .q-lead { margin: 0 0 6px; font-weight: 700; color: #2E6B45; }
+/* modo realista de teste (?modelo=real): textos soltos sobre a grama ganham um fundo claro (contraste 4,5:1) */
+body.real3d .find .compass-hint, body.real3d .find #broken-hint, body.real3d .scene3d .your-compass > p,
+body.real3d .find .find-ui > p, body.real3d .scene3d .spacer3d + p { background: rgba(255, 255, 255, .9); color: var(--ink); padding: 6px 12px; border-radius: 12px; min-height: 0; }
+body.real3d .compass-hint.nosignal { color: var(--high); }
 
 </style>
 </head>
@@ -1323,11 +1332,11 @@ const UI = {
       top: ['Camiseta', 'Moletom', 'Camisa', 'Jaqueta', 'Suéter', 'Vestido'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], bottom: ['Calça', 'Short', 'Saia'], pantsColor: ['Marinho', 'Jeans', 'Grafite', 'Bege', 'Preto', 'Off-white'], shoes: ['Branco', 'Marinho', 'Coral', 'Marrom', 'Verde'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], extra: ['Nenhum', 'Óculos', 'Boné', 'Óculos escuros', 'Brincos', 'Fones'] },
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Sem voz neste navegador: o personagem aparece só em texto.', voiceHello: 'Oi! É com essa voz que eu vou conversar com você. Gostou?', voiceHelloName: 'Oi, {name}! É com essa voz que eu vou conversar com você. Gostou?',
     talkPrivacyAI: 'Sua voz e seu texto vão para a IA Claude só para achar sinais. Usa leitor de tela? Pode escolher "Sem voz".',
-    talkPrivacyLocal: 'Escrevendo, nada sai do aparelho. Usa leitor de tela? Pode escolher "Sem voz".',
+    talkPrivacyLive: 'Na conversa, o que você fala ou escreve vai para a ElevenLabs e a IA Claude. Está nos termos.', talkPrivacyLocal: 'Escrevendo, nada sai do aparelho. Usa leitor de tela? Pode escolher "Sem voz".',
     loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas não ficam guardadas. Crie uma para testar.', loginNotFound: 'Conta não encontrada. No protótipo, toque em "Criar uma conta".', loginForgotMsg: 'Ainda não dá para recuperar a senha no protótipo.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
     lostTitle: '{name} está sem direção', lostTitleNoName: 'Seu personagem está sem direção', lostLead: 'Seu personagem achou uma bússola, mas ela está quebrada.', brokenAlt: 'Bússola quebrada, cinza, com pedaços faltando e a agulha girando sem rumo.', brokenHint: 'Gire a bússola com o dedo ou tente a localização dela.', brokenNoSignal: 'Sem sinal: é parte da história, sua localização não é usada. Gire com o dedo.', brokenReady: 'Pronto! Cada resposta sua dá cor a um pedaço da bússola.', brokenLoc: 'Usar a localização da bússola', brokenLocFail: 'Sem sinal', brokenDialLabel: 'Bússola quebrada. Gire com o dedo ou com as setas do teclado.', brokenGo: 'Procurar o caminho', hudAlt: 'Bússola: {n} de {total} pedaços com cor.', wholeTitle: 'A bússola está inteira!', wholeLead: 'Agora {name} segue para o norte com você.', wholeLeadNoName: 'Agora seu personagem segue para o norte com você.', northSay: 'Achamos o norte. Vamos lá!', northSayCare: 'Vamos seguir juntos, no seu ritmo.', wholeTitleCare: 'A bússola está pronta',
     voiceTestExpr: 'Oi, {name}! [laughs softly] Que bom te ouvir. [whispers] E eu também sei falar baixinho, ó. [warmly] Vamos conversar um pouco?',
-    liveHello: 'Oi! Que bom ter você aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveHelloName: 'Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveStatus: { connecting: '', connected: '', listening: 'Estou ouvindo. Pode falar.', speaking: '', idle: '', disconnecting: '', disconnected: '' }, liveYou: 'Você:', liveToText: 'Prefiro escrever', liveBridge: ['Entendi.', 'Aham, entendi.', 'Que bom que você me contou.'], liveAgain: ['Desculpa, não ouvi direito o finalzinho.', 'Opa, perdi um pedacinho.'], liveSafetyBridge: 'Agora vem uma pergunta importante, que a gente faz para todo mundo. Ela também está aqui na tela.', liveSafetyLead: 'Toque na sua resposta ou responda falando.',
+    liveHello: 'Oi! Que bom ter você aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveHelloName: 'Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveToText: 'Escrever', liveJustTalk: 'Só falar', liveHeardIn: 'O que você falou entrou no campo de resposta.', liveMicOn: 'Microfone aberto: estou ouvindo, pode falar.', liveTypePh: 'O que você falar aparece aqui. Dá para escrever e editar.', liveTypePhMuted: 'Microfone desligado: escreva aqui.', liveMicTurnOff: 'Desligar o microfone', liveMicTurnOn: 'Ligar o microfone', liveMicOffSr: 'Microfone desligado.', liveBridge: ['Entendi.', 'Aham, entendi.', 'Que bom que você me contou.'], liveAgain: ['Desculpa, não ouvi direito o finalzinho.', 'Opa, perdi um pedacinho.'], liveSafetyBridge: 'Agora vem uma pergunta importante, que a gente faz para todo mundo. Ela também está aqui na tela.', liveSafetyLead: 'Toque na sua resposta ou responda falando.',
     hintLabel: 'Você pode falar sobre', indLevels: { strong: 'Vale olhar com calma', some: 'Se você quiser', none: 'Nada apareceu na conversa' }, indCame: 'áreas apareceram na conversa', indCame1: 'área apareceu na conversa', indRingLegend: 'Os pedaços mais grossos apareceram na conversa.', indSayScreen: 'Na tela, a sua bússola mostra as áreas que apareceram na conversa.', countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta só vale com esta página aberta.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Leve a seta até o N e toque em Começar.', birthHint: 'Toque para escolher a data.', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Primeiro, seu personagem acha a bússola.', avNext: 'Continuar',
@@ -1380,8 +1389,8 @@ const UI = {
     indSayStrong: 'Pelo que você contou, vale olhar com mais calma: {areas}.', indSaySome: 'Se você quiser, também dá para olhar: {areas}.', indSayNone: 'Nada do que você contou pediu um olhar mais de perto, mas você pode escolher qualquer área na tela.',
     indSayEnd: 'Isso não é diagnóstico, são só pistas para escolher os questionários oficiais. Você decide. E conversar com um psicólogo ou psiquiatra é sempre uma boa ideia.',
     avDrag: 'Arraste para girar.',
-    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'Fale uns 30 segundos e o personagem ganha a sua voz. Ela é apagada quando você sai.', voiceOwnCreate: 'Criar minha voz', voicePickMore: 'Prefiro uma voz pronta', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com voz natural, as falas do personagem vão para a ElevenLabs (EUA). Suas respostas, não.', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
-    cloneConsentShort: 'Concordo em gravar e usar a minha voz no meu personagem e com os termos de uso.', termsRead: 'Ler os termos de uso', termsKey: 'Em resumo: o Nort dá sinais, não diagnóstico. Sua voz e a conversa passam pela ElevenLabs, pela IA Claude e por um servidor do Nort. Quase nada fica guardado: sua voz some em até 2 horas e a transcrição da conversa em até 1 dia.', termsAgree: 'Li e concordo com os termos de uso.', cloneTermsLine: 'Sua voz é usada como nos termos de uso.', termsTitle: 'Termos de uso', termsBack: 'Entendi', termsSections: [['O que é o Nort', 'Um protótipo de teste de autotriagem de saúde mental. Ele dá sinais, nunca diagnóstico, e sempre recomenda um psicólogo ou psiquiatra. Não use para decisões de saúde.'], ['Suas respostas', 'Suas respostas são dados de saúde, um dado sensível pela LGPD. Neste protótipo elas ficam só na memória desta página e somem quando você fecha. Elas são usadas só para gerar os seus sinais e o seu resultado. No link do Claude, o que você escreve vai para a IA Claude para achar os sinais. Fora dele, se você usar o microfone no modo escrito, o reconhecimento de fala do navegador recebe a sua voz.'], ['Conversa ao vivo', 'A conversa com o personagem é por voz, em tempo real. O que você fala vai para a ElevenLabs (empresa dos EUA), que transforma em texto e em voz, e para a IA Claude (da Anthropic), que conduz a conversa. Também vão o nome do personagem e se você teve bebê no último ano. Pedimos que as gravações não sejam guardadas e que as transcrições sejam apagadas em até 1 dia. O navegador vai pedir o microfone.'], ['Sua própria voz', 'Se você criar a sua voz, a gravação vai para a ElevenLabs para criar a voz do personagem e para transcrever o seu jeito de falar (expressões e ritmo). Um trecho curto do que você falou vai para a conversa ao vivo, só para o personagem falar parecido com você. O texto do seu jeito de falar também vai para a IA Claude (Anthropic), só para reescrever as perguntas do seu jeito. Voz é dado biométrico, um dado sensível pela LGPD.'], ['Por quanto tempo', 'Sua voz e o trecho do seu jeito de falar são apagados quando você recomeça ou fecha a página e, no máximo, em 2 horas. A transcrição da conversa ao vivo é apagada em até 1 dia. Registros técnicos seguem as políticas de privacidade da ElevenLabs e da Anthropic.'], ['Servidor do Nort', 'Tudo passa por um servidor do Nort (Cloudflare). Ele não guarda o que você diz, só registros técnicos (erros, duração e tempos de resposta, tipo de navegador), sem nada do que você diz.'], ['Cuidado com você', 'Da pergunta de segurança até o fim, o personagem usa uma voz pronta. Se algo indicar risco, a conversa para e os números de ajuda aparecem na hora.'], ['Você decide', 'Você pode pular qualquer pergunta, escrever em vez de falar, usar uma voz pronta e sair quando quiser.']], cloneTitle: 'Sua voz no seu personagem', cloneLeadFree: 'Fale à vontade por uns 30 segundos, num lugar silencioso.', cloneTopicLead: 'Fala pra mim:', cloneTopics: ['Me conta um pouco de você: quem é você, do que você gosta?', 'O que você mais gosta de fazer num dia livre?', 'Me conta de um lugar ou de uma pessoa que te faz bem.', 'Qual foi a última coisa que te fez rir de verdade?', 'Me conta um pouco da sua história, do jeito que você quiser.'], cloneTopicNext: 'Outra pergunta', cloneTalk: 'Começar a falar', cloneTalkMore: 'Falar mais', cloneFreeTip: 'Pode pausar e continuar quando quiser.', cloneToRead: 'Prefiro ler frases prontas', cloneToFree: 'Prefiro falar à vontade', cloneDecline: 'Não quero gravar: usar uma voz pronta', cloneLead: 'Leia as frases em voz alta, num lugar silencioso.',
+    voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'Fale uns 30 segundos e o personagem ganha a sua voz. Ela é apagada quando você sai.', voiceOwnCreate: 'Criar minha voz', voicePickMore: 'Prefiro uma voz pronta', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com voz natural, as falas do personagem vão para a ElevenLabs (EUA).', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
+    cloneConsentShort: 'Concordo em gravar e usar a minha voz no meu personagem e com os termos de uso.', termsRead: 'Ler os termos de uso', termsKey: 'Em resumo: o Nort dá sinais, não diagnóstico. Sua voz e a conversa passam pela ElevenLabs, pela IA Claude e por um servidor do Nort. Quase nada fica guardado: sua voz some em até 2 horas e a transcrição da conversa em até 1 dia.', termsAgree: 'Li e concordo com os termos de uso.', cloneTermsLine: 'Sua voz é usada como nos termos de uso.', termsTitle: 'Termos de uso', termsBack: 'Entendi', termsSections: [['O que é o Nort', 'Um protótipo de teste de autotriagem de saúde mental. Ele dá sinais, nunca diagnóstico, e sempre recomenda um psicólogo ou psiquiatra. Não use para decisões de saúde. Você conversa com o personagem por voz e por texto, ao mesmo tempo, do jeito que preferir.'], ['Suas respostas', 'Suas respostas são dados de saúde, um dado sensível pela LGPD. Neste protótipo elas ficam só na memória desta página e somem quando você fecha. Elas são usadas só para gerar os seus sinais e o seu resultado. No link do Claude, o que você escreve vai para a IA Claude para achar os sinais. Fora dele, se você usar o microfone no modo escrito, o reconhecimento de fala do navegador recebe a sua voz.'], ['Conversa ao vivo', 'A conversa com o personagem é por voz, em tempo real. O que você fala e o que você escreve durante a conversa vai para a ElevenLabs (empresa dos EUA), que transforma em texto e em voz, e para a IA Claude (da Anthropic), que conduz a conversa. Também vão o nome do personagem e se você teve bebê no último ano. Pedimos que as gravações não sejam guardadas e que as transcrições sejam apagadas em até 1 dia. O navegador vai pedir o microfone.'], ['Sua própria voz', 'Se você criar a sua voz, a gravação vai para a ElevenLabs para criar a voz do personagem e para transcrever o seu jeito de falar (expressões e ritmo). Um trecho curto do que você falou vai para a conversa ao vivo, só para o personagem falar parecido com você. O texto do seu jeito de falar também vai para a IA Claude (Anthropic), só para reescrever as perguntas do seu jeito. Voz é dado biométrico, um dado sensível pela LGPD.'], ['Por quanto tempo', 'Sua voz e o trecho do seu jeito de falar são apagados quando você recomeça ou fecha a página e, no máximo, em 2 horas. A transcrição da conversa ao vivo é apagada em até 1 dia. Registros técnicos seguem as políticas de privacidade da ElevenLabs e da Anthropic.'], ['Servidor do Nort', 'Tudo passa por um servidor do Nort (Cloudflare). Ele não guarda o que você diz, só registros técnicos (erros, duração e tempos de resposta, tipo de navegador), sem nada do que você diz.'], ['Cuidado com você', 'Da pergunta de segurança até o fim, o personagem usa uma voz pronta. Se algo indicar risco, a conversa para e os números de ajuda aparecem na hora.'], ['Você decide', 'Você pode pular qualquer pergunta, escrever em vez de falar, usar uma voz pronta e sair quando quiser.']], cloneTitle: 'Sua voz no seu personagem', cloneLeadFree: 'Fale à vontade por uns 30 segundos, num lugar silencioso.', cloneTopicLead: 'Fala pra mim:', cloneTopics: ['Me conta um pouco de você: quem é você, do que você gosta?', 'O que você mais gosta de fazer num dia livre?', 'Me conta de um lugar ou de uma pessoa que te faz bem.', 'Qual foi a última coisa que te fez rir de verdade?', 'Me conta um pouco da sua história, do jeito que você quiser.'], cloneTopicNext: 'Outra pergunta', cloneTalk: 'Começar a falar', cloneTalkMore: 'Falar mais', cloneFreeTip: 'Pode pausar e continuar quando quiser.', cloneToRead: 'Prefiro ler frases prontas', cloneToFree: 'Prefiro falar à vontade', cloneDecline: 'Não quero gravar: usar uma voz pronta', cloneLead: 'Leia as frases em voz alta, num lugar silencioso.',
     cloneNote: 'Se ouvir a sua própria voz te deixar desconfortável, escolha uma voz pronta. Você pode trocar quando quiser.',
     cloneConsent: 'Autorizo gravar a minha voz e enviá-la para a ElevenLabs (empresa dos Estados Unidos) só para criar a voz do meu personagem nesta sessão. É a minha própria voz. Sei que voz é dado biométrico, um dado sensível pela LGPD. As frases que o personagem fala, inclusive o nome dele, também vão para a ElevenLabs para virar áudio. A voz é apagada quando eu recomeçar ou fechar a página e, no máximo, em 2 horas; registros técnicos seguem a política de privacidade da ElevenLabs.',
     cloneShort: 'Essa gravação ficou curta demais. Leia a frase inteira e depois toque em Parar.', cloneShortFree: 'Essa gravação ficou curta demais. Fale um pouco mais e depois toque em Parar.', cloneBusyServer: 'Muitas tentativas agora. Espere um minuto e tente de novo.', cloneDone: 'gravada', ownVoiceOff: 'Voltei para uma voz pronta nesta conversa. A sua voz foi apagada.',
@@ -1579,11 +1588,11 @@ const UI = {
       top: ['T-shirt', 'Hoodie', 'Shirt', 'Jacket', 'Sweater', 'Dress'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], bottom: ['Trousers', 'Shorts', 'Skirt'], pantsColor: ['Navy', 'Denim', 'Charcoal', 'Beige', 'Black', 'Off-white'], shoes: ['White', 'Navy', 'Coral', 'Brown', 'Green'], eyes: ['Open', 'Smiling', 'Calm'], extra: ['None', 'Glasses', 'Cap', 'Sunglasses', 'Earrings', 'Headphones'] },
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'No voice in this browser: the character shows as text only.', voiceHello: 'Hi! This is the voice I’ll use to talk with you. Do you like it?', voiceHelloName: 'Hi, {name}! This is the voice I’ll use to talk with you. Do you like it?',
     talkPrivacyAI: 'Your voice and text go to the Claude AI only to find signs. Using a screen reader? You can choose "No voice".',
-    talkPrivacyLocal: 'When you type, nothing leaves your device. Using a screen reader? You can choose "No voice".',
+    talkPrivacyLive: 'In the conversation, what you say or type goes to ElevenLabs and the Claude AI. It’s in the terms.', talkPrivacyLocal: 'When you type, nothing leaves your device. Using a screen reader? You can choose "No voice".',
     loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored. Create one to try it.', loginNotFound: 'Account not found. In the prototype, tap "Create an account".', loginForgotMsg: 'Password recovery isn’t available in the prototype yet.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
     lostTitle: '{name} has lost their way', lostTitleNoName: 'Your character has lost their way', lostLead: 'Your character found a compass, but it’s broken.', brokenAlt: 'Broken grey compass, with missing pieces and the needle spinning aimlessly.', brokenHint: 'Turn the compass with your finger, or try its location.', brokenNoSignal: 'No signal: it’s part of the story, your location isn’t used. Turn it with your finger.', brokenReady: 'Ready! Each answer adds colour to a piece of the compass.', brokenLoc: 'Use the compass’s location', brokenLocFail: 'No signal', brokenDialLabel: 'Broken compass. Turn it with your finger or the arrow keys.', brokenGo: 'Look for the way', hudAlt: 'Compass: {n} of {total} pieces coloured.', wholeTitle: 'The compass is whole!', wholeLead: 'Now {name} heads north with you.', wholeLeadNoName: 'Now your character heads north with you.', northSay: 'We found north. Let’s go!', northSayCare: 'Let’s keep going together, at your pace.', wholeTitleCare: 'The compass is ready',
     voiceTestExpr: 'Hi, {name}! [laughs softly] So good to hear you. [whispers] And I can talk quietly too, see? [warmly] Shall we have a little chat?',
-    liveHello: 'Hi! So good to have you here. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveHelloName: 'Hi, {name}! So good to see you. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveStatus: { connecting: '', connected: '', listening: 'I’m listening. Go ahead.', speaking: '', idle: '', disconnecting: '', disconnected: '' }, liveYou: 'You:', liveToText: 'I’d rather type', liveBridge: ['I see.', 'Mm-hm, I see.', 'Thanks for telling me that.'], liveAgain: ['Sorry, I didn’t quite catch the end.', 'Oops, I missed a little bit.'], liveSafetyBridge: 'Now an important question, one we ask everyone. It’s here on the screen too.', liveSafetyLead: 'Tap your answer or say it.',
+    liveHello: 'Hi! So good to have you here. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveHelloName: 'Hi, {name}! So good to see you. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveToText: 'Type', liveJustTalk: 'Just talk', liveHeardIn: 'What you said is now in the answer field.', liveMicOn: 'Microphone on: I’m listening, go ahead.', liveTypePh: 'What you say shows up here. You can type and edit.', liveTypePhMuted: 'Microphone off: type here.', liveMicTurnOff: 'Turn microphone off', liveMicTurnOn: 'Turn microphone on', liveMicOffSr: 'Microphone off.', liveBridge: ['I see.', 'Mm-hm, I see.', 'Thanks for telling me that.'], liveAgain: ['Sorry, I didn’t quite catch the end.', 'Oops, I missed a little bit.'], liveSafetyBridge: 'Now an important question, one we ask everyone. It’s here on the screen too.', liveSafetyLead: 'Tap your answer or say it.',
     hintLabel: 'You could talk about', indLevels: { strong: 'Worth a closer look', some: 'If you like', none: 'Nothing came up in the chat' }, indCame: 'areas came up in the chat', indCame1: 'area came up in the chat', indRingLegend: 'Thicker pieces came up in the conversation.', indSayScreen: 'On the screen, your compass shows the areas that came up in our chat.', countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'Signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account only lasts while this page is open.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Bring the arrow to N and tap Start.', birthHint: 'Tap to pick the date.', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'First, your character finds the compass.', avNext: 'Continue',
@@ -1626,8 +1635,8 @@ const UI = {
     indSayStrong: 'From what you told me, it’s worth a closer look at: {areas}.', indSaySome: 'If you like, you could also look at: {areas}.', indSayNone: 'Nothing you told me called for a closer look, but you can pick any area on the screen.',
     indSayEnd: 'This is not a diagnosis, just pointers to choose the official questionnaires. You decide. And talking to a psychologist or psychiatrist is always a good idea.',
     avDrag: 'Drag to turn.',
-    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Talk for about 30 seconds and your character gets your voice. It’s deleted when you leave.', voiceOwnCreate: 'Create my voice', voicePickMore: 'I’d rather use a ready-made voice', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, the character’s lines go to ElevenLabs (US). Your answers don’t.', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
-    cloneConsentShort: 'I agree to record and use my voice for my character, and to the terms of use.', termsRead: 'Read the terms of use', termsKey: 'In short: Nort gives signs, not a diagnosis. Your voice and the conversation go through ElevenLabs, the Claude AI and a Nort server. Almost nothing is kept: your voice is gone within 2 hours and the conversation transcript within 1 day.', termsAgree: 'I have read and agree to the terms of use.', cloneTermsLine: 'Your voice is used as described in the terms of use.', termsTitle: 'Terms of use', termsBack: 'Got it', termsSections: [['What Nort is', 'A test prototype for mental health self-screening. It gives signs, never a diagnosis, and always recommends a psychologist or psychiatrist. Do not use it for health decisions.'], ['Your answers', 'Your answers are health data, which is sensitive information. In this prototype they stay only in this page’s memory and disappear when you close it. They are used only to produce your signs and your result. Inside the Claude link, what you type goes to the Claude AI to find the signs. Outside it, if you use the microphone in the written mode, your browser’s speech recognition receives your voice.'], ['Live conversation', 'You talk with the character by voice, in real time. What you say goes to ElevenLabs (a US company), which turns it into text and voice, and to the Claude AI (by Anthropic), which guides the conversation. Your character’s name and whether you had a baby in the last year are sent too. We ask that recordings are not kept and that transcripts are deleted within 1 day. Your browser will ask for the microphone.'], ['Your own voice', 'If you create your voice, the recording goes to ElevenLabs to create the character’s voice and to transcribe your way of speaking (expressions and rhythm). A short piece of what you said goes to the live conversation, only so the character can talk like you. The text of how you speak also goes to the Claude AI (Anthropic), only to rewrite the questions your way. A voice is biometric data, which is sensitive information.'], ['How long', 'Your voice and the sample of how you speak are deleted when you start over or close the page, and at most within 2 hours. The live conversation transcript is deleted within 1 day. Technical logs follow ElevenLabs’ and Anthropic’s privacy policies.'], ['Nort server', 'Everything goes through a Nort server (Cloudflare). It does not keep what you say, only technical logs (errors, duration and response times, browser type), with nothing of what you say.'], ['Taking care of you', 'From the safety question to the end, the character uses a ready-made voice. If something suggests risk, the conversation stops and the help numbers appear right away.'], ['You decide', 'You can skip any question, type instead of talking, use a ready-made voice and leave whenever you like.']], cloneTitle: 'Your voice in your character', cloneLeadFree: 'Talk freely for about 30 seconds, somewhere quiet.', cloneTopicLead: 'Tell me:', cloneTopics: ['Tell me a bit about yourself: who are you, what do you like?', 'What do you most like doing on a free day?', 'Tell me about a place or a person that does you good.', 'What was the last thing that made you really laugh?', 'Tell me a bit of your story, however you like.'], cloneTopicNext: 'Another question', cloneTalk: 'Start talking', cloneTalkMore: 'Talk more', cloneFreeTip: 'You can pause and carry on anytime.', cloneToRead: 'I’d rather read sentences', cloneToFree: 'I’d rather talk freely', cloneDecline: 'I don’t want to record: use a ready-made voice', cloneLead: 'Read the sentences out loud, somewhere quiet.',
+    voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Talk for about 30 seconds and your character gets your voice. It’s deleted when you leave.', voiceOwnCreate: 'Create my voice', voicePickMore: 'I’d rather use a ready-made voice', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, the character’s lines go to ElevenLabs (US).', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
+    cloneConsentShort: 'I agree to record and use my voice for my character, and to the terms of use.', termsRead: 'Read the terms of use', termsKey: 'In short: Nort gives signs, not a diagnosis. Your voice and the conversation go through ElevenLabs, the Claude AI and a Nort server. Almost nothing is kept: your voice is gone within 2 hours and the conversation transcript within 1 day.', termsAgree: 'I have read and agree to the terms of use.', cloneTermsLine: 'Your voice is used as described in the terms of use.', termsTitle: 'Terms of use', termsBack: 'Got it', termsSections: [['What Nort is', 'A test prototype for mental health self-screening. It gives signs, never a diagnosis, and always recommends a psychologist or psychiatrist. Do not use it for health decisions. You talk with the character by voice and by text, at the same time, however you like.'], ['Your answers', 'Your answers are health data, which is sensitive information. In this prototype they stay only in this page’s memory and disappear when you close it. They are used only to produce your signs and your result. Inside the Claude link, what you type goes to the Claude AI to find the signs. Outside it, if you use the microphone in the written mode, your browser’s speech recognition receives your voice.'], ['Live conversation', 'You talk with the character by voice, in real time. What you say and what you type during the conversation goes to ElevenLabs (a US company), which turns it into text and voice, and to the Claude AI (by Anthropic), which guides the conversation. Your character’s name and whether you had a baby in the last year are sent too. We ask that recordings are not kept and that transcripts are deleted within 1 day. Your browser will ask for the microphone.'], ['Your own voice', 'If you create your voice, the recording goes to ElevenLabs to create the character’s voice and to transcribe your way of speaking (expressions and rhythm). A short piece of what you said goes to the live conversation, only so the character can talk like you. The text of how you speak also goes to the Claude AI (Anthropic), only to rewrite the questions your way. A voice is biometric data, which is sensitive information.'], ['How long', 'Your voice and the sample of how you speak are deleted when you start over or close the page, and at most within 2 hours. The live conversation transcript is deleted within 1 day. Technical logs follow ElevenLabs’ and Anthropic’s privacy policies.'], ['Nort server', 'Everything goes through a Nort server (Cloudflare). It does not keep what you say, only technical logs (errors, duration and response times, browser type), with nothing of what you say.'], ['Taking care of you', 'From the safety question to the end, the character uses a ready-made voice. If something suggests risk, the conversation stops and the help numbers appear right away.'], ['You decide', 'You can skip any question, type instead of talking, use a ready-made voice and leave whenever you like.']], cloneTitle: 'Your voice in your character', cloneLeadFree: 'Talk freely for about 30 seconds, somewhere quiet.', cloneTopicLead: 'Tell me:', cloneTopics: ['Tell me a bit about yourself: who are you, what do you like?', 'What do you most like doing on a free day?', 'Tell me about a place or a person that does you good.', 'What was the last thing that made you really laugh?', 'Tell me a bit of your story, however you like.'], cloneTopicNext: 'Another question', cloneTalk: 'Start talking', cloneTalkMore: 'Talk more', cloneFreeTip: 'You can pause and carry on anytime.', cloneToRead: 'I’d rather read sentences', cloneToFree: 'I’d rather talk freely', cloneDecline: 'I don’t want to record: use a ready-made voice', cloneLead: 'Read the sentences out loud, somewhere quiet.',
     cloneNote: 'If hearing your own voice makes you uncomfortable, choose a ready-made voice. You can switch whenever you like.',
     cloneConsent: 'I agree to my voice being recorded and sent to ElevenLabs (a United States company) only to create my character’s voice in this session. It is my own voice. I understand a voice is biometric data, which is sensitive personal information. The sentences the character says, including its name, are also sent to ElevenLabs to become audio. The voice is deleted when I start over or close the page, and at most within 2 hours; technical logs follow ElevenLabs’ privacy policy.',
     cloneShort: 'That recording was too short. Read the whole sentence, then tap Stop.', cloneShortFree: 'That recording was too short. Talk a little more, then tap Stop.', cloneBusyServer: 'Too many attempts right now. Wait a minute and try again.', cloneDone: 'recorded', ownVoiceOff: 'I switched back to a ready-made voice for this conversation. Your voice was deleted.',
@@ -2657,7 +2666,7 @@ const N3D = (() => {
         const c = document.createElement('canvas');
         if (!(c.getContext('webgl2') || c.getContext('webgl'))) return false;
         T = await import(THREE_URL);
-        build(); api.ok = true; return true;
+        build(); api.ok = true; if (REAL) realStart(); return true;
       } catch (e) { api.ok = false; return false; }
     })();
     return loading;
@@ -2694,7 +2703,7 @@ const N3D = (() => {
       // only behind the path, so nothing stands between the camera and the character
       const z = back ? -3 - Math.abs(Math.sin(i * 3.1)) * 6 : -2.2 - Math.abs(Math.cos(i * 2.3)) * 2;
       if (!back && i % 4 !== 1) continue;
-      const g = new T.Group(); g.position.set(x, 0, z);
+      const g = new T.Group(); g.position.set(x, 0, z); g.userData.deco = true;
       if (i % 3 === 0) { const r = new T.Mesh(new T.DodecahedronGeometry(0.35 + (i % 5) * 0.08), rockM); r.position.y = 0.2; g.add(r); }
       else { const tr = new T.Mesh(new T.CylinderGeometry(0.08, 0.1, 0.6, 8), trunkM); tr.position.y = 0.3; g.add(tr); const top = new T.Mesh(new T.ConeGeometry(0.55 + (i % 3) * 0.15, 1.4 + (i % 4) * 0.25, 10), treeM); top.position.y = 1.2 + (i % 4) * 0.12; g.add(top); }
       world.add(g);
@@ -2719,12 +2728,12 @@ const N3D = (() => {
   }
   function setPath(total) {
     const p = parts.path; while (p.children.length) { const c = p.children[0]; p.remove(c); dispose(c); }
-    const stoneM = mat(0xFFFFFF, { roughness: 0.9 }); parts.stops = [];
+    const stoneM = mat(0xFFFFFF, { roughness: 0.9, map: real.stoneTex || null }); parts.stops = [];
     for (let i = 0; i <= total; i++) {
       const x = i * st.step;
       if (i < total) for (let k = 1; k < 5; k++) { const s = new T.Mesh(new T.CylinderGeometry(0.2, 0.22, 0.05, 16), stoneM); s.position.set(x + k * st.step / 5, 0.03, Math.sin((x + k) * 0.6) * 0.12); p.add(s); }
       // stepping stones: one per question (done = green, current = coral glowing softly, next = light)
-      const d = new T.Mesh(new T.CylinderGeometry(0.42, 0.45, 0.07, 24), i === total ? stoneM : mat(0xE8684A, { emissive: 0xE8684A, emissiveIntensity: 0 })); d.position.set(x, 0.04, 0); p.add(d); if (i < total) parts.stops.push(d);
+      const d = new T.Mesh(new T.CylinderGeometry(0.42, 0.45, 0.07, 24), i === total ? stoneM : mat(0xE8684A, { emissive: 0xE8684A, emissiveIntensity: 0, map: real.stoneTex || null })); d.position.set(x, 0.04, 0); p.add(d); if (i < total) parts.stops.push(d);
     }
     parts.compass.position.set((total + 1) * st.step, 0, 0);
     parts.total = total; paintStops(st.stopNow == null ? -1 : st.stopNow);
@@ -2733,7 +2742,8 @@ const N3D = (() => {
     st.stopNow = i;
     (parts.stops || []).forEach((d, k) => { d.material.color.set(i < 0 ? 0xE8684A : k < i ? 0x4FA77A : k === i ? 0xE8684A : 0xF4F1EA); d.material.emissiveIntensity = 0; });
   }
-  function dispose(obj) { obj.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); }
+  const MAPS = ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'alphaMap', 'aoMap', 'emissiveMap', 'bumpMap'];
+  function dispose(obj) { obj.traverse((o) => { if (o.geometry) o.geometry.dispose(); for (const m of o.material ? [].concat(o.material) : []) { for (const k of MAPS) if (m[k] && !(m[k].userData && m[k].userData.keep)) m[k].dispose(); m.dispose(); } }); }
   // ---- the character's look: generated textures (fabric, hair, skin), soft "physical" materials and smooth tapered shapes ----
   // Stylised-realistic, made by the Nort (no brand's avatar style). Everything is procedural, so every builder option stays.
   const TEX = {};
@@ -3146,9 +3156,10 @@ const N3D = (() => {
     char.position.set(st.x, 0, st.z);
     char.traverse((o) => { if (o.isMesh && o.material && !o.material.transparent) o.castShadow = true; });
     st.charH = Math.max(1.6, new T.Box3().setFromObject(char).max.y);
+    if (REAL) realOnChar(L);
     try { renderer.compile(scene, camera); } catch (e) { /* compiled on first frame */ }
   }
-  function holdCompass() { const hc = parts.hc; hc.position.set(0, -0.6, 0.12); hc.rotation.set(Math.PI / 2 - 0.35, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = false; parts.arms[1].add(hc); }
+  function holdCompass() { const hc = parts.hc; if (real.on && real.hand) { real.hand.add(hc); hc.position.set(0.09, 0.02, 0.06); hc.rotation.set(0, 0, Math.PI / 2); hc.scale.setScalar(0.62 / (real.scale || 1)); parts.hcGlow.visible = false; return; } hc.position.set(0, -0.6, 0.12); hc.rotation.set(Math.PI / 2 - 0.35, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = false; parts.arms[1].add(hc); }
   // the parts of the face that do not move (shading, nose, beard): drawn once per look
   function faceBase(F) {
     const cv = document.createElement('canvas'); cv.width = FW; cv.height = FH; const c = cv.getContext('2d');
@@ -3247,6 +3258,232 @@ const N3D = (() => {
     }
     faceTex.needsUpdate = true;
   }
+  // ---------- TESTE (só com ?modelo=real): pessoa realista (Microsoft Rocketbox, MIT) e floresta realista (Poly Haven, CC0) ----------
+  // O boneco feito por código continua sendo o padrão e a reserva: se algo não carregar, ele fica.
+  const REAL = (() => { try { const q = new URLSearchParams(location.search); return q.get('modelo') === 'real' || localStorage.getItem('nort-modelo') === 'real'; } catch (e) { return false; } })();
+  const real = { on: false, lite: false, person: 0, cur: null, acts: {}, emoW: {}, t: 0 };
+  const RB = 'assets/3d/', ADDONS = THREE_URL.replace('build/three.module.min.js', 'examples/jsm/');
+  // pessoas: [arquivo, conjunto de animações (f/m), altura]; a escolha usa o tom de pele, o cabelo e a barba do criador
+  const PEOPLE = [null, ['pessoa-1', 'f'], ['pessoa-2', 'm'], ['pessoa-3', 'f'], ['pessoa-4', 'm'], ['pessoa-5', 'f'], ['pessoa-6', 'f'], ['pessoa-7', 'm']];
+  function pickPerson(L) {
+    if (L && L.__p) return L.__p;
+    try { const n = +new URLSearchParams(location.search).get('pessoa'); if (PEOPLE[n]) return n; } catch (e) { /* ignore */ }
+    const skin = L.skin, hair = AV.hair[L.hair], male = (AV.beard[L.beard] || 'none') !== 'none';
+    const dark = [4, 5, 7].includes(skin), mid = [2, 3].includes(skin), coily = ['afro', 'curly', 'braids'].includes(hair);
+    if (male) return dark || coily ? (coily ? 2 : 4) : 7;
+    if (dark || coily) return 3;
+    if (mid) return 5;
+    return AV.hairColor[L.hairColor] === '#1F1A17' ? 6 : 1;
+  }
+  // módulos de exemplo do three.js: troca o import 'three' pelo mesmo arquivo do app (uma só cópia do three)
+  const modCache = {};
+  async function addon(url) {
+    if (modCache[url]) return modCache[url];
+    modCache[url] = (async () => {
+      let src = await (await fetch(url)).text();
+      const deps = [...src.matchAll(/from\s+['"](\.{1,2}\/[^'"]+)['"]/g)].map((m) => m[1]);
+      for (const d of deps) { const blob = await addon(new URL(d, url).href); src = src.split(`'${d}'`).join(`'${blob}'`).split(`"${d}"`).join(`'${blob}'`); }
+      src = src.replace(/from\s+['"]three['"]/g, `from '${THREE_URL}'`);
+      return URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+    })();
+    return modCache[url];
+  }
+  async function loaders() {
+    if (real.loader) return real.loader;
+    const [{ GLTFLoader }, { MeshoptDecoder }] = await Promise.all([import(await addon(ADDONS + 'loaders/GLTFLoader.js')), import(ADDONS + 'libs/meshopt_decoder.module.js')]);
+    real.loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder); return real.loader;
+  }
+  const texL = () => real.tl || (real.tl = new T.TextureLoader());
+  // texturas da cena: baixadas ANTES de mexer na floresta (se faltar alguma obrigatória, a floresta de antes fica)
+  const SCENE_REQ = ['ceu-nevoa', 'ceu-dia', 'chao-grama-cor', 'trilha-terra-cor', 'pedra-cor', 'arvore-1', 'arvore-2', 'arvore-3', 'arvore-4', 'arvore-5'];
+  const SCENE_OPT = ['chao-grama-normal', 'trilha-terra-normal', 'pedra-normal'];
+  function shrink(t, max) { // celular fraco: no máximo 512 px
+    const im = t.image; if (!im || Math.max(im.width, im.height) <= max) return t;
+    const k = max / Math.max(im.width, im.height), c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); const n = new T.CanvasTexture(c); t.dispose(); return n;
+  }
+  async function preload() {
+    const get = (n) => texL().loadAsync(RB + 'cena/' + n + '.webp').then((t) => { real.pre[n] = real.lite ? shrink(t, 512) : t; });
+    real.pre = {};
+    await Promise.all(SCENE_REQ.map(get));
+    await Promise.allSettled(SCENE_OPT.map(get));
+  }
+  function tex(name, rep, color) {
+    const t0 = real.pre[name]; if (!t0) return null;
+    const t = t0.userData.used ? t0.clone() : t0; t0.userData.used = true;
+    t.wrapS = t.wrapT = T.RepeatWrapping; if (rep) t.repeat.set(rep, rep);
+    if (color) t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4; t.needsUpdate = true; return t;
+  }
+  async function realStart() {
+    real.lite = (navigator.deviceMemory && navigator.deviceMemory <= 3) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || /[?&]leve=1/.test(location.search);
+    try { await preload(); realScene(); document.body.classList.add('real3d'); } catch (e) { /* faltou textura: a floresta de antes continua */ }
+    try { await loaders(); real.ready = true; if (st.look) realOnChar(st.look); } catch (e) { real.ready = false; }
+  }
+  async function realLoadPerson(n) {
+    const [file, g] = PEOPLE[n];
+    real.animSets = real.animSets || {};
+    const [gl, an] = await Promise.all([real.loader.loadAsync(RB + file + '.glb'), real.animSets[g] || real.loader.loadAsync(RB + 'anim-' + g + '.glb')]);
+    real.animSets[g] = an;
+    if (parts.hc && real.hand && isIn(parts.hc, real.root)) parts.hc.parent.remove(parts.hc);
+    if (real.root) { scene.remove(real.root); dispose(real.root); real.root = null; }
+    const root = gl.scene; real.root = root; real.morph = []; real.bones = {};
+    root.traverse((o) => {
+      if (o.isMesh) {
+        o.castShadow = !real.lite; o.frustumCulled = false;
+        for (const m of [].concat(o.material)) m.envMapIntensity = 0.7;
+        if (o.morphTargetDictionary) { const d = {}; for (const [k, i] of Object.entries(o.morphTargetDictionary)) d[k.startsWith('viseme_') ? k : k.charAt(0).toLowerCase() + k.slice(1)] = i; o.morphTargetDictionary = d; real.morph.push(o); }
+      }
+      if (o.isBone || o.type === 'Object3D') real.bones[o.name.replace(/_/g, ' ')] = o;
+    });
+    root.updateMatrixWorld(true); const hp = new T.Vector3(); (real.bones['Bip01 Head'] || root).getWorldPosition(hp);
+    real.scale = 2.05 / Math.max(1.2, hp.y + 0.14); root.scale.setScalar(real.scale); scene.add(root); // altura pelo osso da cabeça (a caixa da malha em pose de ligação engana)
+    real.mixer = new T.AnimationMixer(root); real.acts = {}; real.cur = null;
+    for (const c of an.animations) { c.tracks = c.tracks.filter((t) => !/Footsteps/.test(t.name)); real.acts[c.name] = real.mixer.clipAction(c); }
+    real.spine = real.bones['Bip01 Spine2'];
+    real.hand = real.bones['Bip01 R Hand']; real.arm = [real.bones['Bip01 R UpperArm'], real.bones['Bip01 R Forearm']];
+    real.head = real.bones['Bip01 Head'];
+    real.person = n; real.on = true; st.charH = 2.05;
+    hideFigure();
+    if (st.holding) holdCompass();
+  }
+  function hideFigure() { if (char) char.traverse((o) => { if (o.isMesh && !(parts.hc && isIn(o, parts.hc))) o.visible = false; }); }
+  function showFigure() { if (char) char.traverse((o) => { if (o.isMesh) o.visible = true; }); }
+  function realOnChar(L) {
+    if (!real.ready) return;
+    const n = pickPerson(L);
+    if (real.on) hideFigure();
+    if (real.on && n === real.person) { hideFigure(); st.charH = 2.05; return; } // a figura só some com a pessoa já carregada
+    if (real.loading) { real.pending = n; return; }                              // trocou durante o carregamento: guarda a escolha
+    real.loading = true; real.pending = null;
+    realLoadPerson(n).catch(() => {
+      if (real.root) { scene.remove(real.root); dispose(real.root); real.root = null; }
+      real.on = false; real.person = 0; real.hand = null; showFigure();
+      if (st.holding) holdCompass();                                               // a bússola volta para a mão do boneco
+    }).finally(() => { real.loading = false; if (real.pending && real.pending !== real.person) { const p = real.pending; real.pending = null; realOnChar(Object.assign({}, st.look, { __p: p })); } });
+  }
+  const isIn = (o, p) => { while (o) { if (o === p) return true; o = o.parent; } return false; };
+  function play(name, fade) {
+    const a = real.acts[name] || real.acts.parado; if (!a || a === real.cur) return;
+    const once = ['acenar', 'concordar', 'agachar', 'levantar', 'animado'].includes(name);
+    a.reset(); a.setLoop(once ? T.LoopOnce : T.LoopRepeat, Infinity); a.clampWhenFinished = once; a.play();
+    if (real.cur) { if (fade === 0) real.cur.stop(); else real.cur.crossFadeTo(a, fade == null ? 0.35 : fade, false); } real.cur = a; real.curName = name;
+  }
+  // emoções do Nort -> formas ARKit do rosto
+  const REMO = {
+    neutral: {}, listening: { browInnerUp: 0.15, mouthSmileLeft: 0.25, mouthSmileRight: 0.25 },
+    calm: { mouthSmileLeft: 0.55, mouthSmileRight: 0.55, eyeSquintLeft: 0.15, eyeSquintRight: 0.15, browInnerUp: 0.2 },
+    happy: { mouthSmileLeft: 1, mouthSmileRight: 1, cheekSquintLeft: 1, cheekSquintRight: 1, eyeSquintLeft: 0.45, eyeSquintRight: 0.45, mouthDimpleLeft: 0.6, mouthDimpleRight: 0.6, mouthUpperUpLeft: 0.3, mouthUpperUpRight: 0.3, mouthShrugUpper: 0.2, browInnerUp: 0.15 },
+    excited: { mouthSmileLeft: 1.5, mouthSmileRight: 1.5, jawOpen: 0.25, browInnerUp: 0.4, browOuterUpLeft: 0.6, browOuterUpRight: 0.6, eyeWideLeft: 0.5, eyeWideRight: 0.5, cheekSquintLeft: 0.6, cheekSquintRight: 0.6 },
+    sad: { browInnerUp: 1.0, browDownLeft: 0.15, browDownRight: 0.15, mouthFrownLeft: 1.0, mouthFrownRight: 1.0, mouthPressLeft: 0.3, mouthPressRight: 0.3, mouthShrugLower: 0.35, eyeBlinkLeft: 0.18, eyeBlinkRight: 0.18 },
+    compassion: { browInnerUp: 0.75, mouthSmileLeft: 0.8, mouthSmileRight: 0.8, cheekSquintLeft: 0.3, cheekSquintRight: 0.3, eyeSquintLeft: 0.3, eyeSquintRight: 0.3, mouthPressLeft: 0.2, mouthPressRight: 0.2 },
+    thinking: { browDownLeft: 0.5, browOuterUpRight: 0.6, browInnerUp: 0.2, mouthPressLeft: 0.45, mouthLeft: 0.4, mouthRollLower: 0.2, eyeSquintLeft: 0.25 }
+  };
+  const _q = [], _v = [];
+  function aimBone(bone, child, dir, k) { // gira o osso (no mundo) para o filho apontar para dir
+    const a = _v[0] || (_v[0] = new T.Vector3()), b = _v[1] || (_v[1] = new T.Vector3()), q = _q[0] || (_q[0] = new T.Quaternion()), pq = _q[1] || (_q[1] = new T.Quaternion());
+    bone.getWorldPosition(a); child.getWorldPosition(b); b.sub(a).normalize();
+    q.setFromUnitVectors(b, dir); q.slerp(_q[2] || (_q[2] = new T.Quaternion()), 1 - k);
+    bone.parent.getWorldQuaternion(pq); const inv = (_q[3] || (_q[3] = new T.Quaternion())).copy(pq).invert();
+    bone.quaternion.premultiply(inv.multiply(q).multiply(pq)); bone.updateMatrixWorld(true);
+  }
+  function realFrame(dt, moving) {
+    const r = real.root; if (!r) return;
+    r.position.set(char.position.x, char.position.y, char.position.z); r.rotation.y = char.rotation.y;
+    let want = st.emo === 'sad' ? 'triste' : st.emo === 'compassion' ? 'compaixao' : st.emo === 'thinking' ? 'pensativo' : st.emo === 'listening' ? 'ouvir' : st.emo === 'calm' ? 'calmo' : 'parado';
+    if (st.talking) want = 'falar';
+    if (st.nod > 0) want = 'concordar';
+    if (st.jump > 0) want = 'animado';
+    if (st.present) want = 'parado';
+    if (st.searching) want = 'procurar';
+    if (st.wave > 0) want = 'acenar';
+    if (st.crouch || st.reach) want = 'agachado';
+    if (moving) want = 'andar';
+    if (st.breathOn) want = 'parado';
+    if (real.hold === undefined) real.hold = 0;
+    play(want, st.reduce ? 0 : null);
+    const a = real.acts.andar; if (a) a.timeScale = 1.25;
+    real.mixer.update(st.reduce ? 0 : dt);
+    r.updateMatrixWorld(true);
+    // segurar e mostrar a bússola: o braço direito vem para a frente
+    // respirar junto: o peito sobe e desce com o círculo
+    const br = breathAmp(); if (real.spine && br > 0 && !st.reduce) { real.spine.rotateX(-0.06 * br); real.spine.updateMatrixWorld(true); }
+    const holdK = st.holding && !moving ? 1 : 0; real.hold = st.reduce ? holdK : real.hold + (holdK - real.hold) * Math.min(1, dt * 6);
+    if (real.hold > 0.01 && real.arm[0] && real.arm[1] && real.hand) {
+      const V = real.v || (real.v = [new T.Vector3(), new T.Vector3(), new T.Vector3(), new T.Vector3()]);
+      const fwd = V[0].set(0, 0, 1).applyQuaternion(r.quaternion), side = V[1].set(-1, 0, 0).applyQuaternion(r.quaternion);
+      const up = st.present ? 0.55 : 0.15;
+      aimBone(real.arm[0], real.arm[1], V[2].set(0, -1, 0).addScaledVector(fwd, 0.35 + up * 0.6).addScaledVector(side, 0.12).normalize(), real.hold);
+      aimBone(real.arm[1], real.hand, V[3].copy(fwd).addScaledVector(side, -0.35).setY(V[3].y + up).normalize(), real.hold);
+    }
+    // rosto: emoção + piscar + boca falando
+    const want2 = REMO[st.emo] || {}, k = Math.min(1, dt * 6), W = real.emoW;
+    for (const n in want2) if (!(n in W)) W[n] = 0;
+    for (const n in W) W[n] += ((want2[n] || 0) - W[n]) * k;
+    const m = st.mouthOpen, ph = st.t * 9;
+    const out = real.out || (real.out = {}); for (const n in out) out[n] = 0; Object.assign(out, W);
+    out.eyeBlinkLeft = Math.min(1, (out.eyeBlinkLeft || 0) + st.blink); out.eyeBlinkRight = Math.min(1, (out.eyeBlinkRight || 0) + st.blink);
+    if (m > 0.01) {
+      out.jawOpen = (out.jawOpen || 0) + m * 0.32; out.mouthFunnel = (out.mouthFunnel || 0) + m * 0.25 * Math.max(0, Math.sin(ph * 0.7));
+      out.mouthLowerDownLeft = (out.mouthLowerDownLeft || 0) + m * 0.3; out.mouthLowerDownRight = (out.mouthLowerDownRight || 0) + m * 0.3;
+      out.mouthStretchLeft = (out.mouthStretchLeft || 0) + m * 0.2 * Math.max(0, Math.cos(ph * 0.5)); out.mouthStretchRight = (out.mouthStretchRight || 0) + m * 0.2 * Math.max(0, Math.cos(ph * 0.5));
+    }
+    for (const o of real.morph) { const d = o.morphTargetDictionary, inf = o.morphTargetInfluences; inf.fill(0); for (const n in out) { const i = d[n]; if (i !== undefined) inf[i] = Math.min(1, out[n]); } }
+  }
+  // ---- floresta realista: céu (névoa -> dia), chão de grama, trilha de terra, árvores de verdade (fotos 3D em planos cruzados), pedras
+  function realScene() {
+    const lite = real.lite;
+    if (lite) { renderer.shadowMap.enabled = false; renderer.setPixelRatio(1); }
+    const W = new T.Group(); world.add(W); real.world = W;
+    // céu: duas fotos de céu (Poly Haven) que se misturam com a luz que acompanha
+    const skyM = new T.ShaderMaterial({
+      uniforms: { a: { value: tex('ceu-nevoa', 0, true) }, b: { value: tex('ceu-dia', 0, true) }, day: { value: 1 }, fogC: { value: new T.Color(0xDDE5EA) } },
+      vertexShader: 'varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform sampler2D a; uniform sampler2D b; uniform float day; uniform vec3 fogC; varying vec3 vD; void main(){ vec2 uv = vec2(atan(vD.z, vD.x) / 6.2831853 + 0.5, asin(clamp(vD.y,-1.0,1.0)) / 3.1415926 + 0.5); vec3 c = mix(texture2D(a, uv).rgb, texture2D(b, uv).rgb, day); c = mix(fogC, c, smoothstep(0.0, 0.28, vD.y)); gl_FragColor = vec4(c, 1.0);\n#include <colorspace_fragment>\n}',
+      side: T.BackSide, depthWrite: false, fog: false
+    });
+    skyM.uniforms.a.value.wrapS = skyM.uniforms.b.value.wrapS = T.RepeatWrapping;
+    const sky = new T.Mesh(new T.SphereGeometry(55, 32, 16), skyM); sky.renderOrder = -1; W.add(sky); real.sky = sky;
+    // luz do ambiente a partir do céu do dia (reflexos suaves na pele e nas folhas)
+    { const et = real.pre['ceu-dia'].clone(); et.mapping = T.EquirectangularReflectionMapping; et.colorSpace = T.SRGBColorSpace; et.needsUpdate = true; const pm = new T.PMREMGenerator(renderer); scene.environment = pm.fromEquirectangular(et).texture; pm.dispose(); }
+    if (parts.hemi) parts.hemi.userData.k = 0.55;
+    // chão
+    world.children.forEach((c) => { if (c.isMesh && c.geometry && c.geometry.type === 'CircleGeometry') { c.material.dispose(); c.material = new T.MeshStandardMaterial({ map: tex('chao-grama-cor', 64, true), normalMap: lite ? null : tex('chao-grama-normal', 64), roughness: 1, color: 0xE8EEE0 }); } });
+    // trilha de terra com bordas suaves
+    const fade = document.createElement('canvas'); fade.width = 4; fade.height = 64; const fc = fade.getContext('2d'); const gr = fc.createLinearGradient(0, 0, 0, 64);
+    gr.addColorStop(0, '#000'); gr.addColorStop(0.3, '#fff'); gr.addColorStop(0.7, '#fff'); gr.addColorStop(1, '#000'); fc.fillStyle = gr; fc.fillRect(0, 0, 4, 64);
+    const trailM = new T.MeshStandardMaterial({ map: tex('trilha-terra-cor', 0, true), normalMap: lite ? null : tex('trilha-terra-normal'), alphaMap: new T.CanvasTexture(fade), transparent: true, depthWrite: false, roughness: 1 });
+    trailM.map.repeat.set(40, 1); if (trailM.normalMap) trailM.normalMap.repeat.set(40, 1);
+    const trail = new T.Mesh(new T.PlaneGeometry(160, 2.2), trailM); trail.rotation.x = -Math.PI / 2; trail.position.set(40, 0.012, 0); trail.receiveShadow = true; W.add(trail); real.trail = trail;
+    // tira as árvores e pedras de desenho; põe árvores reais (Poly Haven) e pedras com textura de rocha
+    world.children.filter((c) => c.userData.deco).forEach((c) => { world.remove(c); dispose(c); });
+    const TREES = [[311, 468, 5.5], [230, 342, 4.5], [224, 265, 3.6], [632, 512, 6.5], [328, 512, 8.5]]; // largura, altura (px) e altura (m)
+    const treeM = TREES.map((t, i) => new T.MeshStandardMaterial({ map: tex('arvore-' + (i + 1), 0, true), alphaTest: 0.5, side: T.DoubleSide, roughness: 0.9, color: 0xA9B79A }));
+    const planes = TREES.map(([w, h]) => { const g = new T.PlaneGeometry(w / h, 1); g.translate(0, 0.5, 0); return g; });
+    const rockM = new T.MeshStandardMaterial({ map: tex('pedra-cor', 1, true), normalMap: lite ? null : tex('pedra-normal', 1), roughness: 0.95 });
+    let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const n = lite ? 46 : 90;
+    for (let i = 0; i < n; i++) {
+      const x = -14 + rnd() * 120, z = -3.2 - Math.pow(rnd(), 0.7) * 30;
+      const k = Math.floor(rnd() * TREES.length), s = TREES[k][2] * (0.8 + rnd() * 0.5);
+      const g = new T.Group(); g.position.set(x, 0, z);
+      for (let j = 0; j < (lite ? 1 : 2); j++) { const p = new T.Mesh(planes[k], treeM[k]); p.scale.set(s * (rnd() < 0.5 ? 1 : -1), s, s); p.rotation.y = j * Math.PI / 2 + (rnd() - 0.5) * 0.4; g.add(p); }
+      W.add(g);
+    }
+    for (let i = 0; i < (lite ? 8 : 16); i++) {
+      const geo = new T.IcosahedronGeometry(0.3 + rnd() * 0.5, 1); const p = geo.attributes.position;
+      for (let v = 0; v < p.count; v++) { const f = 0.8 + rnd() * 0.35; p.setXYZ(v, p.getX(v) * f, p.getY(v) * f * 0.7, p.getZ(v) * f); }
+      geo.computeVertexNormals();
+      const r = new T.Mesh(geo, rockM); r.position.set(-10 + rnd() * 110, 0.1, -2.6 - rnd() * 8); r.castShadow = r.receiveShadow = !lite; W.add(r);
+    }
+    real.stoneTex = tex('pedra-cor', 1, true); real.stoneTex.userData.keep = true; // as pedras da trilha são refeitas, a textura fica
+    if (parts.path && parts.total != null) setPath(parts.total);
+  }
+  function realDay(d) {
+    real.sky.material.uniforms.day.value = d;
+    const fogC = new T.Color(0xB9C2C0).lerp(new T.Color(0xCBD8DA), d); scene.fog.color.copy(fogC); real.sky.material.uniforms.fogC.value.copy(fogC);
+    scene.fog.far += 18 + 14 * d; // névoa mais longe que a do desenho: dá para ver a floresta
+    if (parts.hemi) parts.hemi.intensity *= parts.hemi.userData.k || 1;
+  }
   const lerp = (a, b, k) => a + (b - a) * k;
   function frame(dt) {
     st.t += dt;
@@ -3296,6 +3533,7 @@ const N3D = (() => {
     parts.body.rotation.z = idle ? Math.sin(st.t * 0.7) * 0.012 : 0;
     if (idle) { parts.head.rotation.y += Math.sin(st.t * 0.45) * 0.05; parts.head.rotation.z += Math.sin(st.t * 0.33 + 1) * 0.02; }
     if (parts.eyes) eyes(dt);
+    if (real.on) realFrame(dt, moving);
     // camera
     const cx = st.mode === 'builder' ? 0 : st.x;
     // close up while talking (so the face reads), wider while walking
@@ -3325,6 +3563,7 @@ const N3D = (() => {
     scene.fog.far = scene.fog.near + (scene.fog.far - scene.fog.near) * (0.35 + 0.65 * d);
     scene.fog.color.set(0xC9D6CF).lerp(new T.Color(0xE9F4EC), d);
     if (parts.hemi) parts.hemi.intensity = 1.15 + 0.35 * d;
+    if (real.sky) realDay(d);
     if (parts.sun) { parts.sun.intensity = 1.3 + 0.9 * d; parts.sun.color.set(0xDDE6E8).lerp(new T.Color(0xFFF1DC), d); }
     const now = parts.stops && parts.stops[st.stopNow];
     if (now) now.material.emissiveIntensity = st.reduce ? 0.2 : 0.12 + 0.18 * Math.abs(Math.sin(st.t * 1.6));
@@ -3403,7 +3642,7 @@ const N3D = (() => {
       st.mode = 'find'; world.visible = true; parts.path.visible = false; parts.compass.visible = false;
       if (st.holding) return Promise.resolve();
       const hc = parts.hc; if (hc.parent) hc.parent.remove(hc);
-      hc.position.set(1.7, 0.04, 0.55); hc.rotation.set(0, 0, 0); parts.hcGlow.visible = true; scene.add(hc);
+      hc.position.set(1.7, 0.04, 0.55); hc.rotation.set(0, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = true; scene.add(hc);
       st.x = -3.2; st.emo = st.repair < 1 ? 'sad' : 'thinking'; st.searching = true; setTimeout(() => { if (st.searching) st.emo = 'thinking'; }, st.reduce ? 0 : 1600);
       const wait = (ms) => new Promise((r) => setTimeout(r, st.reduce ? 0 : ms));
       st.targetX = 1.2; st.walking = true;
@@ -3446,6 +3685,7 @@ const N3D = (() => {
   });
   api.triCount = () => { let n = 0; if (char) char.traverse((o) => { if (o.isMesh && o.visible) { const g = o.geometry; n += (g.index ? g.index.count : g.attributes.position.count) / 3; } }); return Math.round(n); }; // test aid
   Object.defineProperty(api, 'holding', { get: () => !!st.holding });
+  if (REAL) api._real = real; // teste
   Object.defineProperty(api, 'emotion', { get: () => st.emo });
   return api;
 })();
@@ -4460,7 +4700,7 @@ function toneOf(text) {
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
   function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own' || id.startsWith('e:')) { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
-  function flagRisk() { if (liveCall.on) liveStop(); if (state.talkRisk) { if (state.crisisOpen) return; stopMic(); stopSay(); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); return; } state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
+  function flagRisk() { if (liveCall.on) { liveKeep(); liveStop(); } if (state.talkRisk) { if (state.crisisOpen) return; stopMic(); stopSay(); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); return; } state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
     state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
@@ -4537,7 +4777,7 @@ function toneOf(text) {
         ${vid.startsWith('e:') ? `<p class="note">${esc(s.voiceNaturalNote)}</p>` : ''}${ownVoicePossible() && !ownVoice.declined ? '</div>' : ''}
         ${hasVoice ? `<div class="voice-tools"><label class="av-label" for="voice-rate">${esc(s.voiceRate)}</label><select id="voice-rate" class="text-in short">${[0.85, 1, 1.2].map((r, i) => `<option value="${r}"${voiceCfg.rate === r ? ' selected' : ''}>${esc(s.voiceRates[i])}</option>`).join('')}</select><button type="button" class="btn" data-act="voice-test"${vid === 'off' ? ' disabled' : ''}>${esc(s.voiceTest)}</button></div>` : `<p class="small">${esc(s.voiceNone)}</p>`}
       </fieldset>
-      <p class="note">${esc(caps.sample ? s.talkPrivacyAI : s.talkPrivacyLocal)}</p>
+      <p class="note">${esc(caps.sample ? s.talkPrivacyAI : liveAvailable() && vid !== 'off' ? s.talkPrivacyLive : s.talkPrivacyLocal)}</p>
       <div class="actions"><button class="btn primary big" data-act="talk-start">${esc(s.avNext)}</button></div>
       <p><button class="btn link" data-act="quick-quiz">${esc(s.quickQuiz)}</button></p>
     </main>`;
@@ -4688,7 +4928,7 @@ function toneOf(text) {
   // says end the call and open the crisis notice at once. If it cannot start or drops twice, the app quietly goes on with the
   // regular voice and microphone.
   const LIVE_LIB = 'https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.32.1/+esm';
-  const liveCall = { on: false, status: 'idle', mode: '', conv: null, gen: 0, agentText: '', userText: '', ending: false, own: false, leftOwn: false, callTok: null, next: null, swapping: false, retried: false };
+  const liveCall = { on: false, status: 'idle', mode: '', conv: null, gen: 0, agentText: '', userText: '', ending: false, own: false, leftOwn: false, callTok: null, next: null, swapping: false, retried: false, typing: false, muted: false, micSet: false, unassigned: '', sentText: '', sentAt: 0 };
   let liveLibP = null;
   function liveLib() { if (!liveLibP) liveLibP = import(LIVE_LIB).catch((e) => { liveLibP = null; throw e; }); return liveLibP; }
   // load the call library and warm up the connection while the person is still on the compass screen (nothing is sent, no cost)
@@ -4701,27 +4941,40 @@ function toneOf(text) {
   function liveMicWarm() { try { liveCall.micP = navigator.mediaDevices.getUserMedia({ audio: true }).then((st) => { st.getTracks().forEach((t) => t.stop()); }); liveCall.micP.catch(() => {}); } catch (e) { liveCall.micP = null; } }
   function liveAvailable() { if (state.talkRisk || computeFlags(state).safety === 'yes') return false; return !!VOICE_API && !inFrame && ownVoice.live === true && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia); }
   function liveNextIndex() { const qs = talkQuestions(state); const k = qs.findIndex((q) => (q.type === 'safety' ? state.answers['phq.9'] == null : !(state.talk.answers[q.id] || '').trim() && !state.talk.skipped[q.id])); return k < 0 ? qs.length - 1 : k; }
-  function liveRisk() { liveStop(); flagRisk(); }
+  function liveRisk() { liveKeep(); liveStop(); flagRisk(); }
+  // when the call ends for good (risk, fallback), what the person said or typed on the current topic goes to the written field
+  function liveKeep() { liveCall.typing = false; liveCall.muted = false; clearTimeout(liveCall.riskT); const q = talkQuestions(state)[liveNextIndex()]; const own = q && q.type !== 'safety' ? (heard()[q.id] || '').trim() : ''; if (own && !(state.talk.answers[q.id] || '').trim()) { state.talk.answers[q.id] = own; delete state.talk.skipped[q.id]; } }
+  // text the app sends as a user message (the typed answer, the Skip marker) may come back as a "user" transcript: it is ignored
+  function liveSend(text) { liveCall.sentText = text.replace(/\s+/g, ' ').trim(); liveCall.sentAt = Date.now(); liveCall.conv.sendUserMessage(text); }
+  function liveEcho(m) { if (!liveCall.sentText || Date.now() - liveCall.sentAt > 10000) return false; if (m.replace(/\s+/g, ' ').trim() !== liveCall.sentText) return false; liveCall.sentText = ''; return true; }
   // what went wrong in a call goes to the Nort server log (only the error text, nothing the person said)
   function liveDiag(where, e) { try { const msg = e && (e.message || e.reason || e.name) ? `${e.name || ''} ${e.message || e.reason || ''}` : String(e || ''); fetch(`${VOICE_API}/diag`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ where, msg: `${msg} | ${navigator.userAgent}`.slice(0, 300) }), keepalive: true }).catch(() => {}); } catch (err) { /* ignore */ } }
   // gen: every session has its own number, so late events of an ended session never touch the current one
   function liveStop() { liveCall.gen++; clearTimeout(liveCall.swapT); liveCall.swapping = false; const c = liveCall.conv; liveCall.conv = null; liveCall.on = false; liveCall.mode = ''; liveCall.status = 'idle'; N3D.talking(false); setSpeaking(false); if (c) { try { c.endSession(); } catch (e) { /* ignore */ } } }
   // could not start, or dropped again: carry on quietly with the regular voice and microphone (no technical message)
-  function liveFallback() { liveStop(); if (state.view !== 'talk' || state.crisisOpen) return; state.talk.i = liveNextIndex(); state.talk.said = null; render(); }
+  function liveFallback() { const k = liveNextIndex(); liveKeep(); liveStop(); if (state.view !== 'talk' || state.crisisOpen) return; state.talk.i = k; state.talk.said = null; render(); }
   function liveFinish() {
     if (liveCall.ending) return; liveCall.ending = true;
     setTimeout(() => { liveCall.ending = false; liveStop(); if (state.view !== 'talk' || state.crisisOpen) { render(true); return; } if (state.answers['phq.9'] == null) { state.talk.i = talkQuestions(state).findIndex((q) => q.type === 'safety'); state.talk.said = null; render(); return; } state.view = 'indicators'; state.talk.analyzing = Object.keys(state.talk.jobs).length > 0; render(); waitIndicators(); }, reduceMotion ? 300 : 2500);
   }
   function liveUI() {
-    const st = document.getElementById('live-status'); if (st) st.textContent = S().liveStatus[liveCall.mode || liveCall.status] || '';
     const q = document.getElementById('q-text'); if (q && liveCall.agentText) q.textContent = liveCall.agentText;
-    const u = document.getElementById('live-you'); if (u) { u.textContent = liveCall.userText ? `${S().liveYou} ${liveCall.userText}` : ''; u.hidden = !liveCall.userText; }
     const card = document.querySelector('.live-card'); if (card) card.dataset.mode = liveCall.mode || liveCall.status;
   }
   const liveTools = {
     registrar_resposta: (p) => {
       const q = talkQuestions(state).find((x) => x.id === String((p && p.topico) || '')); if (!q || q.type === 'safety') return 'tema desconhecido';
-      const ans = String((p && p.resposta) || '').slice(0, 2000).trim();
+      const pt = state.lang === 'pt';
+      // answered on the screen (typed field + "Next"/"Skip"): the screen wins, the agent never overwrites it
+      if (state.talk.fromField && state.talk.fromField[q.id]) return pt ? 'Esse tema já foi respondido na tela. Não repita a pergunta; siga para o próximo tema.' : 'This topic was already answered on the screen. Do not repeat the question; go on to the next topic.';
+      // with the typing field open, the person confirms the answer herself with "Next"
+      if (liveCall.typing && talkQuestions(state)[liveNextIndex()] === q) return pt ? 'A pessoa está conferindo a resposta no campo de texto da tela e vai tocar em Próxima quando terminar. Não repita a pergunta: espere em silêncio.' : 'The person is checking the answer in the text field on the screen and will tap Next when done. Do not repeat the question: wait quietly.';
+      // the answer is the person's own words (what she said, transcribed), never the agent's summary; the summary only if no words came
+      // the answer is only ever the person's own words (transcribed): what was heard on this topic, or else what she said since the
+      // last answer was stored; the agent's summary is never stored (no words = skipped), and an empty summary = she chose to skip
+      const said = String((p && p.resposta) || '').trim(); const own = ((heard()[q.id] || '').trim() || liveCall.unassigned.trim()).slice(0, 2000);
+      liveCall.unassigned = '';
+      const ans = said ? own : '';
       if (ans) { state.talk.answers[q.id] = ans; delete state.talk.skipped[q.id]; analyze(q, ans); } else state.talk.skipped[q.id] = true;
       if (state.crisisOpen) return 'pare';
       if (liveVoiceCheck()) return 'pare';
@@ -4731,7 +4984,7 @@ function toneOf(text) {
     registrar_seguranca: (p) => {
       if (state.answers['phq.9'] != null) return 'ok';
       const v = String((p && p.valor) || '').trim(); if (v !== 'prefiro_nao' && !/^[0-3]$/.test(v)) return state.lang === 'en' ? 'invalid value: use 0, 1, 2, 3 or prefiro_nao' : 'valor inválido: use 0, 1, 2, 3 ou prefiro_nao';
-      state.answers['phq.9'] = v === 'prefiro_nao' ? 'skip' : Number(v);
+      state.answers['phq.9'] = v === 'prefiro_nao' ? 'skip' : Number(v); liveCall.unassigned = '';
       if (typeof state.answers['phq.9'] === 'number' && state.answers['phq.9'] > 0) { liveRisk(); return 'pare'; }
       if (liveVoiceCheck()) return 'pare';
       state.talk.i = liveNextIndex(); render(true); if (N3D.ok) N3D.walkTo(state.talk.i); return 'ok';
@@ -4765,7 +5018,7 @@ function toneOf(text) {
     opts = opts || {};
     if (liveCall.on) return;
     if (!liveAvailable()) { if (opts.resume) liveFallback(); return; }
-    if (!opts.resume) { liveCall.leftOwn = false; liveCall.retried = false; liveCall.callTok = null; liveCall.next = null; liveCall.agentText = ''; }
+    if (!opts.resume) { liveCall.leftOwn = false; liveCall.retried = false; liveCall.callTok = null; liveCall.next = null; liveCall.agentText = ''; liveCall.typing = false; liveCall.muted = false; liveCall.told = false; liveCall.unassigned = ''; liveCall.sentText = ''; liveCall.heardTold = false; }
     const gen = ++liveCall.gen;
     stopSay(); stopMic(); liveCall.on = true; liveCall.status = 'connecting'; liveCall.mode = ''; liveCall.userText = '';
     if (!opts.quiet) render(true);
@@ -4789,11 +5042,11 @@ function toneOf(text) {
         overrides: { agent: { firstMessage: first, language: state.lang }, tts: { voiceId: res.voice_id } },
         dynamicVariables: { nome: nm, bebe: state.setup.baby === 1 ? 'sim' : 'nao', comecar: (nextQ || {}).id || 'day', retomada: opts.resume ? 'sim' : 'nao', voz_propria: liveCall.own ? 'sim' : 'nao', jeito: ownVoice.style ? String(ownVoice.sample || '').replace(/\{\{|\}\}|<<<|>>>|[<>{}\[\]]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600) : '' },
         clientTools: tools,
-        onStatusChange: mine(({ status }) => { liveCall.status = status; liveUI(); }),
+        onStatusChange: mine(({ status }) => { liveCall.status = status; if (status === 'connected' && !liveCall.told) { liveCall.told = true; live.textContent = S().liveMicOn; } liveUI(); }),
         onModeChange: mine(({ mode }) => { liveCall.mode = mode; const sp = mode === 'speaking'; N3D.talking(sp); setSpeaking(sp); if (!sp && N3D.ok && !state.talkRisk) N3D.emote('listening'); liveUI(); if (!sp && liveCall.swapping) liveCall.swapGo(); }),
         onMessage: mine(({ message, source }) => {
           const m = String(message || '');
-          if (source === 'user') { liveCall.userText = m; if (riskWords(m)) { liveRisk(); return; } const cur = talkQuestions(state)[liveNextIndex()]; if (cur && cur.type === 'safety' && state.answers['phq.9'] == null && /v[aá]rios dias|mais da metade|quase todos|several days|more than half|nearly every day/i.test(m)) { state.answers['phq.9'] = /quase todos|nearly every/i.test(m) ? 3 : /mais da metade|more than half/i.test(m) ? 2 : 1; liveRisk(); return; } }
+          if (source === 'user') { if (liveEcho(m)) return; liveCall.userText = m; if (riskWords(m)) { liveRisk(); return; } if (liveCall.muted) return; const cur = talkQuestions(state)[liveNextIndex()]; liveHeard(cur, m); if (!cur || cur.type !== 'safety') liveCall.unassigned = `${liveCall.unassigned} ${m.trim()}`.slice(-2000); if (cur && cur.type === 'safety' && state.answers['phq.9'] == null && /v[aá]rios dias|mais da metade|quase todos|several days|more than half|nearly every day/i.test(m)) { state.answers['phq.9'] = /quase todos|nearly every/i.test(m) ? 3 : /mais da metade|more than half/i.test(m) ? 2 : 1; liveRisk(); return; } }
           else { if (/Agradeço muito por me contar|Thank you so much for telling me/i.test(m)) { liveRisk(); return; } if (liveCall.swapping) { liveCall.swapGo(); return; } liveCall.agentText = m.replace(/\[[^\]]{1,30}\]\s*/g, ''); }
           liveUI();
         }),
@@ -4810,7 +5063,7 @@ function toneOf(text) {
         })
       });
       if (gen !== liveCall.gen) { try { conv.endSession(); } catch (e) { /* ignore */ } return; }
-      liveCall.conv = conv;
+      liveCall.conv = conv; liveCall.micSet = false; liveMicApply();
       livePrefetch();
     } catch (e) {
       if (gen !== liveCall.gen) return;
@@ -4819,15 +5072,76 @@ function toneOf(text) {
       liveFallback();
     }
   }
-  if (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) window.__nortTest = { setOwnVoice(tok, sample) { ownVoice.id = tok; ownVoice.sample = sample || ''; ownVoice.style = !!sample; voiceCfg.id = 'own'; render(true); }, setVoice(id) { voiceCfg.id = id; } };
-  // During the call: the official safety question with its 4 options when it is its turn, a quiet "listening/speaking" line,
-  // what the person said, and a way to switch to typing. No "live", no "connecting".
+  if (typeof window !== 'undefined' && window.NORT_VOICE_API_TEST) window.__nortTest = { setOwnVoice(tok, sample) { ownVoice.id = tok; ownVoice.sample = sample || ''; ownVoice.style = !!sample; voiceCfg.id = 'own'; render(true); }, setVoice(id) { voiceCfg.id = id; }, talkAnswers() { return JSON.parse(JSON.stringify({ answers: state.talk.answers, skipped: state.talk.skipped })); } };
+  // During the call the screen stays quiet: no dot, no "listening" line, no caption of what the person said (Guilherme, 13/11).
+  // Only the official safety question with its 4 options when it is its turn (locked), a hidden line for screen readers saying
+  // the microphone is on, and "Type". "Type" keeps the call going and opens the answer field: what the person says shows up
+  // in it, she can edit or type, and what is in the field is the answer, confirmed with "Next".
   function liveCardHtml(s) {
-    const q = talkQuestions(state)[liveNextIndex()];
-    const safety = q && q.type === 'safety' && state.answers['phq.9'] == null ? `<div class="live-safety"><p class="stem">${esc(s.liveSafetyLead)}</p><h2 class="q-text">${esc(`${tx(PHQ_STEM)} ${tx(PHQ_ITEMS[8])}`)}</h2>${choiceControl(item('phq.9', PHQ_ITEMS[8], 'phqSafety'))}</div>` : '';
-    return `${safety}<div class="live-card" data-mode="${esc(liveCall.mode || liveCall.status)}"><div class="live-dot" aria-hidden="true"></div><p class="live-status" id="live-status">${esc(s.liveStatus[liveCall.mode || liveCall.status] || '')}</p>
-      <p class="small live-you" id="live-you"${liveCall.userText ? '' : ' hidden'}>${esc(liveCall.userText ? `${s.liveYou} ${liveCall.userText}` : '')}</p>
-      <div class="live-actions"><button type="button" class="btn link" data-act="live-text">${esc(s.liveToText)}</button></div></div>`;
+    const qs = talkQuestions(state); const q = qs[liveNextIndex()]; const isSafety = !!q && q.type === 'safety';
+    const safety = isSafety && state.answers['phq.9'] == null ? `<div class="live-safety"><p class="stem">${esc(s.liveSafetyLead)}</p>${liveCall.muted ? `<div class="live-mute-wrap">${liveMuteBtn(s)}</div>` : ''}<h2 class="q-text">${esc(`${tx(PHQ_STEM)} ${tx(PHQ_ITEMS[8])}`)}</h2>${choiceControl(item('phq.9', PHQ_ITEMS[8], 'phqSafety'))}</div>` : '';
+    const sr = `<p class="sr" id="live-mic">${esc(liveCall.muted ? s.liveMicOffSr : s.liveMicOn)}</p>`;
+    if (liveCall.typing && q && !isSafety) {
+      const v = heard()[q.id] || ''; const last = liveNextIndex() === qs.length - 1;
+      return `<div class="live-card typing" data-mode="${esc(liveCall.mode || liveCall.status)}">${sr}<label class="sr" for="talk-answer">${esc(s.talkAnswerLabel)}</label><div class="live-type-row"><textarea id="talk-answer" class="talk-answer" rows="3" aria-describedby="q-text" placeholder="${esc(liveCall.muted ? s.liveTypePhMuted : s.liveTypePh)}">${esc(v)}</textarea>${liveMuteBtn(s)}</div>
+        ${state.error ? `<p class="error" role="alert">${esc(state.error)}</p>` : ''}
+        <div class="scene-nav"><button class="btn link" data-act="live-close">${esc(s.liveJustTalk)}</button><button class="btn link" data-act="talk-skip">${esc(s.talkSkip)}</button><button class="btn primary" data-act="talk-next" id="next-btn"${v.trim() ? '' : ' disabled'}>${esc(last ? s.talkDone : s.next)}</button></div></div>`;
+    }
+    return `${safety}<div class="live-card" data-mode="${esc(liveCall.mode || liveCall.status)}">${sr}${isSafety ? '' : `<div class="live-actions"><button type="button" class="btn link" data-act="live-text">${esc(s.liveToText)}</button></div>`}</div>`;
+  }
+  // microphone on/off with the typing field open (Guilherme, 14/11): off = the character keeps talking, the person only types and
+  // no transcript goes into the field; the choice stays across questions and is undone by "Just talk" or the end of the call
+  function liveMuteBtn(s) {
+    const off = liveCall.muted;
+    return `<button type="button" class="live-mute${off ? ' off' : ''}" data-act="live-mute" aria-pressed="${off}" aria-label="${esc(off ? s.liveMicTurnOn : s.liveMicTurnOff)}" title="${esc(off ? s.liveMicTurnOn : s.liveMicTurnOff)}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>${off ? '<path class="gap" d="M4 3.5 20 20.5" fill="none" stroke-width="4.5" stroke-linecap="round"/><path d="M4 3.5 20 20.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' : ''}</svg></button>`;
+  }
+  function liveMicApply() { const c = liveCall.conv; if (!c || liveCall.micSet === liveCall.muted) return; liveCall.micSet = liveCall.muted; try { c.setMicMuted(liveCall.muted); } catch (e) { /* ignore */ } }
+  // the person's own words for each topic during the call (transcripts + what she typed or edited); kept in state.talk,
+  // so "Start over" wipes them with everything else
+  function heard() { return state.talk.heard || (state.talk.heard = {}); }
+  function liveHeard(q, m) {
+    if (!q || q.type === 'safety' || !m.trim()) return;
+    const h = heard(); h[q.id] = `${(h[q.id] || '').replace(/\s+$/, '')}${h[q.id] && h[q.id].trim() ? ' ' : ''}${m.trim()}`.slice(0, 2000);
+    const ta = document.getElementById('talk-answer');
+    if (ta && liveCall.typing) {
+      const focused = document.activeElement === ta; const a = ta.selectionStart; const b = ta.selectionEnd;
+      ta.value = h[q.id]; if (focused) { try { ta.setSelectionRange(a, b); } catch (e) { /* ignore */ } }
+      const nb = document.getElementById('next-btn'); if (nb) nb.disabled = !h[q.id].trim();
+      if (!liveCall.heardTold) { liveCall.heardTold = true; live.textContent = S().liveHeardIn; } // once, without reading the words
+    }
+  }
+  // "Next"/"Skip" with the field open: the field is the answer; the character is told on the call so it moves on without repeating
+  function liveNext(skip) {
+    const qs = talkQuestions(state); const q = qs[liveNextIndex()]; if (!q || q.type === 'safety') return;
+    const text = (heard()[q.id] || '').trim(); const pt = state.lang === 'pt';
+    if (riskWords(text)) { liveRisk(); return; }
+    if (!skip && !text) { state.error = S().talkNeed; render(true); return; }
+    state.error = null; clearTimeout(liveCall.riskT); liveCall.unassigned = '';
+    (state.talk.fromField || (state.talk.fromField = {}))[q.id] = true;
+    if (skip) { state.talk.skipped[q.id] = true; delete state.talk.answers[q.id]; delete state.talk.an[q.id]; delete state.talk.jobs[q.id]; }
+    else { state.talk.answers[q.id] = text; delete state.talk.skipped[q.id]; analyze(q, text); }
+    if (!liveCall.on || state.crisisOpen) return; // a risk word in the field ended the call and opened the crisis notice
+    if (N3D.ok && !skip) { const r = reactFor(talkTone(q), text); N3D.emote(r.emo1); if (r.nod) N3D.nod(); }
+    const k = liveNextIndex(); const nq = qs[k]; const allDone = !qs.some((x) => (x.type === 'safety' ? state.answers['phq.9'] == null : !(state.talk.answers[x.id] || '').trim() && !state.talk.skipped[x.id]));
+    const swapped = !allDone && liveVoiceCheck();
+    state.talk.i = k; render(true); if (N3D.ok) N3D.walkTo(state.talk.i);
+    const ta = document.getElementById('talk-answer'); if (ta) ta.focus({ preventScroll: true });
+    if (swapped) return; // the new session opens with the next question already as its first words
+    const ctx = allDone
+      ? (pt ? `A pessoa respondeu o último tema [${q.id}] na tela. Todos os temas estão respondidos: faça o fechamento e chame encerrar.` : `The person answered the last topic [${q.id}] on the screen. All topics are answered: say the closing and call encerrar.`)
+      : skip
+        ? (pt ? `A pessoa preferiu pular o tema [${q.id}] tocando em Pular na tela (já registrado: não chame registrar_resposta para ele). Respeite sem comentar e siga para o tema [${nq.id}], sem repetir a pergunta anterior.` : `The person chose to skip topic [${q.id}] by tapping Skip on the screen (already stored: do not call registrar_resposta for it). Respect it without comment and go on to topic [${nq.id}], without repeating the earlier question.`)
+        : (pt ? `A pessoa respondeu o tema [${q.id}] no campo de texto da tela e tocou em Próxima (já registrado: não chame registrar_resposta para ele e não repita essa pergunta). A próxima mensagem é o texto dela. Reaja em no máximo uma frase curta e siga para o tema [${nq.id}].` : `The person answered topic [${q.id}] in the text field on the screen and tapped Next (already stored: do not call registrar_resposta for it and do not repeat that question). The next message is their text. React in one short sentence at most and go on to topic [${nq.id}].`);
+    // Skip is sent as a marker of the tap on the screen, never as words the person did not say
+    try { liveCall.conv.sendContextualUpdate(ctx); liveSend(skip ? (pt ? '[Pular tocado na tela]' : '[Skip tapped on screen]') : text); } catch (e) { /* ignore */ }
+    if (allDone) { const gen = liveCall.gen; setTimeout(() => { if (gen === liveCall.gen && liveCall.on) liveFinish(); }, 20000); }
+  }
+  // typing: the character waits (user activity) and a risk word in the field opens the crisis notice, like a spoken one
+  function liveTyped(t) {
+    const q = talkQuestions(state)[liveNextIndex()]; if (!q || q.type === 'safety') return;
+    heard()[q.id] = t.value.slice(0, 2000); const nb = document.getElementById('next-btn'); if (nb) nb.disabled = !t.value.trim();
+    try { if (liveCall.conv) liveCall.conv.sendUserActivity(); } catch (e) { /* ignore */ }
+    clearTimeout(liveCall.riskT); liveCall.riskT = setTimeout(() => { if (liveCall.on && liveCall.typing && riskWords(heard()[q.id] || '')) liveRisk(); }, 1200);
   }
   // natural voices only where the voice server is reachable and has its key (the test link, not inside the Claude link)
   function naturalVoices() { return !!VOICE_API && !inFrame && ownVoice.ready === true && !!audioElOk; }
@@ -5185,7 +5499,7 @@ function toneOf(text) {
   // ---------- events ----------
   root.addEventListener('change', (e) => {
     const t = e.target;
-    if (t.id === 'lang-select') { if (LOCALES[t.value]) { if (liveCall.on) liveStop(); state.lang = t.value; store('norte.lang', t.value); state.error = null; render(true); } return; }
+    if (t.id === 'lang-select') { if (LOCALES[t.value]) { if (liveCall.on) { liveKeep(); liveStop(); } state.lang = t.value; store('norte.lang', t.value); state.error = null; render(true); } return; }
     if (t.dataset.setup) {
       const k = t.dataset.setup;
       if (k === 'consent') state.setup.consent = t.checked;
@@ -5209,7 +5523,8 @@ function toneOf(text) {
     if (t.id === 'su-email') state.account.email = t.value;
     if (t.id === 'su-birth') state.account.birth = t.value;
     if (t.id === 'av-name') { avatar.name = t.value.slice(0, 24); if (state.errorField === 'av-name' && !nameProblem(avatar.name)) { state.error = null; state.errorField = null; const er = document.getElementById('av-name-err'); if (er) er.remove(); t.removeAttribute('aria-invalid'); } saveAvatar(); const sh = document.getElementById('av-name-show'); if (sh) sh.textContent = avatar.name || S().avNameDefault; }
-    if (t.id === 'talk-answer') { if (N3D.ok && (!state.talk.lastNod || Date.now() - state.talk.lastNod > 2500)) { state.talk.lastNod = Date.now(); N3D.nod(); } const q = curTalkQ(); state.talk.answers[q.id] = t.value; if (t.value.trim()) delete state.talk.skipped[q.id]; const nb = document.getElementById('next-btn'); if (nb) nb.disabled = !t.value.trim() && !state.talk.skipped[q.id]; }
+    if (t.id === 'talk-answer' && liveCall.on && liveCall.typing) { if (N3D.ok && (!state.talk.lastNod || Date.now() - state.talk.lastNod > 2500)) { state.talk.lastNod = Date.now(); N3D.nod(); } liveTyped(t); }
+    else if (t.id === 'talk-answer') { if (N3D.ok && (!state.talk.lastNod || Date.now() - state.talk.lastNod > 2500)) { state.talk.lastNod = Date.now(); N3D.nod(); } const q = curTalkQ(); state.talk.answers[q.id] = t.value; if (t.value.trim()) delete state.talk.skipped[q.id]; const nb = document.getElementById('next-btn'); if (nb) nb.disabled = !t.value.trim() && !state.talk.skipped[q.id]; }
     if (t.dataset.slider) commitSlider(t);
   });
   root.addEventListener('pointerup', (e) => { const t = e.target; if (t.dataset && t.dataset.slider) commitSlider(t); });
@@ -5268,15 +5583,19 @@ function toneOf(text) {
     else if (act === 'voice-test') { const nm = helloName(); if (remoteVoice()) say(fmt(S().voiceTestExpr, { name: nm || '' }).replace(/,\s*!/, '!').replace(/\s+,/g, ','), '[warmly]'); else say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
     else if (act === 'talk-replay') say(talkSpeech(curTalkQ()));
     else if (act === 'mic') micToggle();
+    else if (act === 'talk-next' && liveCall.on && liveCall.typing) liveNext(false);
+    else if (act === 'talk-skip' && liveCall.on && liveCall.typing) liveNext(true);
     else if (act === 'talk-next') talkNext();
-    else if (act === 'talk-skip') { const q = curTalkQ(); state.talk.skipped[q.id] = true; delete state.talk.answers[q.id]; delete state.talk.an[q.id]; delete state.talk.jobs[q.id]; talkNext(); }
+    else if (act === 'talk-skip') { const q = curTalkQ(); { const ta = document.getElementById('talk-answer'); if (ta && riskWords(ta.value)) { flagRisk(); return; } } state.talk.skipped[q.id] = true; delete state.talk.answers[q.id]; delete state.talk.an[q.id]; delete state.talk.jobs[q.id]; talkNext(); }
     else if (act === 'talk-back') { stopMic(); stopSay(); state.error = null; if (state.talk.i > 0) { state.talk.i--; render(); } else { state.view = 'find'; render(); } }
     else if (act === 'tsel') { const ar = b.dataset.area; state.talk.selTouched = true; state.talkSel[ar] = !state.talkSel[ar]; render(true); const again = root.querySelector(`[data-act="tsel"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'ind-nowait') { if (state.talk.finishWait) state.talk.finishWait(); }
     else if (act === 'ind-back') { stopSay(); state.view = 'talk'; state.talk.i = talkQuestions(state).length - 1; render(); }
     else if (act === 'talk-go2') { stopSay(); state.afterFind = 'level2'; state.findStarted = false; state.findShown = false; compass.found = false; state.view = 'find'; render(); }
     else if (act === 'broken-loc') { if (!state.broken.loc) { state.broken.loc = true; render(true); if (N3D.ok) N3D.emote('sad'); const h = document.getElementById('broken-hint'); if (h) live.textContent = h.textContent; say(S().brokenNoSignal); } }
-    else if (act === 'live-text') { liveStop(); state.talk.i = liveNextIndex(); state.talk.said = null; render(); }
+    else if (act === 'live-text') { if (!liveCall.on) return; liveCall.typing = true; state.error = null; render(true); const ta = document.getElementById('talk-answer'); if (ta) { ta.focus({ preventScroll: true }); try { ta.setSelectionRange(ta.value.length, ta.value.length); } catch (err) { /* ignore */ } } }
+    else if (act === 'live-mute') { if (!liveCall.on) return; liveCall.muted = !liveCall.muted; liveMicApply(); render(true); const b = root.querySelector('[data-act=live-mute]'); if (b) b.focus({ preventScroll: true }); }
+    else if (act === 'live-close') { { const lq = talkQuestions(state)[liveNextIndex()]; if (lq && riskWords(heard()[lq.id] || '')) { liveRisk(); return; } } liveCall.typing = false; liveCall.muted = false; liveMicApply(); state.error = null; clearTimeout(liveCall.riskT); render(true); const b = root.querySelector('[data-act=live-text]'); if (b) b.focus({ preventScroll: true }); }
     else if (act === 'fix-start') { if (state.broken.moved < 120) return; unlockAudio(); saveAvatar(); state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.view = 'talk'; if (liveAvailable() && state.setup.consent && voiceId() !== 'off') { liveMicWarm(); liveStart(); } render(); }
     else if (act === 'optin') { const ar = b.dataset.area; state.optIn[ar] = !state.optIn[ar]; render(true); const again = root.querySelector(`[data-act="optin"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'exp-open') { state.expOpen = true; render(true); }

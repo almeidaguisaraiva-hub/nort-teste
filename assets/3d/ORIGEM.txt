@@ -1,0 +1,25 @@
+Arquivos do modo realista de TESTE do Nort (só com ?modelo=real; o app padrão não usa nada daqui).
+
+pessoa-1..7.glb, anim-f.glb, anim-m.glb
+  Fonte: Microsoft Rocketbox, https://github.com/microsoft/Microsoft-Rocketbox
+  commit 0943055db6ec570bcef9f2c8b41c9e5467c808f9
+  Licença: MIT, Copyright (c) 2020 Microsoft (texto em LICENSE-Rocketbox-MIT.md, que deve acompanhar as cópias).
+  Pessoas: 1 Female_Adult_01, 2 Male_Adult_04, 3 Female_Party_02, 4 Male_Adult_12, 5 Female_Adult_11,
+           6 Female_Adult_03, 7 Male_Adult_02 (arquivos *_facial.fbx + texturas).
+  Animações (all_animations_max_motextr_static / _xy, versões f_ e m_): idle_breathe_01 (parado), walk_neutral
+  (andar), idle_look_around_01 (procurar), crouch_in/crouch_idle/crouch_out (agachar), wave_01 (acenar),
+  gestic_talk_neutral_01 (falar), gestic_listen_neutral_01 (ouvir), gestic_listen_accept_01 (concordar),
+  gestic_listen_sad_01 (triste), gestic_listen_accept_02 (compaixão), gestic_thoughtful_01 (pensativo),
+  gestic_laugh_low (feliz), cheer_01 (animado), gestic_presentation_right_01 (mostrar), idle_neutral_01 (calmo).
+  Modificações do Nort: FBX -> glTF (FBX2glTF), só as 52 formas ARKit + 15 visemas, texturas 1024 px WebP,
+  animações num arquivo separado por conjunto (f/m), compressão meshopt. Script: tools/rocketbox_real.py.
+
+cena/ (céu, chão, trilha, pedras, árvores)
+  Fonte: Poly Haven, https://polyhaven.com — todos os assets do Poly Haven são CC0 (domínio público),
+  conforme https://polyhaven.com/license . Usados:
+    HDRIs kloofendal_misty_morning_puresky (ceu-nevoa) e kloofendal_48d_partly_cloudy_puresky (ceu-dia), 1k,
+      convertidos para imagem comum (tonemap) 1024x512 WebP.
+    Texturas leafy_grass (chao-grama), forest_ground_04 (trilha-terra), mossy_rock (pedra): cor e normal, WebP.
+    Modelos fir_sapling (arvore-1..3), island_tree_02 (arvore-4), tree_small_02 (arvore-5): renderizados no
+      Blender (Cycles) como fotos com fundo transparente (tools/blender_tree_impostors.py), 512 px de altura.
+  Baixados de api.polyhaven.com / dl.polyhaven.org em 14/11/2026.
