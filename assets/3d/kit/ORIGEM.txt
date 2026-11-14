@@ -1,0 +1,50 @@
+Kit de personagem realista do Nort (modo de teste ?modelo=real). Gerado por tools/kit_real.py.
+
+Licenças:
+  MakeHuman "system assets" e MPFB2: CC0 1.0 (domínio público). Cada arquivo de peça (.mhclo/.obj/.mhmat) traz no cabeçalho
+  "This asset was explicitly released as CC0 in september 2020"; o LICENSE.md do MakeHuman (seção C) diz que malha base,
+  proxies, targets, texturas e roupas (MHCLO) são CC0; o LICENSE.ASSETS.md do MPFB2 é o texto do CC0.
+  Esqueleto (nomes, hierarquia e rotações de repouso, sem malha): Microsoft Rocketbox, MIT, Copyright (c) 2020 Microsoft
+  (texto em ../LICENSE-Rocketbox-MIT.md), de Female_Adult_01 e Male_Adult_04 (commit 0943055db6ec570bcef9f2c8b41c9e5467c808f9).
+
+Fontes (commits fixos):
+  MPFB2: https://github.com/makehumancommunity/mpfb2 commit 9de0707fdc88438d7c53a1a2ac7937d9221e2431 (src/mpfb/data/: 3dobjs/base.obj, targets/macrodetails,
+         targets/head, targets/nose, targets/expression/units, rigs/standard/rig.mixamo.json e weights.mixamo.json)
+  MakeHuman 1.x system assets: https://github.com/MaximovIlya/makehuman commit cff238433c72de20c87686b6efd8f15e5bc48cc7 (pasta makehuman/data/),
+         cópia do repositório oficial makehumancommunity/makehuman com os assets do sistema (o site makehumancommunity.org
+         não abre neste computador; os arquivos são os mesmos, com o cabeçalho CC0 original).
+
+Modificações do Nort (todas as peças): corpo com mistura neutra das 3 referências do MakeHuman; pose e escala iguais às do
+  Rocketbox (para as animações do app); pesos do rig Mixamo do MPFB levados aos ossos Bip01; formas do corpo (magro, maior,
+  jovem, mais velho), do rosto (4), do nariz (4) e ARKit/visemas a partir das unidades de expressão; texturas sem cor
+  (a cor da pele, do cabelo e da roupa vem do app), recortadas, 1024 px WebP; relevo de poros a partir da textura de pele;
+  logotipos das roupas retirados (camisetas usam só o sombreamento); roupas separadas em parte de cima e de baixo.
+
+Peças e arquivos de origem (relativos a makehuman/data/ no commit acima):
+  barba-cheia: feito pelo Nort por código (sem arquivo de terceiros); malha e formas a partir da pele do corpo do kit
+  barba-curta: feito pelo Nort por código (sem arquivo de terceiros); malha e formas a partir da pele do corpo do kit
+  barba-rala: feito pelo Nort por código (sem arquivo de terceiros); malha e formas a partir da pele do corpo do kit
+  bigode: feito pelo Nort por código (sem arquivo de terceiros); malha e formas a partir da pele do corpo do kit
+  cabelo-blackpower: feito pelo Nort por código (sem arquivo de terceiros)
+  cabelo-cacheado: feito pelo Nort por código (sem arquivo de terceiros)
+  cabelo-coque: feito pelo Nort por código (sem arquivo de terceiros)
+  cabelo-curto: hair/short02/short02.mhclo, hair/short02/short02.obj, hair/short02/short02_diffuse.png
+  cabelo-lado: hair/short03/short03.mhclo, hair/short03/short03.obj, hair/short03/short03_diffuse.png
+  cabelo-long: hair/long01/long01.mhclo, hair/long01/long01.obj, hair/long01/long01_diffuse.png
+  cabelo-rabo: hair/ponytail01/ponytail01.mhclo, hair/ponytail01/ponytail01.obj, hair/ponytail01/ponytail01_diffuse.png
+  cabelo-raspado: feito pelo Nort por código (sem arquivo de terceiros)
+  cabelo-tranca-lateral: hair/braid01/braid01.mhclo, hair/braid01/braid01.obj, hair/braid01/braid01_diffuse.png
+  cabelo-trancas: feito pelo Nort por código (sem arquivo de terceiros)
+  calca: clothes/male_casualsuit06/male_casualsuit06.mhclo, clothes/male_casualsuit06/male_casualsuit06.obj, clothes/male_casualsuit06/male_casualsuit06_ao.png, clothes/male_casualsuit06/male_casualsuit06_diffuse.png, clothes/male_casualsuit06/male_casualsuit06_normal.png
+  camisa: clothes/male_casualsuit03/male_casualsuit03.mhclo, clothes/male_casualsuit03/male_casualsuit03.obj, clothes/male_casualsuit03/male_casualsuit03_ao.png, clothes/male_casualsuit03/male_casualsuit03_diffuse.png, clothes/male_casualsuit03/male_casualsuit03_normal.png
+  camiseta: clothes/female_casualsuit01/female_casualsuit01.mhclo, clothes/female_casualsuit01/female_casualsuit01.obj, clothes/female_casualsuit01/female_casualsuit01_ao.png, clothes/female_casualsuit01/female_casualsuit01_diffuse.png, clothes/female_casualsuit01/female_casualsuit01_normal.png, clothes/male_casualsuit06/male_casualsuit06.mhclo, clothes/male_casualsuit06/male_casualsuit06.obj, clothes/male_casualsuit06/male_casualsuit06_ao.png, clothes/male_casualsuit06/male_casualsuit06_diffuse.png, clothes/male_casualsuit06/male_casualsuit06_normal.png
+  cavanhaque: feito pelo Nort por código (sem arquivo de terceiros); malha e formas a partir da pele do corpo do kit
+  corpo: eyebrows/eyebrow003/*, eyebrows/eyebrow007/*, eyebrows/eyebrow009/*, eyebrows/eyebrow010/*, eyelashes/eyelashes01/*, eyes/high-poly/high-poly.mhclo, eyes/high-poly/high-poly.obj, eyes/materials/brown_eye.png, skins/textures/old_lightskinned_female_diffuse.png, skins/textures/old_lightskinned_male_diffuse.png, skins/textures/young_lightskinned_female_diffuse.png, skins/textures/young_lightskinned_male_diffuse.png, teeth/materials/teeth.png, teeth/teeth_base/*, tongue/tongue01/*
+  jaqueta: clothes/male_casualsuit05/male_casualsuit05.mhclo, clothes/male_casualsuit05/male_casualsuit05.obj, clothes/male_casualsuit05/male_casualsuit05_ao.png, clothes/male_casualsuit05/male_casualsuit05_diffuse.png, clothes/male_casualsuit05/male_casualsuit05_normal.png
+  oculos: feito pelo Nort por código (sem arquivo de terceiros)
+  oculos-sol: feito pelo Nort por código (sem arquivo de terceiros)
+  saia: clothes/female_elegantsuit01/female_elegantsuit01.mhclo, clothes/female_elegantsuit01/female_elegantsuit01.obj, clothes/female_elegantsuit01/female_elegantsuit01_ao.png, clothes/female_elegantsuit01/female_elegantsuit01_diffuse.png, clothes/female_elegantsuit01/female_elegantsuit01_normal.png
+  short: clothes/female_casualsuit02/female_casualsuit02.mhclo, clothes/female_casualsuit02/female_casualsuit02.obj, clothes/female_casualsuit02/female_casualsuit02_ao.png, clothes/female_casualsuit02/female_casualsuit02_diffuse.png, clothes/female_casualsuit02/female_casualsuit02_normal.png
+  sueter: clothes/male_casualsuit02/male_casualsuit02.mhclo, clothes/male_casualsuit02/male_casualsuit02.obj, clothes/male_casualsuit02/male_casualsuit02_ao.png, clothes/male_casualsuit02/male_casualsuit02_diffuse.png, clothes/male_casualsuit02/male_casualsuit02_normal.png
+  tenis: clothes/shoes05/shoes05.mhclo, clothes/shoes05/shoes05.obj, clothes/shoes05/shoes05_diffuse.png
+  vestido: clothes/female_elegantsuit01/female_elegantsuit01.mhclo, clothes/female_elegantsuit01/female_elegantsuit01.obj, clothes/female_elegantsuit01/female_elegantsuit01_ao.png, clothes/female_elegantsuit01/female_elegantsuit01_diffuse.png, clothes/female_elegantsuit01/female_elegantsuit01_normal.png
