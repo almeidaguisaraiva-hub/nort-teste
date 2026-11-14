@@ -1,0 +1,14 @@
+Arquivos de TESTE do agente 3D do Nort (não entram no app).
+
+nort-teste-a.glb  <- Microsoft Rocketbox, Assets/Avatars/Adults/Female_Adult_01 (Export/Female_Adult_01_facial.fbx)
+nort-teste-b.glb  <- Microsoft Rocketbox, Assets/Avatars/Adults/Male_Adult_04 (Export/Male_Adult_04_facial.fbx)
+Animações         <- Microsoft Rocketbox, Assets/Animations/all_animations_max_motextr_static
+                     (f_/m_ idle_breathe_01, wave_01, gestic_talk_neutral_01, gestic_thoughtful_01,
+                      gestic_listen_sad_01, gestic_listen_accept_01)
+
+Fonte: https://github.com/microsoft/Microsoft-Rocketbox (commit 0943055db6ec570bcef9f2c8b41c9e5467c808f9)
+Licença: MIT (LICENSE.md do repositório, copiado em LICENSE-Rocketbox-MIT.md). Copyright (c) 2020 Microsoft.
+A licença MIT exige manter o aviso de copyright e o texto da licença junto das cópias.
+
+Modificações do Nort: FBX convertido para glTF (FBX2glTF), só as 52 formas ARKit mantidas (visemas e FACS
+retirados), texturas reduzidas para 1024 px WebP, 6 animações juntadas no mesmo arquivo, compressão meshopt.

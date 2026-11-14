@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Nort · teste do personagem .glb (não é o app)</title>
+<!-- Página de TESTE do agente 3D. Não entra no app (src/ e norte.html não usam este arquivo). -->
+<style>
+  :root { --bg: #EAF5EE; --ink: #0D3B2A; --green: #0E7A4D; --coral: #E8684A; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 15px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+  #stage { position: fixed; inset: 0; }
+  #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  .top { position: fixed; left: 0; right: 0; top: 0; padding: calc(env(safe-area-inset-top) + 8px) 12px 6px; display: flex; gap: 8px; align-items: center; pointer-events: none; }
+  .tag { pointer-events: auto; background: rgba(255,255,255,.88); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: 13px; box-shadow: 0 1px 4px rgba(13,59,42,.12); }
+  .tag small { font-weight: 400; }
+  #status { margin-left: auto; }
+  .panel { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 10px calc(env(safe-area-inset-bottom) + 10px); background: rgba(255,255,255,.9); border-radius: 18px 18px 0 0; box-shadow: 0 -2px 12px rgba(13,59,42,.12); backdrop-filter: blur(6px); }
+  .row { display: flex; gap: 6px; margin-bottom: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .row::-webkit-scrollbar { display: none; }
+  .row:last-child { margin-bottom: 0; }
+  .lbl { flex: none; align-self: center; font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; opacity: .75; margin: 0 2px; }
+  button { flex: none; white-space: nowrap; min-height: 44px; min-width: 44px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #B9D7C5; background: #fff; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+  button[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  button:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+  .credit { font-size: 11px; opacity: .8; margin-top: 4px; }
+  .credit a { color: var(--ink); }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="stage" aria-label="Personagem 3D de teste"></div>
+<div class="top">
+  <span class="tag">Teste .glb <small>(não é o app)</small></span>
+  <span class="tag" id="status" role="status" aria-live="polite">Carregando…</span>
+</div>
+<div class="panel">
+  <div class="row" role="group" aria-label="Modelo">
+    <button data-model="a" aria-pressed="true">Modelo A</button>
+    <button data-model="b" aria-pressed="false">Modelo B</button>
+    <button id="frame" aria-pressed="false">Rosto de perto</button>
+  </div>
+  <div class="row" role="group" aria-label="Emoção">
+    <span class="lbl">Emoção</span>
+    <button data-emo="neutral" aria-pressed="true">Neutro</button>
+    <button data-emo="happy" aria-pressed="false">Feliz</button>
+    <button data-emo="sad" aria-pressed="false">Triste</button>
+    <button data-emo="compassion" aria-pressed="false">Compaixão</button>
+    <button data-emo="surprised" aria-pressed="false">Surpreso</button>
+    <button data-emo="thinking" aria-pressed="false">Pensativo</button>
+  </div>
+  <div class="row" role="group" aria-label="Ações">
+    <span class="lbl">Ações</span>
+    <button id="wave">Acenar</button>
+    <button id="nod">Concordar</button>
+    <button id="talk" aria-pressed="false">Falar (som de teste)</button>
+    <button id="mic" aria-pressed="false">Boca com meu microfone</button>
+  </div>
+  <div class="credit">Modelo: Microsoft Rocketbox (licença MIT, © 2020 Microsoft), adaptado pelo Nort. Microfone: o som fica só no aparelho.</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const params = new URLSearchParams(location.search);
+const BASE = params.get('base') || 'glb/';
+const MODELS = { a: BASE + 'nort-teste-a.glb', b: BASE + 'nort-teste-b.glb' };
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const weak = (navigator.deviceMemory || 4) <= 2;
+const $ = (s) => document.querySelector(s);
+const status = (t) => { $('#status').textContent = t; };
+
+// ---------- scene: same light recipe as the app's forest (src/three3d.js) ----------
+const stage = $('#stage');
+const renderer = new THREE.WebGLRenderer({ antialias: !weak, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.5 : 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = !weak; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xEAF5EE);
+scene.fog = new THREE.Fog(0xE9F4EC, 10, 26);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.add(new THREE.HemisphereLight(0xFFF8EE, 0x9FB7A6, 1.5));
+const sun = new THREE.DirectionalLight(0xFFF1DC, 2.2); sun.position.set(3, 7, 5); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024); sun.shadow.bias = -0.0005;
+Object.assign(sun.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 1, far: 20 }); scene.add(sun);
+const rimL = new THREE.DirectionalLight(0xD8F0FF, 0.9); rimL.position.set(-4, 4, -5); scene.add(rimL);
+const rimR = new THREE.DirectionalLight(0xFFFFFF, 0.8); rimR.position.set(5, 5, -4); scene.add(rimR);
+const fill = new THREE.DirectionalLight(0xFFF3E6, 0.55); fill.position.set(0, 2.5, 9); scene.add(fill);
+const mat = (c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9 });
+const ground = new THREE.Mesh(new THREE.CircleGeometry(60, 64), mat(0xD5EADB)); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+for (let i = 0; i < 24; i++) { // simple forest behind the character, like the app's trail
+  const x = -9 + i * 0.8 + Math.sin(i * 7.3) * 0.5, z = -3 - Math.abs(Math.sin(i * 3.1)) * 7;
+  const g = new THREE.Group(); g.position.set(x, 0, z);
+  if (i % 3 === 0) { const r = new THREE.Mesh(new THREE.DodecahedronGeometry(0.35 + (i % 5) * 0.08), mat(0xB9C7D3)); r.position.y = 0.2; g.add(r); }
+  else { const t = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.6, 8), mat(0x8A6A4E)); t.position.y = 0.3; g.add(t); const top = new THREE.Mesh(new THREE.ConeGeometry(0.55 + (i % 3) * 0.15, 1.4 + (i % 4) * 0.25, 10), mat(0x3E8E7E)); top.position.y = 1.2 + (i % 4) * 0.12; g.add(top); }
+  scene.add(g);
+}
+const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 60);
+let close = false;
+function frameCam() {
+  const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+  // the panel covers the bottom ~40%: shift the view up so the character sits in the free area
+  const panelH = (document.querySelector('.panel')?.offsetHeight || 210);
+  camera.setViewOffset(w, h, 0, panelH * 0.5 - 10, w, h);
+  if (close) { camera.position.set(0, 1.58, 1.5); camera.lookAt(0, 1.52, 0); camera.fov = 24; }
+  else { const fit = (h - panelH - 60) / h; const d = 1.8 / (2 * Math.tan(THREE.MathUtils.degToRad(15)) * fit * Math.min(1, camera.aspect / 0.62)); camera.position.set(0, 1.0, Math.max(3.6, d)); camera.lookAt(0, 0.88, 0); camera.fov = 30; }
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', frameCam); frameCam();
+
+// ---------- model ----------
+const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+let avatar = null, mixer = null, actions = {}, current = null, morphMeshes = [], headBone = null, neckBone = null;
+const ARKIT = (n) => n.charAt(0).toLowerCase() + n.slice(1); // "MouthSmileLeft" -> "mouthSmileLeft"
+const weights = {}; // target name -> current value
+function setW(name, v) { weights[name] = v; }
+function applyWeights() {
+  for (const m of morphMeshes) { const d = m.morphTargetDictionary; for (const k in weights) { const i = d[k]; if (i !== undefined) m.morphTargetInfluences[i] = weights[k]; } }
+}
+
+async function loadModel(key) {
+  status('Carregando modelo ' + key.toUpperCase() + '…');
+  const t0 = performance.now();
+  const gltf = await loader.loadAsync(MODELS[key]);
+  if (avatar) { scene.remove(avatar); mixer.stopAllAction(); }
+  avatar = gltf.scene; morphMeshes = []; eyeBones = []; let tris = 0;
+  avatar.traverse((o) => {
+    if (o.isMesh) {
+      o.castShadow = true; o.frustumCulled = false;
+      tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3;
+      if (o.morphTargetDictionary) {
+        // rename to the ARKit names (camelCase); visemes stay "viseme_aa" etc.
+        const d = {}; for (const [k, i] of Object.entries(o.morphTargetDictionary)) d[k.startsWith('viseme_') ? k : ARKIT(k)] = i;
+        o.morphTargetDictionary = d; morphMeshes.push(o);
+      }
+      const m = o.material; m.envMapIntensity = 0.55;
+      if (/head/.test(m.name)) { m.roughness = 0.55; }
+    }
+    if (o.isBone && /^Bip01[ _]Head$/.test(o.name)) headBone = o;
+    if (o.isBone && /^Bip01[ _]Neck$/.test(o.name)) neckBone = o;
+    if (o.isBone && /^Bip01[ _][LR]Eye$/.test(o.name)) eyeBones.push(o);
+  });
+  // scale to ~1.68 m and stand on the ground
+  avatar.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(avatar); const h = box.max.y - box.min.y;
+  avatar.scale.multiplyScalar(1.68 / h); avatar.updateMatrixWorld(true);
+  const b2 = new THREE.Box3().setFromObject(avatar); avatar.position.y -= b2.min.y;
+  scene.add(avatar);
+  mixer = new THREE.AnimationMixer(avatar); actions = {};
+  for (const clip of gltf.animations) actions[clip.name] = mixer.clipAction(clip);
+  mixer.addEventListener('finished', () => play(EMO[emo].clip));
+  for (const k in weights) weights[k] = 0;
+  current = null; play(EMO[emo].clip, 0);
+  const kb = Math.round((await (await fetch(MODELS[key], { method: 'HEAD' })).headers.get('content-length') || 0) / 1024);
+  status(`Modelo ${key.toUpperCase()} · ${Math.round(tris / 1000)} mil triângulos · ${kb ? kb + ' KB · ' : ''}${Math.round(performance.now() - t0)} ms`);
+  window.__ready = true;
+}
+
+function play(name, fade = 0.45) {
+  const a = actions[name] || actions.parado; if (!a || a === current) return;
+  const once = name === 'acenar' || name === 'concordar';
+  a.reset(); a.setLoop(once ? THREE.LoopOnce : THREE.LoopRepeat, Infinity); a.clampWhenFinished = once;
+  if (reduce && !once) { a.play(); a.paused = true; } else a.play(); // reduced motion: hold a still pose
+  if (current) current.crossFadeTo(a, fade, false); current = a;
+}
+
+// ---------- emotions (Nort's EMO table) -> ARKit blendshapes + body clip ----------
+const EMO = {
+  neutral:    { clip: 'parado', w: {} },
+  happy:      { clip: 'parado', w: { mouthSmileLeft: 1.6, mouthSmileRight: 1.6, cheekSquintLeft: 0.9, cheekSquintRight: 0.9, eyeSquintLeft: 0.35, eyeSquintRight: 0.35, mouthDimpleLeft: 0.4, mouthDimpleRight: 0.4, mouthUpperUpLeft: 0.15, mouthUpperUpRight: 0.15, browInnerUp: 0.15 }, eyes: [0, 0] },
+  sad:        { clip: 'compaixao', w: { browInnerUp: 1.0, browDownLeft: 0.15, browDownRight: 0.15, mouthFrownLeft: 1.0, mouthFrownRight: 1.0, mouthPressLeft: 0.3, mouthPressRight: 0.3, mouthShrugLower: 0.35, eyeSquintLeft: 0.15, eyeSquintRight: 0.15, eyeBlinkLeft: 0.18, eyeBlinkRight: 0.18 }, eyes: [0, -0.18], head: [0.1, 0, 0.05] },
+  compassion: { clip: 'parado', w: { browInnerUp: 0.75, mouthSmileLeft: 0.8, mouthSmileRight: 0.8, cheekSquintLeft: 0.3, cheekSquintRight: 0.3, eyeSquintLeft: 0.3, eyeSquintRight: 0.3, mouthPressLeft: 0.2, mouthPressRight: 0.2, eyeBlinkLeft: 0.1, eyeBlinkRight: 0.1 }, eyes: [0, -0.05], head: [0.04, 0, 0.12] },
+  surprised:  { clip: 'parado', w: { browInnerUp: 1.0, browOuterUpLeft: 1.0, browOuterUpRight: 1.0, eyeWideLeft: 1.0, eyeWideRight: 1.0, jawOpen: 0.35, mouthFunnel: 0.3 }, eyes: [0, 0.03], head: [-0.05, 0, 0] },
+  thinking:   { clip: 'pensativo', w: { browDownLeft: 0.5, browOuterUpRight: 0.6, browInnerUp: 0.2, mouthPressLeft: 0.45, mouthLeft: 0.4, mouthRollLower: 0.2, eyeSquintLeft: 0.25 }, eyes: [0.22, 0.2], head: [-0.06, 0.1, -0.06] }
+};
+let emo = 'neutral';
+const target = {}; // smoothed emotion weights
+function setEmotion(e) {
+  emo = e; document.querySelectorAll('[data-emo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.emo === e)));
+  play(EMO[e].clip); window.__emo = e;
+}
+
+// ---------- blink + small eye movement ----------
+let blinkT = 1.5, blink = 0, saccT = 0.8, look = [0, 0]; const eyeT = [0, 0]; let eyeBones = []; const _pq = new THREE.Quaternion(), _r = new THREE.Quaternion(), _eu = new THREE.Euler();
+// ---------- talking: test audio (synthetic babble) or the microphone, analysed on the device ----------
+let actx = null, analyser = null, srcNode = null, talking = false, micOn = false, micStream = null;
+const freq = new Uint8Array(256);
+function ctx() { if (!actx) { actx = new (window.AudioContext || window.webkitAudioContext)(); analyser = actx.createAnalyser(); analyser.fftSize = 512; analyser.smoothingTimeConstant = 0.5; } if (actx.state === 'suspended') actx.resume(); return actx; }
+function stopSound() { if (srcNode) { try { srcNode.stop && srcNode.stop(); } catch (_) {} srcNode.disconnect(); srcNode = null; } }
+function testAudio() {
+  // 4 s of "speech-like" sound: a voiced buzz through two moving formants, syllables of 120–260 ms
+  const c = ctx(), sr = c.sampleRate, len = sr * 4, buf = c.createBuffer(1, len, sr), d = buf.getChannelData(0);
+  const V = [[730, 1090], [270, 2290], [570, 840], [300, 870], [530, 1840]]; // a, i, o, u, e
+  let ph = 0, t = 0, syl = 0, sylLen = 0.18, v = V[0]; const f1s = [0, 0, 0, 0], f2s = [0, 0, 0, 0];
+  const bp = (x, s, f, q) => { const w = 2 * Math.PI * f / sr, a = Math.sin(w) / (2 * q), b0 = a, a0 = 1 + a, a1 = -2 * Math.cos(w), a2 = 1 - a; const y = (b0 * x - b0 * s[2] - a1 * s[0] - a2 * s[1]) / a0; s[2] = s[3]; s[3] = x; s[1] = s[0]; s[0] = y; return y; };
+  for (let i = 0; i < len; i++) {
+    t = i / sr; const local = t - syl;
+    if (local > sylLen) { syl = t; sylLen = 0.12 + Math.random() * 0.14; v = V[(Math.random() * V.length) | 0]; }
+    const pause = (t % 1.6) > 1.35; // short pauses like between phrases
+    const env = pause ? 0 : Math.sin(Math.PI * Math.min(1, local / sylLen)) ** 0.6;
+    const f0 = 150 + 25 * Math.sin(t * 3.1); ph += f0 / sr; const src = (ph % 1) * 2 - 1;
+    d[i] = env * (bp(src, f1s, v[0], 6) * 0.9 + bp(src, f2s, v[1], 9) * 0.5) * 0.3;
+  }
+  stopSound(); const s = c.createBufferSource(); s.buffer = buf; s.loop = true; s.connect(analyser); analyser.connect(c.destination); s.start(); srcNode = s;
+}
+async function micAudio() {
+  const c = ctx();
+  micStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+  stopSound(); try { analyser.disconnect(); } catch (_) {}
+  srcNode = c.createMediaStreamSource(micStream); srcNode.connect(analyser); // not connected to the speakers
+}
+function stopMic() { if (micStream) micStream.getTracks().forEach((t) => t.stop()); micStream = null; stopSound(); }
+const band = (lo, hi) => { const n = analyser.frequencyBinCount, hz = actx.sampleRate / 2 / n; let s = 0, k = 0; for (let i = Math.floor(lo / hz); i <= Math.min(n - 1, Math.ceil(hi / hz)); i++) { s += freq[i]; k++; } return k ? s / k / 255 : 0; };
+const mouth = { open: 0, aa: 0, E: 0, I: 0, O: 0, U: 0, PP: 0 };
+function updateMouth(dt) {
+  if (window.NGLB && window.NGLB.freezeMouth) return;
+  let open = 0, lo = 0, mid = 0, hi = 0;
+  if ((talking || micOn) && analyser) {
+    analyser.getByteFrequencyData(freq);
+    lo = band(200, 900); mid = band(900, 1800); hi = band(1800, 3600);
+    open = Math.min(1, Math.max(0, (lo + mid * 0.5) - 0.2) * 1.4);
+  }
+  const k = 1 - Math.exp(-dt * 18), tot = lo + mid + hi + 1e-3;
+  const tgt = { open, aa: open * (lo / tot) * 1.4, E: open * (hi / tot) * 1.2, I: open * (hi / tot) * 0.6, O: open * (mid / tot) * 1.1, U: open < 0.2 ? open * 1.2 : 0, PP: (talking || micOn) && open < 0.05 ? 0.35 : 0 };
+  for (const n in mouth) mouth[n] += (Math.min(1, tgt[n]) - mouth[n]) * k;
+}
+
+// ---------- loop ----------
+const clock = new THREE.Clock();
+function tick() {
+  const dt = Math.min(0.05, clock.getDelta()), t = clock.elapsedTime;
+  if (mixer) mixer.update(reduce ? 0 : dt);
+  // emotion weights, eased
+  const want = EMO[emo].w; const all = new Set([...Object.keys(target), ...Object.keys(want)]);
+  const ke = 1 - Math.exp(-dt * 6);
+  for (const n of all) target[n] = (target[n] || 0) + ((want[n] || 0) - (target[n] || 0)) * ke;
+  for (const n in weights) weights[n] = 0;
+  for (const n in target) setW(n, target[n]);
+  // blink every 2–5 s (double blink sometimes)
+  blinkT -= dt; if (window.NGLB && window.NGLB.noBlink) blinkT = 9; if (blinkT <= 0) { blink = 1; blinkT = 2 + Math.random() * 3; if (Math.random() < 0.15) blinkT = 0.25; }
+  const bl = blink > 0 ? Math.sin(Math.PI * (1 - blink)) : 0; blink = Math.max(0, blink - dt / 0.16);
+  setW('eyeBlinkLeft', Math.min(1, (weights.eyeBlinkLeft || 0) + bl)); setW('eyeBlinkRight', Math.min(1, (weights.eyeBlinkRight || 0) + bl));
+  // tiny saccades
+  saccT -= dt; if (saccT <= 0 && !reduce) { saccT = 0.6 + Math.random() * 1.8; look = [(Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.15]; }
+  const eg = EMO[emo].eyes || [0, 0]; eyeT[0] += (eg[0] + look[0] - eyeT[0]) * Math.min(1, dt * 20); eyeT[1] += (eg[1] + look[1] - eyeT[1]) * Math.min(1, dt * 20);
+  // mouth from audio: jaw + visemes on top of the emotion
+  updateMouth(dt);
+  setW('jawOpen', Math.min(1, (weights.jawOpen || 0) + mouth.open * 0.55));
+  // this model's viseme shapes are almost empty, so speech uses the ARKit mouth shapes
+  setW('mouthFunnel', (weights.mouthFunnel || 0) + mouth.O * 0.7); setW('mouthPucker', mouth.U * 0.8); setW('mouthStretchLeft', mouth.E * 0.5); setW('mouthStretchRight', mouth.E * 0.5);
+  setW('mouthLowerDownLeft', mouth.aa * 0.5); setW('mouthLowerDownRight', mouth.aa * 0.5); setW('mouthUpperUpLeft', (weights.mouthUpperUpLeft || 0) + mouth.I * 0.3); setW('mouthUpperUpRight', (weights.mouthUpperUpRight || 0) + mouth.I * 0.3); setW('mouthClose', mouth.PP * 0.5);
+  applyWeights();
+  // head tilt for the emotion (added after the clip), towards the camera
+  if (headBone) { // emotion head pose [pitch down, turn, tilt], world space, added after the clip
+    const h = EMO[emo].head || [0, 0, 0]; const hv = headBone.userData.h = (headBone.userData.h || [0, 0, 0]).map((v, i) => v + (h[i] - v) * ke);
+    headBone.parent.getWorldQuaternion(_pq); _r.setFromEuler(_eu.set(hv[0], hv[1], hv[2], 'YXZ'));
+    headBone.quaternion.premultiply(_pq.clone().invert().multiply(_r).multiply(_pq));
+  }
+  for (const e of eyeBones) { // eyes look around (rotation in world space, from the rest pose)
+    if (!e.userData.rest) e.userData.rest = e.quaternion.clone();
+    e.parent.getWorldQuaternion(_pq); _r.setFromEuler(_eu.set(-eyeT[1], eyeT[0], 0, 'YXZ'));
+    e.quaternion.copy(_pq).invert().multiply(_r).multiply(_pq).multiply(e.userData.rest);
+  }
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+
+// ---------- UI ----------
+document.querySelectorAll('[data-emo]').forEach((b) => b.addEventListener('click', () => setEmotion(b.dataset.emo)));
+document.querySelectorAll('[data-model]').forEach((b) => b.addEventListener('click', async () => {
+  document.querySelectorAll('[data-model]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  try { await loadModel(b.dataset.model); } catch (e) { status('Não carregou: ' + e.message); }
+}));
+$('#frame').addEventListener('click', (e) => { close = !close; e.currentTarget.setAttribute('aria-pressed', String(close)); frameCam(); });
+$('#wave').addEventListener('click', () => { current = null; play('acenar', 0.3); });
+$('#nod').addEventListener('click', () => { current = null; play('concordar', 0.3); });
+$('#talk').addEventListener('click', (e) => {
+  talking = !talking; e.currentTarget.setAttribute('aria-pressed', String(talking));
+  if (talking) { if (micOn) $('#mic').click(); testAudio(); play('falar'); } else { stopSound(); play(EMO[emo].clip); }
+});
+$('#mic').addEventListener('click', async (e) => {
+  const b = e.currentTarget;
+  if (!micOn) { try { if (talking) $('#talk').click(); await micAudio(); micOn = true; } catch (err) { status('Microfone não liberado'); return; } }
+  else { micOn = false; stopMic(); }
+  b.setAttribute('aria-pressed', String(micOn));
+});
+window.NGLB = { audio: () => [actx && actx.state, analyser ? (analyser.getByteFrequencyData(freq), Math.max(...freq)) : -1], EMO, setEmotion, play, loadModel, frame: (c) => { close = c; frameCam(); }, talkDemo: (on) => { talking = on; if (on) { mouth.open = 0.8; } }, mouth, setMouth: (o) => Object.assign(mouth, o), freezeMouth: false };
+
+const firstModel = MODELS[params.get('m')] ? params.get('m') : 'a';
+document.querySelectorAll('[data-model]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.model === firstModel)));
+loadModel(firstModel).catch((e) => status('Não carregou: ' + e.message));
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
