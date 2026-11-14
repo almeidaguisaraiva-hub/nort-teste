@@ -26,6 +26,8 @@
   button:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
   .credit { font-size: 11px; opacity: .8; margin-top: 4px; }
   .credit a { color: var(--ink); }
+  .sw { min-width: 44px; padding: 0; border-width: 3px; }
+  .sw[aria-pressed="true"] { border-color: var(--ink); outline: 2px solid #fff; outline-offset: -5px; }
 </style>
 <script type="importmap">
 { "imports": {
@@ -44,7 +46,26 @@
   <div class="row" role="group" aria-label="Modelo">
     <button data-model="a" aria-pressed="true">Modelo A</button>
     <button data-model="b" aria-pressed="false">Modelo B</button>
+    <button data-model="nort" aria-pressed="false">Nort r1</button>
     <button id="frame" aria-pressed="false">Rosto de perto</button>
+  </div>
+  <div class="row nort-only" role="group" aria-label="Cabelo" hidden>
+    <span class="lbl">Cabelo</span>
+    <button data-hair="Cabelo_Afro" aria-pressed="false">Black power</button>
+    <button data-hair="Cabelo_Cacheado" aria-pressed="false">Cacheado</button>
+    <button data-hair="Cabelo_Curto" aria-pressed="true">Curto</button>
+    <button data-hair="" aria-pressed="false">Sem</button>
+  </div>
+  <div class="row nort-only" role="group" aria-label="Roupa" hidden>
+    <span class="lbl">Roupa</span>
+    <button data-outfit="roupa1" aria-pressed="true">Camiseta e jeans</button>
+    <button data-outfit="roupa2" aria-pressed="false">Moletom e jogger</button>
+  </div>
+  <div class="row nort-only" role="group" aria-label="Tom de pele" hidden>
+    <span class="lbl">Pele</span>
+  </div>
+  <div class="row nort-only" role="group" aria-label="Cor do cabelo" hidden>
+    <span class="lbl">Cor do cabelo</span>
   </div>
   <div class="row" role="group" aria-label="Emoção">
     <span class="lbl">Emoção</span>
@@ -62,7 +83,7 @@
     <button id="talk" aria-pressed="false">Falar (som de teste)</button>
     <button id="mic" aria-pressed="false">Boca com meu microfone</button>
   </div>
-  <div class="credit">Modelo: Microsoft Rocketbox (licença MIT, © 2020 Microsoft), adaptado pelo Nort. Microfone: o som fica só no aparelho.</div>
+  <div class="credit" id="credit">Modelo: Microsoft Rocketbox (licença MIT, © 2020 Microsoft), adaptado pelo Nort. Microfone: o som fica só no aparelho.</div>
 </div>
 
 <script type="module">
@@ -73,7 +94,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const params = new URLSearchParams(location.search);
 const BASE = params.get('base') || 'glb/';
-const MODELS = { a: BASE + 'nort-teste-a.glb', b: BASE + 'nort-teste-b.glb' };
+const MODELS = { a: BASE + 'nort-teste-a.glb', b: BASE + 'nort-teste-b.glb', nort: BASE + 'nort-base-r1.glb' };
+// Nort r1: tons de pele e cores de cabelo do app (src/talk.js, AV)
+const SKINS = ['#F5D7C0', '#E8B896', '#C98F68', '#A8704D', '#7A4E33', '#4E3222', '#FBE6D6', '#3A2418'];
+const HAIRC = ['#1F1A17', '#5A3A22', '#A0652E', '#D9B26A', '#B8B8B8', '#C2523C', '#E9E2D0', '#2E4A7A', '#8E5BA8'];
+const nlook = { hair: 'Cabelo_Curto', outfit: 'roupa1', skin: 2, hairColor: 1 };
+let isNort = false;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const weak = (navigator.deviceMemory || 4) <= 2;
 const $ = (s) => document.querySelector(s);
@@ -122,7 +148,7 @@ addEventListener('resize', frameCam); frameCam();
 
 // ---------- model ----------
 const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
-let avatar = null, mixer = null, actions = {}, current = null, morphMeshes = [], headBone = null, neckBone = null;
+let avatar = null, mixer = null, actions = {}, current = null, morphMeshes = [], headBone = null, neckBone = null, gltfMeta = null;
 const ARKIT = (n) => n.charAt(0).toLowerCase() + n.slice(1); // "MouthSmileLeft" -> "mouthSmileLeft"
 const weights = {}; // target name -> current value
 function setW(name, v) { weights[name] = v; }
@@ -135,7 +161,11 @@ async function loadModel(key) {
   const t0 = performance.now();
   const gltf = await loader.loadAsync(MODELS[key]);
   if (avatar) { scene.remove(avatar); mixer.stopAllAction(); }
-  avatar = gltf.scene; morphMeshes = []; eyeBones = []; let tris = 0;
+  avatar = gltf.scene; morphMeshes = []; eyeBones = []; let tris = 0; headBone = null; neckBone = null;
+  isNort = key === 'nort'; EMO = isNort ? EMO_NORT : EMO_RB; for (const k in target) target[k] = 0;
+  document.querySelectorAll('.nort-only').forEach((r) => { r.hidden = !isNort; });
+  $('#credit').textContent = isNort ? 'Modelo: Nort r1, gerado por script no Blender (corpo base MakeHuman/MPFB, CC0; cabelos, roupas, tênis, olhos e animações do Nort). Microfone: o som fica só no aparelho.'
+    : 'Modelo: Microsoft Rocketbox (licença MIT, © 2020 Microsoft), adaptado pelo Nort. Microfone: o som fica só no aparelho.';
   avatar.traverse((o) => {
     if (o.isMesh) {
       o.castShadow = true; o.frustumCulled = false;
@@ -145,28 +175,62 @@ async function loadModel(key) {
         const d = {}; for (const [k, i] of Object.entries(o.morphTargetDictionary)) d[k.startsWith('viseme_') ? k : ARKIT(k)] = i;
         o.morphTargetDictionary = d; morphMeshes.push(o);
       }
-      const m = o.material; m.envMapIntensity = 0.55;
-      if (/head/.test(m.name)) { m.roughness = 0.55; }
+      for (const m of [].concat(o.material)) { m.envMapIntensity = 0.55; if (!isNort && /head/.test(m.name)) m.roughness = 0.55; }
     }
-    if (o.isBone && /^Bip01[ _]Head$/.test(o.name)) headBone = o;
-    if (o.isBone && /^Bip01[ _]Neck$/.test(o.name)) neckBone = o;
-    if (o.isBone && /^Bip01[ _][LR]Eye$/.test(o.name)) eyeBones.push(o);
+    if (o.isBone && /^(Bip01[ _]|mixamorig:?)Head$/.test(o.name)) headBone = o;
+    if (o.isBone && /^(Bip01[ _]|mixamorig:?)Neck$/.test(o.name)) neckBone = o;
+    if (o.isBone && /^(Bip01[ _][LR]|mixamorig:?(Left|Right))Eye$/.test(o.name)) eyeBones.push(o);
   });
   // scale to ~1.68 m and stand on the ground
   avatar.updateMatrixWorld(true);
   const box = new THREE.Box3().setFromObject(avatar); const h = box.max.y - box.min.y;
-  avatar.scale.multiplyScalar(1.68 / h); avatar.updateMatrixWorld(true);
+  if (!isNort) avatar.scale.multiplyScalar(1.68 / h); avatar.updateMatrixWorld(true); // Nort r1 já vem em metros (1,72 m)
   const b2 = new THREE.Box3().setFromObject(avatar); avatar.position.y -= b2.min.y;
   scene.add(avatar);
+  if (isNort) applyLook();
   mixer = new THREE.AnimationMixer(avatar); actions = {};
   for (const clip of gltf.animations) actions[clip.name] = mixer.clipAction(clip);
   mixer.addEventListener('finished', () => play(EMO[emo].clip));
   for (const k in weights) weights[k] = 0;
   current = null; play(EMO[emo].clip, 0);
   const kb = Math.round((await (await fetch(MODELS[key], { method: 'HEAD' })).headers.get('content-length') || 0) / 1024);
-  status(`Modelo ${key.toUpperCase()} · ${Math.round(tris / 1000)} mil triângulos · ${kb ? kb + ' KB · ' : ''}${Math.round(performance.now() - t0)} ms`);
+  status(`Modelo ${key.toUpperCase()} · ${isNort ? Math.round(visibleTris() / 1000) + ' mil triângulos na tela (' + Math.round(tris / 1000) + ' mil no arquivo)' : Math.round(tris / 1000) + ' mil triângulos'} · ${kb ? kb + ' KB · ' : ''}${Math.round(performance.now() - t0)} ms`);
   window.__ready = true;
 }
+
+// ---------- Nort r1: troca de peças (cabelo, roupa) e cores (pele, cabelo), sem recarregar ----------
+function applyLook() {
+  if (!avatar) return;
+  const hide = new Set();
+  avatar.traverse((o) => {
+    const u = o.userData || {};
+    if (!u.parte || u.parte === 'corpo') return;
+    o.visible = u.parte === 'cabelo' ? o.name === nlook.hair : u.parte === 'tenis' ? true : u.parte === nlook.outfit;
+    if (o.visible && u.esconde) u.esconde.split(',').forEach((z) => hide.add('Pele_' + z));
+  });
+  avatar.traverse((o) => {
+    if (!o.isMesh) return;
+    for (const m of [].concat(o.material)) {
+      if (m.name.startsWith('Pele_')) { m.color.set(SKINS[nlook.skin]); o.visible = !hide.has(m.name); }
+      if (m.name.startsWith('Cabelo') || m.name === 'Sobrancelha') { m.color.set(HAIRC[nlook.hairColor]); if (m.name === 'Sobrancelha') m.color.multiplyScalar(0.8); }
+    }
+  });
+  document.querySelectorAll('[data-hair]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.hair === nlook.hair)));
+  document.querySelectorAll('[data-outfit]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.outfit === nlook.outfit)));
+  document.querySelectorAll('[data-skin]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.skin === nlook.skin)));
+  document.querySelectorAll('[data-hc]').forEach((b) => b.setAttribute('aria-pressed', String(+b.dataset.hc === nlook.hairColor)));
+}
+function visibleTris() { // só o que aparece (peças escondidas não são desenhadas)
+  let n = 0; avatar.traverse((o) => { let v = o.visible, p = o.parent; while (v && p) { v = p.visible; p = p.parent; }
+    if (o.isMesh && v) n += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; });
+  return n;
+}
+function swatches(sel, list, attr, label) {
+  const row = document.querySelector(sel);
+  list.forEach((c, i) => { const b = document.createElement('button'); b.className = 'sw'; b.style.background = c; b.dataset[attr] = i; b.setAttribute('aria-label', label + ' ' + (i + 1)); b.setAttribute('aria-pressed', 'false'); row.appendChild(b); });
+}
+swatches('[aria-label="Tom de pele"]', SKINS, 'skin', 'Tom de pele');
+swatches('[aria-label="Cor do cabelo"]', HAIRC, 'hc', 'Cor do cabelo');
 
 function play(name, fade = 0.45) {
   const a = actions[name] || actions.parado; if (!a || a === current) return;
@@ -177,7 +241,16 @@ function play(name, fade = 0.45) {
 }
 
 // ---------- emotions (Nort's EMO table) -> ARKit blendshapes + body clip ----------
-const EMO = {
+// Nort r1: cada emoção é uma forma pronta (emo_*) + um clipe do corpo; as formas ARKit também existem no modelo.
+const EMO_NORT = {
+  neutral:    { clip: 'parado', w: {} },
+  happy:      { clip: 'parado', w: { emo_feliz: 1 }, eyes: [0, 0] },
+  sad:        { clip: 'triste', w: { emo_triste: 1 }, eyes: [0, -0.15], head: [0.06, 0, 0.04] },
+  compassion: { clip: 'compaixao', w: { emo_compaixao: 1 }, eyes: [0, -0.05], head: [0.03, 0, 0.1] },
+  surprised:  { clip: 'parado', w: { emo_surpreso: 1 }, eyes: [0, 0.03], head: [-0.05, 0, 0] },
+  thinking:   { clip: 'pensativo', w: { emo_pensativo: 1 }, eyes: [0.22, 0.2], head: [-0.04, 0.08, -0.05] }
+};
+const EMO_RB = {
   neutral:    { clip: 'parado', w: {} },
   happy:      { clip: 'parado', w: { mouthSmileLeft: 1.6, mouthSmileRight: 1.6, cheekSquintLeft: 0.9, cheekSquintRight: 0.9, eyeSquintLeft: 0.35, eyeSquintRight: 0.35, mouthDimpleLeft: 0.4, mouthDimpleRight: 0.4, mouthUpperUpLeft: 0.15, mouthUpperUpRight: 0.15, browInnerUp: 0.15 }, eyes: [0, 0] },
   sad:        { clip: 'compaixao', w: { browInnerUp: 1.0, browDownLeft: 0.15, browDownRight: 0.15, mouthFrownLeft: 1.0, mouthFrownRight: 1.0, mouthPressLeft: 0.3, mouthPressRight: 0.3, mouthShrugLower: 0.35, eyeSquintLeft: 0.15, eyeSquintRight: 0.15, eyeBlinkLeft: 0.18, eyeBlinkRight: 0.18 }, eyes: [0, -0.18], head: [0.1, 0, 0.05] },
@@ -185,6 +258,7 @@ const EMO = {
   surprised:  { clip: 'parado', w: { browInnerUp: 1.0, browOuterUpLeft: 1.0, browOuterUpRight: 1.0, eyeWideLeft: 1.0, eyeWideRight: 1.0, jawOpen: 0.35, mouthFunnel: 0.3 }, eyes: [0, 0.03], head: [-0.05, 0, 0] },
   thinking:   { clip: 'pensativo', w: { browDownLeft: 0.5, browOuterUpRight: 0.6, browInnerUp: 0.2, mouthPressLeft: 0.45, mouthLeft: 0.4, mouthRollLower: 0.2, eyeSquintLeft: 0.25 }, eyes: [0.22, 0.2], head: [-0.06, 0.1, -0.06] }
 };
+let EMO = EMO_RB;
 let emo = 'neutral';
 const target = {}; // smoothed emotion weights
 function setEmotion(e) {
@@ -257,10 +331,16 @@ function tick() {
   const eg = EMO[emo].eyes || [0, 0]; eyeT[0] += (eg[0] + look[0] - eyeT[0]) * Math.min(1, dt * 20); eyeT[1] += (eg[1] + look[1] - eyeT[1]) * Math.min(1, dt * 20);
   // mouth from audio: jaw + visemes on top of the emotion
   updateMouth(dt);
-  setW('jawOpen', Math.min(1, (weights.jawOpen || 0) + mouth.open * 0.55));
+  if (!isNort) setW('jawOpen', Math.min(1, (weights.jawOpen || 0) + mouth.open * 0.55));
+  if (isNort) { // Nort r1: visemas próprios (A, E, O, M/B/P)
+    setW('viseme_aa', Math.min(1, mouth.aa * 1.3 + mouth.open * 0.45)); setW('viseme_E', Math.min(1, mouth.E * 1.2 + mouth.I * 0.8));
+    setW('viseme_O', Math.min(1, mouth.O * 1.2 + mouth.U * 0.9)); setW('viseme_PP', mouth.PP);
+    setW('jawOpen', (weights.jawOpen || 0) + mouth.open * 0.15);
+  } else {
   // this model's viseme shapes are almost empty, so speech uses the ARKit mouth shapes
   setW('mouthFunnel', (weights.mouthFunnel || 0) + mouth.O * 0.7); setW('mouthPucker', mouth.U * 0.8); setW('mouthStretchLeft', mouth.E * 0.5); setW('mouthStretchRight', mouth.E * 0.5);
   setW('mouthLowerDownLeft', mouth.aa * 0.5); setW('mouthLowerDownRight', mouth.aa * 0.5); setW('mouthUpperUpLeft', (weights.mouthUpperUpLeft || 0) + mouth.I * 0.3); setW('mouthUpperUpRight', (weights.mouthUpperUpRight || 0) + mouth.I * 0.3); setW('mouthClose', mouth.PP * 0.5);
+  }
   applyWeights();
   // head tilt for the emotion (added after the clip), towards the camera
   if (headBone) { // emotion head pose [pitch down, turn, tilt], world space, added after the clip
@@ -283,6 +363,9 @@ document.querySelectorAll('[data-model]').forEach((b) => b.addEventListener('cli
   document.querySelectorAll('[data-model]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
   try { await loadModel(b.dataset.model); } catch (e) { status('Não carregou: ' + e.message); }
 }));
+document.querySelectorAll('[data-hair]').forEach((b) => b.addEventListener('click', () => { nlook.hair = b.dataset.hair; applyLook(); }));
+document.querySelectorAll('[data-outfit]').forEach((b) => b.addEventListener('click', () => { nlook.outfit = b.dataset.outfit; applyLook(); }));
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-skin],[data-hc]'); if (!b) return; if (b.dataset.skin !== undefined) nlook.skin = +b.dataset.skin; else nlook.hairColor = +b.dataset.hc; applyLook(); });
 $('#frame').addEventListener('click', (e) => { close = !close; e.currentTarget.setAttribute('aria-pressed', String(close)); frameCam(); });
 $('#wave').addEventListener('click', () => { current = null; play('acenar', 0.3); });
 $('#nod').addEventListener('click', () => { current = null; play('concordar', 0.3); });
@@ -296,7 +379,7 @@ $('#mic').addEventListener('click', async (e) => {
   else { micOn = false; stopMic(); }
   b.setAttribute('aria-pressed', String(micOn));
 });
-window.NGLB = { audio: () => [actx && actx.state, analyser ? (analyser.getByteFrequencyData(freq), Math.max(...freq)) : -1], EMO, setEmotion, play, loadModel, frame: (c) => { close = c; frameCam(); }, talkDemo: (on) => { talking = on; if (on) { mouth.open = 0.8; } }, mouth, setMouth: (o) => Object.assign(mouth, o), freezeMouth: false };
+window.NGLB = { setLook: (o) => { Object.assign(nlook, o); applyLook(); }, look: nlook, visibleTris, camera, renderer, scene, get avatar() { return avatar; }, audio: () => [actx && actx.state, analyser ? (analyser.getByteFrequencyData(freq), Math.max(...freq)) : -1], EMO, setEmotion, play, loadModel, frame: (c) => { close = c; frameCam(); }, talkDemo: (on) => { talking = on; if (on) { mouth.open = 0.8; } }, mouth, setMouth: (o) => Object.assign(mouth, o), freezeMouth: false };
 
 const firstModel = MODELS[params.get('m')] ? params.get('m') : 'a';
 document.querySelectorAll('[data-model]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.model === firstModel)));

@@ -12,3 +12,23 @@ A licença MIT exige manter o aviso de copyright e o texto da licença junto das
 
 Modificações do Nort: FBX convertido para glTF (FBX2glTF), só as 52 formas ARKit mantidas (visemas e FACS
 retirados), texturas reduzidas para 1024 px WebP, 6 animações juntadas no mesmo arquivo, compressão meshopt.
+
+------------------------------------------------------------------------------------------------
+nort-base-r1.glb  (rodada 1 do personagem próprio do Nort, 14/11/2026)
+Gerado por tools/blender_nort_base.py (Blender 5.3 como módulo Python, "pip install bpy").
+
+Material de terceiros usado (só dados, baixados pelo script num commit fixo):
+  MakeHuman / MPFB2  https://github.com/makehumancommunity/mpfb2
+  commit 9de0707fdc88438d7c53a1a2ac7937d9221e2431, pasta src/mpfb/data/:
+    3dobjs/base.obj (malha base hm08), targets/macrodetails, eyes, nose, mouth, head, chin, cheek,
+    targets/expression/units/* (unidades de expressão), rigs/standard/rig.mixamo.json e weights.mixamo.json.
+  Licença dos assets: CC0 1.0 (LICENSE.md, seção C, e LICENSE.ASSETS.md do repositório; o cabeçalho do
+  base.obj diz "explicitly released as CC0 in september 2020"; weights.mixamo.json diz "license: CC0").
+  O código do MPFB (GPLv3) NÃO é usado nem copiado: o script do Nort lê os arquivos de dados direto.
+
+Feito pelo Nort (por código, sem foto, sem textura de pele): estilização das proporções, olhos, sobrancelhas,
+cílios encurtados, cores por vértice (lábios, boca por dentro, bochechas), 3 cabelos (black power, cacheado,
+curto) e suas texturas pequenas (cachos, fios), camiseta, calça jeans (sarja), moletom com capuz, calça jogger,
+tênis sem marca, formas de rosto com nomes ARKit + visemas + emoções, 8 animações.
+
+Compressão: gltf-transform (MIT) — sparse, webp, meshopt. O app/página usa o MeshoptDecoder do three.js (MIT).
