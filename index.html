@@ -821,6 +821,30 @@ body.real3d .find .compass-hint, body.real3d .find #broken-hint, body.real3d .sc
 body.real3d .find .find-ui > p, body.real3d .scene3d .spacer3d + p { background: rgba(255, 255, 255, .9); color: var(--ink); padding: 6px 12px; border-radius: 12px; min-height: 0; }
 body.real3d .compass-hint.nosignal { color: var(--high); }
 
+/* o quarto (teste ?modelo=real, 18/11/2026): sem trilha; janelinha na pílula de cima que vai da manhã nublada ao sol
+   pelo --day (só quantas respostas, nunca o que foi dito; parada depois de risco) */
+.room-top .room-win { width: 40px; height: 40px; flex: none; margin-left: 2px; }
+.room-win .rw-sky { fill: color-mix(in srgb, #9FC9E8 calc(var(--day) * 100%), #C9D2D8); }
+.room-win .rw-sun { fill: #F2B544; opacity: calc(.15 + var(--day) * .85); transform: translateY(calc((1 - var(--day)) * 6px)); }
+.room-win .rw-cloud { fill: #FFFFFF; opacity: calc(1 - var(--day) * .75); }
+.room-win .rw-frame { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linejoin: round; }
+.room-win .rw-sill { fill: var(--ink); }
+.room-bar { display: block; height: 8px; border-radius: 999px; background: var(--dot-idle); overflow: hidden; }
+.room-bar b { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width .6s ease; }
+/* chegada: o cartão da resposta entra depois que ele se apresenta */
+.room-scene .answer-card { transition: opacity .45s ease, transform .45s ease, visibility 0s; }
+.room-intro .answer-card { opacity: 0; transform: translateY(24px); visibility: hidden; transition: opacity .3s ease, transform .3s ease, visibility 0s .3s; }
+/* final: "Sua bússola" sai da mão dele */
+.ind-compass.room-hand { opacity: 0; transform: translate(var(--fx, 0), var(--fy, 40px)) scale(.25); }
+.ind-compass.room-hand.given { opacity: 1; transform: none; transition: opacity .5s ease, transform .9s cubic-bezier(.2, 1.1, .3, 1); }
+.room-give { margin: 0 0 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .room-scene .answer-card, .room-intro .answer-card, .ind-compass.room-hand.given, .room-bar b { transition: none; }
+  .room-intro .answer-card { transform: none; }
+  .ind-compass.room-hand { transform: none; }
+  .room-win .rw-sun { transform: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1326,8 +1350,8 @@ const UI = {
     talkTitle: 'Conversa', avTitle: 'Crie a sua versão', avLead: 'Monte um personagem seu. É com ele que você vai conversar.',
     avNameLabel: 'Nome do seu personagem', avNamePlaceholder: 'Escreva um nome', avNameNeed: 'Dê um nome ao seu personagem para continuar.', avNameBad: 'Esse nome não pode ser usado. Escolha outro, sem palavrão.', avNameDefault: 'Eu', avTone: 'Tom {n}', avSkin: 'Tom de pele', avHair: 'Cabelo', avHairColor: 'Cor do cabelo', avEyes: 'Olhos', avShirt: 'Roupa', avExtra: 'Acessório',
     avTabs: { face: 'Rosto', hair: 'Cabelo', body: 'Corpo', clothes: 'Roupa', extras: 'Acessórios' }, avRandom: 'Surpreenda-me',
-    avLegend: { skin: 'Tom de pele', face: 'Formato do rosto', nose: 'Nariz', eyeColor: 'Cor dos olhos', brows: 'Sobrancelhas', beard: 'Barba e bigode', hair: 'Penteado', hairColor: 'Cor do cabelo', height: 'Altura', build: 'Tipo de corpo', top: 'Estilo da roupa', shirt: 'Cor da roupa', bottom: 'Parte de baixo', pantsColor: 'Cor da calça, short ou saia', shoes: 'Cor do tênis', extra: 'Acessório', form: 'Forma do corpo', age: 'Idade' },
-    avNames: { form: ['Mais curvas', 'Mais reta'], age: ['Jovem', 'Adulto', 'Mais velho'], skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
+    avLegend: { skin: 'Tom de pele', face: 'Formato do rosto', nose: 'Nariz', eyeColor: 'Cor dos olhos', brows: 'Sobrancelhas', beard: 'Barba e bigode', hair: 'Penteado', hairColor: 'Cor do cabelo', height: 'Altura', build: 'Tipo de corpo', top: 'Estilo da roupa', shirt: 'Cor da roupa', bottom: 'Parte de baixo', pantsColor: 'Cor da calça, short ou saia', shoes: 'Cor do tênis', extra: 'Acessório', form: 'Você é', age: 'Idade' },
+    avNames: { form: ['Mulher', 'Homem'], age: ['Jovem', 'Adulto', 'Mais velho'], skin: ['Tom 1', 'Tom 2', 'Tom 3', 'Tom 4', 'Tom 5', 'Tom 6', 'Tom 7', 'Tom 8'], face: ['Redondo', 'Oval', 'Quadrado', 'Coração'], nose: ['Pequeno', 'Redondo', 'Comprido', 'Largo'], eyeColor: ['Castanho-escuro', 'Castanho', 'Azul', 'Verde', 'Cinza', 'Mel'], brows: ['Finas', 'Médias', 'Grossas', 'Arqueadas'], beard: ['Sem barba', 'Por fazer', 'Curta', 'Cheia', 'Bigode', 'Cavanhaque'],
       hair: ['Curto', 'Comprido', 'Cacheado', 'Coque', 'Sem cabelo', 'Raspado', 'De lado', 'Black power', 'Rabo de cavalo', 'Tranças'], hairColor: ['Preto', 'Castanho', 'Acobreado', 'Loiro', 'Grisalho', 'Ruivo', 'Platinado', 'Azul', 'Roxo'], height: ['Baixa', 'Média', 'Alta'], build: ['Magro', 'Médio', 'Largo'],
       top: ['Camiseta', 'Moletom', 'Camisa', 'Jaqueta', 'Suéter', 'Vestido'], shirt: ['Marinho', 'Coral', 'Verde', 'Lilás', 'Mostarda', 'Azul'], bottom: ['Calça', 'Short', 'Saia'], pantsColor: ['Marinho', 'Jeans', 'Grafite', 'Bege', 'Preto', 'Off-white'], shoes: ['Branco', 'Marinho', 'Coral', 'Marrom', 'Verde'], eyes: ['Abertos', 'Sorrindo', 'Tranquilos'], extra: ['Nenhum', 'Óculos', 'Boné', 'Óculos escuros', 'Brincos', 'Fones'] },
     voiceTitle: 'Voz do personagem', voiceNames: { buttery: 'Suave', airy: 'Leve', glassy: 'Clara', rounded: 'Redonda' }, voiceOff: 'Sem voz (só texto)', voiceRate: 'Velocidade', voiceRates: ['Devagar', 'Normal', 'Rápida'], voiceTest: 'Ouvir a voz', voiceNone: 'Sem voz neste navegador: o personagem aparece só em texto.', voiceHello: 'Oi! É com essa voz que eu vou conversar com você. Gostou?', voiceHelloName: 'Oi, {name}! É com essa voz que eu vou conversar com você. Gostou?',
@@ -1336,22 +1360,24 @@ const UI = {
     loginTitle: 'Boas-vindas ao Nort', loginEmail: 'E-mail', loginPass: 'Senha', loginShow: 'Mostrar senha', loginForgot: 'Esqueci a senha', loginBtn: 'Entrar', loginNoAccount: 'Não tem conta?', loginCreate: 'Criar uma conta', loginProto: 'Protótipo: as contas não ficam guardadas. Crie uma para testar.', loginNotFound: 'Conta não encontrada. No protótipo, toque em "Criar uma conta".', loginForgotMsg: 'Ainda não dá para recuperar a senha no protótipo.', errLoginPass: 'Digite a sua senha.', signupHave: 'Já tem conta? Entrar',
     lostTitle: '{name} está sem direção', lostTitleNoName: 'Seu personagem está sem direção', lostLead: 'Seu personagem achou uma bússola, mas ela está quebrada.', brokenAlt: 'Bússola quebrada, cinza, com pedaços faltando e a agulha girando sem rumo.', brokenHint: 'Gire a bússola com o dedo ou tente a localização dela.', brokenNoSignal: 'Sem sinal: é parte da história, sua localização não é usada. Gire com o dedo.', brokenReady: 'Pronto! Cada resposta sua dá cor a um pedaço da bússola.', brokenLoc: 'Usar a localização da bússola', brokenLocFail: 'Sem sinal', brokenDialLabel: 'Bússola quebrada. Gire com o dedo ou com as setas do teclado.', brokenGo: 'Procurar o caminho', hudAlt: 'Bússola: {n} de {total} pedaços com cor.', wholeTitle: 'A bússola está inteira!', wholeLead: 'Agora {name} segue para o norte com você.', wholeLeadNoName: 'Agora seu personagem segue para o norte com você.', northSay: 'Achamos o norte. Vamos lá!', northSayCare: 'Vamos seguir juntos, no seu ritmo.', wholeTitleCare: 'A bússola está pronta',
     voiceTestExpr: 'Oi, {name}! [laughs softly] Que bom te ouvir. [whispers] E eu também sei falar baixinho, ó. [warmly] Vamos conversar um pouco?',
-    liveHello: 'Oi! Que bom ter você aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveHelloName: 'Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho? Pode falar do seu jeito, e dá para pular qualquer pergunta.', liveToText: 'Escrever', liveJustTalk: 'Só falar', liveHeardIn: 'O que você falou entrou no campo de resposta.', liveMicOn: 'Microfone aberto: estou ouvindo, pode falar.', liveTypePh: 'O que você falar aparece aqui. Dá para escrever e editar.', liveTypePhMuted: 'Microfone desligado: escreva aqui.', liveMicTurnOff: 'Desligar o microfone', liveMicTurnOn: 'Ligar o microfone', liveMicOffSr: 'Microfone desligado.', liveBridge: ['Entendi.', 'Aham, entendi.', 'Que bom que você me contou.'], liveAgain: ['Desculpa, não ouvi direito o finalzinho.', 'Opa, perdi um pedacinho.'], liveSafetyBridge: 'Agora vem uma pergunta importante, que a gente faz para todo mundo. Ela também está aqui na tela.', liveSafetyLead: 'Toque na sua resposta ou responda falando.',
+    liveHello: 'Oi! Que bom te ver. Vim aqui pra gente ter uma conversa sincera sobre como você anda. Sem pressa, e pode pular o que quiser. Bora?', liveHelloName: 'Oi, {name}! Que bom te ver. Vim aqui pra gente ter uma conversa sincera sobre como você anda. Sem pressa, e pode pular o que quiser. Bora?', liveToText: 'Escrever', liveJustTalk: 'Só falar', liveHeardIn: 'O que você falou entrou no campo de resposta.', liveMicOn: 'Microfone aberto: estou ouvindo, pode falar.', liveTypePh: 'O que você falar aparece aqui. Dá para escrever e editar.', liveTypePhMuted: 'Microfone desligado: escreva aqui.', liveMicTurnOff: 'Desligar o microfone', liveMicTurnOn: 'Ligar o microfone', liveMicOffSr: 'Microfone desligado.', liveBridge: ['Entendi.', 'Aham, entendi.', 'Que bom que você me contou.'], liveAgain: ['Desculpa, não ouvi direito o finalzinho.', 'Opa, perdi um pedacinho.'], liveSafetyBridge: 'Agora vem uma pergunta importante, que a gente faz para todo mundo. Ela também está aqui na tela.', liveSafetyLead: 'Toque na sua resposta ou responda falando.',
     hintLabel: 'Você pode falar sobre', indLevels: { strong: 'Vale olhar com calma', some: 'Se você quiser', none: 'Nada apareceu na conversa' }, indCame: 'áreas apareceram na conversa', indCame1: 'área apareceu na conversa', indRingLegend: 'Os pedaços mais grossos apareceram na conversa.', indSayScreen: 'Na tela, a sua bússola mostra as áreas que apareceram na conversa.', countryPick: 'Escolha o país', signupTitle: 'Crie sua conta', signupLead: 'Sinais, não diagnóstico, e sempre o caminho para um profissional.', signupProto: 'Protótipo: a conta só vale com esta página aberta.', emailL: 'E-mail', passL: 'Senha (mínimo 8 caracteres)', birthL: 'Data de nascimento', signupBtn: 'Criar conta e continuar',
     errEmail: 'Confira o e-mail.', errPass: 'A senha precisa ter pelo menos 8 caracteres.', errBirth: 'Confira a data de nascimento.', needSignup: 'Responda as perguntas e marque o consentimento para continuar.',
     findTitle: 'Ajude {name} a achar o norte', findTitleNoName: 'Ajude seu personagem a achar o norte', findLeadNo3D: 'Leve a seta até o N e toque em Começar.', birthHint: 'Toque para escolher a data.', needCountry: 'Escolha onde você está agora.', needBaby: 'Responda se teve um bebê nos últimos 12 meses (pode ser "Prefiro não responder").', needConsent: 'Marque o consentimento para continuar.', findLead: 'Primeiro, seu personagem acha a bússola.', avNext: 'Continuar',
     // What the character says in the conversation: short, warm, spoken lines (no parentheses or slashes).
     // Several variants each; the app never repeats a line twice in a row.
-    talkHellos: ['Oi, {name}! Que bom te ver por aqui. Bora conversar um pouquinho?', 'E aí, {name}! Que bom que você veio. Vamos bater um papo rapidinho?', 'Olá, {name}! Que bom ter você aqui. Vamos conversar um pouco, sem pressa?'],
-    talkHellosNoName: ['Oi! Que bom te ver por aqui. Bora conversar um pouquinho?', 'E aí! Que bom que você veio. Vamos bater um papo rapidinho?', 'Olá! Que bom ter você aqui. Vamos conversar um pouco, sem pressa?'],
-    talkHelloHow: ['Você pode falar ou escrever, como preferir. E se não quiser responder alguma coisa, é só pular.', 'Pode responder falando ou escrevendo. Se alguma pergunta não combinar com você, é só pular.', 'Fala ou escreve do seu jeito, tá? Dá para pular qualquer pergunta.'],
+    talkHellos: ['Oi, {name}! Que bom te ver. Vim aqui pra gente ter uma conversa sincera sobre como você anda.', 'E aí, {name}! Cheguei. Quero ouvir de você, sem rodeio, como andam as coisas.', 'Oi, {name}! Vim te fazer companhia e bater um papo sincero sobre como você tem estado.'],
+    talkHellosNoName: ['Oi! Que bom te ver. Vim aqui pra gente ter uma conversa sincera sobre como você anda.', 'E aí! Cheguei. Quero ouvir de você, sem rodeio, como andam as coisas.', 'Oi! Vim te fazer companhia e bater um papo sincero sobre como você tem estado.'],
+    // the room (test ?modelo=real): a teaser for the compass on the desk, and the hand-over at the end
+    roomHelloEnd: 'Ah, e no fim eu te entrego uma coisa.', roomGive: 'Toma, essa bússola é sua. Ela mostra o que apareceu na nossa conversa.',
+    talkHelloHow: ['Sem pressa. Fala ou escreve do seu jeito, e pula o que não quiser responder.', 'Pode responder falando ou escrevendo. Se alguma pergunta não combinar com você, é só pular.', 'Do seu jeito, tá? Dá para pular qualquer pergunta.'],
     // Reactions in two beats, like a person: (a) shows I heard you, (b) adds company/hope (hard things)
     // or names your own strength (good things). Never advice, never "it's not that bad", no gendered words.
     reactLines: {
-      sad: { a: ['Puxa… isso parece pesado de verdade.', 'Imagino o quanto isso tem sido difícil.', 'Que fase difícil, hein…', 'Sinto muito que esteja sendo assim.', 'Faz todo sentido se sentir assim, com tudo isso.'],
-        b: ['Muita gente passa por algo parecido, e você não precisa passar por isso sem ninguém.', 'Valeu por me contar, de verdade. O que você sente importa.', 'Eu tô aqui com você, sem pressa.', 'Falar disso já é um passo, e eu tô aqui ouvindo.', 'Fases difíceis não definem quem você é.'] },
+      sad: { a: ['Puxa… isso parece pesado de verdade.', 'Sinceramente, isso é muita coisa pra carregar.', 'Imagino o quanto isso tem sido difícil.', 'Que fase difícil, hein…', 'Sinto muito que esteja sendo assim.', 'Faz todo sentido se sentir assim, com tudo isso.'],
+        b: ['Muita gente passa por algo parecido, e você não precisa passar por isso sem ninguém.', 'Valeu por me contar, de verdade. O que você sente importa.', 'Eu tô aqui com você, sem pressa.', 'Falar disso já é um passo, e eu tô aqui ouvindo.', 'Você não precisa dar conta disso sem ninguém por perto.'] },
       anxious: { a: ['Parece que tem muita coisa ocupando a sua cabeça…', 'Faz sentido isso deixar você em alerta.', 'Viver com essa preocupação por perto cansa, né…', 'Imagino como isso deixa o dia mais tenso.'],
-        b: ['Você não precisa resolver tudo agora.', 'A gente vai no seu ritmo, uma coisa de cada vez.', 'Valeu por dividir isso comigo, eu tô aqui.', 'Muita gente sente algo parecido, viu.'] },
+        b: ['Você não precisa resolver tudo agora.', 'A gente vai no seu ritmo, uma coisa de cada vez.', 'Valeu por dividir isso comigo, eu tô aqui.', 'Muita gente sente algo parecido, viu.', 'Se quiser, respira um pouco comigo, sem pressa. Você não precisa resolver isso agora.'] },
       happy: { a: ['Que bom ouvir isso!', 'Ah, que legal, fiquei feliz de saber.', 'Adorei ouvir isso.', 'Que bom demais ouvir isso.'],
         b: ['Vale lembrar disso nos dias mais difíceis.', 'Isso também é mérito seu.', 'Guarda essa sensação, ela é sua.'] },
       excited: { a: ['Que demais, dá para sentir a sua animação!', 'Que notícia boa, fico muito feliz por você!', 'Uau, que bom!'],
@@ -1385,9 +1411,9 @@ const UI = {
       { k: ['namorad*', 'namoro', 'parceir*', 'relacionamento', 'casamento'], hard: 'Quando o relacionamento balança, mexe com tudo.', good: 'Ter alguém com quem você se sente bem é um apoio e tanto.' },
       { k: ['amig*', 'galera', 'turma'], hard: 'As amizades mexem muito com a gente.', good: 'Ter amigos assim por perto é um baita apoio.' }
     ],
-    indSayDone: ['Pronto, terminamos. Valeu por conversar comigo.', 'Prontinho. Valeu por me contar tudo isso.'], indSayDoneCare: 'Agradeço por confiar em mim e dividir tudo isso.',
+    indSayDone: ['Pronto, a gente terminou. Toma, essa bússola é sua. Valeu por conversar comigo de verdade.', 'Terminamos. Toma, essa bússola é sua, feita com o que você me contou. Valeu pela sinceridade.'], indSayDoneCare: 'Agradeço muito por confiar em mim e dividir tudo isso. Toma, essa bússola é sua. E você não precisa passar por isso sem ajuda: os contatos de apoio estão aqui na tela.',
     indSayStrong: 'Pelo que você contou, vale olhar com mais calma: {areas}.', indSaySome: 'Se você quiser, também dá para olhar: {areas}.', indSayNone: 'Nada do que você contou pediu um olhar mais de perto, mas você pode escolher qualquer área na tela.',
-    indSayEnd: 'Isso não é diagnóstico, são só pistas para escolher os questionários oficiais. Você decide. E conversar com um psicólogo ou psiquiatra é sempre uma boa ideia.',
+    indSayEnd: 'Isso não é diagnóstico, tá? São só pistas para escolher os questionários oficiais, e quem decide é você. E, com toda a sinceridade: conversar com um psicólogo ou psiquiatra é sempre uma boa ideia, ainda mais se algo aqui pesou.',
     avDrag: 'Arraste para girar.',
     voiceOwn: 'Minha própria voz', voiceOwnReady: 'Minha voz ✓', voiceOwnLead: 'Fale uns 30 segundos e o personagem ganha a sua voz. Ela é apagada quando você sai.', voiceOwnCreate: 'Criar minha voz', voicePickMore: 'Prefiro uma voz pronta', voiceOwnUse: 'Usar minha voz', voiceOwnRedo: 'Gravar de novo', voicePick: 'Ou escolha uma voz', voiceNaturalNote: 'Com voz natural, as falas do personagem vão para a ElevenLabs (EUA).', voiceGroups: { natural: 'Vozes naturais (ElevenLabs)', claude: 'Vozes do Claude', device: 'Vozes do aparelho', other: 'Outras' }, voiceNatural: ['Calma (feminina)', 'Acolhedora (feminina)', 'Suave (feminina)', 'Serena (masculina)', 'Amigável (masculina)', 'Grave (masculina)', 'Neutra'],
     cloneConsentShort: 'Concordo em gravar e usar a minha voz no meu personagem e com os termos de uso.', termsRead: 'Ler os termos de uso', termsKey: 'Em resumo: o Nort dá sinais, não diagnóstico. Sua voz e a conversa passam pela ElevenLabs, pela IA Claude e por um servidor do Nort. Quase nada fica guardado: sua voz some em até 2 horas e a transcrição da conversa em até 1 dia.', termsAgree: 'Li e concordo com os termos de uso.', cloneTermsLine: 'Sua voz é usada como nos termos de uso.', termsTitle: 'Termos de uso', termsBack: 'Entendi', termsSections: [['O que é o Nort', 'Um protótipo de teste de autotriagem de saúde mental. Ele dá sinais, nunca diagnóstico, e sempre recomenda um psicólogo ou psiquiatra. Não use para decisões de saúde. Você conversa com o personagem por voz e por texto, ao mesmo tempo, do jeito que preferir.'], ['Suas respostas', 'Suas respostas são dados de saúde, um dado sensível pela LGPD. Neste protótipo elas ficam só na memória desta página e somem quando você fecha. Elas são usadas só para gerar os seus sinais e o seu resultado. No link do Claude, o que você escreve vai para a IA Claude para achar os sinais. Fora dele, se você usar o microfone no modo escrito, o reconhecimento de fala do navegador recebe a sua voz.'], ['Conversa ao vivo', 'A conversa com o personagem é por voz, em tempo real. O que você fala e o que você escreve durante a conversa vai para a ElevenLabs (empresa dos EUA), que transforma em texto e em voz, e para a IA Claude (da Anthropic), que conduz a conversa. Também vão o nome do personagem e se você teve bebê no último ano. Pedimos que as gravações não sejam guardadas e que as transcrições sejam apagadas em até 1 dia. O navegador vai pedir o microfone.'], ['Sua própria voz', 'Se você criar a sua voz, a gravação vai para a ElevenLabs para criar a voz do personagem e para transcrever o seu jeito de falar (expressões e ritmo). Um trecho curto do que você falou vai para a conversa ao vivo, só para o personagem falar parecido com você. O texto do seu jeito de falar também vai para a IA Claude (Anthropic), só para reescrever as perguntas do seu jeito. Voz é dado biométrico, um dado sensível pela LGPD.'], ['Por quanto tempo', 'Sua voz e o trecho do seu jeito de falar são apagados quando você recomeça ou fecha a página e, no máximo, em 2 horas. A transcrição da conversa ao vivo é apagada em até 1 dia. Registros técnicos seguem as políticas de privacidade da ElevenLabs e da Anthropic.'], ['Servidor do Nort', 'Tudo passa por um servidor do Nort (Cloudflare). Ele não guarda o que você diz, só registros técnicos (erros, duração e tempos de resposta, tipo de navegador), sem nada do que você diz.'], ['Cuidado com você', 'Da pergunta de segurança até o fim, o personagem usa uma voz pronta. Se algo indicar risco, a conversa para e os números de ajuda aparecem na hora.'], ['Você decide', 'Você pode pular qualquer pergunta, escrever em vez de falar, usar uma voz pronta e sair quando quiser.']], cloneTitle: 'Sua voz no seu personagem', cloneLeadFree: 'Fale à vontade por uns 30 segundos, num lugar silencioso.', cloneTopicLead: 'Fala pra mim:', cloneTopics: ['Me conta um pouco de você: quem é você, do que você gosta?', 'O que você mais gosta de fazer num dia livre?', 'Me conta de um lugar ou de uma pessoa que te faz bem.', 'Qual foi a última coisa que te fez rir de verdade?', 'Me conta um pouco da sua história, do jeito que você quiser.'], cloneTopicNext: 'Outra pergunta', cloneTalk: 'Começar a falar', cloneTalkMore: 'Falar mais', cloneFreeTip: 'Pode pausar e continuar quando quiser.', cloneToRead: 'Prefiro ler frases prontas', cloneToFree: 'Prefiro falar à vontade', cloneDecline: 'Não quero gravar: usar uma voz pronta', cloneLead: 'Leia as frases em voz alta, num lugar silencioso.',
@@ -1397,7 +1423,7 @@ const UI = {
     cloneHow: 'Leia cada frase e toque em Parar', cloneRecord: 'Gravar a frase {n}', cloneStop: 'Parar', cloneTotal: 'Gravado: {n} s (mínimo 30 s)', cloneGo: 'Criar minha voz', cloneBusy: 'Criando a sua voz…', cloneBack: 'Voltar sem gravar',
     cloneMicDenied: 'Sem acesso ao microfone. Permita o microfone nas configurações do navegador ou escolha uma voz pronta.', cloneFail: 'Não deu para criar a sua voz agora. Tente de novo ou escolha uma voz pronta.', cloneVerify: 'A ElevenLabs pediu uma verificação extra para esta voz. Por enquanto, escolha uma voz pronta.',
     cloneLines: ['Oi, esta é a minha voz, e hoje eu escolhi cuidar de mim.', 'Eu não preciso ter todas as respostas para dar o próximo passo.', 'Mesmo nos dias difíceis, eu sigo tentando, do meu jeito.', 'Pedir ajuda não é fraqueza: é a coragem de quem quer ficar bem.', 'Eu mereço a mesma gentileza que ofereço às pessoas que amo.', 'Será que hoje eu posso ser um pouco mais leve comigo?', 'Às sete da manhã eu abro a janela, respiro fundo e conto até quatro.', 'Um passo de cada vez, uma respiração de cada vez. Eu estou aqui.'],
-    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribeBody: 'Forma do corpo: {form}, idade: {age}.', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
+    indNoWait: 'Continuar sem esperar', indBack: 'Voltar à conversa', optionsAre: 'As opções são', avDescribeBody: '{form}, idade: {age}.', avDescribe: 'Seu personagem: penteado {hair}, cabelo {color}, olhos {eyes}, roupa {shirt}, acessório: {extra}.',
     talkStart: 'Começar a conversa', quickQuiz: 'Prefiro responder perguntas rápidas',
     talkFirst: 'Fale do seu jeito. Pode pular qualquer pergunta.',
     talkPlaceholder: 'Fale ou escreva. Não existe resposta certa.', talkAnswerLabel: 'Sua resposta', talkReplay: 'Ouvir de novo', talkSkip: 'Pular esta pergunta', talkNeed: 'Responda do seu jeito ou toque em "Pular esta pergunta".',
@@ -1582,8 +1608,8 @@ const UI = {
     talkTitle: 'Conversation', avTitle: 'Create your own self', avLead: 'Build your own character. You’ll talk with them next.',
     avNameLabel: 'Your character’s name', avNamePlaceholder: 'Type a name', avNameNeed: 'Give your character a name to continue.', avNameBad: 'That name can’t be used. Please choose another one, without swear words.', avNameDefault: 'Me', avTone: 'Tone {n}', avSkin: 'Skin tone', avHair: 'Hair', avHairColor: 'Hair colour', avEyes: 'Eyes', avShirt: 'Clothes', avExtra: 'Accessory',
     avTabs: { face: 'Face', hair: 'Hair', body: 'Body', clothes: 'Clothes', extras: 'Accessories' }, avRandom: 'Surprise me',
-    avLegend: { skin: 'Skin tone', face: 'Face shape', nose: 'Nose', eyeColor: 'Eye colour', brows: 'Eyebrows', beard: 'Beard and moustache', hair: 'Hairstyle', hairColor: 'Hair colour', height: 'Height', build: 'Body type', top: 'Clothing style', shirt: 'Clothes colour', bottom: 'Bottoms', pantsColor: 'Trousers, shorts or skirt colour', shoes: 'Shoe colour', extra: 'Accessory', form: 'Body shape', age: 'Age' },
-    avNames: { form: ['Curvier', 'Less curvy'], age: ['Young', 'Adult', 'Older'], skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
+    avLegend: { skin: 'Skin tone', face: 'Face shape', nose: 'Nose', eyeColor: 'Eye colour', brows: 'Eyebrows', beard: 'Beard and moustache', hair: 'Hairstyle', hairColor: 'Hair colour', height: 'Height', build: 'Body type', top: 'Clothing style', shirt: 'Clothes colour', bottom: 'Bottoms', pantsColor: 'Trousers, shorts or skirt colour', shoes: 'Shoe colour', extra: 'Accessory', form: 'You are', age: 'Age' },
+    avNames: { form: ['Woman', 'Man'], age: ['Young', 'Adult', 'Older'], skin: ['Tone 1', 'Tone 2', 'Tone 3', 'Tone 4', 'Tone 5', 'Tone 6', 'Tone 7', 'Tone 8'], face: ['Round', 'Oval', 'Square', 'Heart'], nose: ['Small', 'Round', 'Long', 'Wide'], eyeColor: ['Dark brown', 'Brown', 'Blue', 'Green', 'Grey', 'Hazel'], brows: ['Thin', 'Medium', 'Thick', 'Arched'], beard: ['No beard', 'Stubble', 'Short', 'Full', 'Moustache', 'Goatee'],
       hair: ['Short', 'Long', 'Curly', 'Bun', 'No hair', 'Buzz cut', 'Side part', 'Afro', 'Ponytail', 'Braids'], hairColor: ['Black', 'Brown', 'Copper', 'Blond', 'Grey', 'Red', 'Platinum', 'Blue', 'Purple'], height: ['Short', 'Average', 'Tall'], build: ['Slim', 'Medium', 'Broad'],
       top: ['T-shirt', 'Hoodie', 'Shirt', 'Jacket', 'Sweater', 'Dress'], shirt: ['Navy', 'Coral', 'Green', 'Lilac', 'Mustard', 'Blue'], bottom: ['Trousers', 'Shorts', 'Skirt'], pantsColor: ['Navy', 'Denim', 'Charcoal', 'Beige', 'Black', 'Off-white'], shoes: ['White', 'Navy', 'Coral', 'Brown', 'Green'], eyes: ['Open', 'Smiling', 'Calm'], extra: ['None', 'Glasses', 'Cap', 'Sunglasses', 'Earrings', 'Headphones'] },
     voiceTitle: 'Character’s voice', voiceNames: { buttery: 'Soft', airy: 'Light', glassy: 'Clear', rounded: 'Round' }, voiceOff: 'No voice (text only)', voiceRate: 'Speed', voiceRates: ['Slow', 'Normal', 'Fast'], voiceTest: 'Hear the voice', voiceNone: 'No voice in this browser: the character shows as text only.', voiceHello: 'Hi! This is the voice I’ll use to talk with you. Do you like it?', voiceHelloName: 'Hi, {name}! This is the voice I’ll use to talk with you. Do you like it?',
@@ -1592,18 +1618,19 @@ const UI = {
     loginTitle: 'Welcome to Nort', loginEmail: 'Email', loginPass: 'Password', loginShow: 'Show password', loginForgot: 'Forgot password?', loginBtn: 'Sign in', loginNoAccount: 'Don’t have an account?', loginCreate: 'Create an account', loginProto: 'Prototype: accounts are not stored. Create one to try it.', loginNotFound: 'Account not found. In the prototype, tap "Create an account".', loginForgotMsg: 'Password recovery isn’t available in the prototype yet.', errLoginPass: 'Please enter your password.', signupHave: 'Already have an account? Sign in',
     lostTitle: '{name} has lost their way', lostTitleNoName: 'Your character has lost their way', lostLead: 'Your character found a compass, but it’s broken.', brokenAlt: 'Broken grey compass, with missing pieces and the needle spinning aimlessly.', brokenHint: 'Turn the compass with your finger, or try its location.', brokenNoSignal: 'No signal: it’s part of the story, your location isn’t used. Turn it with your finger.', brokenReady: 'Ready! Each answer adds colour to a piece of the compass.', brokenLoc: 'Use the compass’s location', brokenLocFail: 'No signal', brokenDialLabel: 'Broken compass. Turn it with your finger or the arrow keys.', brokenGo: 'Look for the way', hudAlt: 'Compass: {n} of {total} pieces coloured.', wholeTitle: 'The compass is whole!', wholeLead: 'Now {name} heads north with you.', wholeLeadNoName: 'Now your character heads north with you.', northSay: 'We found north. Let’s go!', northSayCare: 'Let’s keep going together, at your pace.', wholeTitleCare: 'The compass is ready',
     voiceTestExpr: 'Hi, {name}! [laughs softly] So good to hear you. [whispers] And I can talk quietly too, see? [warmly] Shall we have a little chat?',
-    liveHello: 'Hi! So good to have you here. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveHelloName: 'Hi, {name}! So good to see you. Shall we have a little chat? Talk in your own way, and you can skip any question.', liveToText: 'Type', liveJustTalk: 'Just talk', liveHeardIn: 'What you said is now in the answer field.', liveMicOn: 'Microphone on: I’m listening, go ahead.', liveTypePh: 'What you say shows up here. You can type and edit.', liveTypePhMuted: 'Microphone off: type here.', liveMicTurnOff: 'Turn microphone off', liveMicTurnOn: 'Turn microphone on', liveMicOffSr: 'Microphone off.', liveBridge: ['I see.', 'Mm-hm, I see.', 'Thanks for telling me that.'], liveAgain: ['Sorry, I didn’t quite catch the end.', 'Oops, I missed a little bit.'], liveSafetyBridge: 'Now an important question, one we ask everyone. It’s here on the screen too.', liveSafetyLead: 'Tap your answer or say it.',
+    liveHello: 'Hi! Good to see you. I came by so we could have an honest chat about how you’ve been. No rush, and you can skip anything. Shall we?', liveHelloName: 'Hi, {name}! Good to see you. I came by so we could have an honest chat about how you’ve been. No rush, and you can skip anything. Shall we?', liveToText: 'Type', liveJustTalk: 'Just talk', liveHeardIn: 'What you said is now in the answer field.', liveMicOn: 'Microphone on: I’m listening, go ahead.', liveTypePh: 'What you say shows up here. You can type and edit.', liveTypePhMuted: 'Microphone off: type here.', liveMicTurnOff: 'Turn microphone off', liveMicTurnOn: 'Turn microphone on', liveMicOffSr: 'Microphone off.', liveBridge: ['I see.', 'Mm-hm, I see.', 'Thanks for telling me that.'], liveAgain: ['Sorry, I didn’t quite catch the end.', 'Oops, I missed a little bit.'], liveSafetyBridge: 'Now an important question, one we ask everyone. It’s here on the screen too.', liveSafetyLead: 'Tap your answer or say it.',
     hintLabel: 'You could talk about', indLevels: { strong: 'Worth a closer look', some: 'If you like', none: 'Nothing came up in the chat' }, indCame: 'areas came up in the chat', indCame1: 'area came up in the chat', indRingLegend: 'Thicker pieces came up in the conversation.', indSayScreen: 'On the screen, your compass shows the areas that came up in our chat.', countryPick: 'Choose your country', signupTitle: 'Create your account', signupLead: 'Signs, not a diagnosis, and always a path to a professional.', signupProto: 'Prototype: the account only lasts while this page is open.', emailL: 'Email', passL: 'Password (at least 8 characters)', birthL: 'Date of birth', signupBtn: 'Create account and continue',
     errEmail: 'Please check the email.', errPass: 'The password needs at least 8 characters.', errBirth: 'Please check the date of birth.', needSignup: 'Answer the questions and tick the consent box to continue.',
     findTitle: 'Help {name} find north', findTitleNoName: 'Help your character find north', findLeadNo3D: 'Bring the arrow to N and tap Start.', birthHint: 'Tap to pick the date.', needCountry: 'Choose where you are right now.', needBaby: 'Answer whether you had a baby in the last 12 months (you can choose "Prefer not to say").', needConsent: 'Tick the consent box to continue.', findLead: 'First, your character finds the compass.', avNext: 'Continue',
-    talkHellos: ['Hi, {name}! Good to see you. Shall we have a little chat?', 'Hey, {name}! Glad you’re here. Up for a quick chat?', 'Hello, {name}! Nice to have you here. Let’s talk for a bit, no rush.'],
-    talkHellosNoName: ['Hi! Good to see you. Shall we have a little chat?', 'Hey! Glad you’re here. Up for a quick chat?', 'Hello! Nice to have you here. Let’s talk for a bit, no rush.'],
-    talkHelloHow: ['You can talk or type, whatever feels easier. And if you’d rather not answer something, just skip it.', 'Answer by speaking or typing. If a question doesn’t fit you, just skip it.', 'Say it or type it, your way. You can skip any question.'],
+    talkHellos: ['Hi, {name}! Good to see you. I came by so we could have an honest chat about how you’ve been.', 'Hey, {name}! Here I am. I want to hear from you, straight up, how things are going.', 'Hi, {name}! I came to keep you company and have an honest chat about how you’ve been.'],
+    talkHellosNoName: ['Hi! Good to see you. I came by so we could have an honest chat about how you’ve been.', 'Hey! Here I am. I want to hear from you, straight up, how things are going.', 'Hi! I came to keep you company and have an honest chat about how you’ve been.'],
+    roomHelloEnd: 'Oh, and at the end I’ve got something to give you.', roomGive: 'Here, this compass is yours. It shows what came up in our chat.',
+    talkHelloHow: ['No rush. Talk or type your way, and skip anything you’d rather not answer.', 'Answer by speaking or typing. If a question doesn’t fit you, just skip it.', 'Say it or type it, your way. You can skip any question.'],
     reactLines: {
-      sad: { a: ['Oh… that sounds really heavy.', 'I can imagine how hard that’s been.', 'That sounds like a tough stretch…', 'I’m sorry it’s been like that.', 'It makes complete sense to feel that way, with all of that.'],
-        b: ['You’re not the only one who feels this, and you don’t have to carry it on your own.', 'Thank you for telling me, really. What you feel matters.', 'I’m here with you, no rush.', 'Talking about it is already a step, and I’m listening.', 'Hard seasons don’t define who you are.'] },
+      sad: { a: ['Oh… that sounds really heavy.', 'I’ll be honest with you: that’s a lot to carry.', 'I can imagine how hard that’s been.', 'That sounds like a tough stretch…', 'I’m sorry it’s been like that.', 'It makes complete sense to feel that way, with all of that.'],
+        b: ['You’re not the only one who feels this, and you don’t have to carry it on your own.', 'Thank you for telling me, really. What you feel matters.', 'I’m here with you, no rush.', 'Talking about it is already a step, and I’m listening.', 'You don’t have to handle this with nobody around.'] },
       anxious: { a: ['It sounds like a lot is on your mind…', 'It makes sense that this keeps you on edge.', 'Living with that worry around is tiring…', 'I can imagine how that makes the day feel tense.'],
-        b: ['You don’t have to sort it all out right now.', 'We’ll go at your pace, one thing at a time.', 'Thanks for sharing that with me, I’m here.', 'You’re not the only one who feels this.'] },
+        b: ['You don’t have to sort it all out right now.', 'We’ll go at your pace, one thing at a time.', 'Thanks for sharing that with me, I’m here.', 'You’re not the only one who feels this.', 'If you want, take a breath with me, no rush. You don’t have to fix this right now.'] },
       happy: { a: ['So good to hear that!', 'Oh, that’s lovely, I’m glad to hear it.', 'I love hearing that.', 'That’s really nice to hear.'],
         b: ['It shows you know how to look after yourself. Hold on to that.', 'Worth remembering on the harder days.', 'That’s your doing too.', 'Keep that feeling, it’s yours.'] },
       excited: { a: ['That’s brilliant, I can feel your excitement!', 'Great news, I’m so happy for you!', 'Wow, that’s great!'],
@@ -1631,9 +1658,9 @@ const UI = {
       { k: ['partner', 'boyfriend', 'girlfriend', 'relationship', 'marriage'], hard: 'When a relationship wobbles, it shakes everything a bit.', good: 'Having someone you feel good with is a real support.' },
       { k: ['friend*', 'mates'], hard: 'Friendships can really affect how we feel.', good: 'Having friends like that around is a great support.' }
     ],
-    indSayDone: ['All done. Thanks for talking with me.', 'That’s it. Thank you for telling me all that.'], indSayDoneCare: 'Thank you for trusting me and sharing all of that.',
+    indSayDone: ['Okay, we’re done. Here, this compass is yours. Thanks for really talking with me.', 'That’s it. Here, this compass is yours, made from what you told me. Thanks for being honest.'], indSayDoneCare: 'Thank you so much for trusting me and sharing all of that. Here, this compass is yours. And you don’t have to go through this without help: the support contacts are right here on the screen.',
     indSayStrong: 'From what you told me, it’s worth a closer look at: {areas}.', indSaySome: 'If you like, you could also look at: {areas}.', indSayNone: 'Nothing you told me called for a closer look, but you can pick any area on the screen.',
-    indSayEnd: 'This is not a diagnosis, just pointers to choose the official questionnaires. You decide. And talking to a psychologist or psychiatrist is always a good idea.',
+    indSayEnd: 'This isn’t a diagnosis, okay? Just pointers to choose the official questionnaires, and you decide. And honestly: talking to a psychologist or psychiatrist is always a good idea, especially if something here felt heavy.',
     avDrag: 'Drag to turn.',
     voiceOwn: 'My own voice', voiceOwnReady: 'My voice ✓', voiceOwnLead: 'Talk for about 30 seconds and your character gets your voice. It’s deleted when you leave.', voiceOwnCreate: 'Create my voice', voicePickMore: 'I’d rather use a ready-made voice', voiceOwnUse: 'Use my voice', voiceOwnRedo: 'Record again', voicePick: 'Or choose a voice', voiceNaturalNote: 'With a natural voice, the character’s lines go to ElevenLabs (US).', voiceGroups: { natural: 'Natural voices (ElevenLabs)', claude: 'Claude voices', device: 'Device voices', other: 'Other' }, voiceNatural: ['Calm (female)', 'Warm (female)', 'Soft (female)', 'Serene (male)', 'Friendly (male)', 'Deep (male)', 'Neutral'],
     cloneConsentShort: 'I agree to record and use my voice for my character, and to the terms of use.', termsRead: 'Read the terms of use', termsKey: 'In short: Nort gives signs, not a diagnosis. Your voice and the conversation go through ElevenLabs, the Claude AI and a Nort server. Almost nothing is kept: your voice is gone within 2 hours and the conversation transcript within 1 day.', termsAgree: 'I have read and agree to the terms of use.', cloneTermsLine: 'Your voice is used as described in the terms of use.', termsTitle: 'Terms of use', termsBack: 'Got it', termsSections: [['What Nort is', 'A test prototype for mental health self-screening. It gives signs, never a diagnosis, and always recommends a psychologist or psychiatrist. Do not use it for health decisions. You talk with the character by voice and by text, at the same time, however you like.'], ['Your answers', 'Your answers are health data, which is sensitive information. In this prototype they stay only in this page’s memory and disappear when you close it. They are used only to produce your signs and your result. Inside the Claude link, what you type goes to the Claude AI to find the signs. Outside it, if you use the microphone in the written mode, your browser’s speech recognition receives your voice.'], ['Live conversation', 'You talk with the character by voice, in real time. What you say and what you type during the conversation goes to ElevenLabs (a US company), which turns it into text and voice, and to the Claude AI (by Anthropic), which guides the conversation. Your character’s name and whether you had a baby in the last year are sent too. We ask that recordings are not kept and that transcripts are deleted within 1 day. Your browser will ask for the microphone.'], ['Your own voice', 'If you create your voice, the recording goes to ElevenLabs to create the character’s voice and to transcribe your way of speaking (expressions and rhythm). A short piece of what you said goes to the live conversation, only so the character can talk like you. The text of how you speak also goes to the Claude AI (Anthropic), only to rewrite the questions your way. A voice is biometric data, which is sensitive information.'], ['How long', 'Your voice and the sample of how you speak are deleted when you start over or close the page, and at most within 2 hours. The live conversation transcript is deleted within 1 day. Technical logs follow ElevenLabs’ and Anthropic’s privacy policies.'], ['Nort server', 'Everything goes through a Nort server (Cloudflare). It does not keep what you say, only technical logs (errors, duration and response times, browser type), with nothing of what you say.'], ['Taking care of you', 'From the safety question to the end, the character uses a ready-made voice. If something suggests risk, the conversation stops and the help numbers appear right away.'], ['You decide', 'You can skip any question, type instead of talking, use a ready-made voice and leave whenever you like.']], cloneTitle: 'Your voice in your character', cloneLeadFree: 'Talk freely for about 30 seconds, somewhere quiet.', cloneTopicLead: 'Tell me:', cloneTopics: ['Tell me a bit about yourself: who are you, what do you like?', 'What do you most like doing on a free day?', 'Tell me about a place or a person that does you good.', 'What was the last thing that made you really laugh?', 'Tell me a bit of your story, however you like.'], cloneTopicNext: 'Another question', cloneTalk: 'Start talking', cloneTalkMore: 'Talk more', cloneFreeTip: 'You can pause and carry on anytime.', cloneToRead: 'I’d rather read sentences', cloneToFree: 'I’d rather talk freely', cloneDecline: 'I don’t want to record: use a ready-made voice', cloneLead: 'Read the sentences out loud, somewhere quiet.',
@@ -1643,7 +1670,7 @@ const UI = {
     cloneHow: 'Read each sentence and tap Stop', cloneRecord: 'Record sentence {n}', cloneStop: 'Stop', cloneTotal: 'Recorded: {n} s (minimum 30 s)', cloneGo: 'Create my voice', cloneBusy: 'Creating your voice…', cloneBack: 'Go back without recording',
     cloneMicDenied: 'No microphone access. Allow the microphone in your browser settings or choose a ready-made voice.', cloneFail: 'Your voice couldn’t be created right now. Try again or choose a ready-made voice.', cloneVerify: 'ElevenLabs asked for an extra check for this voice. For now, choose a ready-made voice.',
     cloneLines: ['Hi, this is my voice, and today I chose to take care of myself.', 'I don’t need to have every answer to take the next step.', 'Even on hard days, I keep trying, in my own way.', 'Asking for help is not weakness: it is the courage of someone who wants to be well.', 'I deserve the same kindness I give to the people I love.', 'Could I be a little gentler with myself today?', 'At seven in the morning I open the window, breathe in deeply and count to four.', 'One step at a time, one breath at a time. I am here.'],
-    indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribeBody: 'Body shape: {form}, age: {age}.', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
+    indNoWait: 'Continue without waiting', indBack: 'Back to the conversation', optionsAre: 'The options are', avDescribeBody: '{form}, age: {age}.', avDescribe: 'Your character: {hair} hair, {color}, {eyes} eyes, {shirt} clothes, accessory: {extra}.',
     talkStart: 'Start the conversation', quickQuiz: 'I’d rather answer quick questions',
     talkFirst: 'Say it your way. You can skip any question.',
     talkPlaceholder: 'Speak or type. There’s no right answer.', talkAnswerLabel: 'Your answer', talkReplay: 'Hear it again', talkSkip: 'Skip this question', talkNeed: 'Answer in your own way or tap "Skip this question".',
@@ -2414,7 +2441,7 @@ level: "strong" = frequent or persistent difficulties, or a clear impact on life
 evidence: a short neutral paraphrase of what the person said (max 12 words, in ${lang === 'pt' ? 'Brazilian Portuguese' : 'English'}), no diagnostic words; "" when level is none.
 risk: "urgent" or "possible" if there is ANY mention of wanting to die, suicidal thoughts, self-harm, harming others, or being in danger now; otherwise "none".
 other: ids from this list that the answer clearly speaks about even though not asked: ${all}.
-reply: what a warm, caring friend would say back, in ${lang === 'pt' ? 'Brazilian Portuguese (informal "você", gender-neutral: avoid words like sozinho/sozinha, cansado/cansada)' : 'English'}: one or two short sentences, at most 25 words in total, in two beats. If something is hard or worrying: (1) reflect it and validate the feeling, (2) add gentle company or hope (e.g. that they are not the only one, that you are here, that what they feel matters). If something is good: (1) genuine warmth, (2) name it as their own strength or resource to keep (e.g. friends, family, good sleep, work going well). Never praise eating less or more, weight, or exercise. No advice, no questions, no diagnosis or condition names, no minimising ("it's not that bad", "everyone goes through it"), no toxic positivity, no emojis, no quotes. Never mention death, suicide or self-harm. If risk is not "none", reply must be "".
+reply: what an honest, direct friend who really cares would say back (plain everyday words, honest but never harsh or blunt, always kind), in ${lang === 'pt' ? 'Brazilian Portuguese (informal "você", gender-neutral: avoid words like sozinho/sozinha, cansado/cansada)' : 'English'}: one or two short sentences, at most 25 words in total, in two beats. If something is hard or worrying: (1) reflect it and validate the feeling, (2) add gentle company or hope (e.g. that they are not the only one, that you are here, that what they feel matters). If something is good: (1) genuine warmth, (2) name it as their own strength or resource to keep (e.g. friends, family, good sleep, work going well). Never praise eating less or more, weight, or exercise. No advice, no questions, no diagnosis or condition names, no minimising ("it's not that bad", "everyone goes through it"), no toxic positivity, no emojis, no quotes. Never mention death, suicide or self-harm. If risk is not "none", reply must be "".
 Reply with JSON only: {"areas":{"<id>":{"level":"none|some|strong","evidence":"..."}},"risk":"none|possible|urgent","other":["<id>"],"reply":"..."}`;
 }
 function cleanAI(qdef, raw, lang) {
@@ -2492,14 +2519,14 @@ const AV = {
   shoes: ['#FFFFFF', '#1F2A44', '#E8684A', '#8A6A4E', '#3E8E7E'],
   eyes: ['round', 'happy', 'calm'],
   extra: ['none', 'glasses', 'cap', 'sunglasses', 'earrings', 'headphones'],
-  // só no modo realista de teste (?modelo=real): corpo e idade do kit realista
+  // só no modo realista de teste (?modelo=real): "Você é" (0 = mulher, 1 = homem) e idade do kit realista
   form: ['female', 'male'],
   age: ['young', 'adult', 'older']
 };
 const AV_DEFAULT = { skin: 2, face: 0, nose: 1, eyeColor: 1, brows: 1, beard: 0, hair: 0, hairColor: 1, height: 1, build: 1, top: 0, shirt: 1, bottom: 0, pantsColor: 0, shoes: 0, eyes: 0, extra: 0, form: 0, age: 1, name: '' };
 const AV_REAL_ONLY = ['form', 'age'];
 // Builder tabs: which options each tab shows; color rows show swatches
-const AV_TABS = { face: ['skin', 'face', 'nose', 'eyeColor', 'brows', 'beard'], hair: ['hair', 'hairColor'], body: ['form', 'age', 'height', 'build'], clothes: ['top', 'shirt', 'bottom', 'pantsColor', 'shoes'], extras: ['extra'] };
+const AV_TABS = { face: ['form', 'skin', 'face', 'nose', 'eyeColor', 'brows', 'beard'], hair: ['hair', 'hairColor'], body: ['age', 'height', 'build'], clothes: ['top', 'shirt', 'bottom', 'pantsColor', 'shoes'], extras: ['extra'] };
 const AV_COLORS = ['skin', 'eyeColor', 'hairColor', 'shirt', 'pantsColor', 'shoes'];
 function avatarSVG(c, cls) {
   const skin = AV.skin[c.skin] || AV.skin[2], hc = AV.hairColor[c.hairColor] || AV.hairColor[1], sh = AV.shirt[c.shirt] || AV.shirt[1];
@@ -3266,6 +3293,8 @@ const N3D = (() => {
   // O boneco feito por código continua sendo o padrão e a reserva: se algo não carregar, ele fica.
   const REAL = (() => { try { const q = new URLSearchParams(location.search); return q.get('modelo') === 'real' || localStorage.getItem('nort-modelo') === 'real'; } catch (e) { return false; } })();
   const real = { on: false, lite: false, person: 0, cur: null, acts: {}, emoW: {}, t: 0 };
+  // quarto aconchegante no lugar da floresta (pedido do Guilherme, 18/11/2026); ?cena=floresta = a floresta, para comparar
+  const ROOM = REAL && !/[?&]cena=floresta/.test(location.search);
   const RB = 'assets/3d/', ADDONS = THREE_URL.replace('build/three.module.min.js', 'examples/jsm/');
   // pessoas: [arquivo, conjunto de animações (f/m), altura]; a escolha usa o tom de pele, o cabelo e a barba do criador
   const PEOPLE = [null, ['pessoa-1', 'f'], ['pessoa-2', 'm'], ['pessoa-3', 'f'], ['pessoa-4', 'm'], ['pessoa-5', 'f'], ['pessoa-6', 'f'], ['pessoa-7', 'm']];
@@ -3320,7 +3349,7 @@ const N3D = (() => {
   }
   async function realStart() {
     real.lite = (navigator.deviceMemory && navigator.deviceMemory <= 3) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || /[?&]leve=1/.test(location.search);
-    try { await preload(); realScene(); document.body.classList.add('real3d'); } catch (e) { /* faltou textura: a floresta de antes continua */ }
+    try { if (ROOM) roomScene(); else { await preload(); realScene(); } document.body.classList.add('real3d'); } catch (e) { /* faltou textura: a cena de antes continua */ }
     try { await loaders(); real.ready = true; if (KIT_ON) kitNotify(); if (st.look) realOnChar(st.look); } catch (e) { real.ready = false; }
   }
   async function realLoadPerson(n) {
@@ -3442,10 +3471,50 @@ const N3D = (() => {
         if (e.nort === 'cornea') { m.transparent = true; m.opacity = 0.1; m.depthWrite = false; m.roughness = 0.04; o.castShadow = false; }
         if (e.nort === 'eye') { m.envMapIntensity = 0.2; m.roughness = 0.6; } // o brilho fica na córnea; sem reflexo do céu a íris escura não fica cinza
         if (e.nort === 'eye' && m.emissiveMap && !e.irisMask) { e.irisMask = m.emissiveMap; e.irisBase = m.map; m.emissiveMap = null; }
+        kitStyle(m, e.nort);
       }
       if (o.morphTargetDictionary) { const d = {}; for (const [k, i] of Object.entries(o.morphTargetDictionary)) d[k.startsWith('viseme_') || k.startsWith('k_') ? k : k.charAt(0).toLowerCase() + k.slice(1)] = i; o.morphTargetDictionary = d; }
     });
     return gl;
+  }
+  // visual "realista, porém um pouco cartunizado": pele lisa (sem poros), tecidos sem ruído, cabelo em volumes limpos, sombreado suave + contorno
+  function soften(t, px) { // tira o detalhe fino da textura (poros, trama), mantendo as cores grandes (lábios, sombras das dobras)
+    const im = t && t.image; if (!im || !im.width) return t;
+    const c = document.createElement('canvas'), k = Math.min(1, (real.lite ? 512 : 1024) / Math.max(im.width, im.height)); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+    const x = c.getContext('2d'); x.filter = `blur(${px * k}px)`; x.drawImage(im, 0, 0, c.width, c.height);
+    const n = new T.CanvasTexture(c); n.flipY = t.flipY; n.colorSpace = t.colorSpace; n.wrapS = t.wrapS; n.wrapT = t.wrapT; n.userData = Object.assign({}, t.userData); return n;
+  }
+  function kitStyle(m, kind) {
+    if (m.userData.styled) return; m.userData.styled = true;
+    if (kind === 'skin') { if (m.map) m.map = soften(m.map, 3); m.normalMap = null; m.roughness = 0.6; toon(m, 'skin'); }
+    else if (kind === 'hair' || kind === 'beard') { if (m.map) m.map = soften(m.map, 1.5); m.normalMap = null; m.roughness = Math.max(0.5, m.roughness || 0.6); toon(m, 'hair'); }
+    else if (kind === 'top' || kind === 'bottom' || kind === 'shoes') { if (m.map) m.map = soften(m.map, 2); if (m.normalMap) m.normalScale.set(0.3, 0.3); toon(m, 'cloth'); }
+    else if (kind === 'brow') toon(m, 'hair');
+    else if (kind === 'teeth') { if (m.map) m.map = soften(m.map, 2.5); m.color.setScalar(1.08); m.roughness = 0.5; toon(m, 'cloth'); } // dentes limpos (sem as linhas entre eles)
+    else if (kind === 'extra') toon(m, 'cloth');
+  }
+  function kitEyes(gl) { // olhos um pouco maiores: o globo, as pálpebras, os cílios e a pele em volta crescem juntos (nada abre buraco)
+    // as malhas vêm quantizadas (cada uma no seu espaço): a conta é feita no espaço do esqueleto (bindMatrix) e a posição vira Float32
+    const ms = []; let eye = null; gl.scene.traverse((o) => { if (o.isSkinnedMesh) { ms.push(o); if ([].concat(o.material).some((m) => m.userData && m.userData.nort === 'eye')) eye = o; } });
+    if (!eye) return; const v = new T.Vector3(), ep = eye.geometry.attributes.position, C = [new T.Vector3(), new T.Vector3()], N = [0, 0], R = [0, 0], P = [];
+    for (let i = 0; i < ep.count; i++) { v.fromBufferAttribute(ep, i).applyMatrix4(eye.bindMatrix); P.push(v.clone()); }
+    const cx = P.reduce((a, q) => a + q.x, 0) / P.length;
+    P.forEach((q) => { const k = q.x > cx ? 0 : 1; C[k].add(q); N[k]++; }); C.forEach((c, k) => c.multiplyScalar(1 / Math.max(1, N[k])));
+    P.forEach((q) => { const k = q.x > cx ? 0 : 1; R[k] = Math.max(R[k], q.distanceTo(C[k])); });
+    if (!N[0] || !N[1] || !R[0] || !R[1]) return;
+    const S = 1.24; real.eyeK = S;
+    for (const o of ms) {
+      const g = o.geometry; if (g.userData.nortEyes) continue; g.userData.nortEyes = true; const kind = [].concat(o.material)[0].userData.nort;
+      if (kind === 'teeth' || kind === 'tongue') continue;
+      const pa = g.attributes.position, out = new Float32Array(pa.count * 3); let moved = 0;
+      for (let i = 0; i < pa.count; i++) {
+        v.fromBufferAttribute(pa, i); const lx = v.x, ly = v.y, lz = v.z; v.applyMatrix4(o.bindMatrix);
+        for (let k = 0; k < 2; k++) { const d = v.distanceTo(C[k]) / R[k]; if (d > 2.4) continue; const t = Math.min(1, Math.max(0, (d - 1.15) / 1.25)), f = 1 + (S - 1) * (1 - t * t * (3 - 2 * t)); v.sub(C[k]).multiplyScalar(f).add(C[k]); moved++; }
+        if (moved) { v.applyMatrix4(o.bindMatrixInverse); out[i * 3] = v.x; out[i * 3 + 1] = v.y; out[i * 3 + 2] = v.z; } else { out[i * 3] = lx; out[i * 3 + 1] = ly; out[i * 3 + 2] = lz; }
+        moved = 0;
+      }
+      g.setAttribute('position', new T.BufferAttribute(out, 3)); g.computeBoundingSphere();
+    }
   }
   const kitGet = (name) => { if (kit.gl[name]) return kit.gl[name]; const pr = real.loader.loadAsync(KIT + name + '.glb').then(kitPrep).then((g) => { pr.__v = g; return g; }, (e) => { delete kit.gl[name]; throw e; }); return (kit.gl[name] = pr); };
   function kitHide() { // a pele que fica por baixo da roupa não é desenhada (sem pele atravessando o tecido)
@@ -3489,7 +3558,7 @@ const N3D = (() => {
     if (kit.g !== sp.g) { // corpo novo (feminino/masculino): troca o esqueleto e as animações
       if (parts.hc && real.hand && real.root && isIn(parts.hc, real.root)) parts.hc.parent.remove(parts.hc);
       if (real.root) { for (const k in kit.on) kitAttach(k, null); scene.remove(real.root); }
-      const root = body.scene; real.root = root; real.bones = {}; kit.on = {};
+      const root = body.scene; real.root = root; real.bones = {}; kit.on = {}; kitEyes(body);
       root.traverse((o) => { if (o.isBone || o.type === 'Object3D') real.bones[o.name.replace(/_/g, ' ')] = o; if (o.isSkinnedMesh && o.name === 'corpo') kit.bodyMesh = o; });
       const gu = kit.bodyMesh.geometry.userData; gu.idx0 = gu.idx0 || kit.bodyMesh.geometry.index.array.slice(); kit.idx0 = gu.idx0;
       if (!root.userData.headY) { root.scale.setScalar(1); root.position.set(0, 0, 0); root.updateMatrixWorld(true); const hp = new T.Vector3(); (real.bones['Bip01 Head'] || root).getWorldPosition(hp); root.userData.headY = hp.y; } kit.head = root.userData.headY; // medido uma vez, sem escala
@@ -3508,9 +3577,9 @@ const N3D = (() => {
       const ld = (f) => kit.gl[f] || (kit.gl[f] = texL().loadAsync(KIT + f).then((t0) => { const t = real.lite ? shrink(t0, 512) : t0; t.flipY = false; t.colorSpace = f.endsWith('-n.webp') ? T.NoColorSpace : T.SRGBColorSpace; return t; }));
       try {
         const [m, nm] = await Promise.all([ld('pele-velho-' + sp.g + '.webp'), ld('pele-velho-' + sp.g + '-n.webp')]);
-        skin.map = m; skin.normalMap = nm; skin.needsUpdate = true;
+        if (!m.userData.soft) { const sm = soften(m, 1.5); sm.userData.soft = true; kit.gl['pele-velho-' + sp.g + '.webp'] = Promise.resolve(sm); skin.map = sm; } else skin.map = m; skin.normalMap = nm; skin.normalScale.set(0.35, 0.35); skin.needsUpdate = true;
       } catch (e) { delete kit.gl['pele-velho-' + sp.g + '.webp']; delete kit.gl['pele-velho-' + sp.g + '-n.webp']; } // sem rugas: fica a pele de sempre
-    } else if (skin.map !== skin.userData.map0) { skin.map = skin.userData.map0; skin.normalMap = skin.userData.nmap0; skin.needsUpdate = true; }
+    } else if (skin.map !== skin.userData.map0) { skin.map = skin.userData.map0; skin.normalMap = skin.userData.nmap0; skin.normalScale.set(1, 1); skin.needsUpdate = true; }
     real.kw = sp.w; if (['cabelo-blackpower', 'cabelo-cacheado', 'cabelo-coque'].includes(sp.parts.hair)) real.kw.k_cap_alto = 1; // boné/fone por cima do cabelo volumoso
     real.morph = []; real.root.traverse((o) => { if (o.isMesh && o.morphTargetDictionary) real.morph.push(o); });
     real.scale = 2.05 / Math.max(1.2, kit.head + 0.14) * sp.h; real.root.scale.setScalar(real.scale);
@@ -3526,15 +3595,50 @@ const N3D = (() => {
     a.reset(); a.setLoop(once ? T.LoopOnce : T.LoopRepeat, Infinity); a.clampWhenFinished = once; a.play();
     if (real.cur) { if (fade === 0) real.cur.stop(); else real.cur.crossFadeTo(a, fade == null ? 0.35 : fade, false); } real.cur = a; real.curName = name;
   }
+
+  // estilo levemente cartunizado (só no kit): cabeça e mãos um pouco maiores; sentar no sofá para conversar (chat);
+  // olhar para a pessoa (a câmera) e inclinar a cabeça com a emoção. Tudo depois das animações, a cada quadro.
+  const HEAD_K = 1.13, HAND_K = 1.15, LOOK_MAX = 0.6;
+  function realPose(dt, moving) {
+    const r = real.root, B = real.bones, V = real.pv || (real.pv = [new T.Vector3(), new T.Vector3(), new T.Vector3(), new T.Quaternion(), new T.Quaternion(), new T.Quaternion()]);
+    if (real.person === 'kit') { if (real.head) real.head.scale.setScalar(HEAD_K); for (const h of [B['Bip01 L Hand'], B['Bip01 R Hand']]) if (h) h.scale.setScalar(HAND_K); }
+    // sentar: coxas para a frente, canelas para baixo, quadril desce até o assento e vai para trás, até o sofá
+    const sitT = st.chat && real.room && !moving ? 1 : 0; real.sit = st.reduce ? sitT : (real.sit || 0) + (sitT - (real.sit || 0)) * Math.min(1, dt * 3.2);
+    r.updateMatrixWorld(true);
+    if (real.sit > 0.01) {
+      const s = real.sit, q = r.quaternion;
+      for (const sd of ['L', 'R']) {
+        const th = B[`Bip01 ${sd} Thigh`], ca = B[`Bip01 ${sd} Calf`], ft = B[`Bip01 ${sd} Foot`]; if (!th || !ca || !ft) continue;
+        aimBone(th, ca, V[0].set(sd === 'L' ? 0.05 : -0.05, -0.02, 1).applyQuaternion(q).normalize(), s);
+        aimBone(ca, ft, V[0].set(0, -1, 0.1).applyQuaternion(q).normalize(), s);
+      }
+      const fl = B['Bip01 L Foot'], fr = B['Bip01 R Foot'];
+      if (fl && fr) { fl.getWorldPosition(V[1]); fr.getWorldPosition(V[2]); const ank = Math.min(V[1].y, V[2].y) - r.position.y; r.position.y -= Math.max(0, ank - (real.ank0 || ank)); }
+      r.position.z += (SOFA.z - r.position.z) * s; r.updateMatrixWorld(true);
+    } else if (B['Bip01 L Foot'] && !moving && !st.crouch) { B['Bip01 L Foot'].getWorldPosition(V[1]); real.ank0 = V[1].y - r.position.y; } // altura do tornozelo em pé
+    // olhar para a pessoa: a cabeça vira para a câmera (até ~35°), com a inclinação da emoção (compaixão inclina, tristeza abaixa)
+    const lookT = moving || st.searching || st.crouch || st.goingNorth ? 0 : 1; real.lookK = st.reduce ? lookT : (real.lookK || 0) + (lookT - (real.lookK || 0)) * Math.min(1, dt * 4);
+    const h = real.head; if (!h) return;
+    h.getWorldPosition(V[1]); real.headW = V[1].y; if (real.lookK < 0.01) return;
+    V[2].copy(camera.position).sub(V[1]).normalize();
+    if (!real.headFwd || real.headFwdRoot !== r) { real.headFwdRoot = r; real.headFwd = new T.Vector3(0, 0, 1).applyQuaternion(r.quaternion).applyQuaternion(h.getWorldQuaternion(V[4]).invert()); } // "frente" do rosto no osso, medida em pé
+    const fwd = V[0].copy(real.headFwd).applyQuaternion(h.getWorldQuaternion(V[4])).normalize(); // para onde o rosto aponta agora (com a animação)
+    const qa = V[3].setFromUnitVectors(fwd, V[2]), ang = 2 * Math.acos(Math.min(1, Math.abs(qa.w)));
+    qa.slerp(V[4].identity(), 1 - 0.85 * real.lookK * Math.min(1, LOOK_MAX / Math.max(1e-4, ang)));
+    fwd.set(0, 0, 1).applyQuaternion(r.quaternion);
+    const e = cur; qa.multiply(V[4].setFromAxisAngle(fwd, -(e.tilt || 0) * 0.8)).multiply(V[5].setFromAxisAngle(V[1].set(1, 0, 0).applyQuaternion(r.quaternion), (e.pitch || 0) * 0.5));
+    const pq = h.parent.getWorldQuaternion(V[5]); const inv = V[4].copy(pq).invert();
+    h.quaternion.premultiply(inv.multiply(qa).multiply(pq)); h.updateMatrixWorld(true);
+  }
   // emoções do Nort -> formas ARKit do rosto
-  const REMO = {
-    neutral: {}, listening: { browInnerUp: 0.15, mouthSmileLeft: 0.25, mouthSmileRight: 0.25 },
-    calm: { mouthSmileLeft: 0.55, mouthSmileRight: 0.55, eyeSquintLeft: 0.15, eyeSquintRight: 0.15, browInnerUp: 0.2 },
-    happy: { mouthSmileLeft: 1, mouthSmileRight: 1, cheekSquintLeft: 1, cheekSquintRight: 1, eyeSquintLeft: 0.45, eyeSquintRight: 0.45, mouthDimpleLeft: 0.6, mouthDimpleRight: 0.6, mouthUpperUpLeft: 0.3, mouthUpperUpRight: 0.3, mouthShrugUpper: 0.2, browInnerUp: 0.15 },
-    excited: { mouthSmileLeft: 1.5, mouthSmileRight: 1.5, jawOpen: 0.25, browInnerUp: 0.4, browOuterUpLeft: 0.6, browOuterUpRight: 0.6, eyeWideLeft: 0.5, eyeWideRight: 0.5, cheekSquintLeft: 0.6, cheekSquintRight: 0.6 },
-    sad: { browInnerUp: 1.0, browDownLeft: 0.15, browDownRight: 0.15, mouthFrownLeft: 1.0, mouthFrownRight: 1.0, mouthPressLeft: 0.3, mouthPressRight: 0.3, mouthShrugLower: 0.35, eyeBlinkLeft: 0.18, eyeBlinkRight: 0.18 },
-    compassion: { browInnerUp: 0.75, mouthSmileLeft: 0.8, mouthSmileRight: 0.8, cheekSquintLeft: 0.3, cheekSquintRight: 0.3, eyeSquintLeft: 0.3, eyeSquintRight: 0.3, mouthPressLeft: 0.2, mouthPressRight: 0.2 },
-    thinking: { browDownLeft: 0.5, browOuterUpRight: 0.6, browInnerUp: 0.2, mouthPressLeft: 0.45, mouthLeft: 0.4, mouthRollLower: 0.2, eyeSquintLeft: 0.25 }
+  const REMO = { // mais fortes que antes (estilo levemente cartunizado): sorriso e compaixão bem claros
+    neutral: { mouthSmileLeft: 0.12, mouthSmileRight: 0.12 }, listening: { browInnerUp: 0.3, browOuterUpLeft: 0.12, browOuterUpRight: 0.12, mouthSmileLeft: 0.35, mouthSmileRight: 0.35 },
+    calm: { mouthSmileLeft: 0.6, mouthSmileRight: 0.6, eyeSquintLeft: 0.2, eyeSquintRight: 0.2, browInnerUp: 0.25, eyeBlinkLeft: 0.1, eyeBlinkRight: 0.1 },
+    happy: { mouthSmileLeft: 1.15, mouthSmileRight: 1.15, cheekSquintLeft: 1, cheekSquintRight: 1, eyeSquintLeft: 0.5, eyeSquintRight: 0.5, mouthDimpleLeft: 0.6, mouthDimpleRight: 0.6, mouthUpperUpLeft: 0.2, mouthUpperUpRight: 0.2, mouthShrugUpper: 0.15, browInnerUp: 0.2, browOuterUpLeft: 0.15, browOuterUpRight: 0.15 },
+    excited: { mouthSmileLeft: 1.25, mouthSmileRight: 1.25, jawOpen: 0.32, browInnerUp: 0.45, browOuterUpLeft: 0.7, browOuterUpRight: 0.7, eyeWideLeft: 0.5, eyeWideRight: 0.5, cheekSquintLeft: 0.7, cheekSquintRight: 0.7 },
+    sad: { browInnerUp: 1.15, browDownLeft: 0.2, browDownRight: 0.2, mouthFrownLeft: 1.2, mouthFrownRight: 1.2, mouthPressLeft: 0.35, mouthPressRight: 0.35, mouthShrugLower: 0.45, eyeBlinkLeft: 0.22, eyeBlinkRight: 0.22 },
+    compassion: { browInnerUp: 1.0, mouthSmileLeft: 0.75, mouthSmileRight: 0.75, cheekSquintLeft: 0.4, cheekSquintRight: 0.4, eyeSquintLeft: 0.35, eyeSquintRight: 0.35, mouthPressLeft: 0.2, mouthPressRight: 0.2, eyeBlinkLeft: 0.12, eyeBlinkRight: 0.12 },
+    thinking: { browDownLeft: 0.55, browOuterUpRight: 0.7, browInnerUp: 0.2, mouthPressLeft: 0.5, mouthLeft: 0.45, mouthRollLower: 0.25, eyeSquintLeft: 0.3, eyeLookUpLeft: 0.3, eyeLookUpRight: 0.3 }
   };
   const _q = [], _v = [];
   function aimBone(bone, child, dir, k) { // gira o osso (no mundo) para o filho apontar para dir
@@ -3560,11 +3664,15 @@ const N3D = (() => {
     if (real.hold === undefined) real.hold = 0;
     play(want, st.reduce ? 0 : null);
     const a = real.acts.andar; if (a) a.timeScale = 1.25;
+    if (real.saved) for (const [b, q, sc] of real.saved) { b.quaternion.copy(q); b.scale.copy(sc); } // o mixer só reescreve o que mudou: volta ao valor da animação
     real.mixer.update(st.reduce ? 0 : dt);
+    { const B = real.bones; if (!real.saved || real.savedRoot !== r) { real.savedRoot = r; real.saved = ['Bip01 Head', 'Bip01 Spine2', 'Bip01 L Thigh', 'Bip01 R Thigh', 'Bip01 L Calf', 'Bip01 R Calf', 'Bip01 L Hand', 'Bip01 R Hand', 'Bip01 R UpperArm', 'Bip01 R Forearm'].filter((n) => B[n]).map((n) => [B[n], new T.Quaternion(), new T.Vector3()]); }
+      for (const e of real.saved) { e[1].copy(e[0].quaternion); e[2].copy(e[0].scale); } }
     r.updateMatrixWorld(true);
     // segurar e mostrar a bússola: o braço direito vem para a frente
     // respirar junto: o peito sobe e desce com o círculo
     const br = breathAmp(); if (real.spine && br > 0 && !st.reduce) { real.spine.rotateX(-0.06 * br); real.spine.updateMatrixWorld(true); }
+    realPose(dt, moving);
     const holdK = st.holding && !moving ? 1 : 0; real.hold = st.reduce ? holdK : real.hold + (holdK - real.hold) * Math.min(1, dt * 6);
     if (real.hold > 0.01 && real.arm[0] && real.arm[1] && real.hand) {
       const V = real.v || (real.v = [new T.Vector3(), new T.Vector3(), new T.Vector3(), new T.Vector3()]);
@@ -3579,13 +3687,13 @@ const N3D = (() => {
     for (const n in W) W[n] += ((want2[n] || 0) - W[n]) * k;
     const m = st.mouthOpen, ph = st.t * 9;
     const out = real.out || (real.out = {}); for (const n in out) out[n] = 0; Object.assign(out, W); if (real.person === 'kit' && real.kw) Object.assign(out, real.kw);
-    out.eyeBlinkLeft = Math.min(1, (out.eyeBlinkLeft || 0) + st.blink); out.eyeBlinkRight = Math.min(1, (out.eyeBlinkRight || 0) + st.blink);
+    const bk = real.person === 'kit' ? real.eyeK || 1 : 1; if (bk > 1) { const wd = 0.12 * (1 - Math.min(1, (out.eyeSquintLeft || 0) * 1.6)); out.eyeWideLeft = (out.eyeWideLeft || 0) + wd; out.eyeWideRight = (out.eyeWideRight || 0) + wd; } // olhos mais abertos (estilo) out.eyeBlinkLeft = Math.min(1, (out.eyeBlinkLeft || 0) + st.blink) * bk; out.eyeBlinkRight = Math.min(1, (out.eyeBlinkRight || 0) + st.blink) * bk; // pálpebra maior fecha inteira
     if (m > 0.01) {
       out.jawOpen = (out.jawOpen || 0) + m * 0.32; out.mouthFunnel = (out.mouthFunnel || 0) + m * 0.25 * Math.max(0, Math.sin(ph * 0.7));
       out.mouthLowerDownLeft = (out.mouthLowerDownLeft || 0) + m * 0.3; out.mouthLowerDownRight = (out.mouthLowerDownRight || 0) + m * 0.3;
       out.mouthStretchLeft = (out.mouthStretchLeft || 0) + m * 0.2 * Math.max(0, Math.cos(ph * 0.5)); out.mouthStretchRight = (out.mouthStretchRight || 0) + m * 0.2 * Math.max(0, Math.cos(ph * 0.5));
     }
-    for (const o of real.morph) { const d = o.morphTargetDictionary, inf = o.morphTargetInfluences; inf.fill(0); for (const n in out) { const i = d[n]; if (i !== undefined) inf[i] = Math.min(1, out[n]); } }
+    for (const o of real.morph) { const d = o.morphTargetDictionary, inf = o.morphTargetInfluences; inf.fill(0); for (const n in out) { const i = d[n]; if (i !== undefined) inf[i] = Math.min(n.startsWith('k_') ? 1 : 1.25, out[n]); } }
   }
   // ---- floresta realista: céu (névoa -> dia), chão de grama, trilha de terra, árvores de verdade (fotos 3D em planos cruzados), pedras
   function realScene() {
@@ -3636,6 +3744,141 @@ const N3D = (() => {
     real.stoneTex = tex('pedra-cor', 1, true); real.stoneTex.userData.keep = true; // as pedras da trilha são refeitas, a textura fica
     if (parts.path && parts.total != null) setPath(parts.total);
   }
+  // ---- quarto aconchegante (só ?modelo=real): tudo feito por código pelo Nort, sem arquivos de terceiros e sem baixar nada.
+  // Parede quente, janela com luz do dia, sofá, tapete, estante, planta, luminária e quadros, no mesmo estilo levemente cartunizado.
+  // O personagem fica no meio do tapete (x = 0, z = 0) e senta no sofá para conversar de perto (chat).
+  const SOFA = { z: -1.6, seat: 0.6 }, TABLE = { x: -1.3, z: -0.8 };
+  function compassOnTable() { const hc = parts.hc; if (!hc || st.holding) return; if (hc.parent) hc.parent.remove(hc); hc.position.set(TABLE.x + 0.08, 0.735, TABLE.z + 0.08); hc.rotation.set(0, 0.4, 0); hc.scale.setScalar(1); parts.hcGlow.visible = false; hc.visible = true; scene.add(hc); }
+  function toon(m, kind) { // sombreado suave tipo "toon leve" (passagem de luz para sombra mais definida, sem degraus) + luz de contorno
+    const c = { skin: [0.5, '1.0,0.86,0.74', 0.3], hair: [0.55, '1.0,0.94,0.86', 0.34], cloth: [0.5, '1.0,0.95,0.9', 0.2], room: [0.4, '1.0,0.93,0.82', 0.06] }[kind];
+    if (!c || m.userData.toon === kind) return; m.userData.toon = kind;
+    m.onBeforeCompile = (sh) => {
+      const ch = T.ShaderChunk.lights_physical_pars_fragment, a = 'vec3 irradiance = dotNL * directLight.color;';
+      if (ch.includes(a)) sh.fragmentShader = sh.fragmentShader.replace('#include <lights_physical_pars_fragment>', ch.replace(a, `float nlT = dot( geometryNormal, directLight.direction ); vec3 irradiance = mix( dotNL, smoothstep( -0.06, 0.4, nlT ), ${c[0].toFixed(2)} ) * directLight.color;`));
+      sh.fragmentShader = sh.fragmentShader.replace('#include <opaque_fragment>', `{ float fr = pow( 1.0 - saturate( dot( normal, normalize( vViewPosition ) ) ), 2.6 ); outgoingLight += vec3( ${c[1]} ) * mix( vec3( 1.0 ), clamp( diffuseColor.rgb * 2.2, 0.0, 1.0 ), 0.6 ) * fr * ${c[2].toFixed(2)}; }\n#include <opaque_fragment>`);
+    };
+    m.customProgramCacheKey = () => 'nort-toon-' + kind; m.needsUpdate = true;
+  }
+  function rbox(w, h, d, r, seg) { // caixa com cantos arredondados (normais certas, sem emenda)
+    const g = new T.BoxGeometry(w, h, d, seg || 3, seg || 3, seg || 3), p = g.attributes.position, n = g.attributes.normal, hw = w / 2 - r, hh = h / 2 - r, hd = d / 2 - r, v = new T.Vector3(), q = new T.Vector3();
+    for (let i = 0; i < p.count; i++) {
+      v.set(p.getX(i), p.getY(i), p.getZ(i)); q.set(Math.max(-hw, Math.min(hw, v.x)), Math.max(-hh, Math.min(hh, v.y)), Math.max(-hd, Math.min(hd, v.z)));
+      v.sub(q); if (v.lengthSq() < 1e-9) continue; v.normalize(); n.setXYZ(i, v.x, v.y, v.z); p.setXYZ(i, q.x + v.x * r, q.y + v.y * r, q.z + v.z * r);
+    }
+    return g;
+  }
+  function canvasTex(w, h, draw, rep) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 4; if (rep) { t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(rep[0], rep[1]); } return t; }
+  function roomScene() {
+    const lite = real.lite;
+    if (lite) { renderer.shadowMap.enabled = false; renderer.setPixelRatio(1); }
+    world.children.filter((c) => c.userData.deco).forEach((c) => { world.remove(c); dispose(c); });
+    const W = new T.Group(); world.add(W); real.world = W; real.room = true; st.step = 0; // no quarto ele não anda pela trilha: fica no tapete
+    const M = (color, o) => { const m = new T.MeshStandardMaterial(Object.assign({ color, roughness: 0.8, metalness: 0 }, o || {})); toon(m, 'room'); return m; };
+    const add = (geo, m, x, y, z, o) => { const me = new T.Mesh(geo, m); me.position.set(x, y, z); if (o && o.ry) me.rotation.y = o.ry; if (o && o.rx) me.rotation.x = o.rx; if (o && o.rz) me.rotation.z = o.rz; me.castShadow = !lite && !(o && o.noShadow); me.receiveShadow = !lite; (o && o.to || W).add(me); return me; };
+    // chão de madeira (tábuas largas, cor de mel)
+    const floorT = canvasTex(256, 256, (x, w, h) => {
+      x.fillStyle = '#B98457'; x.fillRect(0, 0, w, h);
+      for (let i = 0; i < 4; i++) { const y = i * 64; x.fillStyle = ['#BD8A5C', '#B47F52', '#C08E60', '#B88356'][i]; x.fillRect(0, y + 1, w, 62); x.fillStyle = 'rgba(90,55,30,0.35)'; x.fillRect(0, y, w, 2); x.fillRect((i * 97 + 40) % w, y, 2, 64); }
+      for (let k = 0; k < 60; k++) { x.fillStyle = 'rgba(120,75,40,0.06)'; x.fillRect(0, (k * 37) % h, w, 1); }
+    }, [6, 6]);
+    world.children.forEach((c) => { if (c.isMesh && c.geometry && c.geometry.type === 'CircleGeometry') { c.material.dispose(); c.material = M(0xFFFFFF, { map: floorT, roughness: 0.7 }); } });
+    // paredes, rodapé e teto
+    const wallM = M(0xE9B98E, { roughness: 0.95 }), lowM = M(0xF4E4CC, { roughness: 0.9 }), trimM = M(0xFBF5EC, { roughness: 0.6 }), ceilM = M(0xF7EFE4, { roughness: 1 });
+    const BZ = -2.7, LX = -5.2, RX = 5.2;
+    add(new T.PlaneGeometry(RX - LX, 4.2), wallM, 0, 2.1, BZ);
+    add(new T.PlaneGeometry(RX - LX, 1.0), lowM, 0, 0.5, BZ + 0.01);
+    add(rbox(RX - LX, 0.07, 0.06, 0.02, 1), trimM, 0, 1.02, BZ + 0.03); add(rbox(RX - LX, 0.16, 0.05, 0.015, 1), trimM, 0, 0.08, BZ + 0.03);
+    for (const [x, ry] of [[LX, Math.PI / 2], [RX, -Math.PI / 2]]) { add(new T.PlaneGeometry(40, 4.2), wallM, x, 2.1, 17.3, { ry }); add(new T.PlaneGeometry(40, 1.0), lowM, x + Math.sign(-x) * 0.01, 0.5, 17.3, { ry }); }
+    add(new T.PlaneGeometry(RX - LX, 40), ceilM, 0, 4.2, 17.3, { rx: Math.PI / 2, noShadow: true });
+    // porta aberta na parede da esquerda (é por ela que o personagem chega)
+    const doorG = new T.Group(); doorG.position.set(LX + 0.03, 0, 0.2); doorG.rotation.y = Math.PI / 2; W.add(doorG);
+    add(new T.PlaneGeometry(1.4, 2.7), M(0x7A5A44, { roughness: 1 }), 0, 1.35, 0.005, { to: doorG, noShadow: true });
+    for (const x of [-0.75, 0.75]) add(rbox(0.12, 2.8, 0.1, 0.03, 1), trimM, x, 1.4, 0.04, { to: doorG }); add(rbox(1.62, 0.12, 0.1, 0.03, 1), trimM, 0, 2.78, 0.04, { to: doorG });
+    // janela com luz do dia: céu, nuvens e árvores lá fora (desenho), moldura branca, cortinas
+    const skyT = canvasTex(256, 320, (x, w, h) => {
+      const g = x.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#9CCBEA'); g.addColorStop(0.6, '#D7ECF5'); g.addColorStop(1, '#F4F1E2'); x.fillStyle = g; x.fillRect(0, 0, w, h);
+      x.fillStyle = 'rgba(255,255,255,0.85)'; for (const [cx, cy, r] of [[60, 70, 26], [92, 62, 32], [126, 74, 24], [190, 120, 20], [214, 112, 26]]) { x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill(); }
+      x.fillStyle = '#9CC79A'; for (let i = 0; i < 9; i++) { x.beginPath(); x.arc(i * 34 - 6, 262 - (i % 3) * 12, 34 + (i % 2) * 10, 0, 7); x.fill(); }
+      x.fillStyle = '#86B788'; x.fillRect(0, 270, w, 60);
+    });
+    const glassM = new T.MeshStandardMaterial({ color: 0xFFFFFF, map: skyT, emissive: 0xFFFFFF, emissiveMap: skyT, emissiveIntensity: 0.9, roughness: 0.2 }); real.glass = glassM;
+    const WX = -1.55, WY = 2.05, WW = 1.5, WH = 1.75;
+    add(new T.PlaneGeometry(WW, WH), glassM, WX, WY, BZ + 0.02, { noShadow: true });
+    const frM = M(0xFBF7F0, { roughness: 0.5 });
+    for (const dx of [-WW / 2, 0, WW / 2]) add(rbox(0.09, WH + 0.09, 0.08, 0.025, 1), frM, WX + dx, WY, BZ + 0.05);
+    for (const dy of [-WH / 2, 0.15, WH / 2]) add(rbox(WW + 0.09, 0.09, 0.08, 0.025, 1), frM, WX, WY + dy, BZ + 0.05);
+    add(rbox(WW + 0.4, 0.07, 0.24, 0.03, 2), frM, WX, WY - WH / 2 - 0.08, BZ + 0.12);
+    const curtainG = new T.PlaneGeometry(0.62, 2.6, 18, 1); { const p = curtainG.attributes.position; for (let i = 0; i < p.count; i++) p.setZ(i, Math.sin(p.getX(i) * 26) * 0.045); curtainG.computeVertexNormals(); }
+    const curtM = M(0xF2D49A, { roughness: 1, side: T.DoubleSide });
+    add(curtainG, curtM, WX - WW / 2 - 0.22, 1.72, BZ + 0.16); add(curtainG, curtM, WX + WW / 2 + 0.22, 1.72, BZ + 0.16);
+    add(new T.CylinderGeometry(0.025, 0.025, WW + 1.2, 8), M(0x6B4E3A), WX, 3.06, BZ + 0.16, { rz: Math.PI / 2 });
+    // sofá (verde-sálvia) com almofadas e manta
+    const sofa = new T.Group(); sofa.position.set(0.25, 0, -1.95); W.add(sofa);
+    const sofaM = M(0x6F9C8C, { roughness: 0.95 }), sofaM2 = M(0x7DAA99, { roughness: 0.95 });
+    const sw = 2.7, s0 = SOFA.seat;
+    add(rbox(sw, 0.34, 1.12, 0.1, 3), sofaM, 0, 0.24, 0, { to: sofa });
+    for (const x of [-sw / 4, sw / 4]) { add(rbox(sw / 2 - 0.06, 0.2, 0.98, 0.09, 3), sofaM2, x, s0 - 0.1, 0.06, { to: sofa }); add(rbox(sw / 2 - 0.1, 0.62, 0.26, 0.12, 3), sofaM2, x, s0 + 0.3, -0.38, { to: sofa }); }
+    add(rbox(sw, 0.8, 0.22, 0.1, 3), sofaM, 0, 0.62, -0.47, { to: sofa });
+    for (const x of [-sw / 2 - 0.08, sw / 2 + 0.08]) add(rbox(0.26, 0.72, 1.12, 0.11, 3), sofaM, x, 0.43, 0, { to: sofa });
+    for (const x of [-sw / 2 + 0.08, sw / 2 - 0.08]) for (const z of [-0.45, 0.45]) add(new T.CylinderGeometry(0.035, 0.025, 0.1, 8), M(0x5A4030), x, 0.04, z, { to: sofa });
+    add(rbox(0.5, 0.46, 0.17, 0.12, 3), M(0xE8846A, { roughness: 1 }), -0.95, s0 + 0.24, -0.2, { to: sofa, rz: 0.15, ry: 0.2 });
+    add(rbox(0.46, 0.42, 0.16, 0.12, 3), M(0xE6B656, { roughness: 1 }), 1.0, s0 + 0.22, -0.2, { to: sofa, rz: -0.12, ry: -0.2 });
+    add(rbox(0.3, 0.06, 0.95, 0.03, 2), M(0xF3E6D0, { roughness: 1 }), sw / 2 + 0.06, 0.82, 0.02, { to: sofa });
+    // tapete redondo e macio
+    const rugT = canvasTex(256, 256, (x, w) => {
+      const c = w / 2; x.fillStyle = '#F1E4CF'; x.beginPath(); x.arc(c, c, c, 0, 7); x.fill();
+      for (const [r, col] of [[c - 6, '#D9825F'], [c - 16, '#F1E4CF'], [c - 40, '#E7C9A0'], [c - 48, '#F1E4CF'], [36, '#9DBFAE'], [26, '#F1E4CF']]) { x.fillStyle = col; x.beginPath(); x.arc(c, c, r, 0, 7); x.fill(); }
+    });
+    const rug = add(new T.CircleGeometry(1.75, 48), M(0xFFFFFF, { map: rugT, roughness: 1, transparent: true }), 0, 0.012, 0.25, { rx: -Math.PI / 2, noShadow: true }); rug.scale.set(1.25, 0.85, 1); rug.receiveShadow = !lite;
+    // luminária de chão acesa ao lado do sofá
+    const LXp = 1.95;
+    add(new T.CylinderGeometry(0.2, 0.22, 0.04, 20), M(0x3A322C, { roughness: 0.5 }), LXp, 0.02, -2.15);
+    add(new T.CylinderGeometry(0.02, 0.02, 1.95, 8), M(0x3A322C, { roughness: 0.5 }), LXp, 1.0, -2.15);
+    const shadeM = new T.MeshStandardMaterial({ color: 0xF8E8C8, emissive: 0xFFD49A, emissiveIntensity: 0.8, roughness: 1, side: T.DoubleSide }); real.shade = shadeM;
+    add(new T.CylinderGeometry(0.22, 0.32, 0.38, 24, 1, true), shadeM, LXp, 2.05, -2.15, { noShadow: true });
+    const lamp = new T.PointLight(0xFFC88A, 3.2, 7, 1.6); lamp.position.set(LXp, 1.9, -2.0); W.add(lamp); real.lamp = lamp;
+    // estante com livros, plantinha e porta-retrato
+    const shelf = new T.Group(); shelf.position.set(3.25, 0, -2.42); W.add(shelf);
+    const woodM = M(0xA8744E, { roughness: 0.8 });
+    for (const x of [-0.75, 0.75]) add(rbox(0.06, 2.3, 0.5, 0.02, 1), woodM, x, 1.15, 0, { to: shelf });
+    for (const y of [0.05, 0.62, 1.2, 1.78, 2.3]) add(rbox(1.56, 0.05, 0.5, 0.015, 1), woodM, 0, y, 0, { to: shelf });
+    const bookC = [0xD9785A, 0x5B7FA6, 0xE6B656, 0x6F9C8C, 0xF1E4CF, 0x8E6BA8, 0xC2523C, 0x3E8E7E];
+    let bs = 3; const rb = () => { bs = (bs * 16807) % 2147483647; return (bs - 1) / 2147483646; };
+    for (const [y, n] of [[0.08, 9], [0.65, 7], [1.23, 8]]) { let x = -0.68; for (let i = 0; i < n && x < 0.6; i++) { const bw = 0.06 + rb() * 0.05, bh = 0.36 + rb() * 0.14; add(rbox(bw, bh, 0.34, 0.012, 1), M(bookC[(i + Math.round(y * 10)) % bookC.length], { roughness: 0.9 }), x + bw / 2, y + bh / 2, 0.02, { to: shelf, rz: i === n - 1 ? 0.25 : 0 }); x += bw + 0.012; } }
+    add(new T.CylinderGeometry(0.1, 0.08, 0.16, 16), M(0xC8734F), 0.45, 1.88, 0, { to: shelf });
+    for (let i = 0; i < 5; i++) add(new T.SphereGeometry(0.07, 10, 8), M(0x5FA36A), 0.45 + Math.cos(i * 1.3) * 0.07, 2.0 + (i % 2) * 0.04, Math.sin(i * 1.3) * 0.07, { to: shelf });
+    add(rbox(0.3, 0.38, 0.04, 0.015, 1), M(0xFBF7F0), -0.35, 2.0, 0.05, { to: shelf, rx: -0.12 });
+    // planta grande num vaso de barro, perto da janela
+    const plant = new T.Group(); plant.position.set(-2.75, 0, -2.05); W.add(plant);
+    const potG = new T.LatheGeometry([[0.001, 0], [0.24, 0], [0.3, 0.5], [0.33, 0.56], [0.001, 0.56]].map(([a, b]) => new T.Vector2(a, b)), 20);
+    add(potG, M(0xC8734F, { roughness: 0.9 }), 0, 0, 0, { to: plant });
+    const leafG = new T.SphereGeometry(0.5, 12, 8); leafG.scale(0.42, 0.06, 1); leafG.translate(0, 0, 0.5);
+    const leafM = [M(0x4F8F5A, { roughness: 0.7, side: T.DoubleSide }), M(0x62A56C, { roughness: 0.7, side: T.DoubleSide })];
+    for (let i = 0; i < (lite ? 7 : 11); i++) { const a = i * 2.4, up = 0.5 + (i % 4) * 0.28; const l = add(leafG, leafM[i % 2], Math.cos(a) * 0.06, 0.55 + up, Math.sin(a) * 0.06, { to: plant }); l.rotation.set(-0.5 - (i % 3) * 0.25, a, 0, 'YXZ'); l.scale.setScalar(0.7 + (i % 3) * 0.15); }
+    // mesinha com caneca, quadros na parede (um deles com uma rosa dos ventos)
+    const TB = TABLE; // mesinha ao lado do tapete: a bússola fica nela até ele entregar (giveCompass)
+    add(new T.CylinderGeometry(0.3, 0.3, 0.04, 24), woodM, TB.x, 0.62, TB.z); add(new T.CylinderGeometry(0.03, 0.03, 0.6, 8), M(0x3A322C), TB.x, 0.31, TB.z); add(new T.CylinderGeometry(0.2, 0.2, 0.02, 20), M(0x3A322C), TB.x, 0.01, TB.z);
+    add(new T.CylinderGeometry(0.06, 0.055, 0.12, 16), M(0xFBF7F0), TB.x - 0.15, 0.7, TB.z - 0.12); add(rbox(0.36, 0.06, 0.26, 0.015, 1), M(0x5B7FA6), TB.x + 0.05, 0.67, TB.z - 0.05, { ry: 0.3 });
+    compassOnTable();
+    const artA = canvasTex(128, 160, (x, w, h) => { x.fillStyle = '#F6EAD6'; x.fillRect(0, 0, w, h); x.fillStyle = '#E8846A'; x.beginPath(); x.arc(64, 70, 28, 0, 7); x.fill(); x.fillStyle = '#6F9C8C'; x.beginPath(); x.moveTo(0, 160); x.lineTo(45, 95); x.lineTo(80, 130); x.lineTo(105, 105); x.lineTo(128, 128); x.lineTo(128, 160); x.fill(); });
+    const artB = canvasTex(128, 128, (x, w) => { x.fillStyle = '#F6EAD6'; x.fillRect(0, 0, w, w); x.strokeStyle = '#3A322C'; x.lineWidth = 3; x.beginPath(); x.arc(64, 64, 44, 0, 7); x.stroke(); x.fillStyle = '#E8684A'; x.beginPath(); x.moveTo(64, 18); x.lineTo(74, 64); x.lineTo(54, 64); x.fill(); x.fillStyle = '#3A322C'; x.beginPath(); x.moveTo(64, 110); x.lineTo(74, 64); x.lineTo(54, 64); x.fill(); x.font = 'bold 16px serif'; x.textAlign = 'center'; x.fillText('N', 64, 16); });
+    for (const [t, x, y, w, h] of [[artA, 0.5, 2.25, 0.62, 0.78], [artB, 1.2, 2.05, 0.5, 0.5]]) { add(rbox(w + 0.08, h + 0.08, 0.04, 0.012, 1), M(0x3A322C, { roughness: 0.6 }), x, y, BZ + 0.03); add(new T.PlaneGeometry(w, h), M(0xFFFFFF, { map: t, roughness: 1 }), x, y, BZ + 0.055, { noShadow: true }); }
+    // luz quente e suave: céu claro pela janela, luminária e um preenchimento no rosto; reflexos vindos do próprio quarto
+    scene.fog.near = 200; scene.fog.far = 400;
+    if (parts.hemi) { parts.hemi.color.set(0xFFF2E2); parts.hemi.groundColor.set(0xB08A6A); parts.hemi.userData.k = 0.62; }
+    {
+      const es = new T.Scene(), box = new T.Mesh(new T.BoxGeometry(10, 5, 10), new T.MeshBasicMaterial({ color: 0xC9A27E, side: T.BackSide })); box.position.y = 1.5; es.add(box);
+      const win = new T.Mesh(new T.PlaneGeometry(2.2, 2), new T.MeshBasicMaterial({ color: 0xFFFFFF })); win.position.set(-1.5, 2, -4.9); es.add(win);
+      const fl = new T.Mesh(new T.PlaneGeometry(10, 10), new T.MeshBasicMaterial({ color: 0x9A6C48 })); fl.rotation.x = -Math.PI / 2; fl.position.y = -0.99; es.add(fl);
+      const pm = new T.PMREMGenerator(renderer); scene.environment = pm.fromScene(es, 0.04).texture; pm.dispose(); es.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+    }
+  }
+  function roomDay(d) { // manhã -> dia claro (só pela quantidade de respostas): mais luz pela janela; a luminária fica acesa, mais suave de dia
+    real.glass.emissiveIntensity = 0.75 + 0.5 * d; real.lamp.intensity = 3.4 - 1.0 * d; real.shade.emissiveIntensity = 0.85 - 0.25 * d;
+    if (parts.hemi) parts.hemi.intensity *= parts.hemi.userData.k || 1;
+    if (parts.sun) { parts.sun.color.set(0xFFE3C4).lerp(new T.Color(0xFFF3E0), d); parts.sun.intensity *= 0.95; }
+    scene.fog.near = 200; scene.fog.far = 400;
+  }
   function realDay(d) {
     real.sky.material.uniforms.day.value = d;
     const fogC = new T.Color(0xB9C2C0).lerp(new T.Color(0xCBD8DA), d); scene.fog.color.copy(fogC); real.sky.material.uniforms.fogC.value.copy(fogC);
@@ -3664,7 +3907,9 @@ const N3D = (() => {
       if (Math.abs(dx) <= sp || st.reduce) { st.x = st.targetX; st.walking = false; const d = st.walkDone; st.walkDone = null; if (d) d(); }
       else { st.x += Math.sign(dx) * sp; moving = true; st.wantYaw = Math.sign(dx) * Math.PI / 2; }
     }
-    if (st.goingNorth) { st.z -= (st.reduce ? 40 : 1.8) * dt; if (char) char.position.z = st.z; moving = true; st.wantYaw = Math.PI; }
+    if (st.goingNorth && real.room) { st.x -= (st.reduce ? 40 : 1.8) * dt; moving = true; st.wantYaw = -Math.PI / 2; } // no quarto: sai pela porta
+    else if (st.goingNorth) { st.z -= (st.reduce ? 40 : 1.8) * dt; if (char) char.position.z = st.z; moving = true; st.wantYaw = Math.PI; }
+    if (real.room) { parts.path.visible = false; parts.compass.visible = false; }
     if (st.repair < 1 && parts.hcNeedle && !st.reduce) parts.hcNeedle.rotation.y += dt * (2.2 + Math.sin(st.t * 1.3) * 3.2) * (1 - st.repair);
     if (!moving) st.wantYaw = st.mode === 'builder' ? st.userYaw : 0;
     st.yaw = lerp(st.yaw, st.wantYaw, Math.min(1, dt * 6));
@@ -3693,7 +3938,7 @@ const N3D = (() => {
     if (parts.eyes) eyes(dt);
     if (real.on) realFrame(dt, moving);
     // camera
-    const cx = st.mode === 'builder' ? 0 : st.x;
+    const cx = st.mode === 'builder' ? 0 : real.room ? Math.max(-1.1, Math.min(1.1, st.x)) * 0.85 : st.x; // no quarto a câmera quase não anda
     // close up while talking (so the face reads), wider while walking
     // find: full-screen scene, the character framed in the upper middle of the screen (the big compass comes below)
     const camPos = st.mode === 'find' ? [cx, 1.2, 12.5] : st.mode === 'builder' ? [cx, 1.75, 4.6] : moving ? [cx, 1.3, 16] : [cx, 1.3, 15];
@@ -3704,6 +3949,10 @@ const N3D = (() => {
       const b = st.band, hgt = st.charH || 2.3, frac = Math.max(0.12, (b.bottom - b.top) * 0.9);
       const d = Math.min(26, Math.max(6, hgt / (frac * 2 * Math.tan(camera.fov * Math.PI / 360)))) + (moving ? 1 : 0);
       camPos[1] = hgt * 0.5; camPos[2] = d; look[1] = hgt * 0.5;
+      if (st.chat) { // conversa de perto: do peito para cima, como um amigo sentado na sua frente
+        const span = 1.25, top = real.on && real.headW ? real.headW + 0.3 : hgt * 1.02, d2 = Math.max(2.2, span / (frac * 2 * Math.tan(camera.fov * Math.PI / 360))), z0 = real.room ? SOFA.z * (real.sit || 0) : 0;
+        camPos[1] = look[1] = top - span * 0.5; camPos[2] = z0 + d2; look[2] = z0;
+      }
       const w = canvas.clientWidth || 1, h = canvas.clientHeight || 1;
       camera.setViewOffset(w, h, 0, (0.5 - (b.top + b.bottom) / 2) * h, w, h);
       scene.fog.near = d + 3; scene.fog.far = d + 22;
@@ -3722,6 +3971,7 @@ const N3D = (() => {
     scene.fog.color.set(0xC9D6CF).lerp(new T.Color(0xE9F4EC), d);
     if (parts.hemi) parts.hemi.intensity = 1.15 + 0.35 * d;
     if (real.sky) realDay(d);
+    if (real.room) roomDay(d);
     if (parts.sun) { parts.sun.intensity = 1.3 + 0.9 * d; parts.sun.color.set(0xDDE6E8).lerp(new T.Color(0xFFF1DC), d); }
     const now = parts.stops && parts.stops[st.stopNow];
     if (now) now.material.emissiveIntensity = st.reduce ? 0.2 : 0.12 + 0.18 * Math.abs(Math.sin(st.t * 1.6));
@@ -3757,8 +4007,25 @@ const N3D = (() => {
     const dt = Math.min(0.05, last ? (ts - last) / 1000 : 0.016); last = ts;
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (w && h && (canvas.width !== Math.floor(w * renderer.getPixelRatio()) || canvas.height !== Math.floor(h * renderer.getPixelRatio()))) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-    frame(dt);
+    if (!st.paused) frame(dt);
     renderer.render(scene, camera);
+  }
+  // fim no quarto: ele levanta, pega a bússola na mesinha e estende para a pessoa (a "Sua bússola" sai da mão dele: handScreen)
+  // o: { emo, care }: care = houve sinal forte ou de risco -> sem comemorar, entrega com compaixão
+  function giveCompass(o) {
+    if (!api.ok) return Promise.resolve();
+    const wait = (ms) => new Promise((r) => setTimeout(r, st.reduce ? 0 : ms)), emo = o.care ? 'compassion' : o.emo || 'calm';
+    st.mode = 'talk'; world.visible = true; st.searching = false; st.crouch = 0; st.goingNorth = false; st.present = false;
+    const was = st.chat; st.chat = false;
+    if (st.holding) { st.emo = emo; return wait(was ? 700 : 0).then(() => { st.present = true; st.emo = emo; return wait(900); }); }
+    if (!real.room) { st.holding = true; holdCompass(); parts.hc.visible = true; return wait(300).then(() => { st.present = true; st.emo = emo; return wait(900); }); }
+    compassOnTable(); st.emo = o.care ? 'compassion' : 'happy';
+    return wait(was ? 800 : 0)
+      .then(() => { st.targetX = TABLE.x + 0.55; st.walking = true; return new Promise((r) => { st.walkDone = r; }); })
+      .then(() => { st.wantYaw = 0; st.nod = 0.8; return wait(500); })
+      .then(() => { st.holding = true; holdCompass(); parts.hc.visible = true; return wait(350); })
+      .then(() => { st.targetX = 0; st.walking = true; return new Promise((r) => { st.walkDone = r; }); })
+      .then(() => { st.present = true; st.emo = emo; return wait(1000); });
   }
   Object.assign(api, {
     load,
@@ -3775,20 +4042,37 @@ const N3D = (() => {
     // the end of the journey: he turns and walks towards north, into the distance
     goNorth(emo) {
       if (!api.ok) return Promise.resolve();
-      st.present = false; st.emo = emo || 'calm'; st.goingNorth = true;
+      st.present = false; st.chat = false; st.emo = emo || 'calm'; st.goingNorth = true;
       return new Promise((res) => setTimeout(() => { st.goingNorth = false; res(); }, st.reduce ? 50 : 2200));
     },
     resetNorth() { st.goingNorth = false; st.z = 0; if (char) char.position.z = 0; },
     band(top, bottom) { st.band = top == null ? null : { top, bottom }; },
-    builder() { if (!api.ok) return; st.present = false; if (st.mode !== 'builder' || !st.builderSeen) { st.userYaw = 0.35; st.builderSeen = true; } st.mode = 'builder'; st.x = 0; st.walking = false; world.visible = false; st.emo = 'happy'; },
-    // "talk" scene: the character arrives from the left and stops at stop i
+    builder() { if (!api.ok) return; st.present = false; st.chat = false; if (st.mode !== 'builder' || !st.builderSeen) { st.userYaw = 0.35; st.builderSeen = true; } st.mode = 'builder'; st.x = 0; st.walking = false; world.visible = false; st.emo = 'happy'; },
+    // "talk" scene: the character arrives from the left and stops at stop i ( scene('intro') = api.intro() )
     scene(total, i, arrive) {
       if (!api.ok) return Promise.resolve();
+      if (total === 'intro') return api.intro();
+      if (total === 'talk') { if (st.mode !== 'talk') { st.mode = 'talk'; world.visible = true; st.walking = false; st.walkDone = null; st.x = st.targetX = 0; } st.emo = 'listening'; return api.chat(true); }
+      if (total === 'giveCompass') return giveCompass(i || {});
       st.mode = 'talk'; st.present = false; if (parts.hc) parts.hc.visible = true; world.visible = true; parts.path.visible = true; parts.compass.visible = true;
       if (parts.total !== total) setPath(total);
       if (arrive) { st.x = i * st.step - 4; st.emo = 'happy'; return api.walkTo(i).then(() => { st.wave = 1.4; }); }
       return Promise.resolve();
     },
+    // chegar e se apresentar: entra no quarto (ou na trilha) pela esquerda, para no meio, olha para a pessoa e acena.
+    // Resolve depois do aceno; quem chama fala a apresentação (talking) e depois pode chamar chat(true).
+    intro() {
+      if (!api.ok) return Promise.resolve();
+      st.mode = 'talk'; st.present = false; st.chat = false; st.searching = false; st.crouch = 0; st.goingNorth = false; world.visible = true;
+      if (!real.room && parts.total == null) setPath(1);
+      if (real.room) compassOnTable();
+      const wait = (ms) => new Promise((r) => setTimeout(r, st.reduce ? 0 : ms));
+      st.x = -4; st.targetX = 0; st.emo = 'happy'; st.walking = true;
+      return new Promise((res) => { st.walkDone = res; })
+        .then(() => wait(450)).then(() => { st.wave = 1.8; return wait(1700); }).then(() => { st.emo = 'happy'; });
+    },
+    // conversa de perto, de amigo: no quarto ele senta no sofá; a câmera chega mais perto (do peito para cima)
+    chat(on) { if (!api.ok) return Promise.resolve(); if (!!on === !!st.chat) return Promise.resolve(); st.chat = !!on; if (on) { st.walking = false; st.goingNorth = false; } return new Promise((r) => setTimeout(r, st.reduce ? 0 : 900)); },
     walkTo(i) { if (!api.ok) return Promise.resolve(); st.targetX = i * st.step; if (Math.abs(st.targetX - st.x) < 0.01) return Promise.resolve(); st.walking = true; return new Promise((res) => { st.walkDone = res; }); },
     emote(name) { if (EMO[name]) st.emo = name; if (name === 'excited') st.jump = 0.6; },
     nod() { st.nod = 0.8; },
@@ -3797,7 +4081,7 @@ const N3D = (() => {
     // Find the compass: walk in looking around, crouch, pick it up, hold it (resolves when held)
     findScene() {
       if (!api.ok) return Promise.resolve();
-      st.mode = 'find'; world.visible = true; parts.path.visible = false; parts.compass.visible = false;
+      st.mode = 'find'; st.chat = false; world.visible = true; parts.path.visible = false; parts.compass.visible = false;
       if (st.holding) return Promise.resolve();
       const hc = parts.hc; if (hc.parent) hc.parent.remove(hc);
       hc.position.set(1.7, 0.04, 0.55); hc.rotation.set(0, 0, 0); hc.scale.setScalar(1); parts.hcGlow.visible = true; scene.add(hc);
@@ -3843,9 +4127,11 @@ const N3D = (() => {
   });
   api.triCount = () => { let n = 0; if (char) char.traverse((o) => { if (o.isMesh && o.visible) { const g = o.geometry; n += (g.index ? g.index.count : g.attributes.position.count) / 3; } }); return Math.round(n); }; // test aid
   Object.defineProperty(api, 'holding', { get: () => !!st.holding });
-  if (REAL) { api._real = real; api._kit = kit; } // teste
+  if (REAL) { api._real = real; api._kit = kit; api._pause = (on) => { st.paused = !!on; }; api._x = () => st.x; } // teste (prints)
   Object.defineProperty(api, 'kit', { get: () => KIT_ON && !!real.ready && !kit.failed }); // corpo e idade só aparecem com o kit de fato ativo
   Object.defineProperty(api, 'emotion', { get: () => st.emo });
+  // cenas com nome (só no quarto do ?modelo=real): o app usa N3D.scene('intro' | 'talk' | 'giveCompass', opções)
+  if (ROOM) { api.scenes = ['intro', 'talk', 'giveCompass']; Object.defineProperty(api, 'room', { get: () => !!real.room }); }
   return api;
 })();
 
@@ -4672,20 +4958,28 @@ function toneOf(text) {
     const greet = i === 0 && !state.talk.greeted;
     if (greet) state.talk.greeted = true;
     if (N3D.ok) {
-      if (!state.talk.arrived) { state.talk.arrived = true; await N3D.scene(total, i, true); if (greet && tok === stepTok) await showReact(helloLine(), 'happy'); }
+      if (!state.talk.arrived) { state.talk.arrived = true; await (ROOM ? roomScene('intro') : N3D.scene(total, i, true)); if (greet && tok === stepTok) await showReact(ROOM ? state.talk.helloText || roomHello() : helloLine(), 'happy'); if (ROOM) { roomIntroEnd(); if (tok === stepTok) await roomScene('talk'); } }
+      else if (ROOM) {
+        // the room: no walking between questions; he stays with the person and reacts
+        await roomScene('talk');
+        const react = await finishReact(react0, q);
+        if (tok !== stepTok) return;
+        if (state.crisisOpen) { if (react) state.talk.react = reactFor('care', '', react.sens); return; }
+        if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line, react.tone); if (state.crisisOpen) return; if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
+      }
       else {
         await N3D.scene(total, i, false);
         const react = await finishReact(react0, q);
         if (tok !== stepTok) return;
-        if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; }
+        if (state.crisisOpen) { if (react) state.talk.react = reactFor('care', '', react.sens); return; }
         if (react) { N3D.emote(react.emo1); if (react.nod) N3D.nod(); await showReact(react.line, react.tone); if (state.crisisOpen) return; if (react.emo2 && tok === stepTok) { N3D.emote(react.emo2); await wait(900); } }
         if (tok !== stepTok) return;
         N3D.emote('neutral'); await N3D.walkTo(i);
       }
       if (tok !== stepTok) return;
       N3D.emote('listening');
-    } else if (greet) await showReact(helloLine(), 'happy');
-    else { const react = await finishReact(react0, q); if (tok !== stepTok) return; if (state.crisisOpen) { if (react) state.talk.react = reactFor('care'); return; } if (react && react.line) await showReact(react.line, react.tone); }
+    } else if (greet) { await showReact(ROOM ? state.talk.helloText || roomHello() : helloLine(), 'happy'); if (ROOM) roomIntroEnd(); }
+    else { const react = await finishReact(react0, q); if (tok !== stepTok) return; if (state.crisisOpen) { if (react) state.talk.react = reactFor('care', '', react.sens); return; } if (react && react.line) await showReact(react.line, react.tone); }
     if (tok !== stepTok) return;
     showReact(null);
     if (state.view !== 'talk' || state.crisisOpen || mic.on) return;
@@ -4733,19 +5027,20 @@ function toneOf(text) {
   }
   function worrying(qid) { const r = state.talk.an[qid]; return !!r && Object.values(r.areas || {}).some((x) => x.level !== 'none'); }
   // After any risk sign the character only uses compassionate lines ("care"), never celebrates.
-  function reactFor(tone, ans) {
-    const s = S(); const P = s.reactLines;
+  // sens: a sensitive question (difficult experiences): no invitation to breathe or notice the body (can be distressing after trauma)
+  function reactFor(tone, ans, sens) {
+    const s = S(); const P = s.reactLines; const calm = (pool) => (sens && Array.isArray(pool) ? pool.filter((x) => !/respir|breath/i.test(x)) : pool);
     const t = state.talkRisk && tone !== 'skip' ? 'care' : (P[tone] ? tone : 'neutral');
     const emo = { care: { emo1: 'sad', emo2: 'compassion' }, sad: { emo1: 'sad', emo2: 'compassion' }, anxious: { emo1: 'calm' }, happy: { emo1: 'happy' }, excited: { emo1: 'excited' }, neutral: { emo1: 'listening', nod: true }, skip: { emo1: 'neutral' } }[t];
     // Two beats: (a) I heard you, or a reflection of what was named; (b) company/hope for hard things,
     // the person's own strength for good things (a named resource such as friends or good sleep is kept as one).
     let line;
-    if (!(P[t] && P[t].a)) line = pickLine(P[t]);
+    if (!(P[t] && P[t].a)) line = pickLine(calm(P[t]));
     else {
       const topic = ans ? topicLine(ans, t) : ''; const hard = t === 'sad' || t === 'anxious';
-      line = topic && !hard ? `${topic} ${pickLine(P.resource)}` : `${topic || pickLine(P[t].a)} ${pickLine(P[t].b)}`;
+      line = topic && !hard ? `${topic} ${pickLine(P.resource)}` : `${topic || pickLine(P[t].a)} ${pickLine(calm(P[t].b))}`;
     }
-    return Object.assign({ tone: t, line }, emo);
+    return Object.assign({ tone: t, line, sens: !!sens }, emo);
   }
   // Reflect something concrete the person mentioned (sleep, work, family…), only when the part of the
   // answer that mentions it carries the same feeling as the whole answer. Fixed lines: nothing is echoed back.
@@ -4776,10 +5071,10 @@ function toneOf(text) {
     if (!react) return null;
     if (react.ready) { try { await react.ready; } catch (e) { /* fall back to the local line */ } }
     let out = react;
-    if (state.talkRisk && react.tone !== 'care' && react.tone !== 'skip') out = reactFor('care');
+    if (state.talkRisk && react.tone !== 'care' && react.tone !== 'skip') out = reactFor('care', '', react.sens);
     else if (react.qid) {
       const r = state.talk.an[react.qid];
-      if ((react.tone === 'happy' || react.tone === 'excited') && worrying(react.qid)) out = reactFor('neutral');
+      if ((react.tone === 'happy' || react.tone === 'excited') && worrying(react.qid)) out = reactFor('neutral', '', react.sens);
       const cheer = /parab[eé]ns|que demais|incr[ií]vel|maravilh|congrat|awesome|amazing|wonderful|fantastic|!/i;
       if (r && r.mode === 'ai' && r.reply && react.tone !== 'skip' && react.tone !== 'care' && !((out.tone === 'sad' || out.tone === 'anxious' || out.tone === 'neutral') && cheer.test(r.reply))) out = Object.assign({}, out, { line: r.reply, ai: true });
     }
@@ -4870,7 +5165,7 @@ function toneOf(text) {
     return `${s.crisisTitle}. ${s.crisisText} ${nums}.`;
   }
   function sayReady(text) { const id = voiceId(); if (id === 'off') return Promise.resolve(); if (id === 'own' || id.startsWith('e:')) { const tok = ++speakTok; return sayDevice(text, '', tok); } return say(text); }
-  function flagRisk() { if (liveCall.on) { liveKeep(); liveStop(); } if (state.talkRisk) { if (state.crisisOpen) return; stopMic(); stopSay(); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); return; } state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care'); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
+  function flagRisk() { if (liveCall.on) { liveKeep(); liveStop(); } if (state.talkRisk) { if (state.crisisOpen) return; stopMic(); stopSay(); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); return; } state.talkRisk = true; stopMic(); stopSay(); if (N3D.ok) N3D.emote('compassion'); if (state.talk.react && state.talk.react.tone !== 'care') state.talk.react = reactFor('care', '', state.talk.react.sens); state.crisisOpen = true; state.crisisThenAdvance = false; render(true); sayReady(crisisSpeech()); }
   function analyze(q, ans) {
     if (riskWords(ans)) flagRisk();
     state.talk.an[q.id] = localAnalyze(q, ans); ownVoiceGuard(q.id);
@@ -4912,7 +5207,7 @@ function toneOf(text) {
     stopMic();
     state.error = null;
     const ansNow = q.type === 'safety' ? '' : (state.talk.answers[q.id] || '').trim();
-    const react = reactFor(talkTone(q), ansNow);
+    const react = reactFor(talkTone(q), ansNow, !!q.sensitive || q.id === 'baby');
     const job = ansNow && state.talk.jobs[q.id];
     if (job) { react.qid = q.id; react.ready = Promise.race([job, wait(2500)]); } else if (ansNow) react.qid = q.id;
     state.talk.react = react;
@@ -4953,6 +5248,58 @@ function toneOf(text) {
       <p><button class="btn link" data-act="quick-quiz">${esc(s.quickQuiz)}</button></p>
     </main>`;
   }
+  // ---------- the room (test mode ?modelo=real, Guilherme 18/11/2026): no forest and no compass game at the start ----------
+  // The character walks into a room, greets the person by name and the conversation starts; the compass waits on the desk
+  // and he hands it over at the end, with the result. Without the flag nothing here runs.
+  const ROOM = !!N3D._real;
+  // Scenes made by the 3D agent: N3D.scene('intro' | 'talk' | 'giveCompass', opts) -> Promise, announced by N3D.scenes
+  // (or N3D.room === true). Until they exist, today's scenes stand in (arrive and wave; stand still; show the compass).
+  function roomScene(name, opts) {
+    if (!N3D.ok) return Promise.resolve();
+    const has = (N3D.scenes && N3D.scenes.includes && N3D.scenes.includes(name)) || N3D.room === true;
+    try {
+      if (has) return Promise.resolve(N3D.scene(name, opts || {})).catch(() => {});
+      // what the 3D agent already exposes: intro() = walks in and waves; chat(true) = sits close to talk (sofa)
+      if (name === 'intro' && typeof N3D.intro === 'function') return Promise.resolve(N3D.intro()).catch(() => {});
+      if (name === 'talk' && typeof N3D.chat === 'function') return Promise.resolve(N3D.chat(true)).catch(() => {});
+      if (name === 'giveCompass' && typeof N3D.chat === 'function') N3D.chat(false);
+      const total = talkQuestions(state).length;
+      if (name === 'intro') return N3D.scene(total, 0, true);
+      if (name === 'talk') return N3D.scene(total, 0, false);
+      if (name === 'giveCompass') { N3D.finale((opts && opts.emo) || 'calm'); return wait(reduceMotion ? 0 : 1600); }
+    } catch (e) { /* the screen works without the scene */ }
+    return Promise.resolve();
+  }
+  function roomHello() { return `${helloLine()} ${S().roomHelloEnd}`; }
+  // the answer card comes in after he greets (at most 9 s, so nobody waits for an animation)
+  function roomIntroEnd() { clearTimeout(roomIntroEnd.t); if (!state.talk.intro) return; state.talk.intro = false; const m = root.querySelector('main.room-intro'); if (m) m.classList.remove('room-intro'); }
+  function roomEnter() {
+    state.talkMode = true; state.talk.i = 0; state.talk.arrived = false; state.talk.intro = true; state.talk.helloText = state.talk.greeted ? '' : roomHello(); state.roomGive = null; state.view = 'talk';
+    clearTimeout(roomIntroEnd.t); roomIntroEnd.t = setTimeout(roomIntroEnd, 9000);
+    // same rules as "Look for the way" before: the voice conversation starts by itself only with a voice on and consent; "No voice" = written mode
+    if (liveAvailable() && state.setup.consent && voiceId() !== 'off') { liveMicWarm(); liveStart(); }
+    render();
+  }
+  // the end: he picks the compass up from the desk and hands it over; "Your compass" comes out of his hand (once)
+  function roomGive() {
+    if (state.talk.analyzing) { N3D.emote('thinking'); return; }
+    if (state.roomGive) return; state.roomGive = 'giving';
+    const ind = Object.values(collectIndicators());
+    const care = riskShown() || ind.some((x) => x.level === 'strong');
+    const emo = care ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy';
+    let done = false;
+    const show = () => {
+      if (done) return; done = true; state.roomGive = 'done'; if (state.view !== 'indicators') return;
+      const yc = document.querySelector('.ind-compass.room-hand'); if (!yc) return;
+      const h = N3D.handScreen && N3D.handScreen();
+      if (h && !reduceMotion) { const r = yc.getBoundingClientRect(); yc.style.setProperty('--fx', `${Math.round(h.x * innerWidth - (r.left + r.width / 2))}px`); yc.style.setProperty('--fy', `${Math.round(h.y * innerHeight - (r.top + r.height / 2))}px`); void yc.offsetWidth; }
+      yc.classList.add('given'); N3D.emote(emo);
+    };
+    roomScene('giveCompass', { emo, care }).then(show); setTimeout(show, 8000);
+  }
+  // small window in the top pill: from a cloudy morning to sun, by --day (how many answers, never what was said)
+  const ROOM_WINDOW = '<svg class="room-win" viewBox="0 0 48 48" aria-hidden="true"><rect class="rw-sky" x="7" y="5" width="34" height="38" rx="5"/><circle class="rw-sun" cx="30" cy="17" r="6"/><path class="rw-cloud" d="M13 26h15a5 5 0 0 0 .5-10 7 7 0 0 0-13.3 2.2A4 4 0 0 0 13 26z"/><path class="rw-frame" d="M7 10a5 5 0 0 1 5-5h24a5 5 0 0 1 5 5v28a5 5 0 0 1-5 5H12a5 5 0 0 1-5-5zM24 5v38M7 24h34"/><rect class="rw-sill" x="3" y="41" width="42" height="4" rx="2"/></svg>';
+
   // ---------- one trail + light that follows (design approved 13/11/2026) ----------
   function riskShown() { return !!state.talkRisk || computeFlags(state).safety === 'yes'; }
   // The forest goes from morning mist (0) to a clear day (1) as the compass fills: only HOW MANY answers are done,
@@ -4960,6 +5307,7 @@ function toneOf(text) {
   function dayFrac() {
     let f = 1;
     if (state.view === 'find') f = state.afterFind === 'level2' ? 1 : 0;
+    else if (state.view === 'talk' && ROOM) { const qs = talkQuestions(state); f = qs.slice(0, state.talk.i).filter((q) => (q.type === 'safety' ? state.answers['phq.9'] != null : !!(state.talk.answers[q.id] || '').trim() || !!state.talk.skipped[q.id])).length / qs.length; }
     else if (state.view === 'talk') f = repairedAreas(state.talk.i).size / journeyAreas().length;
     else if (state.view === 'quiz' && state.level === 1 && !state.talkMode) { const cards = currentCards(); f = currentIndex(cards) / cards.length; }
     if (riskShown()) { if (state.dayLock == null) state.dayLock = state.dayLast == null ? f : state.dayLast; return state.dayLock; }
@@ -5032,10 +5380,13 @@ function toneOf(text) {
         ${canMic() ? `<button type="button" id="mic-btn" class="mic-btn round${mic.on ? ' on' : ''}" data-act="mic" aria-pressed="${mic.on}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="mic-l">${esc(mic.on ? s.micStop : s.micStart)}</span></button>` : ''}</div>${canMic() ? `<p id="talk-partial" class="small talk-partial" aria-live="polite"></p>` : (mic.denied ? `<p class="small">${esc(s.micDenied)}</p>` : '')}`;
     const answered = isSafety ? state.answers['phq.9'] != null : !!answer.trim() || !!state.talk.skipped[q.id];
     const last = i === qs.length - 1;
-    if (N3D.ok) return `<main class="scene3d talk-scene">
+    const top = ROOM
+      ? `<div class="scene-top trail-top room-top">${ROOM_WINDOW}<div class="trail-meta"><span class="trail-n">${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span><span class="room-bar" role="progressbar" aria-label="${esc(s.talkTitle)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><b style="width:${pct}%"></b></span></div>${liveCall.on ? '' : breatheBtn()}</div>`
+      : `<div class="scene-top trail-top">${hudCompass(i)}<div class="trail-meta"><span class="trail-n">${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span><span class="stones" role="progressbar" aria-label="${esc(s.talkTitle)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}">${qs.map((x, k) => `<i class="${k < i ? 'done' : k === i ? 'now' : ''}"></i>`).join('')}</span></div>${liveCall.on ? '' : breatheBtn()}</div>`;
+    if (N3D.ok) return `<main class="scene3d talk-scene${ROOM ? ' room-scene' : ''}${ROOM && state.talk.intro ? ' room-intro' : ''}">
       <div class="stage3d" id="stage3d" aria-hidden="true"></div>
-      <div class="scene-top trail-top">${hudCompass(i)}<div class="trail-meta"><span class="trail-n">${esc(fmt(s.questionOf, { i: i + 1, n: qs.length }))}</span><span class="stones" role="progressbar" aria-label="${esc(s.talkTitle)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}">${qs.map((x, k) => `<i class="${k < i ? 'done' : k === i ? 'now' : ''}"></i>`).join('')}</span></div>${liveCall.on ? '' : breatheBtn()}</div>
-      <div class="comic talk-comic${reduceMotion ? '' : ' pop'}" id="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<p class="react-line" id="react-line" role="status" aria-live="polite" hidden></p>${lead && !liveCall.on ? `<p class="q-lead">${esc(lead)}</p>` : ''}<h1 class="q-text" id="q-text">${esc(liveCall.on && liveCall.agentText ? liveCall.agentText : text)}</h1>${liveCall.on ? '' : hints}${voiceId() !== 'off' && !liveCall.on ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
+      ${top}
+      ${(() => { const hi = ROOM && state.talk.intro && !liveCall.on && state.talk.helloText; return `<div class="comic talk-comic${reduceMotion ? '' : ' pop'}${hi ? ' reacting' : ''}" id="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<p class="react-line" id="react-line" role="status" aria-live="polite"${hi ? `>${esc(hi)}` : ' hidden>'}</p>`; })()}${lead && !liveCall.on ? `<p class="q-lead">${esc(lead)}</p>` : ''}<h1 class="q-text" id="q-text">${esc(liveCall.on && liveCall.agentText ? liveCall.agentText : text)}</h1>${liveCall.on ? '' : hints}${voiceId() !== 'off' && !liveCall.on ? `<button type="button" class="btn link comic-replay" data-act="talk-replay">${esc(s.talkReplay)}</button>` : ''}</div>
       <div class="scene-gap" aria-hidden="true"></div>
       <section class="answer-card sheet">
         ${liveCall.on ? liveCardHtml(s) : `${notes.join('')}
@@ -5056,7 +5407,7 @@ function toneOf(text) {
   }
   function viewIndicators() {
     const s = S();
-    const head = (title) => N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}<h1 class="q-text" id="q-text">${esc(title)}</h1></div><div class="scene-gap" aria-hidden="true"></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
+    const head = (title, give) => N3D.ok ? `<div class="stage3d" id="stage3d" aria-hidden="true"></div><div class="comic">${helloName() ? `<p class="talk-who">${esc(helloName())}</p>` : ''}${give ? `<p class="react-line room-give">${esc(s.roomGive)}</p>` : ''}<h1 class="q-text" id="q-text">${esc(title)}</h1></div><div class="scene-gap" aria-hidden="true"></div>` : `<div class="talk-head">${avatarSVG(avatar, 'live')}<div class="bubble-talk"><h1 class="q-text" id="q-text">${esc(title)}</h1></div></div>`;
     if (state.talk.analyzing) return `<main class="wrap narrow${N3D.ok ? ' scene3d' : ''}">${head(s.indWait)}<div class="actions"><button class="btn" data-act="ind-nowait">${esc(s.indNoWait)}</button></div></main>`;
     const ind = collectIndicators();
     const shown = AREAS.filter((a) => a.id !== 'postpartum' || state.setup.baby === 1);
@@ -5070,9 +5421,9 @@ function toneOf(text) {
     const ringItems = shown.map((a) => lv(a) === 'strong' ? { area: a.id, state: 'flag', sw: 26, r: 104 } : lv(a) === 'some' ? { area: a.id, state: 'flag', sw: 19, r: 101 } : { area: a.id, state: 'done', sw: 6, r: 95 });
     const firstTime = state.indAnimKey !== 'ind';
     const legend = (a) => { const on = !!state.talkSel[a.id]; const l = lv(a); const ev = ind[a.id] ? ind[a.id].evidence.filter(Boolean) : []; return `<li class="yc-row lvl-${l}"><button type="button" class="yc-pick${on ? ' on' : ''}" data-act="tsel" data-area="${a.id}" aria-pressed="${on}"><span class="cdot ac" style="${acVar(a.id)}" aria-hidden="true"></span><span class="yc-txt"><strong>${esc(tx(a.name))}</strong><span class="yc-lvl">${esc(s.indLevels[l])}</span><span class="small">${esc(tx(AREA_ABOUT[a.id]))}</span>${ev.length ? `<span class="small ind-ev">${esc(ev.join(' · '))}</span>` : ''}</span><span class="yc-check" aria-hidden="true">${on ? '✓' : '+'}</span></button></li>`; };
-    const compass = exp.ring ? `<section class="map ind-compass"><h2 class="map-h">${esc(s.yourCompass)}</h2><div class="your-compass${firstTime && !reduceMotion ? ' anim' : ''}"><div class="yc-ring"><svg viewBox="0 0 240 240" aria-hidden="true">${ringSegments(ringItems, 240, 96, 10, 3, firstTime && !reduceMotion)}<circle class="yc-inner" cx="120" cy="120" r="80"/><g class="yc-rose">${rose(120, 74, 56, 16)}</g></svg><div class="yc-center"><strong>${strong.length + some.length}</strong><span>${esc(strong.length + some.length === 1 ? s.indCame1 : s.indCame)}</span></div></div><p class="small center">${esc(s.indRingLegend)}</p></div></section>` : '';
+    const compass = exp.ring ? `<section class="map ind-compass${ROOM && N3D.ok ? ` room-hand${state.roomGive === 'done' ? ' given' : ''}` : ''}"><h2 class="map-h">${esc(s.yourCompass)}</h2><div class="your-compass${firstTime && !reduceMotion ? ' anim' : ''}"><div class="yc-ring"><svg viewBox="0 0 240 240" aria-hidden="true">${ringSegments(ringItems, 240, 96, 10, 3, firstTime && !reduceMotion)}<circle class="yc-inner" cx="120" cy="120" r="80"/><g class="yc-rose">${rose(120, 74, 56, 16)}</g></svg><div class="yc-center"><strong>${strong.length + some.length}</strong><span>${esc(strong.length + some.length === 1 ? s.indCame1 : s.indCame)}</span></div></div><p class="small center">${esc(s.indRingLegend)}</p></div></section>` : '';
     return `<main class="wrap narrow indicators${N3D.ok ? ' scene3d' : ''}">
-      ${head(s.indTitle)}
+      ${head(s.indTitle, ROOM)}
       ${flags.safety === 'yes' ? `<div class="alert"><p>${esc(s.safetyFlag)}</p>${helpBlock(state.setup.country)}</div>` : ''}
       ${compass}
       <p class="lead">${esc(s.indLead)}</p>
@@ -5511,19 +5862,21 @@ function toneOf(text) {
     if (state.view === 'results' && N3D.ok && exp.ring && state.finaleKey !== `${state.resultsLevel}`) { state.finaleKey = `${state.resultsLevel}`; const mb = maxBand(computeAreas(state, state.resultsLevel)); N3D.finale(mb === 2 || computeFlags(state).safety === 'yes' ? 'compassion' : mb === 1 ? 'calm' : 'happy'); }
     if (state.view === 'results' && document.querySelector('.your-compass.anim')) state.ycAnimKey = `${state.resultsLevel}`;
     if (state.view === 'find' && state.afterFind === 'talk' && state.setup.consent) livePreload();
-    if (state.view === 'talk' && liveCall.on && N3D.ok && !state.talk.arrived) { state.talk.arrived = true; N3D.scene(talkQuestions(state).length, state.talk.i, true); }
+    if (ROOM && state.view === 'avatar' && state.setup.consent) livePreload();
+    if (state.view === 'talk' && liveCall.on && N3D.ok && !state.talk.arrived) { state.talk.arrived = true; if (ROOM) roomScene('intro').then(() => { roomIntroEnd(); if (state.view === 'talk') roomScene('talk'); }); else N3D.scene(talkQuestions(state).length, state.talk.i, true); }
     if (state.view === 'talk' && !state.crisisOpen && !liveCall.on) { const q = curTalkQ(); const key = `${state.talk.i}:${state.lang}`; if (state.talk.said !== key) { state.talk.said = key; runStep(q, state.talk.i); } }
-    if (state.view === 'indicators' && N3D.ok) { const total = talkQuestions(state).length; N3D.scene(total, total, false).then(() => N3D.walkTo(total)); if (state.talk.analyzing) N3D.emote('thinking'); else { const ind = Object.values(collectIndicators()); N3D.emote(state.talkRisk || computeFlags(state).safety === 'yes' || ind.some((x) => x.level === 'strong') ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy'); } }
+    if (state.view === 'indicators' && N3D.ok && ROOM) roomGive();
+    else if (state.view === 'indicators' && N3D.ok) { const total = talkQuestions(state).length; N3D.scene(total, total, false).then(() => N3D.walkTo(total)); if (state.talk.analyzing) N3D.emote('thinking'); else { const ind = Object.values(collectIndicators()); N3D.emote(state.talkRisk || computeFlags(state).safety === 'yes' || ind.some((x) => x.level === 'strong') ? 'compassion' : ind.some((x) => x.level === 'some') || !Object.keys(state.talk.answers).length ? 'calm' : 'happy'); } }
     if (state.view === 'indicators' && !state.talk.analyzing && state.talk.said !== 'ind') {
       state.talk.said = 'ind'; const ind = collectIndicators(); const nm = (lv) => AREAS.filter((a) => ind[a.id] && ind[a.id].level === lv).map((a) => tx(a.name)).join(', ');
       const st = nm('strong'), so = nm('some');
       const s = S(); const care = state.talkRisk || (typeof state.answers['phq.9'] === 'number' && state.answers['phq.9'] > 0);
       const sum = speakable(`${care ? s.indSayDoneCare : pickLine(s.indSayDone)} ${st ? fmt(s.indSayStrong, { areas: st }) : s.indSayNone} ${so ? fmt(s.indSaySome, { areas: so }) : ''} ${s.indSayEnd}`);
-      if (remoteVoice()) say(speakable(`${pickLine(s.indSayDone)} ${s.indSayScreen} ${s.indSayEnd}`)); else say(sum);
+      if (remoteVoice()) say(speakable(`${care ? s.indSayDoneCare : pickLine(s.indSayDone)} ${s.indSayScreen} ${s.indSayEnd}`)); else say(sum);
     }
     if (state.view === 'find' && N3D.ok) N3D.repair(state.afterFind === 'talk' ? 0 : 1);
-    if (state.view === 'talk' && N3D.ok) { N3D.repair(repairedAreas(state.talk.i).size / journeyAreas().length); N3D.stones(state.talk.i); }
-    if (state.view === 'indicators' && N3D.ok && !state.talk.analyzing) { N3D.repair(1); if (!state.wholeCheered) { state.wholeCheered = true; const care = state.talkRisk || computeFlags(state).safety === 'yes'; const hasStrong = Object.values(collectIndicators()).some((x) => x.level === 'strong'); if (!care && !hasStrong) N3D.emote('excited'); } }
+    if (state.view === 'talk' && N3D.ok && !ROOM) { N3D.repair(repairedAreas(state.talk.i).size / journeyAreas().length); N3D.stones(state.talk.i); }
+    if (state.view === 'indicators' && N3D.ok && !state.talk.analyzing && !ROOM) { N3D.repair(1); if (!state.wholeCheered) { state.wholeCheered = true; const care = state.talkRisk || computeFlags(state).safety === 'yes'; const hasStrong = Object.values(collectIndicators()).some((x) => x.level === 'strong'); if (!care && !hasStrong) N3D.emote('excited'); } }
     if (state.view === 'find' && state.afterFind === 'talk') initBroken();
     if (state.view === 'find') { if (state.afterFind !== 'talk') initCompass(); if (N3D.ok && !state.findStarted) { state.findStarted = true; const reveal = () => { if (state.view !== 'find' || state.findShown) return; state.findShown = true; const ui = document.getElementById('find-ui'); if (ui) { const h = N3D.handScreen && N3D.handScreen(); const cb = document.getElementById('compass-block'); if (h && cb) { const r = cb.getBoundingClientRect(); ui.style.setProperty('--fx', `${Math.round(h.x * innerWidth - (r.left + r.width / 2))}px`); ui.style.setProperty('--fy', `${Math.round(h.y * innerHeight - (r.top + r.height / 2))}px`); } ui.classList.remove('waiting'); if (!reduceMotion) ui.classList.add('show'); } setTimeout(() => { if (state.view === 'find') N3D.giveCompass(); }, reduceMotion ? 0 : 250); compassUpdate(); }; N3D.findScene().then(reveal); setTimeout(reveal, 8000); } } else { stopSensor(); if (['on', 'waiting', 'asking'].includes(compass.sensor)) compass.sensor = 'idle'; }
     const word = document.getElementById('breath-word');
@@ -5749,6 +6102,7 @@ function toneOf(text) {
       const prob = nameProblem(avatar.name);
       if (prob) { state.error = prob === 'empty' ? s.avNameNeed : s.avNameBad; state.errorField = 'av-name'; render(true); const el = document.getElementById('av-name'); if (el) { el.focus(); el.scrollIntoView({ block: 'center' }); } return; }
       if (ownVoicePossible() && !ownVoice.id && !ownVoice.declined) { saveAvatar(); state.error = null; state.view = 'voiceclone'; render(); return; }
+      if (ROOM) { unlockAudio(); saveAvatar(); state.error = null; roomEnter(); return; }
       saveAvatar(); state.afterFind = 'talk'; state.error = null; state.view = 'find'; render();
     }
     else if (act === 'voice-test') { const nm = helloName(); if (remoteVoice()) say(fmt(S().voiceTestExpr, { name: nm || '' }).replace(/,\s*!/, '!').replace(/\s+,/g, ','), '[warmly]'); else say(nm ? fmt(S().voiceHelloName, { name: nm }) : S().voiceHello); }
@@ -5758,7 +6112,7 @@ function toneOf(text) {
     else if (act === 'talk-skip' && liveCall.on && liveCall.typing) liveNext(true);
     else if (act === 'talk-next') talkNext();
     else if (act === 'talk-skip') { const q = curTalkQ(); { const ta = document.getElementById('talk-answer'); if (ta && riskWords(ta.value)) { flagRisk(); return; } } state.talk.skipped[q.id] = true; delete state.talk.answers[q.id]; delete state.talk.an[q.id]; delete state.talk.jobs[q.id]; talkNext(); }
-    else if (act === 'talk-back') { stopMic(); stopSay(); state.error = null; if (state.talk.i > 0) { state.talk.i--; render(); } else { state.view = 'find'; render(); } }
+    else if (act === 'talk-back') { stopMic(); stopSay(); state.error = null; if (state.talk.i > 0) { state.talk.i--; render(); } else { state.view = ROOM ? 'avatar' : 'find'; render(); } }
     else if (act === 'tsel') { const ar = b.dataset.area; state.talk.selTouched = true; state.talkSel[ar] = !state.talkSel[ar]; render(true); const again = root.querySelector(`[data-act="tsel"][data-area="${ar}"]`); if (again) again.focus({ preventScroll: true }); }
     else if (act === 'ind-nowait') { if (state.talk.finishWait) state.talk.finishWait(); }
     else if (act === 'ind-back') { stopSay(); state.view = 'talk'; state.talk.i = talkQuestions(state).length - 1; render(); }

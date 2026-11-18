@@ -23,3 +23,10 @@ cena/ (céu, chão, trilha, pedras, árvores)
     Modelos fir_sapling (arvore-1..3), island_tree_02 (arvore-4), tree_small_02 (arvore-5): renderizados no
       Blender (Cycles) como fotos com fundo transparente (tools/blender_tree_impostors.py), 512 px de altura.
   Baixados de api.polyhaven.com / dl.polyhaven.org em 14/11/2026.
+
+quarto (18/11/2026, no lugar da floresta no ?modelo=real; a floresta continua com ?cena=floresta para comparar)
+  Feito pelo Nort por código em src/three3d.js (roomScene), sem arquivos de terceiros e sem nada para baixar:
+  paredes, piso de madeira, tapete, janela com céu e árvores desenhados, cortinas, sofá com almofadas e manta,
+  luminária de chão acesa, estante com livros, planta no vaso, mesinha com caneca e dois quadros (um com rosa dos ventos).
+  Texturas desenhadas em canvas no aparelho; reflexos gerados a partir de uma caixa com as cores do quarto (PMREM do three.js, MIT).
+  Licença: do Nort (código próprio). Peso extra: 0 KB de arquivos (só o código).
